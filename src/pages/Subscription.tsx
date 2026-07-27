@@ -662,10 +662,7 @@ export default function Subscription() {
         <p className="mb-4 text-sm text-dark-200">
           {t('subscription.notFoundDesc', 'Возможно, подписка была удалена или не существует')}
         </p>
-        <button
-          onClick={() => navigate('/subscriptions')}
-          className="rounded-xl bg-accent-500 px-6 py-2.5 text-sm font-medium text-on-accent"
-        >
+        <button onClick={() => navigate('/subscriptions')} className="btn-cta-md">
           {t('subscription.backToList', 'Мои подписки')}
         </button>
       </div>
@@ -1253,7 +1250,7 @@ export default function Subscription() {
                         <button
                           onClick={() => enableSbpMutation.mutate()}
                           disabled={enableSbpMutation.isPending}
-                          className="w-full whitespace-nowrap rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity disabled:opacity-50 sm:w-auto"
+                          className="btn-cta-md w-full whitespace-nowrap disabled:opacity-50 sm:w-auto"
                         >
                           {enableSbpMutation.isPending ? (
                             <span className="mx-auto block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -1272,7 +1269,7 @@ export default function Subscription() {
                                   openPaymentUrl(sbpInfo.redirect_url, platform, openLink);
                                 }
                               }}
-                              className="w-full whitespace-nowrap rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity sm:w-auto"
+                              className="btn-cta-md w-full whitespace-nowrap sm:w-auto"
                             >
                               {t('subscription.sbpRecurring.confirmInBank')}
                             </button>

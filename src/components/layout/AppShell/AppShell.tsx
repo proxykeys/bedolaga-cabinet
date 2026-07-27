@@ -195,7 +195,7 @@ export function AppShell({ children }: AppShellProps) {
           скроллбара, и капсула по центру прыгала бы на полширины скроллбара при
           переходах между страницами со скроллом и без. 100vw даёт ту же ось
           центрирования, что и у body (тоже 100vw). */}
-      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200/50 bg-gray-050/95 dark:border-gray-800/50 dark:bg-gray-950/95 lg:block">
+      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200 bg-gray-050 dark:border-gray-800 dark:bg-gray-950 lg:block">
         {/* 3-зонный grid: лого | капсула | действия. Колонки 1fr_auto_1fr держат
             капсулу строго по центру вьюпорта НЕЗАВИСИМО от ширины лого/действий,
             а действия — у правого края. Поэтому ничего не «скачет» при переходах
