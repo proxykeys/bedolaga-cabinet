@@ -1,0 +1,141 @@
+/*!
+ * auth.css — Login page semantic classes
+ *
+ * Principle: JSX stays clean, all visual decisions live here.
+ * Ported from bedolaga-cabinet-v1 with v2 token mapping:
+ *   v1 legacy dark/light tokens → v2 unified gray palette
+ *   v1 "always-dark auth-card in light mode" anti-pattern → dropped
+ *   (v2 card follows theme, claude.com-aligned)
+ *
+ * Theme model:
+ *   - Dark default: gray tokens directly
+ *   - Light overrides via .light prefix (registered in tailwind.config.js)
+ */
+
+/* Note: .auth-card intentionally omitted — Login uses .card directly.
+   It was a redundant abstraction (@apply card only). */
+
+/* Note: .login-submit-button intentionally omitted — the visual-growth
+   effect lives on .btn-primary directly (see globals.css), so every
+   primary button in the project inherits it without per-call classes. */
+
+/* Note: .auth-input intentionally omitted — the v1 input pattern
+   (neutral monochrome focus, deeper bg, no accent ring) now lives on
+   the global .input class in globals.css, so every input in the project
+   inherits it. */
+
+/* ========== DIVIDERS ========== */
+.auth-divider {
+  @apply bg-gray-700;
+}
+
+.light .auth-divider {
+  @apply bg-gray-300;
+}
+
+/* ========== SECONDARY SURFACES (OAuth buttons, email toggle) ========== */
+.auth-secondary-surface {
+  @apply border border-gray-700 bg-gray-800 text-gray-200;
+}
+
+.auth-secondary-surface:hover {
+  @apply border-gray-600 bg-gray-700 text-gray-200;
+}
+
+.light .auth-secondary-surface {
+  @apply border-gray-300 bg-gray-200 text-gray-700;
+}
+
+.light .auth-secondary-surface:hover {
+  @apply border-gray-400 bg-gray-300 text-gray-800;
+}
+
+/* ========== EMAIL TOGGLE (open state) ========== */
+.auth-email-toggle-open {
+  @apply border border-gray-600 bg-gray-700 text-gray-100;
+}
+
+.auth-email-toggle-open:hover {
+  @apply border-gray-500 bg-gray-600 text-gray-050;
+}
+
+.light .auth-email-toggle-open {
+  @apply border-gray-400 bg-gray-300 text-gray-800;
+}
+
+.light .auth-email-toggle-open:hover {
+  @apply border-gray-500 bg-gray-400 text-gray-900;
+}
+
+/* ========== LOGIN HEADER CONTROL (theme toggle pill) ========== */
+.login-header-control {
+  @apply border border-gray-700 bg-gray-800 text-gray-200;
+}
+
+.login-header-control:hover {
+  @apply border-gray-600 bg-gray-700;
+}
+
+.login-header-control-active {
+  @apply border border-gray-600 bg-gray-700;
+}
+
+.login-header-control-muted {
+  @apply text-gray-400;
+}
+
+.login-header-control:hover .login-header-control-muted,
+.login-header-control-active .login-header-control-muted {
+  @apply text-gray-200;
+}
+
+.light .login-header-control {
+  @apply border-gray-300 bg-gray-200 text-gray-800;
+}
+
+.light .login-header-control:hover {
+  @apply border-gray-400 bg-gray-300;
+}
+
+.light .login-header-control-active {
+  @apply border-gray-400 bg-gray-300;
+}
+
+.light .login-header-control-muted {
+  @apply text-gray-600;
+}
+
+.light .login-header-control:hover .login-header-control-muted,
+.light .login-header-control-active .login-header-control-muted {
+  @apply text-gray-800;
+}
+
+/* ========== SEGMENTED CONTROL (Login/Register switcher) ==========
+     Pattern: rail container + sliding solid active block.
+     claude.com aesthetic: monochrome, no accent fill.
+     Hover-anticipating: active state previews on hover without commit. */
+.auth-segmented-rail {
+  @apply flex rounded-xl bg-gray-750 p-1;
+}
+
+.auth-segmented-item {
+  @apply flex-1 rounded-lg py-2 text-sm font-medium text-gray-400 transition-all hover:text-gray-200;
+}
+
+.auth-segmented-item-active {
+  @apply flex-1 rounded-lg py-2 text-sm font-medium text-gray-050 transition-all hover:text-gray-050;
+  background-color: rgb(var(--color-gray-850));
+}
+
+.light .auth-segmented-rail {
+  @apply bg-gray-300;
+}
+
+.light .auth-segmented-item {
+  @apply text-gray-600 hover:text-gray-800;
+}
+
+.light .auth-segmented-item-active {
+  @apply text-gray-900 hover:text-gray-900;
+  background-color: rgb(var(--color-gray-100));
+}
