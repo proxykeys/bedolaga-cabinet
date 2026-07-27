@@ -37,19 +37,22 @@ export const DEFAULT_ENABLED_THEMES: EnabledThemes = {
   light: true,
 };
 
-// Default theme colors
+// Default theme colors — warm ivory palette (claude.com-aligned, synced
+// 1:1 with bedolaga-cabinet-v1 and the gray-* palette in globals.css).
+// Operator can still override via /branding/colors API; these defaults
+// ensure the app boots with the correct aesthetic before the API responds.
 export const DEFAULT_THEME_COLORS: ThemeColors = {
   accent: '#3b82f6',
 
-  darkBackground: '#0a0f1a',
-  darkSurface: '#0f172a',
-  darkText: '#f1f5f9',
-  darkTextSecondary: '#94a3b8',
+  darkBackground: '#141413',
+  darkSurface: '#1f1e1d',
+  darkText: '#faf9f6',
+  darkTextSecondary: '#5e5d5a',
 
-  lightBackground: '#F7E7CE',
-  lightSurface: '#FEF9F0',
-  lightText: '#1F1A12',
-  lightTextSecondary: '#7D6B48',
+  lightBackground: '#faf9f6',
+  lightSurface: '#e7e7df',
+  lightText: '#141413',
+  lightTextSecondary: '#262624',
 
   success: '#22c55e',
   warning: '#f59e0b',

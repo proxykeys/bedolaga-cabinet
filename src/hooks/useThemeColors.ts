@@ -9,34 +9,51 @@ function rgbToString(r: number, g: number, b: number): string {
   return `${r}, ${g}, ${b}`;
 }
 
-// Generate color palette from base color (returns RGB strings)
+/**
+ * Generate color palette from a base color (returns RGB strings).
+ *
+ * shade-500 is the operator's input hex **verbatim** (its real RGB), so that
+ * the color picked in the theme editor is exactly what renders in the UI.
+ * The remaining shades derive from the input's actual lightness (L₀) using
+ * offsets calibrated to the old fixed lightness map (500↔400 = +14, etc.),
+ * preserving the visual spread while anchoring on the operator's choice.
+ *
+ * Without this, an operator picking #DF614D (L=59%) would get shade-500
+ * forced to L=50% → #D83F27, i.e. the chosen color never appears anywhere.
+ */
 function generatePalette(baseHex: string): ColorPalette {
-  const { h, s } = hexToHsl(baseHex);
+  const { h, s, l: l0 } = hexToHsl(baseHex);
 
-  // Lightness values for each shade level (from light to dark)
-  const lightnessMap: Record<number, number> = {
-    50: 97,
-    100: 94,
-    200: 86,
-    300: 76,
-    400: 64,
-    500: 50,
-    600: 42,
-    700: 34,
-    800: 26,
-    900: 18,
-    950: 10,
+  // Lightness offsets relative to L₀ (shade-500 = 0). Calibrated to the old
+  // fixed map so well-tuned palettes render byte-for-byte the same when L₀=50.
+  const lightnessOffsets: Record<number, number> = {
+    50: +47,
+    100: +44,
+    200: +36,
+    300: +26,
+    400: +14,
+    500: 0,
+    600: -8,
+    700: -16,
+    800: -24,
+    900: -32,
+    950: -40,
   };
 
   const palette: Partial<ColorPalette> = {};
 
   for (const shade of SHADE_LEVELS) {
-    const lightness = lightnessMap[shade];
+    const lightness = Math.min(95, Math.max(5, l0 + lightnessOffsets[shade]));
     // Adjust saturation slightly for very light/dark shades
     const adjustedS = shade <= 100 ? s * 0.7 : shade >= 900 ? s * 0.8 : s;
     const { r, g, b } = hslToRgb(h, adjustedS, lightness);
     palette[shade] = rgbToString(r, g, b);
   }
+
+  // shade-500 = operator's hex verbatim. Override the computed value so the
+  // exact chosen color reaches CSS variables (no lightness drift).
+  const baseRgb = hexToRgb(baseHex);
+  palette[500] = rgbToString(baseRgb.r, baseRgb.g, baseRgb.b);
 
   return palette as ColorPalette;
 }
@@ -238,6 +255,14 @@ export function applyThemeColors(themeColors: ThemeColors): void {
     root.style.setProperty(`--color-error-${shade}`, errorPalette[shade]);
   }
 
+  // Sync legacy "urgent"/"critical" tokens to the operator's palette so that
+  // components using --color-urgent-* / --color-critical-* stay consistent
+  // with the warning/error palettes instead of being frozen at #FFB800/#FF3B5C.
+  root.style.setProperty('--color-urgent-400', warningPalette[400]);
+  root.style.setProperty('--color-urgent-500', warningPalette[500]);
+  root.style.setProperty('--color-critical-400', errorPalette[400]);
+  root.style.setProperty('--color-critical-500', errorPalette[500]);
+
   // Readable text color on top of each status color (buttons, filled badges).
   // Hardcoded white breaks the moment an operator picks a light accent.
   root.style.setProperty('--color-on-accent', onColorFor(accentPalette[500]));
@@ -255,6 +280,30 @@ export function applyThemeColors(themeColors: ThemeColors): void {
   root.style.setProperty('--color-light-surface', colors.lightSurface);
   root.style.setProperty('--color-light-text', colors.lightText);
   root.style.setProperty('--color-light-text-secondary', colors.lightTextSecondary);
+
+  // Persist to localStorage for instant application on next page load
+  // (prevents FOUC — flash of default colors before the network fetch resolves)
+  try {
+    localStorage.setItem('cached-theme-colors', JSON.stringify(colors));
+  } catch {
+    // localStorage may be unavailable (private mode, quota)
+  }
+}
+
+/**
+ * Read cached theme colors from localStorage and apply them immediately.
+ * Called from main.tsx BEFORE React renders, so the very first paint uses
+ * the correct colors — no FOUC.
+ */
+export function applyCachedThemeColors(): void {
+  try {
+    const raw = localStorage.getItem('cached-theme-colors');
+    if (!raw) return;
+    const parsed = JSON.parse(raw) as ThemeColors;
+    applyThemeColors(parsed);
+  } catch {
+    // Corrupt JSON or parse error — skip, let the normal fetch handle it
+  }
 }
 
 export function useThemeColors() {
@@ -272,10 +321,13 @@ export function useThemeColors() {
     retry: 1,
   });
 
-  // Apply colors when loaded or changed
+  // Apply colors when loaded or changed.
+  // Skip when colors is undefined (loading) — main.tsx already applied
+  // cached colors from localStorage before React rendered.
   useEffect(() => {
-    const colorsToApply = colors || DEFAULT_THEME_COLORS;
-    applyThemeColors(colorsToApply);
+    if (colors) {
+      applyThemeColors(colors);
+    }
   }, [colors]);
 
   const invalidateColors = () => {

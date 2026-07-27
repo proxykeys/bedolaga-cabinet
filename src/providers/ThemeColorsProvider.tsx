@@ -22,9 +22,17 @@ export function ThemeColorsProvider({ children }: ThemeColorsProviderProps) {
   const { theme: platformTheme, capabilities } = usePlatform();
   const { isDark } = useTheme();
 
-  // Apply colors on mount and when they change
+  // Apply colors when the query resolves.
+  // IMPORTANT: do NOT fallback to DEFAULT when colors is undefined (loading).
+  // Otherwise on every page reload: main.tsx applies cached custom colors →
+  // React mounts → this effect fires with undefined → overwrites with DEFAULT
+  // → flash → network resolves → back to custom. By skipping the undefined
+  // state, the cached colors from main.tsx/applyCachedThemeColors() stay
+  // until the real data arrives.
   useEffect(() => {
-    applyThemeColors(colors || DEFAULT_THEME_COLORS);
+    if (colors) {
+      applyThemeColors(colors);
+    }
   }, [colors]);
 
   // Sync Telegram header and bottom bar colors with theme
