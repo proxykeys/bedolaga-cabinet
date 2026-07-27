@@ -4,8 +4,8 @@ import { rgbToHex } from '../utils/colorConversion';
 
 /** CSS variable names for chart theme colors */
 const CSS_VARS = {
-  earnings: '--color-success-400',
-  referrals: '--color-accent-400',
+  earnings: '--color-success-500',
+  referrals: '--color-accent-500',
   grid: '--color-dark-700',
   tooltipBg: '--color-dark-800',
   tooltipBorder: '--color-dark-600',

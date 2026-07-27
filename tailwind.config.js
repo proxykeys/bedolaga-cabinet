@@ -20,12 +20,19 @@ export default {
         dark: {
           50: withOpacity('--color-dark-50'),
           100: withOpacity('--color-dark-100'),
+          150: withOpacity('--color-dark-150'),
           200: withOpacity('--color-dark-200'),
+          250: withOpacity('--color-dark-250'),
           300: withOpacity('--color-dark-300'),
+          350: withOpacity('--color-dark-350'),
           400: withOpacity('--color-dark-400'),
+          450: withOpacity('--color-dark-450'),
           500: withOpacity('--color-dark-500'),
+          550: withOpacity('--color-dark-550'),
           600: withOpacity('--color-dark-600'),
+          650: withOpacity('--color-dark-650'),
           700: withOpacity('--color-dark-700'),
+          750: withOpacity('--color-dark-750'),
           800: withOpacity('--color-dark-800'),
           850: withOpacity('--color-dark-850'),
           900: withOpacity('--color-dark-900'),
@@ -44,6 +51,37 @@ export default {
           800: withOpacity('--color-champagne-800'),
           900: withOpacity('--color-champagne-900'),
           950: withOpacity('--color-champagne-950'),
+        },
+        // Neutral warm-gray palette — 1:1 match with claude.com surface
+        // hierarchy (bg-bg-100/200/300/400). NOT subject to the `.light`
+        // palette swap (stable across themes), so safe for backgrounds and
+        // borders where the dark/champagne swap would invert the hierarchy.
+        // Always pair `bg-gray-NNN` with the matching `dark:bg-gray-NNN`
+        // variant so both themes render at the correct step.
+        // String keys for values with leading zeros (050, 060, etc.) — those
+        // would otherwise be parsed as octal literals in strict mode.
+        gray: {
+          '050': withOpacity('--color-gray-050'),
+          100: withOpacity('--color-gray-100'),
+          150: withOpacity('--color-gray-150'),
+          200: withOpacity('--color-gray-200'),
+          250: withOpacity('--color-gray-250'),
+          300: withOpacity('--color-gray-300'),
+          350: withOpacity('--color-gray-350'),
+          400: withOpacity('--color-gray-400'),
+          450: withOpacity('--color-gray-450'),
+          500: withOpacity('--color-gray-500'),
+          550: withOpacity('--color-gray-550'),
+          600: withOpacity('--color-gray-600'),
+          650: withOpacity('--color-gray-650'),
+          700: withOpacity('--color-gray-700'),
+          750: withOpacity('--color-gray-750'),
+          800: withOpacity('--color-gray-800'),
+          850: withOpacity('--color-gray-850'),
+          900: withOpacity('--color-gray-900'),
+          950: withOpacity('--color-gray-950'),
+          960: withOpacity('--color-gray-960'),
+          1000: withOpacity('--color-gray-1000'),
         },
         // Readable text on top of status-colored fills (computed from the
         // operator palette in useThemeColors — black or white, whichever reads)
@@ -107,11 +145,14 @@ export default {
           900: withOpacity('--color-error-900'),
           950: withOpacity('--color-error-950'),
         },
-        // Subscription-status semantic tokens — see globals.css for rationale.
+        // Subscription-status semantic tokens — synced to warning/error palette
+        // in useThemeColors.ts so they follow operator's custom colors.
         urgent: {
           400: withOpacity('--color-urgent-400'),
+          500: withOpacity('--color-urgent-500'),
         },
         critical: {
+          400: withOpacity('--color-critical-400'),
           500: withOpacity('--color-critical-500'),
         },
       },
@@ -156,19 +197,15 @@ export default {
         '2xs': ['0.625rem', { lineHeight: '0.875rem' }],
       },
       boxShadow: {
-        glow: '0 0 20px rgba(var(--color-accent-500), 0.15)',
-        'glow-lg': '0 0 40px rgba(var(--color-accent-500), 0.2)',
         soft: '0 2px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2)',
         card: '0 4px 24px -4px rgba(0, 0, 0, 0.4)',
         // Linear design tokens
         'linear-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
         linear: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
         'linear-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        'linear-glow': '0 0 0 1px rgba(var(--color-accent-500), 0.3)',
       },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-subtle': 'linear-gradient(135deg, var(--tw-gradient-stops))',
+        // Gradient utilities removed per claude.com flat aesthetic
       },
       animation: {
         'fade-in': 'fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -179,24 +216,9 @@ export default {
         'slide-in-left': 'slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         'scale-in': 'scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         'scale-in-bounce': 'scaleInBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        float: 'float 3s ease-in-out infinite',
-        'glow-pulse': 'glowPulse 2s ease-in-out infinite',
-        spotlight: 'spotlight 2s ease-in-out infinite',
-        // Aceternity UI background animations
-        aurora: 'aurora 60s linear infinite',
-        'meteor-effect': 'meteor 5s linear infinite',
-        'move-vertical': 'moveVertical 30s ease infinite',
-        'move-in-circle': 'moveInCircle 20s reverse infinite',
-        'move-in-circle-slow': 'moveInCircle 40s linear infinite',
-        'move-horizontal': 'moveHorizontal 40s ease infinite',
-        'move-in-circle-fast': 'moveInCircle 20s ease infinite',
-        'spotlight-ace': 'spotlightAce 2s ease 0.75s 1 forwards',
-        // Dashboard traffic animations
-        'traffic-shimmer': 'trafficShimmer 2s ease-in-out infinite',
-        'unlimited-flow': 'unlimitedFlow 3s ease-in-out infinite',
-        'unlimited-pulse': 'unlimitedPulse 2s ease-in-out infinite',
-        'trial-glow': 'trialGlow 3s ease-in-out infinite',
+        // Decorative animations (aurora, meteor, float, glow-pulse, spotlight,
+        // pulse-slow, traffic-shimmer, unlimited-*, trial-glow, move-*,
+        // spotlight-ace) removed per claude.com flat aesthetic.
       },
       keyframes: {
         fadeIn: {
@@ -228,71 +250,10 @@ export default {
           '50%': { transform: 'scale(1.02)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-5px)' },
-        },
-        glowPulse: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(var(--color-accent-500), 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(var(--color-accent-500), 0.6)' },
-        },
-        spotlight: {
-          '0%, 100%': {
-            boxShadow:
-              '0 0 0 4px rgba(var(--color-accent-500), 0.4), 0 0 20px rgba(var(--color-accent-500), 0.3)',
-          },
-          '50%': {
-            boxShadow:
-              '0 0 0 8px rgba(var(--color-accent-500), 0.2), 0 0 40px rgba(var(--color-accent-500), 0.5)',
-          },
-        },
-        // Aceternity UI keyframes
-        aurora: {
-          from: { backgroundPosition: '50% 50%, 50% 50%' },
-          to: { backgroundPosition: '350% 50%, 350% 50%' },
-        },
-        meteor: {
-          '0%': { transform: 'rotate(215deg) translateX(0)', opacity: '1' },
-          '70%': { opacity: '1' },
-          '100%': { transform: 'rotate(215deg) translateX(-500px)', opacity: '0' },
-        },
-        moveVertical: {
-          '0%': { transform: 'translateY(-50%)' },
-          '50%': { transform: 'translateY(50%)' },
-          '100%': { transform: 'translateY(-50%)' },
-        },
-        moveInCircle: {
-          '0%': { transform: 'rotate(0deg)' },
-          '50%': { transform: 'rotate(180deg)' },
-          '100%': { transform: 'rotate(360deg)' },
-        },
-        moveHorizontal: {
-          '0%': { transform: 'translateX(-50%) translateY(-10%)' },
-          '50%': { transform: 'translateX(50%) translateY(10%)' },
-          '100%': { transform: 'translateX(-50%) translateY(-10%)' },
-        },
-        spotlightAce: {
-          '0%': { opacity: '0', transform: 'translate(-72%, -62%) scale(0.5)' },
-          '100%': { opacity: '1', transform: 'translate(-50%, -40%) scale(1)' },
-        },
-        // Dashboard traffic keyframes
-        trafficShimmer: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(200%)' },
-        },
-        unlimitedFlow: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
-        },
-        unlimitedPulse: {
-          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-          '50%': { opacity: '0.5', transform: 'scale(0.7)' },
-        },
-        trialGlow: {
-          '0%, 100%': { boxShadow: '0 0 15px rgba(var(--color-accent-400), 0.06)' },
-          '50%': { boxShadow: '0 0 30px rgba(var(--color-accent-400), 0.12)' },
-        },
+        // Decorative keyframes (float, glowPulse, spotlight, aurora, meteor,
+        // moveVertical, moveInCircle, moveHorizontal, spotlightAce,
+        // trafficShimmer, unlimitedFlow, unlimitedPulse, trialGlow)
+        // removed per claude.com flat aesthetic.
       },
       transitionTimingFunction: {
         smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
