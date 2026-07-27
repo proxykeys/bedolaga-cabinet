@@ -18,7 +18,7 @@ import {
   requestFullscreen,
   isFullscreen,
 } from '@telegram-apps/sdk-react';
-import { clearStaleSessionIfNeeded } from './utils/token';
+import { clearStaleSessionIfNeeded, tokenStorage, tokenRefreshManager } from './utils/token';
 import { installEncodingSurrogateGuard } from './utils/installEncodingSurrogateGuard';
 import { getTelegramInitData } from './utils/telegramInitData';
 import { useAuthStore } from './store/auth';
@@ -28,7 +28,15 @@ import { initLogoPreload } from './api/branding';
 import { checkBackendOnStartup } from './api/health';
 import { getCachedFullscreenEnabled, isTelegramMobile } from './hooks/useTelegramSDK';
 import { applyTelegramLanguage } from './i18n';
+import { applyCachedThemeColors } from './hooks/useThemeColors';
 import './styles/globals.css';
+import './styles/claude-overrides.css';
+import './styles/auth.css';
+
+// Apply cached theme colors BEFORE React renders — prevents FOUC (flash of
+// default colors before the network fetch resolves on every page reload).
+// Reads from localStorage (written by applyThemeColors on every successful apply).
+applyCachedThemeColors();
 
 // Harden the global encoders against lone UTF-16 surrogates (truncated emoji in
 // backend names/remarks) BEFORE anything renders or fetches — otherwise such a
@@ -113,6 +121,52 @@ if (isTelegramEnv && !alreadyInitialized) {
 // Bootstrap auth after the Telegram SDK is initialised so CloudStorage-backed
 // refresh-token recovery can run inside initialize() (launch params + CloudStorage
 // are only available post-init()).
+//
+// DEV PREVIEW GUARD: On /dev/ui-preview, seed mock auth + patch tokenStorage
+// BEFORE initialize() runs. Without this, initialize() completes before the
+// preview's useEffect, calls clearSession() (deletes tokens), and the API
+// client redirects to /login. By patching at module level, initialize() sees
+// valid fake tokens + lastFailureWasTransport=true and keeps the session.
+if (import.meta.env.DEV && window.location.pathname === '/dev/ui-preview') {
+  // Seed fake tokens so tokenStorage.getAccessToken() returns them
+  const header = btoa(JSON.stringify({ alg: 'none', typ: 'JWT' }))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+  const payload = btoa(
+    JSON.stringify({ sub: 'preview', exp: Math.floor(Date.now() / 1000) + 365 * 86400 }),
+  )
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+  const fakeJwt = `${header}.${payload}.preview`;
+  tokenStorage.setTokens(fakeJwt, 'preview-fake-refresh-token');
+
+  // Prevent clearSession() from deleting our fake tokens
+  const originalClear = tokenStorage.clearTokens;
+  tokenStorage.clearTokens = () => {};
+
+  // Force lastFailureWasTransport so initialize() and API interceptor
+  // keep the session instead of calling safeRedirectToLogin()
+  Object.defineProperty(tokenRefreshManager, 'lastFailureWasTransport', {
+    get: () => true,
+    set: () => {},
+    configurable: true,
+  });
+
+  // Set mock auth state
+  useAuthStore.setState({
+    isAuthenticated: true,
+    isLoading: false,
+    user: useAuthStore.getState().user,
+  });
+
+  // Store cleanup function for the preview component to call on unmount
+  (window as unknown as Record<string, unknown>).__previewTokenCleanup = () => {
+    tokenStorage.clearTokens = originalClear;
+  };
+}
+
 void useAuthStore.getState().initialize();
 
 // In parallel with auth bootstrap, eagerly check backend liveness so a dead
