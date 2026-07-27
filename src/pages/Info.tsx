@@ -493,9 +493,9 @@ export default function Info() {
             dangerouslySetInnerHTML={{ __html: formatContent(rules.content) }}
           />
           {rules.updated_at && (
-<div className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
+            <div className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
               {t('info.updatedAt')}: {new Date(rules.updated_at).toLocaleDateString(uiLocale())}
-</div>            </p>
+            </div>
           )}
         </div>
       );
