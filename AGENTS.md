@@ -149,7 +149,9 @@ git branch -D backup-before-rebase  # если всё ок
 ```bash
 npm run dev       # dev-сервер (localhost:5173)
 npm run build     # production-сборка в dist/
-npm run lint      # ESLint
+npm run lint      # Biome lint
+npm run check     # Biome check (lint + format)
+npm run test      # vitest (unit tests)
 npm run preview   # предпросмотр production-сборки
 ```
 
