@@ -219,13 +219,12 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* Bell button */}
+      {/* Bell button — uses global .login-header-control from auth.css
+          for visual consistency with theme toggle / language switcher / logout. */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`relative rounded-xl border p-2 transition-all duration-200 ${
-          isOpen
-            ? 'border-gray-300 bg-gray-300 text-accent-500 dark:border-gray-700 dark:bg-gray-700'
-            : 'border-gray-200/50 bg-gray-250 text-dark-300 hover:bg-gray-300 hover:text-accent-400 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800'
+        className={`login-header-control relative rounded-xl border p-2 transition-all duration-200 ${
+          isOpen ? 'login-header-control-active' : ''
         }`}
         title={t('notifications.ticketNotifications', 'Ticket notifications')}
       >
@@ -240,11 +239,11 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
       {/* Dropdown */}
       {isOpen && (
         <div
-          className="fixed left-4 right-4 z-50 mt-0 w-auto animate-scale-in overflow-hidden rounded-2xl border border-gray-200/50 bg-gray-100/95 shadow-2xl shadow-black/30 backdrop-blur-xl dark:border-gray-800/50 dark:bg-gray-900/95 sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96"
+          className="fixed left-4 right-4 z-50 mt-0 w-auto animate-scale-in overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-900 sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96"
           style={isMobileFullscreen ? { top: dropdownTop } : undefined}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-200/50 bg-gray-250 px-4 py-3 dark:border-gray-800/50 dark:bg-gray-850">
+          <div className="flex items-center justify-between border-b border-gray-200 bg-gray-250 px-4 py-3 dark:border-gray-800 dark:bg-gray-850">
             <h3 className="text-sm font-semibold text-dark-100">
               {t('notifications.ticketNotifications', 'Ticket Notifications')}
             </h3>
@@ -271,7 +270,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
                 <button
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
-                  className={`w-full border-b border-gray-200/50 px-4 py-3 text-left transition-all duration-200 last:border-b-0 hover:bg-gray-300 dark:border-gray-800/50 dark:hover:bg-gray-800 ${
+                  className={`w-full border-b border-gray-200 px-4 py-3 text-left transition-all duration-200 last:border-b-0 hover:bg-gray-300 dark:border-gray-800 dark:hover:bg-gray-800 ${
                     !notification.is_read ? 'bg-gray-250 dark:bg-gray-850' : ''
                   }`}
                 >
@@ -311,7 +310,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
 
           {/* Footer */}
           {notificationsData?.items && notificationsData.items.length > 0 && (
-            <div className="border-t border-gray-200/50 bg-gray-250 px-4 py-3 dark:border-gray-800/50 dark:bg-gray-850">
+            <div className="border-t border-gray-200 bg-gray-250 px-4 py-3 dark:border-gray-800 dark:bg-gray-850">
               <button
                 onClick={() => {
                   setIsOpen(false);

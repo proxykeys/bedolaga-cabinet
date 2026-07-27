@@ -31,6 +31,8 @@ import { infoApi } from '../api/info';
 import type { LegalConsentConfig } from '../types';
 import { safeLocal, safeSession } from '../utils/safeStorage';
 import ThemeTogglePill from '../components/ThemeTogglePill';
+import { getUiLogoSrc } from '../utils/brandLogo';
+import { useTheme } from '../hooks/useTheme';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -167,8 +169,11 @@ export default function Login() {
   };
 
   const appName = branding ? branding.name : import.meta.env.VITE_APP_NAME || 'VPN';
-  const appLogo = branding?.logo_letter || import.meta.env.VITE_APP_LOGO || 'V';
-  const logoUrl = branding ? brandingApi.getLogoUrl(branding) : null;
+  const { isDark } = useTheme();
+  // Static theme-aware logo (v1 pattern) — no branding API dependency, renders
+  // on first paint. Operator's custom logo from branding API is intentionally
+  // ignored on the login screen to preserve ProxyKeys identity.
+  const logoUrl = getUiLogoSrc(isDark);
 
   // Set document title
   useEffect(() => {
@@ -358,32 +363,19 @@ export default function Login() {
       </div>
 
       <div className="relative w-full max-w-md space-y-5">
-        {/* Logo & branding — minimal treatment, no card container (claude.com aesthetic) */}
+        {/* Logo & branding — minimal treatment, no card container (claude.com aesthetic).
+            Logo is theme-aware (dark/light PNG variants, v1 pattern). */}
         <div className="text-center">
           <div className="mx-auto mb-3 flex h-12 items-center justify-center overflow-hidden">
-            {/* Letter fallback */}
-            <span
-              className={`text-2xl font-bold text-gray-900 transition-opacity duration-200 dark:text-gray-050 ${
-                branding?.has_custom_logo && logoLoaded ? 'opacity-0' : 'opacity-100'
+            <img
+              src={logoUrl}
+              alt={appName || 'Logo'}
+              className={`h-10 w-auto max-w-full object-contain transition-opacity duration-200 ${
+                logoLoaded ? 'opacity-100' : 'opacity-0'
               }`}
-            >
-              {appLogo}
-            </span>
-            {/* Logo image */}
-            {branding?.has_custom_logo && logoUrl && (
-              <img
-                src={logoUrl}
-                alt={appName || 'Logo'}
-                className={`absolute h-10 w-auto max-w-full object-contain transition-opacity duration-200 ${
-                  logoLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-                onLoad={() => setLogoLoaded(true)}
-              />
-            )}
+              onLoad={() => setLogoLoaded(true)}
+            />
           </div>
-          {appName && (
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-050">{appName}</h1>
-          )}
 
           {/* Referral Banner — neutral, claude.com-aligned */}
           {referralCode && isEmailAuthEnabled && (
