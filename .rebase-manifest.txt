@@ -1,0 +1,140 @@
+ce182464 docs: INCY one-tap import (cabinet encoder + bot injection)
+de53d50a feat(custom): {{INCY_CRYPT1_LINK}} client-side resolution (one-tap INCY import)
+60fa6e28 docs: {{USERNAME}} fallback fix for connection add-sub button
+3843afcd fix: null-safety in add-subscription {{USERNAME}} fallback
+7c44e631 chore(patch): keep add-subscription button when {{USERNAME}} unresolvable
+b7ce702a docs: V2rayTun routing profile + connection deep-link buttons
+bad1a58b chore(patch): connection external deep-link buttons (BlockButtons)
+1356a106 docs: sub page full cycles + routing profile
+4f5b8b15 docs: sub page — Incy icon mono wordmark
+8ef35506 docs: Sub page clients — ProxyKeys-набор приложений (panel DB)
+87c9a196 docs: Switch OFF = textGhost главной (d638ca0e)
+d638ca0e chore(branding): Switch OFF-трек = textGhost автопродления (bg-white/[0.08] dark, bg-black/[0.06])
+e0fe2713 docs: Switch OFF gray-500 (efae677d)
+efae677d chore(branding): Switch OFF-трек темнее — gray-500 вместо gray-400
+8da9a5af docs: Switch = autopay style (0733d0d9)
+0733d0d9 chore(branding): Switch — стиль toggle автопродления (28×52, плоский бегунок 22px, gray-400 OFF)
+d93b676d docs: «Оформить» вместо «Купить» — таблица фич + патчи бота (0ad10dfe)
+0ad10dfe chore(branding): «Купить» → «Оформить» — покупка списывается с баланса
+c8b8758c docs: OIDC consent retry via fresh id_token (8bb26687)
+8bb26687 chore(patch): OIDC consent retry via fresh id_token (replay-protected backend)
+73a17ec7 docs: legal consent gate — восстановление UI + 428-handling (f9e5b3b9)
+f9e5b3b9 chore(patch): restore legal consent gate UI + 428 handling for OIDC/MiniApp
+6b718e52 docs: service rules — новая редакция, формат и versioning
+fc1f690b docs: privacy — трансграничная передача (раздел 5)
+77823e41 docs: возвраты — раздел 10 оферты, механика устройств в разделе 5, рекуррентные 6 -> отсылка
+6bf4807c docs: support email в контактах privacy и recurrent
+f4ceafc9 docs: юр-доки 2026-08-27 — раздел 14 реквизиты в оферте, оператор ПДн в privacy
+d527b8fd docs: AGENTS.md — CABINET_BRANDING_NAME='' намеренно, raw-семантика name
+adc03187 chore(branding): пустое имя из API не подменяется фолбэком — надпись возле лого скрыта, title из фолбэка
+3742aea2 docs: AGENTS.md — page title ProxyKeys
+a2424857 chore(branding): page title ProxyKeys вместо VPN (index.html env-substitution + фолбэки)
+d5586f08 docs: AGENTS.md — юр-документы без VPN-формулировок (2026-08-26)
+eaa55586 docs: AGENTS.md — code bg darker 5a02bbb8
+5a02bbb8 feat(custom): codeBg темнее фона карточки (gray-950) — inset-эффект строки подписки
+b255fbc6 docs: AGENTS.md — countdown self-start 6f7b9857
+6f7b9857 feat(custom): self-start карточки «Осталось» — высота не тянется при раскрытии «Автопродление»
+387a59df docs: AGENTS.md — reissue card hint 96a2cbdd
+96a2cbdd feat(custom): hint-строка в карточке «Перевыпустить подписку» — высота как у «Лимит количества устройств»
+89edf54b docs: AGENTS.md — CHANGE_DEVICES_BUTTON финальный текст
+0dcf01f2 docs: AGENTS.md — сокращён текст CHANGE_DEVICES_BUTTON
+3dbbc712 docs: AGENTS.md — bot button rename (AUTOPAY_BUTTON/CHANGE_DEVICES_BUTTON)
+5e569351 docs: AGENTS.md — 51bade44 (device manager UX: дельта, цена, невозврат)
+51bade44 feat(custom): device manager — индикатор дельты (+N/−N), количество в цене, пометка о невозврате при уменьшении
+c2b25337 docs: AGENTS.md — ed4094a8 (комбинированный чек-бокс на форме покупки)
+ed4094a8 feat(custom): единый комбинированный чек-бокс «оферта И рекуррентные платежи» на форме покупки
+180e1f8a docs: AGENTS.md — fc48f050 (recurrent-consent на форме покупки, объединённая карточка автопродления)
+fc48f050 feat(custom): recurrent-consent на форме покупки + объединение карточки автопродления с панелью согласия
+adbc621e docs: AGENTS.md — точки акцепта (оферта при оплате f9395e9d, автопродление 5b1c882c, бот custom.patch)
+5b1c882c feat(custom): панель согласия при включении автопродления (чек-бокс + ссылка /recurrent-payments)
+f9395e9d feat(custom): чек-бокс акцепта оферты в точках оплаты (пополнение + покупка подписки)
+0feedeb2 docs: AGENTS.md — «Назад» из промокода ведёт в «Баланс» (bot custom.patch)
+380919e8 docs: AGENTS.md — промокод в боте перенесён в «Баланс» (bot custom.patch)
+4ebf1c32 docs: AGENTS.md — фикс обрезки builtin-табов на /info (9c23b8d5)
+9c23b8d5 chore(patch): Info — не обрезать названия builtin-табов (truncate только для кастомных страниц)
+3d1e8db9 docs: AGENTS.md — таб «Рекуррентные платежи» на /info (a7a79bd0)
+a7a79bd0 chore(patch): Info — таб «Рекуррентные платежи» (visibility.recurrent + display-mode гейт)
+8fee84ba docs: AGENTS.md — контент-деплой юр-страницы /privacy (БД бота)
+9eb1566e docs: AGENTS.md — контент-деплои юр-страниц /recurrent-payments и /offer (БД бота)
+10415b4d feat(ui-preview): уточнить snapshots StatsGrid (buy = empty-state/триал)
+24df9162 chore(patch): в активном триале кнопка «Купить подписку» — в сетке StatsGrid (нижний PurchaseCTAButton скрыт)
+d3fb4479 feat(ui-preview): snapshots StatsGrid showBuyCta (empty-state vs подписка)
+957df001 chore(patch): кнопка покупки в StatsGrid только в empty-state (showBuyCta) — не показывать при активной подписке
+e58bb283 feat(ui-preview): snapshot StatsGrid showReferrals=false
+fab94c83 chore(patch): кнопка «Купить подписку» на месте карточки рефералов в StatsGrid (высота = балансу)
+ea056983 feat(ui-preview): блок BuySubscriptionCard
+521ae0e2 chore(patch): единый карточный стиль кнопки «Купить подписку» (BuySubscriptionCard)
+22dc86c1 chore(patch): карточка «Мои устройства» → «Подключенные устройства»
+ce2ad4d8 chore(patch): убрать мёртвую ссылку «← Назад» в шапке формы покупки
+1cfd4f4d chore(patch): CTA половинной ширины по центру — покупка, триал, «Осталось»; убрать trial-подсказку «Больше трафика и устройств»
+ef57b3fd feat(custom): скрыть карточку рефералов на главной (showReferrals=false, referral-query отключён)
+b9bd418d chore(patch): десктоп-хедер с 928px, единые компактные отступы навигации и контента
+cf31afc0 docs: AVAILABLE_LANGUAGES=ru — один язык, переключатель скрывается сам
+8b7606cd docs: AGENTS.md — прод кабинета = custom-ui, процедура деплоя, инцидент 2026-08-22
+83d1b9b3 fix(build): закоммитить брендовые логотипы src/assets/brand
+44e46528 fix(custom): восстановить device selector и single-period UI на TariffPurchaseForm после e47838b6
+754bc658 docs: AGENTS.md — обновление серверной процедуры деплоя кабинета (Docker build)
+e47838b6 fix(rebase): restore upstream TariffPurchaseForm with Lava support
+b8d052e0 feat(custom): keep Connect Device button clickable at device limit
+294b8857 fix(custom): bump card titles to text-base for consistent 16px
+f3359dd9 fix(custom): standardize font sizes across subscription page
+fe5b4cfc fix(ui-preview): align subscription URL to bottom in 2-col mode
+1e590407 fix(custom): remove extra card wrapper from Reissue button
+491ca2c1 feat(custom): device manager + reissue in 2 cols, UI cleanup
+98dd2798 fix(custom): DeviceManagerSheet — allow buying even when reduce unavailable
+17c9664b feat(custom): unify buy+reduce devices into single DeviceManagerSheet
+aceb3f0e fix(ui-preview): items-start on device sheets grid
+dbc7ad21 fix(ui-preview): always 2 cols for buy/reduce devices on lg+
+941bd1d8 feat(ui-preview): 2-column subscription layout on lg+ for space efficiency
+007c589e fix(custom): hide PurchaseCTAButton on empty-state (no duplicate CTA)
+8c197960 docs: правило синхронизации документации и патчей
+ef768917 docs: AGENTS.md — все custom features + backend/server/business-model
+9f43ce03 chore(patch): убрать пункт «Подписки» из навигации + /subscriptions → /
+9eddd9b6 feat(custom): сделать страницу подписки главной, перенести баланс/рефералы/триал
+7cd7c87b feat(custom): бейдж trial на странице подписки — accent → warning
+87d5592b feat(custom): бейдж «Пробный период» — accent → warning
+8c63f303 feat(custom): убрать блок «Пробный период» со страницы подписки
+2b2a17f4 feat(custom): убрать описание trialInfo со страницы подписки
+e180996e feat(custom): trial device selector + «Купить подписку» button
+5295fd67 feat(custom): remove traffic/servers/unlimited UI — безлимитная модель
+2abc9121 fix(ui): убрать описание автопродления на странице покупки
+41abdd21 fix(ui): убрать описание при выключенном autopay на странице покупки
+d4e8bb28 fix(ui): фон тумблера autopay на странице покупки
+c3455746 fix(ui): тумблер autopay на странице покупки + единый текст описания
+8be7c622 fix(ui): поломка переключателя autopay на маленьких экранах
+1dabab0f fix(ui): чистка блока autopay на странице подписки
+6e8cc837 feat(custom): инфо-блок стоимости автопродления на странице подписки
+5c3b2f84 feat(custom): запрет ручного продления активных подписок + autopay toggle
+18b1554e feat(custom): выбор количества устройств при покупке тарифа ProxyKeys
+bac6be69 fix(ui): connection icons invisible on light theme
+7f6da742 chore(branding): match card background to support page <Card> style
+5ff793b5 fix(ui): remove hover shadow from quick amount buttons
+b1164842 fix(ui): remove glow shadow from TopUp quick amount buttons
+f1dce2c2 fix(ui): make TopUp button high-contrast monochrome
+73c056d7 chore(branding): make TopUp button monochrome, remove Sparkles icon
+2ce149b2 chore(branding): strip icon container padding from all user-facing icons
+45ba40ea fix(ui): remove container padding from TopUpAmount method icon
+de8d0383 fix(ui): fill TopUpAmount method icon to container size
+22c58181 chore(branding): neutralize input focus colors from accent to dark-400
+acad5c18 fix(ui): prevent layout shift on TopUpAmount input focus
+88932970 chore(branding): unify Telegram Stars button to accent style
+c83db765 chore(branding): strip gradient/border icon containers, fix subscription badge
+15b9d1d6 chore(branding): replace colored Telegram provider icon with phosphor
+4f276414 feat(ui-preview): replace broken heroicons with Lucide paths
+4622d210 chore(branding): strip icon container backgrounds, fit icons to container
+e004e38b chore(branding): hide mobile bottom nav, reduce main bottom padding
+7882bb1f chore(branding): unify desktop/mobile header height, logo size, padding
+8ee4ac08 chore(branding): sync ticket dropdown header bg with login-header-control
+52218436 chore(branding): unify nav menu with right-side header controls
+2dbb73a3 chore(branding): match v1 theme slider border + notification dropdown bg
+ac300ee2 feat(custom): monochrome CTA buttons + solid flat headers
+845bf187 feat(custom): remove onboarding tutorial entirely
+1207c94c feat(custom): v1 header buttons + static PNG logos
+58860d62 docs: update AGENTS.md — ESLint/Prettier → Biome + vitest
+ca40fe49 fix(rebase): repair Info.tsx JSX structure after conflict resolution
+dce07527 chore(patch): force telegram deep-link auth fallback + project docs
+70d678a1 feat(custom): Login v1 port — claude.com aesthetic
+9867bb98 chore(branding): warm ivory gray-* + dark-* palette sync (v1)
+a4fd3ae7 chore(branding): claude.com flat palette — colors, badges, icons
+6558636d feat(ui-preview): add /dev/ui-preview page with all component states
+070e61fb docs(spec): claude.com design restyle spec

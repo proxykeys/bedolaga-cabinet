@@ -24,23 +24,23 @@ export type StatusBadge = { labelKey: string; color: string; bgColor: string };
 export const withdrawalStatusBadgeConfig: Record<string, StatusBadge> = {
   pending: {
     labelKey: 'admin.withdrawals.status.pending',
-    color: 'text-warning-400',
-    bgColor: 'bg-warning-500/20',
+    color: 'text-on-warning',
+    bgColor: 'bg-warning-500',
   },
   approved: {
     labelKey: 'admin.withdrawals.status.approved',
-    color: 'text-accent-400',
-    bgColor: 'bg-accent-500/20',
+    color: 'text-on-accent',
+    bgColor: 'bg-accent-500',
   },
   rejected: {
     labelKey: 'admin.withdrawals.status.rejected',
-    color: 'text-error-400',
-    bgColor: 'bg-error-500/20',
+    color: 'text-on-error',
+    bgColor: 'bg-error-500',
   },
   completed: {
     labelKey: 'admin.withdrawals.status.completed',
-    color: 'text-success-400',
-    bgColor: 'bg-success-500/20',
+    color: 'text-on-success',
+    bgColor: 'bg-success-500',
   },
   cancelled: {
     labelKey: 'admin.withdrawals.status.cancelled',
@@ -52,33 +52,58 @@ export const withdrawalStatusBadgeConfig: Record<string, StatusBadge> = {
 const unknownBadge: StatusBadge = {
   labelKey: 'admin.withdrawals.status.unknown',
   color: 'text-dark-400',
-  bgColor: 'bg-dark-600',
+  bgColor: 'bg-gray-350 dark:bg-gray-650',
 };
 
 export function getWithdrawalStatusBadge(status: string): StatusBadge {
   return withdrawalStatusBadgeConfig[status] || unknownBadge;
 }
 
-export function getRiskColor(score: number): { text: string; bg: string; bar: string } {
+export function getRiskColor(score: number): {
+  text: string;
+  bg: string;
+  bar: string;
+  on: string;
+} {
   if (score < 30)
-    return { text: 'text-success-400', bg: 'bg-success-500/20', bar: 'bg-success-500' };
+    return {
+      text: 'text-success-500',
+      bg: 'bg-success-500',
+      bar: 'bg-success-500',
+      on: 'text-on-success',
+    };
   if (score < 50)
-    return { text: 'text-warning-400', bg: 'bg-warning-500/20', bar: 'bg-warning-500' };
+    return {
+      text: 'text-warning-500',
+      bg: 'bg-warning-500',
+      bar: 'bg-warning-500',
+      on: 'text-on-warning',
+    };
   if (score < 70)
-    return { text: 'text-warning-400', bg: 'bg-warning-500/20', bar: 'bg-warning-500' };
-  return { text: 'text-error-400', bg: 'bg-error-500/20', bar: 'bg-error-500' };
+    return {
+      text: 'text-warning-500',
+      bg: 'bg-warning-500',
+      bar: 'bg-warning-500',
+      on: 'text-on-warning',
+    };
+  return {
+    text: 'text-error-500',
+    bg: 'bg-error-500',
+    bar: 'bg-error-500',
+    on: 'text-on-error',
+  };
 }
 
 export function getRiskLevelColor(level: string): { text: string; bg: string } {
   switch (level) {
     case 'low':
-      return { text: 'text-success-400', bg: 'bg-success-500/20' };
+      return { text: 'text-on-success', bg: 'bg-success-500' };
     case 'medium':
-      return { text: 'text-warning-400', bg: 'bg-warning-500/20' };
+      return { text: 'text-on-warning', bg: 'bg-warning-500' };
     case 'high':
-      return { text: 'text-warning-400', bg: 'bg-warning-500/20' };
+      return { text: 'text-on-warning', bg: 'bg-warning-500' };
     case 'critical':
-      return { text: 'text-error-400', bg: 'bg-error-500/20' };
+      return { text: 'text-on-error', bg: 'bg-error-500' };
     default:
       return { text: 'text-dark-400', bg: 'bg-dark-500/20' };
   }

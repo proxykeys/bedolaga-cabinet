@@ -123,7 +123,7 @@ export function CommandPalette({
               {/* Backdrop */}
               <DialogPrimitive.Overlay asChild>
                 <motion.div
-                  className="fixed inset-0 z-50 bg-dark-950/60 backdrop-blur-sm"
+                  className="fixed inset-0 z-50 bg-gray-1000/60 backdrop-blur-sm"
                   variants={backdrop}
                   initial="initial"
                   animate="animate"
@@ -137,7 +137,7 @@ export function CommandPalette({
                 <motion.div
                   className={cn(
                     'fixed left-1/2 top-[15%] z-50 w-full max-w-lg -translate-x-1/2',
-                    'overflow-hidden rounded-linear-lg border border-dark-700/50 bg-dark-900/95 backdrop-blur-linear',
+                    'overflow-hidden rounded-linear-lg border border-gray-200/50 bg-gray-100/95 backdrop-blur-linear dark:border-gray-800/50 dark:bg-gray-900/95',
                     'shadow-2xl',
                     'focus:outline-none',
                   )}
@@ -164,7 +164,7 @@ export function CommandPalette({
                             value={item.label}
                             onSelect={() => runCommand(() => navigate(item.path))}
                           >
-                            <item.icon className="mr-2 h-4 w-4 text-dark-400" />
+                            <item.icon className="mr-2 h-4 w-4 text-dark-300" />
                             <span>{item.label}</span>
                           </CommandItem>
                         ))}
@@ -178,7 +178,7 @@ export function CommandPalette({
                             value={item.label}
                             onSelect={() => runCommand(item.action)}
                           >
-                            <item.icon className="mr-2 h-4 w-4 text-dark-400" />
+                            <item.icon className="mr-2 h-4 w-4 text-dark-300" />
                             <span>{item.label}</span>
                           </CommandItem>
                         ))}
@@ -186,21 +186,21 @@ export function CommandPalette({
                     </CommandList>
 
                     {/* Footer with keyboard hints */}
-                    <div className="flex items-center justify-between border-t border-dark-700/50 px-3 py-2 text-xs text-dark-500">
+                    <div className="flex items-center justify-between border-t border-gray-200/50 px-3 py-2 text-xs text-dark-300 dark:border-gray-800/50">
                       <div className="flex items-center gap-2">
-                        <kbd className="rounded bg-dark-800 px-1.5 py-0.5 font-mono text-dark-400">
+                        <kbd className="rounded bg-gray-250 px-1.5 py-0.5 font-mono text-dark-300 dark:bg-gray-850">
                           ↑↓
                         </kbd>
                         <span>navigate</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <kbd className="rounded bg-dark-800 px-1.5 py-0.5 font-mono text-dark-400">
+                        <kbd className="rounded bg-gray-250 px-1.5 py-0.5 font-mono text-dark-300 dark:bg-gray-850">
                           ↵
                         </kbd>
                         <span>select</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <kbd className="rounded bg-dark-800 px-1.5 py-0.5 font-mono text-dark-400">
+                        <kbd className="rounded bg-gray-250 px-1.5 py-0.5 font-mono text-dark-300 dark:bg-gray-850">
                           esc
                         </kbd>
                         <span>close</span>

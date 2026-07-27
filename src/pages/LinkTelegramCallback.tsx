@@ -91,7 +91,7 @@ export default function LinkTelegramCallback() {
         <h2 className="text-lg font-semibold text-dark-50">
           {t('profile.accounts.linkingTelegram')}
         </h2>
-        <p className="mt-2 text-sm text-dark-400">{t('common.loading')}</p>
+        <p className="mt-2 text-sm text-dark-300">{t('common.loading')}</p>
       </div>
     </div>
   );

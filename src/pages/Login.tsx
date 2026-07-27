@@ -30,9 +30,10 @@ import LegalConsent from '../components/LegalConsent';
 import { infoApi } from '../api/info';
 import type { LegalConsentConfig } from '../types';
 import { safeLocal, safeSession } from '../utils/safeStorage';
+import ThemeTogglePill from '../components/ThemeTogglePill';
 
 export default function Login() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -72,70 +73,8 @@ export default function Login() {
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
   const [forgotPasswordError, setForgotPasswordError] = useState('');
   const [showEmailForm, setShowEmailForm] = useState(true);
-
-  // Гейт согласия с офертой/политикой для НОВОГО пользователя. Конфиг публичный:
-  // нужен до авторизации, чтобы нарисовать чекбоксы ещё на экране входа.
-  const { data: legalConsent } = useQuery<LegalConsentConfig>({
-    queryKey: ['legal-consent-config', i18n.language],
-    queryFn: () => infoApi.getLegalConsentConfig(i18n.language),
-    staleTime: 5 * 60 * 1000,
-    retry: false,
-  });
-  const consentDocuments = useMemo(() => legalConsent?.documents ?? [], [legalConsent]);
-  const [acceptedDocuments, setAcceptedDocuments] = useState<Record<string, boolean>>({});
-  // Telegram-вход происходит сам собой, поэтому чекбоксы показываем только когда
-  // бэк ответил 428: пользователь новый и без согласия аккаунт не создастся.
-  // Замыкание помнит, какой именно вход повторить после простановки галочек.
-  const [pendingConsentRetry, setPendingConsentRetry] = useState<
-    ((accepted: string[]) => Promise<void>) | null
-  >(null);
-
-  useEffect(() => {
-    if (!legalConsent?.prechecked || consentDocuments.length === 0) return;
-    setAcceptedDocuments((prev) => {
-      const next = { ...prev };
-      for (const document of consentDocuments) {
-        if (next[document] === undefined) next[document] = true;
-      }
-      return next;
-    });
-  }, [legalConsent?.prechecked, consentDocuments]);
-
-  const acceptedDocumentKeys = useMemo(
-    () => consentDocuments.filter((document) => acceptedDocuments[document]),
-    [consentDocuments, acceptedDocuments],
-  );
-  const allDocumentsAccepted =
-    consentDocuments.length === 0 || acceptedDocumentKeys.length === consentDocuments.length;
-
-  const toggleDocument = useCallback((document: string, value: boolean) => {
-    setAcceptedDocuments((prev) => ({ ...prev, [document]: value }));
-  }, []);
-
-  // 428 = бэк требует согласие. Запоминаем, что повторить, и рисуем чекбоксы.
-  const captureConsentRequirement = useCallback(
-    (err: unknown, retry: (accepted: string[]) => Promise<void>): boolean => {
-      const error = err as { response?: { status?: number; data?: { detail?: unknown } } };
-      if (error.response?.status !== 428) return false;
-
-      const detail = error.response?.data?.detail as
-        | { documents?: string[]; prechecked?: boolean }
-        | undefined;
-      if (detail?.documents?.length) {
-        const documents = detail.documents;
-        setAcceptedDocuments((prev) => {
-          const next = { ...prev };
-          for (const document of documents) {
-            if (next[document] === undefined) next[document] = Boolean(detail.prechecked);
-          }
-          return next;
-        });
-      }
-      setPendingConsentRetry(() => retry);
-      return true;
-    },
-    [],
-  );
+  // Hover-anticipating segmented control — preview active state without commit
+  const [hoveredAuthMode, setHoveredAuthMode] = useState<'login' | 'register' | null>(null);
 
   // Telegram safe area insets
   const { safeAreaInset, contentSafeAreaInset } = useTelegramSDK();
@@ -269,16 +208,6 @@ export default function Login() {
           if (import.meta.env.DEV)
             console.warn(`Telegram auth attempt ${attempt + 1} failed:`, status, detail);
 
-          // Не ошибка входа, а недостающее согласие: показываем чекбоксы.
-          const needsConsent = captureConsentRequirement(err, async (accepted) => {
-            await loginWithTelegram(initData, accepted);
-            navigate(getReturnUrl(), { replace: true });
-          });
-          if (needsConsent) {
-            setIsLoading(false);
-            return;
-          }
-
           if (status === 401 && attempt < MAX_RETRIES) {
             await new Promise((r) => setTimeout(r, 1500));
             continue;
@@ -293,7 +222,7 @@ export default function Login() {
     };
 
     tryTelegramAuth();
-  }, [isAuthInitializing, loginWithTelegram, navigate, t, getReturnUrl, captureConsentRequirement]);
+  }, [isAuthInitializing, loginWithTelegram, navigate, t, getReturnUrl]);
 
   const handleRetryTelegramAuth = () => {
     // Clear ALL cached auth state to prevent stale token/initData loops
@@ -346,7 +275,6 @@ export default function Login() {
           password,
           firstName || undefined,
           referralCode || undefined,
-          acceptedDocumentKeys,
         );
         // Show "check your email" screen
         setRegisteredEmail(result.email);
@@ -355,24 +283,6 @@ export default function Login() {
       const error = err as { response?: { status?: number } };
       const status = error.response?.status;
       const detail = getApiErrorMessage(err, '');
-
-      // Конфиг чекбоксов мог протухнуть (админ включил гейт между загрузкой страницы
-      // и отправкой формы) — показываем недостающие галочки вместо сырой ошибки.
-      const needsConsent = captureConsentRequirement(err, async (accepted) => {
-        const retried = await registerWithEmail(
-          email,
-          password,
-          firstName || undefined,
-          referralCode || undefined,
-          accepted,
-        );
-        setPendingConsentRetry(null);
-        setRegisteredEmail(retried.email);
-      });
-      if (needsConsent) {
-        setIsLoading(false);
-        return;
-      }
 
       if (status === 400 && detail.includes('already registered')) {
         setError(t('auth.emailAlreadyRegistered', 'This email is already registered'));
@@ -431,26 +341,31 @@ export default function Login() {
     >
       {/* Flat background — the previous two layered gradients (linear
           + accent radial halo) read as the airdrop / crypto aesthetic
-          PRODUCT.md explicitly anti-references. Body bg-dark-950 carries
+          PRODUCT.md explicitly anti-references. Body bg-gray-050 dark:bg-gray-950 carries
           the surface alone. */}
 
-      {/* Language switcher */}
+      {/* Language switcher + theme toggle */}
       <div
         className="fixed right-3 z-50"
         style={{
           top: safeTop > 0 ? `${safeTop + 12}px` : 'calc(12px + env(safe-area-inset-top, 0px))',
         }}
       >
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2">
+          <ThemeTogglePill />
+          <LanguageSwitcher />
+        </div>
       </div>
 
       <div className="relative w-full max-w-md space-y-5">
-        {/* Logo & branding */}
+        {/* Logo & branding — minimal treatment, no card container (claude.com aesthetic) */}
         <div className="text-center">
-          <div className="relative mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-dark-700/50 bg-dark-800/80 shadow-md">
+          <div className="mx-auto mb-3 flex h-12 items-center justify-center overflow-hidden">
             {/* Letter fallback */}
             <span
-              className={`absolute text-lg font-bold text-accent-400 transition-opacity duration-200 ${branding?.has_custom_logo && logoLoaded ? 'opacity-0' : 'opacity-100'}`}
+              className={`text-2xl font-bold text-gray-900 transition-opacity duration-200 dark:text-gray-050 ${
+                branding?.has_custom_logo && logoLoaded ? 'opacity-0' : 'opacity-100'
+              }`}
             >
               {appLogo}
             </span>
@@ -459,17 +374,21 @@ export default function Login() {
               <img
                 src={logoUrl}
                 alt={appName || 'Logo'}
-                className={`absolute h-full w-full object-contain transition-opacity duration-200 ${logoLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute h-10 w-auto max-w-full object-contain transition-opacity duration-200 ${
+                  logoLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
                 onLoad={() => setLogoLoaded(true)}
               />
             )}
           </div>
-          {appName && <h1 className="text-2xl font-bold text-dark-50">{appName}</h1>}
+          {appName && (
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-050">{appName}</h1>
+          )}
 
-          {/* Referral Banner */}
+          {/* Referral Banner — neutral, claude.com-aligned */}
           {referralCode && isEmailAuthEnabled && (
-            <div className="mt-3 rounded-xl border border-accent-500/30 bg-accent-500/10 p-2.5">
-              <div className="flex items-center justify-center gap-2 text-accent-400">
+            <div className="mt-3 rounded-xl border border-gray-200 bg-gray-250 p-2.5 dark:border-gray-800 dark:bg-gray-850">
+              <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
                 <UsersIcon className="h-4 w-4 flex-shrink-0" />
                 <span className="text-xs font-medium">{t('auth.referralInvite')}</span>
               </div>
@@ -477,68 +396,22 @@ export default function Login() {
           )}
         </div>
 
-        {/* Экран согласия: бэк ответил 428 на автоматический Telegram-вход */}
-        {pendingConsentRetry ? (
-          <div className="card">
-            <h2 className="mb-2 text-lg font-bold text-dark-50">
-              {t('auth.legalConsentTitle', 'Ещё один шаг')}
-            </h2>
-            <p className="mb-4 text-sm text-dark-400">
-              {t(
-                'auth.legalConsentSubtitle',
-                'Чтобы создать аккаунт, подтвердите, что ознакомились с документами.',
-              )}
-            </p>
-
-            <LegalConsent
-              documents={consentDocuments}
-              accepted={acceptedDocuments}
-              onChange={toggleDocument}
-              disabled={isLoading}
-            />
-
-            {error && (
-              <p className="mt-4 text-sm text-error-400" role="alert">
-                {error}
-              </p>
-            )}
-
-            <button
-              type="button"
-              className="btn-primary mt-5 w-full"
-              disabled={!allDocumentsAccepted || isLoading}
-              onClick={async () => {
-                setError('');
-                setIsLoading(true);
-                try {
-                  await pendingConsentRetry(acceptedDocumentKeys);
-                  setPendingConsentRetry(null);
-                } catch (err) {
-                  setError(getApiErrorMessage(err, t('common.error')));
-                } finally {
-                  setIsLoading(false);
-                }
-              }}
-            >
-              {isLoading
-                ? t('common.loading', 'Загрузка...')
-                : t('auth.legalConsentContinue', 'Продолжить')}
-            </button>
-          </div>
-        ) : /* Check Email Screen */
-        registeredEmail ? (
-          <div className="card text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-success-500/20">
+        {/* Check Email Screen */}
+        {registeredEmail ? (
+          <div className="card text-center dark:bg-gray-850">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-200 dark:bg-gray-950">
               <EmailIcon className="h-7 w-7 text-success-400" />
             </div>
-            <h2 className="mb-2 text-lg font-bold text-dark-50">
+            <h2 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-050">
               {t('auth.checkEmail', 'Check your email')}
             </h2>
-            <p className="mb-3 text-sm text-dark-400">
+            <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">
               {t('auth.verificationSent', 'We sent a verification link to:')}
             </p>
-            <p className="mb-4 text-sm font-medium text-accent-400">{registeredEmail}</p>
-            <p className="mb-5 text-xs text-dark-500">
+            <p className="mb-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+              {registeredEmail}
+            </p>
+            <p className="mb-5 text-xs text-gray-600 dark:text-gray-400">
               {t(
                 'auth.clickLinkToVerify',
                 'Click the link in the email to verify your account and log in.',
@@ -555,8 +428,8 @@ export default function Login() {
             </button>
           </div>
         ) : (
-          /* Main auth card */
-          <div className="card">
+          /* Main auth card — v1 nuance: gray-850 in dark (deeper than default .card gray-900) */
+          <div className="card dark:bg-gray-850">
             {error && (
               <div
                 role="alert"
@@ -570,8 +443,10 @@ export default function Login() {
             <div className="space-y-3">
               {isLoading && isTelegramWebApp ? (
                 <div className="py-6 text-center">
-                  <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
-                  <p className="text-sm text-dark-400">{t('auth.authenticating')}</p>
+                  <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-gray-500 border-t-transparent dark:border-gray-400" />
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {t('auth.authenticating')}
+                  </p>
                 </div>
               ) : isTelegramWebApp && error ? (
                 <div className="space-y-3 text-center">
@@ -582,7 +457,7 @@ export default function Login() {
                     <RefreshIcon className="h-4 w-4" />
                     {t('auth.tryAgain')}
                   </button>
-                  <p className="text-xs text-dark-500">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     {t(
                       'auth.telegramReopenHint',
                       'If the problem persists, close and reopen the app',
@@ -598,9 +473,9 @@ export default function Login() {
             {oauthProviders.length > 0 && (
               <>
                 <div className="my-4 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-dark-700" />
-                  <span className="text-xs text-dark-500">{t('auth.or', 'or')}</span>
-                  <div className="h-px flex-1 bg-dark-700" />
+                  <div className="auth-divider h-px flex-1" />
+                  <span className="text-xs text-gray-500">{t('auth.or', 'or')}</span>
+                  <div className="auth-divider h-px flex-1" />
                 </div>
                 <div className="flex items-stretch gap-2">
                   {oauthProviders.map((provider) => (
@@ -609,15 +484,15 @@ export default function Login() {
                       type="button"
                       onClick={() => handleOAuthLogin(provider.name)}
                       disabled={oauthLoading !== null}
-                      className="flex flex-1 flex-col items-center justify-center gap-1.5 rounded-xl border border-dark-700 bg-dark-800/80 py-2.5 transition-all hover:border-dark-600 hover:bg-dark-700 disabled:opacity-50"
+                      className="auth-secondary-surface flex flex-1 flex-col items-center justify-center gap-1.5 rounded-xl py-2.5 transition-all disabled:opacity-50"
                       title={provider.display_name}
                     >
                       {oauthLoading === provider.name ? (
-                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-dark-400 border-t-white" />
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-400 border-t-gray-050" />
                       ) : (
                         <OAuthProviderIcon provider={provider.name} className="h-5 w-5" />
                       )}
-                      <span className="text-[10px] leading-none text-dark-500">
+                      <span className="text-[10px] leading-none text-gray-500">
                         {provider.display_name}
                       </span>
                     </button>
@@ -630,19 +505,21 @@ export default function Login() {
             {isEmailAuthEnabled && (
               <>
                 <div className="my-4 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-dark-700" />
+                  <div className="auth-divider h-px flex-1" />
                   <button
                     type="button"
                     onClick={() => setShowEmailForm(!showEmailForm)}
-                    className="flex items-center gap-1.5 rounded-full border border-dark-700 bg-dark-800/60 px-3.5 py-1.5 text-xs font-medium text-dark-300 transition-all hover:border-dark-600 hover:bg-dark-700 hover:text-dark-200"
+                    className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
+                      showEmailForm ? 'auth-email-toggle-open' : 'auth-secondary-surface'
+                    }`}
                   >
-                    <EmailIcon className="h-3.5 w-3.5 text-dark-400" />
+                    <EmailIcon className="h-3.5 w-3.5" />
                     <span>{t('auth.loginWithEmail')}</span>
                     <ChevronDownIcon
-                      className={`h-3 w-3 text-dark-400 transition-transform duration-300 ${showEmailForm ? 'rotate-180' : ''}`}
+                      className={`h-3 w-3 transition-transform duration-300 ${showEmailForm ? 'rotate-180' : ''}`}
                     />
                   </button>
-                  <div className="h-px flex-1 bg-dark-700" />
+                  <div className="auth-divider h-px flex-1" />
                 </div>
 
                 {/* Collapsible email form */}
@@ -658,13 +535,13 @@ export default function Login() {
                         /* Forgot password screen - replaces login/register */
                         forgotPasswordSent ? (
                           <div className="space-y-4 text-center">
-                            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-success-500/20">
+                            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-200 dark:bg-gray-950">
                               <EmailIcon className="h-6 w-6 text-success-400" />
                             </div>
-                            <p className="text-sm font-medium text-dark-100">
+                            <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                               {t('auth.checkEmail', 'Check your email')}
                             </p>
-                            <p className="text-xs text-dark-400">
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
                               {t(
                                 'auth.passwordResetSent',
                                 'If an account exists with this email, we sent password reset instructions.',
@@ -673,14 +550,14 @@ export default function Login() {
                             <button
                               type="button"
                               onClick={closeForgotPasswordModal}
-                              className="text-sm text-accent-400 transition-colors hover:text-accent-300"
+                              className="text-sm text-gray-600 transition-colors hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                             >
                               {t('common.back', 'Back')}
                             </button>
                           </div>
                         ) : (
                           <div className="space-y-4">
-                            <p className="text-center text-sm text-dark-400">
+                            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
                               {t(
                                 'auth.forgotPasswordHint',
                                 'Enter your email and we will send you instructions to reset your password.',
@@ -723,7 +600,7 @@ export default function Login() {
                               <button
                                 type="button"
                                 onClick={closeForgotPasswordModal}
-                                className="text-sm text-dark-400 transition-colors hover:text-dark-200"
+                                className="text-sm text-gray-600 transition-colors hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                               >
                                 {t('common.back', 'Back')}
                               </button>
@@ -733,13 +610,15 @@ export default function Login() {
                       ) : (
                         /* Normal login / register */
                         <>
-                          <div className="flex rounded-lg bg-dark-800 p-1">
+                          <div className="auth-segmented-rail">
                             <button
                               type="button"
-                              className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${
-                                authMode === 'login'
-                                  ? 'bg-accent-500 text-on-accent'
-                                  : 'text-dark-400 hover:text-dark-200'
+                              onMouseEnter={() => setHoveredAuthMode('login')}
+                              onMouseLeave={() => setHoveredAuthMode(null)}
+                              className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
+                                (hoveredAuthMode ?? authMode) === 'login'
+                                  ? 'auth-segmented-item-active'
+                                  : 'auth-segmented-item'
                               }`}
                               onClick={() => setAuthMode('login')}
                             >
@@ -747,10 +626,12 @@ export default function Login() {
                             </button>
                             <button
                               type="button"
-                              className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${
-                                authMode === 'register'
-                                  ? 'bg-accent-500 text-on-accent'
-                                  : 'text-dark-400 hover:text-dark-200'
+                              onMouseEnter={() => setHoveredAuthMode('register')}
+                              onMouseLeave={() => setHoveredAuthMode(null)}
+                              className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
+                                (hoveredAuthMode ?? authMode) === 'register'
+                                  ? 'auth-segmented-item-active'
+                                  : 'auth-segmented-item'
                               }`}
                               onClick={() => setAuthMode('register')}
                             >
@@ -845,21 +726,9 @@ export default function Login() {
                               </div>
                             )}
 
-                            {authMode === 'register' && (
-                              <LegalConsent
-                                documents={consentDocuments}
-                                accepted={acceptedDocuments}
-                                onChange={toggleDocument}
-                                disabled={isLoading}
-                                className="pt-1"
-                              />
-                            )}
-
                             <button
                               type="submit"
-                              disabled={
-                                isLoading || (authMode === 'register' && !allDocumentsAccepted)
-                              }
+                              disabled={isLoading}
                               className="btn-primary w-full py-2.5"
                             >
                               {isLoading ? (
@@ -876,7 +745,7 @@ export default function Login() {
                           </form>
 
                           {authMode === 'register' && (
-                            <p className="text-center text-xs text-dark-500">
+                            <p className="text-center text-xs text-gray-600 dark:text-gray-400">
                               {t(
                                 'auth.verificationEmailNotice',
                                 'After registration, a verification email will be sent to your address',
@@ -889,7 +758,7 @@ export default function Login() {
                               <button
                                 type="button"
                                 onClick={() => setShowForgotPassword(true)}
-                                className="text-sm text-accent-400 transition-colors hover:text-accent-300"
+                                className="text-sm text-gray-600 transition-colors hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                               >
                                 {t('auth.forgotPassword', 'Forgot password?')}
                               </button>

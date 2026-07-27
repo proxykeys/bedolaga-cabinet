@@ -333,7 +333,7 @@ export function Sheet({
     >
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 bg-dark-950/60 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-gray-1000/60 backdrop-blur-sm transition-opacity duration-300 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
       />
@@ -341,7 +341,7 @@ export function Sheet({
       {/* Sheet */}
       <div
         ref={sheetRef}
-        className={`relative w-full max-w-lg overflow-hidden rounded-t-3xl bg-dark-900 shadow-2xl ${
+        className={`relative w-full max-w-lg overflow-hidden rounded-t-3xl bg-gray-100 shadow-2xl dark:bg-gray-900 ${
           isAnimating ? 'transition-transform duration-300 ease-out' : ''
         } ${isVisible ? 'translate-y-0' : 'translate-y-full'} ${className}`}
         style={{
@@ -359,13 +359,13 @@ export function Sheet({
             onTouchEnd={handleTouchEnd}
             onMouseDown={handleMouseDown}
           >
-            <div className="h-1 w-10 rounded-full bg-dark-600" />
+            <div className="h-1 w-10 rounded-full bg-gray-350 dark:bg-gray-650" />
           </div>
         )}
 
         {/* Title */}
         {title && (
-          <div className="border-b border-dark-700/50 px-6 pb-4">
+          <div className="border-b border-gray-200/50 px-6 pb-4 dark:border-gray-800/50">
             <h2 className="text-lg font-semibold text-dark-100">{title}</h2>
           </div>
         )}
@@ -388,5 +388,5 @@ export function Sheet({
 
 // Light theme styles applied via CSS
 // Add to globals.css:
-// .light .sheet-backdrop { @apply bg-dark-950/40; }
+// .light .sheet-backdrop { @apply bg-gray-1000/40; }
 // .light .sheet-container { @apply bg-champagne-100; }

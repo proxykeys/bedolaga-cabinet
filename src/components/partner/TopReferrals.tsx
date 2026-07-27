@@ -32,7 +32,7 @@ export function TopReferrals({ referrals }: TopReferralsProps) {
   if (referrals.length === 0) {
     return (
       <div className="bento-card py-6 text-center">
-        <div className="text-sm text-dark-400">{t('referral.partner.stats.noReferrals')}</div>
+        <div className="text-sm text-dark-300">{t('referral.partner.stats.noReferrals')}</div>
       </div>
     );
   }
@@ -55,11 +55,11 @@ export function TopReferrals({ referrals }: TopReferralsProps) {
                 </span>
                 <StatusBadge hasPaid={ref.has_paid} isActive={ref.is_active} />
               </div>
-              <div className="mt-0.5 text-xs text-dark-500">
+              <div className="mt-0.5 text-xs text-dark-300">
                 {new Date(ref.created_at).toLocaleDateString(i18n.language)}
               </div>
             </div>
-            <div className="text-sm font-semibold text-success-400">
+            <div className="text-sm font-semibold text-success-500">
               {formatWithCurrency(ref.total_earnings_kopeks / PARTNER_STATS.KOPEKS_DIVISOR)}
             </div>
           </div>

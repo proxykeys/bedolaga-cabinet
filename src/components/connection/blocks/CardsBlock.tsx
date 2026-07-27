@@ -30,8 +30,8 @@ export function CardsBlock({
             key={index}
             className={`rounded-2xl border p-4 sm:p-5 ${
               isLight
-                ? 'border-dark-700/60 bg-white/80 shadow-sm'
-                : 'border-dark-700/50 bg-dark-800/50'
+                ? 'border-gray-200 bg-white dark:border-gray-800'
+                : 'border-gray-200 bg-gray-250 dark:border-gray-800 dark:bg-gray-850'
             }`}
           >
             <div className="flex items-start gap-3 sm:gap-4">
@@ -43,7 +43,7 @@ export function CardsBlock({
               />
               <div className="min-w-0 flex-1">
                 <h3 className="font-semibold text-dark-100">{getLocalizedText(block.title)}</h3>
-                <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-dark-400">
+                <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-dark-300">
                   {getLocalizedText(block.description)}
                 </p>
                 {renderBlockButtons(block.buttons, 'light')}

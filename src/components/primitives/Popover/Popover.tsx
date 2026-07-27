@@ -30,7 +30,7 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
         sideOffset={sideOffset}
         className={cn(
           'z-50 w-72 overflow-hidden',
-          'rounded-linear-lg border border-dark-700/50 bg-dark-900/95 backdrop-blur-linear',
+          'rounded-linear-lg border border-gray-200/50 bg-gray-100/95 backdrop-blur-linear dark:border-gray-800/50 dark:bg-gray-900/95',
           'p-4 text-dark-100 shadow-linear-lg outline-none',
           className,
         )}
@@ -49,8 +49,8 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
             <PopoverPrimitive.Close
               className={cn(
                 'absolute right-2 top-2 rounded-linear p-1.5',
-                'text-dark-400 opacity-70 transition-all',
-                'hover:bg-dark-800/80 hover:opacity-100',
+                'text-dark-300 opacity-70 transition-all',
+                'hover:bg-gray-300/80 hover:opacity-100 dark:hover:bg-gray-800',
                 'focus:outline-none focus:ring-2 focus:ring-accent-500/50',
               )}
             >

@@ -22,7 +22,7 @@ export default function LegalFooter({ className = '' }: LegalFooterProps) {
 
   return (
     <footer
-      className={`flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-center text-[11px] leading-relaxed text-dark-500 ${className}`}
+      className={`flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-center text-xs leading-relaxed text-dark-300 ${className}`}
     >
       {LINKS.map((link, index) => (
         <Fragment key={link.href}>

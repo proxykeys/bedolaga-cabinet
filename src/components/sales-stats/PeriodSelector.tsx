@@ -40,7 +40,7 @@ export function PeriodSelector({ value, onChange }: PeriodSelectorProps) {
   const buttonClass = (active: boolean) =>
     `rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
       active
-        ? 'bg-accent-500/20 text-accent-400'
+        ? 'bg-accent-500 text-on-accent'
         : 'bg-dark-800/50 text-dark-400 hover:bg-dark-700/50 hover:text-dark-300'
     }`;
 

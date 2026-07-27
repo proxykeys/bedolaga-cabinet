@@ -108,33 +108,26 @@ export default function SuccessNotificationModal() {
   let title = data.title;
   const message = data.message;
   let icon = <CheckCircleIcon className="h-16 w-16" />;
-  let gradientClass = 'from-success-500 to-success-600';
 
   if (!title) {
     if (isBalanceTopup) {
       title = t('successNotification.balanceTopup.title', 'Balance topped up!');
       icon = <WalletIcon className="h-8 w-8" />;
-      gradientClass = 'from-success-500 to-success-600';
     } else if (data.type === 'subscription_activated') {
       title = t('successNotification.subscriptionActivated.title', 'Subscription activated!');
       icon = <RocketIcon className="h-8 w-8" />;
-      gradientClass = 'from-accent-500 to-purple-600';
     } else if (data.type === 'subscription_renewed') {
       title = t('successNotification.subscriptionRenewed.title', 'Subscription renewed!');
       icon = <RocketIcon className="h-8 w-8" />;
-      gradientClass = 'from-accent-500 to-purple-600';
     } else if (data.type === 'subscription_purchased') {
       title = t('successNotification.subscriptionPurchased.title', 'Subscription purchased!');
       icon = <RocketIcon className="h-8 w-8" />;
-      gradientClass = 'from-accent-500 to-purple-600';
     } else if (data.type === 'devices_purchased') {
       title = t('successNotification.devicesPurchased.title', 'Devices added!');
       icon = <DevicesIcon className="h-8 w-8" />;
-      gradientClass = 'from-blue-500 to-cyan-600';
     } else if (data.type === 'traffic_purchased') {
       title = t('successNotification.trafficPurchased.title', 'Traffic added!');
       icon = <TrafficIcon className="h-8 w-8" />;
-      gradientClass = 'from-success-500 to-success-600';
     }
   }
 
@@ -151,7 +144,7 @@ export default function SuccessNotificationModal() {
   const modalContent = (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-dark-950/80 backdrop-blur-sm" onClick={handleClose} />
+      <div className="absolute inset-0 bg-gray-1000/80 backdrop-blur-sm" onClick={handleClose} />
 
       {/* Modal */}
       <div
@@ -160,7 +153,7 @@ export default function SuccessNotificationModal() {
         aria-modal="true"
         aria-labelledby="success-modal-title"
         tabIndex={-1}
-        className="relative mx-4 w-full max-w-sm overflow-hidden rounded-3xl border border-dark-700/50 bg-dark-900 shadow-2xl"
+        className="relative mx-4 w-full max-w-sm overflow-hidden rounded-3xl border border-gray-200/50 bg-gray-100 shadow-2xl dark:border-gray-800/50 dark:bg-gray-900"
         style={{
           marginBottom: safeBottom ? `${safeBottom}px` : undefined,
         }}
@@ -170,15 +163,13 @@ export default function SuccessNotificationModal() {
         <button
           onClick={handleClose}
           aria-label={t('common.close')}
-          className="absolute right-3 top-3 z-10 rounded-xl p-2 text-dark-400 transition-colors hover:bg-dark-800 hover:text-dark-200"
+          className="absolute right-3 top-3 z-10 rounded-xl p-2 text-dark-300 transition-colors hover:bg-gray-300 hover:text-dark-200 dark:hover:bg-gray-800"
         >
           <CloseIcon />
         </button>
 
-        {/* Success header with animation */}
-        <div
-          className={`flex flex-col items-center bg-gradient-to-br ${gradientClass} px-6 pb-8 pt-10`}
-        >
+        {/* Success header — flat monochrome per claude.com aesthetic */}
+        <div className="flex flex-col items-center border-b border-gray-200 bg-gray-100 px-6 pb-8 pt-10 dark:border-gray-800 dark:bg-gray-900">
           {/* Use animate-pulse for celebration; bounce easing reads dated and
               the lift is the moment, not the bounce. */}
           <div className="mb-4 animate-pulse text-white">{icon}</div>
@@ -192,14 +183,14 @@ export default function SuccessNotificationModal() {
         <div className="space-y-4 p-6">
           {/* Amount */}
           {formattedAmount && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {isBalanceTopup
                   ? t('successNotification.amount', 'Amount')
                   : t('successNotification.price', 'Price')}
               </span>
               <span
-                className={`text-lg font-bold ${isDevicesPurchased || isTrafficPurchased ? 'text-dark-100' : 'text-success-400'}`}
+                className={`text-lg font-bold ${isDevicesPurchased || isTrafficPurchased ? 'text-dark-100' : 'text-success-500'}`}
               >
                 {isDevicesPurchased || isTrafficPurchased ? '' : '+'}
                 {formattedAmount}
@@ -209,8 +200,8 @@ export default function SuccessNotificationModal() {
 
           {/* Devices info (for devices purchase) */}
           {isDevicesPurchased && data.devicesAdded && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {t('successNotification.devicesAdded', 'Devices added')}
               </span>
               <span className="text-lg font-bold text-blue-400">+{data.devicesAdded}</span>
@@ -218,8 +209,8 @@ export default function SuccessNotificationModal() {
           )}
 
           {isDevicesPurchased && data.newDeviceLimit && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {t('successNotification.totalDevices', 'Total devices')}
               </span>
               <span className="font-semibold text-dark-100">{data.newDeviceLimit}</span>
@@ -228,17 +219,17 @@ export default function SuccessNotificationModal() {
 
           {/* Traffic info (for traffic purchase) */}
           {isTrafficPurchased && data.trafficGbAdded && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {t('successNotification.trafficAdded', 'Traffic added')}
               </span>
-              <span className="text-lg font-bold text-success-400">+{data.trafficGbAdded} GB</span>
+              <span className="text-lg font-bold text-success-500">+{data.trafficGbAdded} GB</span>
             </div>
           )}
 
           {isTrafficPurchased && data.newTrafficLimitGb && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {t('successNotification.totalTraffic', 'Total traffic')}
               </span>
               <span className="font-semibold text-dark-100">{data.newTrafficLimitGb} GB</span>
@@ -247,8 +238,8 @@ export default function SuccessNotificationModal() {
 
           {/* New balance (for top-up) */}
           {isBalanceTopup && formattedBalance && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {t('successNotification.newBalance', 'New balance')}
               </span>
               <span className="text-lg font-bold text-dark-100">{formattedBalance}</span>
@@ -257,8 +248,8 @@ export default function SuccessNotificationModal() {
 
           {/* Tariff name */}
           {data.tariffName && (
-            <div className="flex items-center justify-between gap-3 rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="shrink-0 text-dark-400">
+            <div className="flex items-center justify-between gap-3 rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="shrink-0 text-dark-300">
                 {t('successNotification.tariff', 'Tariff')}
               </span>
               <span className="min-w-0 truncate font-semibold text-dark-100">
@@ -269,8 +260,8 @@ export default function SuccessNotificationModal() {
 
           {/* Expiry date */}
           {formattedExpiry && (
-            <div className="flex items-center justify-between rounded-xl bg-dark-800/50 px-4 py-3">
-              <span className="text-dark-400">
+            <div className="flex items-center justify-between rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
+              <span className="text-dark-300">
                 {t('successNotification.validUntil', 'Valid until')}
               </span>
               <span className="font-semibold text-dark-100">{formattedExpiry}</span>
@@ -282,7 +273,7 @@ export default function SuccessNotificationModal() {
             {isSubscription && (
               <button
                 onClick={handleGoToSubscription}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 py-3.5 font-bold text-on-accent shadow-lg shadow-accent-500/25 transition-colors hover:bg-accent-400 active:bg-accent-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-050 py-3.5 font-bold text-dark-50 transition-colors hover:bg-gray-300 active:bg-gray-100 dark:bg-gray-900 dark:bg-gray-950 dark:hover:bg-gray-800"
               >
                 <RocketIcon className="h-8 w-8" />
                 <span>{t('successNotification.goToSubscription', 'Go to Subscription')}</span>
@@ -292,7 +283,7 @@ export default function SuccessNotificationModal() {
             {isBalanceTopup && (
               <button
                 onClick={handleGoToBalance}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-success-500 py-3.5 font-bold text-white shadow-lg shadow-success-500/25 transition-colors hover:bg-success-400 active:bg-success-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-050 py-3.5 font-bold text-dark-50 transition-colors hover:bg-gray-300 active:bg-gray-100 dark:bg-gray-900 dark:bg-gray-950 dark:hover:bg-gray-800"
               >
                 <WalletIcon className="h-8 w-8" />
                 <span>{t('successNotification.goToBalance', 'Go to Balance')}</span>
@@ -302,7 +293,7 @@ export default function SuccessNotificationModal() {
             {isDevicesPurchased && (
               <button
                 onClick={handleGoToSubscription}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 py-3.5 font-bold text-on-accent shadow-lg shadow-accent-500/25 transition-colors hover:bg-accent-400 active:bg-accent-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-050 py-3.5 font-bold text-dark-50 transition-colors hover:bg-gray-300 active:bg-gray-100 dark:bg-gray-900 dark:bg-gray-950 dark:hover:bg-gray-800"
               >
                 <DevicesIcon className="h-8 w-8" />
                 <span>{t('successNotification.goToSubscription', 'Go to Subscription')}</span>
@@ -312,7 +303,7 @@ export default function SuccessNotificationModal() {
             {isTrafficPurchased && (
               <button
                 onClick={handleGoToSubscription}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-success-500 py-3.5 font-bold text-white shadow-lg shadow-success-500/25 transition-colors hover:bg-success-400 active:bg-success-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-050 py-3.5 font-bold text-dark-50 transition-colors hover:bg-gray-300 active:bg-gray-100 dark:bg-gray-900 dark:bg-gray-950 dark:hover:bg-gray-800"
               >
                 <TrafficIcon className="h-8 w-8" />
                 <span>{t('successNotification.goToSubscription', 'Go to Subscription')}</span>
@@ -321,7 +312,7 @@ export default function SuccessNotificationModal() {
 
             <button
               onClick={handleClose}
-              className="w-full rounded-xl bg-dark-800 py-3 font-semibold text-dark-300 transition-colors hover:bg-dark-700 hover:text-dark-100"
+              className="w-full rounded-xl bg-gray-250 py-3 font-semibold text-dark-300 transition-colors hover:bg-gray-300 hover:text-dark-100 dark:bg-gray-850 dark:hover:bg-gray-800"
             >
               {t('common.close', 'Close')}
             </button>

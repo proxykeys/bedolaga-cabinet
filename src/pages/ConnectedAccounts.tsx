@@ -243,14 +243,14 @@ function TelegramLinkWidget() {
   if (scriptFailed) {
     return (
       <div className="flex max-w-[200px] flex-col items-center gap-1.5">
-        <p className="break-words text-center text-xs text-dark-400">
+        <p className="break-words text-center text-xs text-dark-300">
           {t('profile.accounts.telegramLinkUnavailable')}
         </p>
         <a
           href={`https://t.me/${botUsername}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="break-all text-sm text-accent-400 transition-colors hover:text-accent-300"
+          className="break-all text-sm text-accent-500 transition-colors hover:text-accent-300"
         >
           @{botUsername}
         </a>
@@ -657,7 +657,7 @@ export default function ConnectedAccounts() {
         <h1 className="text-2xl font-bold text-dark-50 sm:text-3xl">
           {t('profile.accounts.title')}
         </h1>
-        <p className="mt-1 text-dark-400">{t('profile.accounts.subtitle')}</p>
+        <p className="mt-1 text-dark-300">{t('profile.accounts.subtitle')}</p>
       </motion.div>
 
       {/* Loading state */}
@@ -671,7 +671,7 @@ export default function ConnectedAccounts() {
       {isError && (
         <motion.div variants={staggerItem}>
           <Card>
-            <p className="text-center text-dark-400">{t('common.error')}</p>
+            <p className="text-center text-dark-300">{t('common.error')}</p>
           </Card>
         </motion.div>
       )}
@@ -688,7 +688,7 @@ export default function ConnectedAccounts() {
                     {t(`profile.accounts.providers.${provider.provider}`)}
                   </p>
                   {provider.identifier && (
-                    <p className="truncate text-sm text-dark-400">{provider.identifier}</p>
+                    <p className="truncate text-sm text-dark-300">{provider.identifier}</p>
                   )}
                 </div>
               </div>
@@ -735,8 +735,8 @@ export default function ConnectedAccounts() {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-4 border-t border-dark-700/30 pt-4">
-                      <p className="mb-4 text-sm text-dark-400">
+                    <div className="mt-4 border-t border-gray-200/30 pt-4 dark:border-gray-800/30">
+                      <p className="mb-4 text-sm text-dark-300">
                         {emailMergeCodePending
                           ? t('profile.emailMergeCodeDescription')
                           : t('profile.linkEmailDescription')}
@@ -760,12 +760,12 @@ export default function ConnectedAccounts() {
                             />
                           </div>
                           {emailError && (
-                            <div className="rounded-xl border border-error-500/30 bg-error-500/10 p-3 text-sm text-error-400">
+                            <div className="rounded-xl border border-error-500 bg-gray-250 p-3 text-sm text-error-500 dark:bg-gray-850">
                               {emailError}
                             </div>
                           )}
                           {emailSuccess && (
-                            <div className="rounded-xl border border-success-500/30 bg-success-500/10 p-3 text-sm text-success-400">
+                            <div className="rounded-xl border border-success-500 bg-gray-250 p-3 text-sm text-success-500 dark:bg-gray-850">
                               {emailSuccess}
                             </div>
                           )}
@@ -779,7 +779,7 @@ export default function ConnectedAccounts() {
                           <button
                             type="button"
                             onClick={cancelEmailMerge}
-                            className="w-full text-sm text-dark-400 transition-colors hover:text-dark-200"
+                            className="w-full text-sm text-dark-300 transition-colors hover:text-dark-200"
                           >
                             {t('common.cancel')}
                           </button>
@@ -813,7 +813,7 @@ export default function ConnectedAccounts() {
                               className="input"
                               autoComplete="new-password"
                             />
-                            <p className="mt-1 text-xs text-dark-500">
+                            <p className="mt-1 text-xs text-dark-300">
                               {t('profile.passwordHint')}
                             </p>
                           </div>
@@ -833,12 +833,12 @@ export default function ConnectedAccounts() {
                           </div>
 
                           {emailError && (
-                            <div className="rounded-xl border border-error-500/30 bg-error-500/10 p-3 text-sm text-error-400">
+                            <div className="rounded-xl border border-error-500 bg-gray-250 p-3 text-sm text-error-500 dark:bg-gray-850">
                               {emailError}
                             </div>
                           )}
                           {emailSuccess && (
-                            <div className="rounded-xl border border-success-500/30 bg-success-500/10 p-3 text-sm text-success-400">
+                            <div className="rounded-xl border border-success-500 bg-gray-250 p-3 text-sm text-success-500 dark:bg-gray-850">
                               {emailSuccess}
                             </div>
                           )}

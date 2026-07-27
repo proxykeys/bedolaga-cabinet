@@ -66,7 +66,7 @@ export default function VerifyEmail() {
   }, [searchParams, t, navigate, setTokens, setUser, checkAdminStatus]);
 
   return (
-    <div className="min-h-viewport flex items-center justify-center bg-dark-950 px-4 py-8 sm:py-12">
+    <div className="min-h-viewport flex items-center justify-center bg-gray-050 px-4 py-8 dark:bg-gray-950 sm:py-12">
       {/* Language switcher in corner */}
       <div className="fixed right-4 top-4 z-50">
         <LanguageSwitcher />
@@ -79,7 +79,7 @@ export default function VerifyEmail() {
             <h2 className="text-lg font-semibold text-dark-50 sm:text-xl">
               {t('emailVerification.verifying')}
             </h2>
-            <p className="mt-2 text-sm text-dark-400 sm:text-base">
+            <p className="mt-2 text-sm text-dark-300 sm:text-base">
               {t('emailVerification.pleaseWait')}
             </p>
           </div>
@@ -91,7 +91,7 @@ export default function VerifyEmail() {
             <h2 className="text-lg font-semibold text-dark-50 sm:text-xl">
               {t('emailVerification.success')}
             </h2>
-            <p className="mt-2 text-sm text-dark-400 sm:text-base">
+            <p className="mt-2 text-sm text-dark-300 sm:text-base">
               {t('emailVerification.redirecting', 'Redirecting to dashboard...')}
             </p>
             <div className="mt-4">
@@ -106,7 +106,7 @@ export default function VerifyEmail() {
             <h2 className="text-lg font-semibold text-dark-50 sm:text-xl">
               {t('emailVerification.failed')}
             </h2>
-            <p className="mt-2 text-sm text-dark-400 sm:text-base">{error}</p>
+            <p className="mt-2 text-sm text-dark-300 sm:text-base">{error}</p>
             <div className="mt-6">
               <Link to="/login" className="btn-secondary">
                 {t('emailVerification.goToLogin')}

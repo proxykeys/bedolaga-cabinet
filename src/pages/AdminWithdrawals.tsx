@@ -136,7 +136,7 @@ export default function AdminWithdrawals() {
 
                       {/* Risk score */}
                       <span
-                        className={`rounded px-2 py-0.5 text-xs ${riskColor.bg} ${riskColor.text}`}
+                        className={`rounded px-2 py-0.5 text-xs ${riskColor.bg} ${riskColor.on}`}
                       >
                         {t('admin.withdrawals.risk')} {item.risk_score}
                       </span>

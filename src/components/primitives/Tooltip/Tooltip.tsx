@@ -22,7 +22,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
         className={cn(
           'z-50 overflow-hidden',
           'rounded-linear px-3 py-1.5',
-          'border border-dark-700/50 bg-dark-800',
+          'border border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850',
           'text-xs text-dark-100 shadow-linear',
           className,
         )}

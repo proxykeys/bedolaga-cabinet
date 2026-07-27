@@ -5,7 +5,6 @@ import { Navigate, useNavigate, useParams } from 'react-router';
 import { subscriptionApi } from '../api/subscription';
 import { useTheme } from '../hooks/useTheme';
 import { getGlassColors } from '../utils/glassTheme';
-import { getMonthlyPriceKopeks } from '../utils/pricing';
 import { useCurrency } from '../hooks/useCurrency';
 import { useHaptic } from '../platform';
 import InsufficientBalancePrompt from '../components/InsufficientBalancePrompt';
@@ -148,7 +147,8 @@ export default function RenewSubscription() {
           {options.map((option) => {
             const isSelected = selectedPeriod === option.period_days;
             const canAfford = balanceKopeks >= option.price_kopeks;
-            const perMonth = getMonthlyPriceKopeks(option.price_kopeks, option.period_days);
+            const months = Math.max(1, Math.round(option.period_days / 30));
+            const perMonth = option.price_kopeks / months;
 
             return (
               <button
@@ -160,21 +160,17 @@ export default function RenewSubscription() {
                 }}
                 className="w-full rounded-2xl border p-4 text-left transition-all duration-200"
                 style={{
-                  background: isSelected
-                    ? isDark
-                      ? 'rgba(var(--color-accent-400), 0.08)'
-                      : 'rgba(var(--color-accent-400), 0.05)'
-                    : g.cardBg,
-                  borderColor: isSelected ? 'rgb(var(--color-accent-400))' : g.cardBorder,
+                  background: isSelected ? g.innerBg : g.cardBg,
+                  borderColor: isSelected ? 'rgb(var(--color-dark-50))' : g.cardBorder,
                 }}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-base font-semibold" style={{ color: g.text }}>
-                      {option.period_days} {t('subscription.days', 'дней')}
+                      {option.period_days} {t('common.units.days', 'дней')}
                     </span>
                     {option.discount_percent > 0 && (
-                      <span className="ml-2 rounded-full bg-success-400/15 px-2 py-0.5 text-[10px] font-semibold text-success-400">
+                      <span className="ml-2 rounded-full bg-success-500 px-2 py-0.5 text-xs font-semibold text-on-success">
                         -{option.discount_percent}%
                       </span>
                     )}
@@ -185,21 +181,21 @@ export default function RenewSubscription() {
                         ? t('subscription.free', 'Бесплатно')
                         : `${formatAmount(option.price_kopeks / 100)} ${currencySymbol}`}
                     </div>
-                    {perMonth !== null && (
-                      <div className="text-[11px]" style={{ color: g.textSecondary }}>
+                    {months > 1 && (
+                      <div className="text-xs" style={{ color: g.textSecondary }}>
                         {formatAmount(perMonth / 100)} {currencySymbol}/
-                        {t('subscription.month', 'мес')}
+                        {t('common.units.mo', 'мес')}
                       </div>
                     )}
                     {option.original_price_kopeks && (
-                      <div className="text-[11px] line-through" style={{ color: g.textSecondary }}>
+                      <div className="text-xs line-through" style={{ color: g.textSecondary }}>
                         {formatAmount(option.original_price_kopeks / 100)} {currencySymbol}
                       </div>
                     )}
                   </div>
                 </div>
                 {!canAfford && (
-                  <div className="mt-1 text-[11px] text-error-400">
+                  <div className="mt-1 text-xs text-error-500">
                     {t(
                       'subscription.insufficientBalanceAmount',
                       'Недостаточно средств. Не хватает {{missing}}',
@@ -220,7 +216,7 @@ export default function RenewSubscription() {
 
       {/* Error */}
       {error && !missingAmount && (
-        <div className="rounded-xl bg-error-400/10 p-3 text-center text-sm text-error-400">
+        <div className="rounded-xl border border-error-500 bg-gray-250 p-3 text-center text-sm text-error-500 dark:bg-gray-850">
           {error}
         </div>
       )}

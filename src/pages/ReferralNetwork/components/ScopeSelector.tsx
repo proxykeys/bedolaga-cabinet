@@ -24,10 +24,10 @@ const SCOPE_TABS: ScopeType[] = ['campaign', 'partner', 'user'];
 type OptionType = ScopeType | 'all';
 
 const CHIP_COLORS: Record<OptionType, string> = {
-  campaign: 'bg-success-500/20 text-success-400',
-  partner: 'bg-warning-500/20 text-warning-400',
-  user: 'bg-accent-500/20 text-accent-400',
-  all: 'bg-dark-700 text-dark-100',
+  campaign: 'bg-success-500 text-on-success',
+  partner: 'bg-warning-500 text-on-warning',
+  user: 'bg-accent-500 text-on-accent',
+  all: 'bg-gray-700 text-gray-100 dark:bg-gray-700 dark:text-gray-100',
 };
 
 // Reuse CHIP_COLORS for avatar backgrounds (same palette)
@@ -280,7 +280,7 @@ export function ScopeSelector({
           aria-label={t('admin.referralNetwork.scope.addScope')}
           aria-expanded={isDropdownOpen}
           aria-haspopup="listbox"
-          className={`shrink-0 rounded-lg border border-dark-700/50 bg-dark-800 p-1.5 transition-colors hover:border-accent-500/50 hover:text-accent-400 ${
+          className={`shrink-0 rounded-lg border border-dark-700/50 bg-dark-800 p-1.5 transition-colors hover:border-accent-500/50 hover:text-accent-500 ${
             isMaxReached ? 'cursor-not-allowed text-dark-600 opacity-50' : 'text-dark-400'
           }`}
           disabled={isMaxReached && !isDropdownOpen}
@@ -298,7 +298,7 @@ export function ScopeSelector({
         <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-xl border border-dark-700/50 bg-dark-800 shadow-xl backdrop-blur-md">
           {/* Max reached banner */}
           {isMaxReached && (
-            <div className="border-b border-dark-700/50 px-3 py-1.5 text-center text-xs text-warning-400">
+            <div className="border-b border-dark-700/50 px-3 py-1.5 text-center text-xs text-warning-500">
               {t('admin.referralNetwork.scope.maxReached', { max: MAX_SCOPE_ITEMS })}
             </div>
           )}
@@ -317,7 +317,7 @@ export function ScopeSelector({
                   onClick={() => handleTabChange(tab)}
                   className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                     activeTab === tab
-                      ? 'bg-accent-500/20 text-accent-400'
+                      ? 'bg-accent-500 text-on-accent'
                       : 'text-dark-400 hover:text-dark-200'
                   }`}
                 >
@@ -390,9 +390,7 @@ export function ScopeSelector({
         badge={
           <span
             className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium ${
-              campaign.is_active
-                ? 'bg-success-500/20 text-success-400'
-                : 'bg-dark-700/50 text-dark-400'
+              campaign.is_active ? 'bg-success-500 text-on-success' : 'bg-dark-700/50 text-dark-400'
             }`}
           >
             {campaign.is_active
@@ -458,7 +456,7 @@ export function ScopeSelector({
         subtitle={`${user.username ? `@${user.username}` : ''}${user.tg_id ? ` #${user.tg_id}` : ''}`}
         badge={
           user.is_partner ? (
-            <span className="shrink-0 rounded bg-warning-500/20 px-1.5 py-0.5 text-[10px] font-medium text-warning-400">
+            <span className="shrink-0 rounded bg-warning-500 px-1.5 py-0.5 text-[10px] font-medium text-on-warning">
               {t('admin.referralNetwork.user.partner')}
             </span>
           ) : undefined

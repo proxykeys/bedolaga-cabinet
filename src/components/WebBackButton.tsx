@@ -23,7 +23,7 @@ export function WebBackButton({ to, replace, className }: WebBackButtonProps) {
       replace={replace}
       className={
         className ||
-        'flex h-10 w-10 items-center justify-center rounded-xl border border-dark-700 bg-dark-800 transition-colors hover:border-dark-600'
+        'flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-250 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700'
       }
     >
       <BackIcon />

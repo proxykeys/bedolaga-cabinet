@@ -67,11 +67,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     if (level === 'app') {
       return (
-        <div className="min-h-viewport flex items-center justify-center bg-dark-900 p-4">
+        <div className="min-h-viewport flex items-center justify-center bg-gray-100 p-4 dark:bg-gray-900">
           <div className="max-w-md text-center">
             <div className="mb-4 text-4xl">⚠️</div>
             <h1 className="mb-2 text-xl font-bold text-dark-50">Something went wrong</h1>
-            <p className="mb-6 text-dark-400">
+            <p className="mb-6 text-dark-300">
               An unexpected error occurred. Please try reloading the page.
             </p>
             <button
@@ -87,11 +87,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     if (level === 'widget') {
       return (
-        <div className="rounded-xl border border-error-500/30 bg-error-500/10 p-4 text-center">
-          <p className="text-sm text-error-400">Failed to load this section</p>
+        <div className="rounded-xl border border-gray-200/40 bg-gray-250 p-4 text-center dark:border-gray-800/40 dark:bg-gray-850">
+          <p className="text-sm text-error-500">Failed to load this section</p>
           <button
             onClick={this.handleReset}
-            className="mt-2 text-sm text-accent-400 hover:text-accent-300"
+            className="mt-2 text-sm text-accent-500 hover:text-accent-400"
           >
             Try again
           </button>
@@ -105,7 +105,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="max-w-md text-center">
           <div className="mb-4 text-4xl">⚠️</div>
           <h1 className="mb-2 text-xl font-bold text-dark-50">Something went wrong</h1>
-          <p className="mb-6 text-sm text-dark-400">
+          <p className="mb-6 text-sm text-dark-300">
             {isChunk
               ? 'App was updated. Reloading...'
               : this.state.error?.message || 'An unexpected error occurred'}

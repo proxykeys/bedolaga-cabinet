@@ -9,7 +9,7 @@ import { buttonTap, buttonHover, springTransition } from '@/components/motion/tr
 const cardVariants = cva(
   [
     'relative overflow-hidden',
-    'border border-dark-700/40 bg-dark-900/70',
+    'border border-gray-200/40 dark:border-gray-800/40 bg-gray-100/70 dark:bg-gray-900/70',
     'rounded-[var(--bento-radius)]',
     'transition-[border-color,background-color,box-shadow,transform,opacity] duration-200',
     // Glass border inset
@@ -25,20 +25,20 @@ const cardVariants = cva(
       },
       variant: {
         default: '',
-        glass: 'backdrop-blur-linear bg-dark-900/50',
-        solid: 'bg-dark-900',
+        glass: 'backdrop-blur-linear bg-gray-100/50 dark:bg-gray-900/50',
+        solid: 'bg-gray-100 dark:bg-gray-900',
         outline: 'bg-transparent',
       },
       interactive: {
         true: [
           'cursor-pointer',
-          'hover:border-dark-600/50 hover:bg-dark-800/60',
+          'hover:border-gray-300/50 dark:hover:border-gray-700/50 hover:bg-gray-300/60 dark:hover:bg-gray-800',
           'active:scale-[0.98]',
         ],
         false: '',
       },
       glow: {
-        true: 'hover:border-accent-500/30 hover:shadow-glow',
+        true: 'hover:border-accent-500 hover:shadow-glow',
         false: '',
       },
     },
@@ -147,7 +147,7 @@ export type CardDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 export const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-dark-400', className)} {...props} />
+    <p ref={ref} className={cn('text-sm text-dark-300', className)} {...props} />
   ),
 );
 

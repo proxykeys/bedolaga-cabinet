@@ -53,7 +53,7 @@ export function UserDetailPanel({ userId, className }: UserDetailPanelProps) {
         )}
 
         {isError && (
-          <div className="py-8 text-center text-sm text-error-400">
+          <div className="py-8 text-center text-sm text-error-500">
             {t('admin.referralNetwork.error')}
           </div>
         )}
@@ -82,7 +82,7 @@ export function UserDetailPanel({ userId, className }: UserDetailPanelProps) {
               )}
               {user.is_partner && (
                 <div className="flex justify-end">
-                  <span className="rounded bg-warning-500/20 px-2 py-0.5 text-xs font-medium text-warning-400">
+                  <span className="rounded bg-warning-500 px-2 py-0.5 text-xs font-medium text-on-warning">
                     {t('admin.referralNetwork.user.partner')}
                   </span>
                 </div>
@@ -147,7 +147,7 @@ export function UserDetailPanel({ userId, className }: UserDetailPanelProps) {
                   <span className="text-dark-400">
                     {t('admin.referralNetwork.user.referralEarnings')}
                   </span>
-                  <span className="font-mono text-accent-400">
+                  <span className="font-mono text-accent-500">
                     {formatKopeksToRubles(user.personal_revenue_kopeks)} ₽
                   </span>
                 </div>

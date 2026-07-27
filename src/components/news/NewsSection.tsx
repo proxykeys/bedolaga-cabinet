@@ -49,7 +49,7 @@ const CategoryBadge = memo(function CategoryBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest',
+        'inline-flex items-center gap-1.5 rounded-md px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest',
         className,
       )}
       style={{
@@ -62,7 +62,6 @@ const CategoryBadge = memo(function CategoryBadge({
         className="h-1.5 w-1.5 animate-pulse rounded-full"
         style={{
           background: c,
-          boxShadow: `0 0 8px ${c}`,
         }}
       />
       {category}
@@ -79,7 +78,7 @@ const TagBadge = memo(function TagBadge({ text, color }: TagBadgeProps) {
   const c = safeColor(color);
   return (
     <span
-      className="inline-block rounded px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider"
+      className="inline-block rounded px-2 py-0.5 font-mono text-xs font-bold uppercase tracking-wider"
       style={{
         color: c,
         border: `1px solid ${c}33`,
@@ -114,8 +113,8 @@ const FilterTabs = memo(function FilterTabs({ categories, active, onChange }: Fi
         className={cn(
           'min-h-[44px] rounded-lg px-4 py-2.5 text-xs font-semibold tracking-wide transition-all duration-300',
           active === ''
-            ? 'border border-accent-400 bg-accent-400 text-dark-950'
-            : 'border border-dark-700 bg-dark-800 text-dark-400 hover:border-accent-400/30 hover:text-accent-400',
+            ? 'border border-accent-500 bg-accent-500 text-dark-950'
+            : 'border border-gray-200 bg-gray-250 text-dark-300 hover:border-accent-500 hover:text-accent-500 dark:border-gray-800 dark:bg-gray-850',
         )}
       >
         {t('news.filterAll')}
@@ -134,8 +133,8 @@ const FilterTabs = memo(function FilterTabs({ categories, active, onChange }: Fi
             className={cn(
               'min-h-[44px] rounded-lg px-4 py-2.5 text-xs font-semibold tracking-wide transition-all duration-300',
               isActive
-                ? 'border border-accent-400 bg-accent-400 text-dark-950'
-                : 'border border-dark-700 bg-dark-800 text-dark-400 hover:border-accent-400/30 hover:text-accent-400',
+                ? 'border border-accent-500 bg-accent-500 text-dark-950'
+                : 'border border-gray-200 bg-gray-250 text-dark-300 hover:border-accent-500 hover:text-accent-500 dark:border-gray-800 dark:bg-gray-850',
             )}
           >
             {cat}
@@ -168,42 +167,17 @@ const FeaturedCard = memo(function FeaturedCard({ item, onClick }: FeaturedCardP
           onClick();
         }
       }}
-      className="group col-span-full cursor-pointer rounded-2xl p-px transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
-      style={{
-        background:
-          'linear-gradient(135deg, rgba(var(--color-accent-400), 0.2), rgba(var(--color-dark-900), 0.2), rgba(var(--color-accent-400), 0.2))',
-      }}
-      whileHover={{
-        background:
-          'linear-gradient(135deg, rgba(var(--color-accent-400), 0.4), rgba(var(--color-accent-500), 0.4), rgba(var(--color-accent-400), 0.4))',
-      }}
+      className="group col-span-full cursor-pointer rounded-2xl bg-gray-200 p-px transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 dark:bg-gray-800"
       onClick={onClick}
     >
-      <div className="relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[15px] bg-dark-900 p-7 sm:p-10">
-        {/* Corner decoration */}
-        <div
-          className="pointer-events-none absolute right-0 top-0 h-[200px] w-[200px]"
-          style={{
-            background:
-              'radial-gradient(circle at top right, rgba(var(--color-accent-400), 0.08), transparent 70%)',
-          }}
-        />
-
-        {/* Shimmer top border */}
-        <div
-          className="absolute -top-px left-[20%] right-[20%] h-px"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, rgba(var(--color-accent-400), 0.4), transparent)',
-            animation: 'newsShimmer 3s ease-in-out infinite',
-          }}
-        />
+      <div className="relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[15px] bg-gray-100 p-7 dark:bg-gray-900 sm:p-10">
+        {/* Corner decoration and shimmer border removed per claude.com aesthetic */}
 
         <div>
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <CategoryBadge category={item.category} color={item.category_color} />
             {item.tag && <TagBadge text={item.tag} color={item.category_color} />}
-            <span className="ml-auto font-mono text-[11px] text-dark-500">
+            <span className="ml-auto font-mono text-xs text-dark-300">
               {item.read_time_minutes} {t('news.readTime')}
             </span>
           </div>
@@ -213,17 +187,17 @@ const FeaturedCard = memo(function FeaturedCard({ item, onClick }: FeaturedCardP
           </h2>
 
           {item.excerpt && (
-            <p className="max-w-[600px] text-[15px] leading-relaxed text-dark-400">
+            <p className="max-w-[600px] text-[15px] leading-relaxed text-dark-300">
               {item.excerpt}
             </p>
           )}
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <span className="font-mono text-xs text-dark-600">
+          <span className="font-mono text-xs text-dark-300">
             {item.published_at ? new Date(item.published_at).toLocaleDateString(i18n.language) : ''}
           </span>
-          <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent-400 transition-all duration-300 group-hover:gap-2.5">
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-400 transition-all duration-300 group-hover:gap-2.5">
             {t('news.readMore')}
             <ArrowIcon />
           </span>
@@ -268,7 +242,7 @@ const NewsCard = memo(function NewsCard({ item, index, onClick }: NewsCardProps)
       }}
       onClick={onClick}
     >
-      <div className="relative flex h-full min-h-[210px] flex-col justify-between overflow-hidden rounded-[13px] bg-dark-900 p-7">
+      <div className="relative flex h-full min-h-[210px] flex-col justify-between overflow-hidden rounded-[13px] bg-gray-100 p-7 dark:bg-gray-900">
         {/* Subtle corner glow on hover */}
         <div
           className="pointer-events-none absolute -bottom-5 -right-5 h-[100px] w-[100px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -280,16 +254,10 @@ const NewsCard = memo(function NewsCard({ item, index, onClick }: NewsCardProps)
         <div>
           <div className="mb-3.5 flex items-center gap-2.5">
             <span
-              className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest"
+              className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-widest"
               style={{ color }}
             >
-              <span
-                className="h-[5px] w-[5px] rounded-full"
-                style={{
-                  background: color,
-                  boxShadow: `0 0 6px ${color}80`,
-                }}
-              />
+              <span className="h-[5px] w-[5px] rounded-full" style={{ background: color }} />
               {item.category}
             </span>
             {item.tag && <TagBadge text={item.tag} color={color} />}
@@ -299,16 +267,14 @@ const NewsCard = memo(function NewsCard({ item, index, onClick }: NewsCardProps)
             {item.title}
           </h3>
 
-          {item.excerpt && (
-            <p className="text-[13px] leading-relaxed text-dark-400">{item.excerpt}</p>
-          )}
+          {item.excerpt && <p className="text-sm leading-relaxed text-dark-300">{item.excerpt}</p>}
         </div>
 
-        <div className="mt-5 flex items-center justify-between border-t border-dark-700/50 pt-3.5">
-          <span className="font-mono text-[11px] text-dark-600">
+        <div className="mt-5 flex items-center justify-between border-t border-gray-200/50 pt-3.5 dark:border-gray-800/50">
+          <span className="font-mono text-xs text-dark-300">
             {item.published_at ? new Date(item.published_at).toLocaleDateString(i18n.language) : ''}
           </span>
-          <span className="font-mono text-[11px] text-dark-500">
+          <span className="font-mono text-xs text-dark-300">
             {item.read_time_minutes} {t('news.readTime')}
           </span>
         </div>
@@ -403,7 +369,7 @@ export default function NewsSection() {
   }
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-dark-850/80 backdrop-blur-xl">
+    <section className="relative overflow-hidden rounded-2xl bg-gray-250 backdrop-blur-xl dark:bg-gray-850">
       <div className="px-5 py-8 sm:px-6 sm:py-10">
         {/* Header */}
         <motion.div
@@ -417,7 +383,7 @@ export default function NewsSection() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent-400 to-accent-600">
               <NewsIcon className="h-[18px] w-[18px] text-dark-950" />
             </div>
-            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-dark-500">
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-dark-300">
               {t('news.title')}
             </span>
           </div>
@@ -457,7 +423,7 @@ export default function NewsSection() {
           >
             <button
               onClick={handleLoadMore}
-              className="min-h-[44px] rounded-xl border border-dark-700 bg-transparent px-8 py-3 text-[13px] font-semibold tracking-wide text-dark-400 transition-all duration-300 hover:border-accent-400/30 hover:text-accent-400"
+              className="min-h-[44px] rounded-xl border border-gray-200 bg-transparent px-8 py-3 text-sm font-semibold tracking-wide text-dark-300 transition-all duration-300 hover:border-accent-500 hover:text-accent-500 dark:border-gray-800"
             >
               {t('news.loadMore')}
             </button>

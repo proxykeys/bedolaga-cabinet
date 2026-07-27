@@ -145,13 +145,13 @@ export default function OAuthCallback() {
         <div className="fixed inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950" />
         <div className="relative w-full max-w-md text-center">
           <div className="card">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-success-500/20">
-              <CheckIcon className="h-8 w-8 text-success-400" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-success-500">
+              <CheckIcon className="h-8 w-8 text-success-500" />
             </div>
             <h2 className="mb-2 text-lg font-semibold text-dark-50">
               {t('profile.accounts.linkSuccess')}
             </h2>
-            <p className="mb-6 text-sm text-dark-400">{t('profile.accounts.returnToTelegram')}</p>
+            <p className="mb-6 text-sm text-dark-300">{t('profile.accounts.returnToTelegram')}</p>
             {telegramLink && (
               <a
                 href={telegramLink}
@@ -201,11 +201,11 @@ export default function OAuthCallback() {
         <div className="fixed inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950" />
         <div className="relative w-full max-w-md text-center">
           <div className="card">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-error-500/20">
-              <ExclamationIcon className="h-8 w-8 text-error-400" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-error-500">
+              <ExclamationIcon className="h-8 w-8 text-error-500" />
             </div>
             <h2 className="mb-2 text-lg font-semibold text-dark-50">{t('auth.loginFailed')}</h2>
-            <p className="mb-6 text-sm text-dark-400">{error}</p>
+            <p className="mb-6 text-sm text-dark-300">{error}</p>
             {errorAction}
           </div>
         </div>
@@ -219,7 +219,7 @@ export default function OAuthCallback() {
       <div className="relative text-center">
         <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
         <h2 className="text-lg font-semibold text-dark-50">{t('auth.authenticating')}</h2>
-        <p className="mt-2 text-sm text-dark-400">{t('common.loading')}</p>
+        <p className="mt-2 text-sm text-dark-300">{t('common.loading')}</p>
       </div>
     </div>
   );

@@ -22,11 +22,11 @@ export function BackgroundPreview({
     return (
       <div
         className={cn(
-          'relative overflow-hidden rounded-2xl border border-dark-700/50 bg-dark-900',
+          'relative overflow-hidden rounded-2xl border border-gray-200/50 bg-gray-100 dark:border-gray-800/50 dark:bg-gray-900',
           className,
         )}
       >
-        <div className="flex h-full items-center justify-center text-dark-400">—</div>
+        <div className="flex h-full items-center justify-center text-dark-300">—</div>
       </div>
     );
   }
@@ -37,7 +37,7 @@ export function BackgroundPreview({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-dark-700/50 bg-dark-900',
+        'relative overflow-hidden rounded-2xl border border-gray-200/50 bg-gray-100 dark:border-gray-800/50 dark:bg-gray-900',
         className,
       )}
     >

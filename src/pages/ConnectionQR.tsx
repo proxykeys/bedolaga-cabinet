@@ -48,12 +48,12 @@ export default function ConnectionQR() {
       <div className="flex flex-col items-center">
         <div className="flex w-full max-w-sm flex-col items-center px-6">
           {appName && (
-            <p className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-400">
+            <p className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-300">
               {appName}
             </p>
           )}
 
-          <p className="mb-8 text-center text-sm text-dark-400">
+          <p className="mb-8 text-center text-sm text-dark-300">
             {t('subscription.connection.qrScanHint')}
           </p>
 
@@ -68,7 +68,7 @@ export default function ConnectionQR() {
           </div>
 
           {!validState.hideLink && (
-            <p className="mt-6 max-w-full truncate text-center font-mono text-xs text-dark-500">
+            <p className="mt-6 max-w-full truncate text-center font-mono text-xs text-dark-300">
               {validState.url}
             </p>
           )}

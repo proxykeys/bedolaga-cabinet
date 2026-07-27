@@ -51,7 +51,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (asChild) {
       return (
-        <Slot ref={ref} className={classes} {...props}>
+        <Slot ref={ref} className={classes} data-variant={variant ?? 'primary'} {...props}>
           {children}
         </Slot>
       );
@@ -61,6 +61,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <motion.button
         ref={ref}
         className={classes}
+        data-variant={variant ?? 'primary'}
         disabled={isDisabled}
         onClick={handleClick}
         whileHover={!isDisabled ? buttonHover : undefined}

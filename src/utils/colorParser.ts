@@ -28,46 +28,37 @@ const getRgb = (color: string): [number, number, number] =>
 export interface ColorGradientStyle {
   background: string;
   border: string;
+  /** Solid color for the icon inside (rgb() string). */
+  color?: string;
   boxShadow?: string;
 }
 
-export const getColorGradient = (color: string, light?: boolean): ColorGradientStyle => {
+/**
+ * Per claude.com aesthetic: icon sits on a neutral surface (added by
+ * ThemeIcon via `bg-gray-300/60 dark:bg-gray-700/60` Tailwind class). Here we expose only the
+ * glyph color; background/border are empty so inline styles don't fight
+ * the Tailwind class. Note: `rgb(var(--color-dark-700) / 0.6)` is invalid
+ * inline because the CSS variable holds comma-separated values, so the
+ * alpha tint must come from Tailwind, which emits legacy rgba().
+ */
+export const getColorGradient = (color: string, _light?: boolean): ColorGradientStyle => {
   const [r, g, b] = getRgb(color);
-  if (light) {
-    return {
-      background: `linear-gradient(135deg, rgba(${r},${g},${b},0.12) 0%, rgba(${r},${g},${b},0.05) 100%)`,
-      border: `1px solid rgba(${r},${g},${b},0.2)`,
-      boxShadow: `0 1px 3px rgba(${r},${g},${b},0.1)`,
-    };
-  }
   return {
-    background: `linear-gradient(135deg, rgba(${r},${g},${b},0.15) 0%, rgba(${r},${g},${b},0.08) 100%)`,
-    border: `1px solid rgba(${r},${g},${b},0.3)`,
+    background: '',
+    border: '',
+    color: `rgb(${r},${g},${b})`,
   };
 };
 
-export const getColorGradientSolid = (color: string, light?: boolean): ColorGradientStyle => {
+/**
+ * Per claude.com aesthetic: icon sits on a neutral surface (added by
+ * ThemeIcon via `bg-gray-300/60 dark:bg-gray-700/60` Tailwind class). See getColorGradient.
+ */
+export const getColorGradientSolid = (color: string, _light?: boolean): ColorGradientStyle => {
   const [r, g, b] = getRgb(color);
-  if (light) {
-    // Light theme: soft tinted background instead of dark solid
-    const light1 = [245 + r * 0.02, 243 + g * 0.02, 240 + b * 0.02].map((v) =>
-      Math.min(255, Math.floor(v)),
-    );
-    const light2 = [240 + r * 0.03, 237 + g * 0.03, 233 + b * 0.03].map((v) =>
-      Math.min(255, Math.floor(v)),
-    );
-    return {
-      background: `linear-gradient(135deg, rgb(${light1}) 0%, rgb(${light2}) 100%)`,
-      border: `1px solid rgba(${r},${g},${b},0.25)`,
-      boxShadow: `0 1px 4px rgba(${r},${g},${b},0.12)`,
-    };
-  }
-  const dark1 = [22 + r * 0.08, 27 + g * 0.08, 35 + b * 0.08].map(Math.floor);
-  const dark2 = [20 + r * 0.05, 24 + g * 0.05, 30 + b * 0.05].map(Math.floor);
-
   return {
-    background: `linear-gradient(135deg, rgb(${dark1}) 0%, rgb(${dark2}) 100%)`,
-    border: `1px solid rgba(${r},${g},${b},0.4)`,
-    boxShadow: `inset 0 0 20px rgba(${r},${g},${b},0.15)`,
+    background: '',
+    border: '',
+    color: `rgb(${r},${g},${b})`,
   };
 };

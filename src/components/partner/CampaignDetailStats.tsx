@@ -42,7 +42,7 @@ export function CampaignDetailStats({ campaignId }: CampaignDetailStatsProps) {
   if (isError || !data) {
     return (
       <div className="pt-2 text-center">
-        <div className="text-sm text-error-400">{t('referral.partner.stats.noData')}</div>
+        <div className="text-sm text-error-500">{t('referral.partner.stats.noData')}</div>
         <button onClick={() => refetch()} className="btn-secondary mt-2 px-4 py-1 text-xs">
           {t('common.retry')}
         </button>
@@ -57,27 +57,27 @@ export function CampaignDetailStats({ campaignId }: CampaignDetailStatsProps) {
         <StatCard
           label={t('referral.partner.stats.today')}
           value={formatWithCurrency(data.earnings_today / PARTNER_STATS.KOPEKS_DIVISOR)}
-          valueClassName="text-success-400"
+          valueClassName="text-success-500"
         />
         <StatCard
           label={t('referral.partner.stats.week')}
           value={formatWithCurrency(data.earnings_week / PARTNER_STATS.KOPEKS_DIVISOR)}
-          valueClassName="text-success-400"
+          valueClassName="text-success-500"
         />
         <StatCard
           label={t('referral.partner.stats.month')}
           value={formatWithCurrency(data.earnings_month / PARTNER_STATS.KOPEKS_DIVISOR)}
-          valueClassName="text-success-400"
+          valueClassName="text-success-500"
         />
       </div>
 
       {/* Conversion rate */}
       <div className="rounded-xl bg-dark-800/30 p-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-dark-500">
+          <span className="text-sm text-dark-300">
             {t('referral.partner.stats.conversionRate')}
           </span>
-          <span className="text-lg font-semibold text-accent-400">{data.conversion_rate}%</span>
+          <span className="text-lg font-semibold text-accent-500">{data.conversion_rate}%</span>
         </div>
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-dark-700">
           <div

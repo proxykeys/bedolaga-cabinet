@@ -273,13 +273,13 @@ export default function NewsArticlePage() {
         {!capabilities.hasBackButton && (
           <button
             onClick={() => navigate('/')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-dark-700 bg-dark-800 transition-colors hover:border-dark-600"
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-gray-200 bg-gray-250 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
             aria-label={t('news.backToHome')}
           >
             <BackIcon />
           </button>
         )}
-        <div className="rounded-xl border border-dark-700 bg-dark-800/50 p-8 text-center text-dark-400">
+        <div className="rounded-xl border border-gray-200 bg-gray-250 p-8 text-center text-dark-300 dark:border-gray-800 dark:bg-gray-850">
           {t('news.noNews')}
         </div>
       </div>
@@ -292,7 +292,7 @@ export default function NewsArticlePage() {
       {!capabilities.hasBackButton && (
         <button
           onClick={() => navigate(-1)}
-          className="flex min-h-[44px] items-center gap-2 rounded-xl border border-dark-700 bg-dark-800 px-4 text-sm text-dark-400 transition-colors hover:border-dark-600 hover:text-dark-200"
+          className="flex min-h-[44px] items-center gap-2 rounded-xl border border-gray-200 bg-gray-250 px-4 text-sm text-dark-300 transition-colors hover:border-gray-300 hover:text-dark-200 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
           aria-label={t('news.backToHome')}
         >
           <BackIcon />
@@ -313,7 +313,7 @@ export default function NewsArticlePage() {
             return (
               <>
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-md px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest"
+                  className="inline-flex items-center gap-1.5 rounded-md px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest"
                   style={{
                     color,
                     background: `${color}15`,
@@ -324,14 +324,14 @@ export default function NewsArticlePage() {
                     className="h-1.5 w-1.5 animate-pulse rounded-full"
                     style={{
                       background: color,
-                      boxShadow: `0 0 8px ${color}`,
+                      boxShadow: 'none',
                     }}
                   />
                   {article.category}
                 </span>
                 {article.tag && (
                   <span
-                    className="inline-block rounded px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider"
+                    className="inline-block rounded px-2 py-0.5 font-mono text-xs font-bold uppercase tracking-wider"
                     style={{
                       color,
                       border: `1px solid ${color}33`,
@@ -352,7 +352,7 @@ export default function NewsArticlePage() {
         </h1>
 
         {/* Meta info */}
-        <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-dark-400">
+        <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-dark-300">
           {article.published_at && (
             <span className="inline-flex items-center gap-1.5 font-mono text-xs">
               <CalendarIcon className="h-4 w-4" />

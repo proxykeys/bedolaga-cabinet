@@ -23,9 +23,9 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         ref={ref}
         className={cn(
           'flex h-10 w-full items-center justify-between gap-2 rounded-linear px-3',
-          'border border-dark-700/50 bg-dark-800/80',
-          'text-sm text-dark-100 placeholder:text-dark-400',
-          'hover:border-dark-600/50 hover:bg-dark-700/80',
+          'border border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850',
+          'text-sm text-dark-100 placeholder:text-dark-300',
+          'hover:border-gray-300/50 hover:bg-gray-300 dark:hover:border-gray-700/50 dark:hover:bg-gray-800',
           'focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:ring-offset-2 focus:ring-offset-dark-950',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'transition-all duration-200',
@@ -56,7 +56,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         ref={ref}
         className={cn(
           'relative z-50 max-h-80 min-w-[8rem] overflow-hidden',
-          'rounded-linear-lg border border-dark-700/50 bg-dark-900/95 backdrop-blur-linear',
+          'rounded-linear-lg border border-gray-200/50 bg-gray-100/95 backdrop-blur-linear dark:border-gray-800/50 dark:bg-gray-900/95',
           'text-dark-100 shadow-linear-lg',
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
@@ -102,10 +102,10 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
       className={cn(
         'relative flex w-full cursor-pointer select-none items-center rounded-linear py-2 pl-3 pr-8',
         'text-sm text-dark-200 outline-none',
-        'hover:bg-dark-800/80 hover:text-dark-100',
-        'focus:bg-dark-800/80 focus:text-dark-100',
+        'hover:bg-gray-300 hover:text-dark-100 dark:hover:bg-gray-800',
+        'focus:bg-gray-250 focus:text-dark-100 dark:bg-gray-850',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-        'data-[state=checked]:text-accent-400',
+        'data-[state=checked]:text-accent-500',
         'transition-colors duration-150',
         className,
       )}
@@ -130,7 +130,7 @@ export const SelectLabel = forwardRef<HTMLDivElement, SelectLabelProps>(
   ({ className, ...props }, ref) => (
     <SelectPrimitive.Label
       ref={ref}
-      className={cn('px-3 py-1.5 text-xs font-medium text-dark-400', className)}
+      className={cn('px-3 py-1.5 text-xs font-medium text-dark-300', className)}
       {...props}
     />
   ),
@@ -145,7 +145,7 @@ export const SelectSeparator = forwardRef<HTMLDivElement, SelectSeparatorProps>(
   ({ className, ...props }, ref) => (
     <SelectPrimitive.Separator
       ref={ref}
-      className={cn('-mx-1 my-1 h-px bg-dark-700/50', className)}
+      className={cn('-mx-1 my-1 h-px bg-gray-300/50 dark:bg-gray-700/50', className)}
       {...props}
     />
   ),

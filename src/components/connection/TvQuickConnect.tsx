@@ -173,8 +173,8 @@ export default function TvQuickConnect({ subscriptionUrl, isLight }: Props) {
   }, [tgNative, sendToTV, showToast, onScanDecoded, t]);
 
   const inputClass = isLight
-    ? 'w-full rounded-xl border border-dark-700/60 bg-white px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500'
-    : 'w-full rounded-xl border border-dark-700 bg-dark-900/50 px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500';
+    ? 'w-full rounded-xl border border-gray-200/60 dark:border-gray-800/60 bg-white px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500'
+    : 'w-full rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100/50 dark:bg-gray-900/50 px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500';
 
   // Full-width buttons in the same outlined-accent language as the config blocks
   // (so the Happ TV block adapts to the subscription-page styles, not a one-off).
@@ -205,7 +205,7 @@ export default function TvQuickConnect({ subscriptionUrl, isLight }: Props) {
           className={`${actionBtnClass} disabled:opacity-50`}
         >
           {sending ? (
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-accent-500/30 border-t-accent-500" />
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
           ) : (
             t('subscription.tvQuickConnect.sendBtn')
           )}
@@ -254,7 +254,9 @@ export default function TvQuickConnect({ subscriptionUrl, isLight }: Props) {
       {toast && (
         <div
           className={`fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-xl px-5 py-3 text-sm font-medium shadow-lg transition-all ${
-            toast.type === 'success' ? 'bg-success-500/90 text-white' : 'bg-error-500/90 text-white'
+            toast.type === 'success'
+              ? 'bg-success-500 text-on-success'
+              : 'bg-error-500 text-on-error'
           }`}
         >
           {toast.text}

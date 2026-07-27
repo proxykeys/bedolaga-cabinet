@@ -150,14 +150,14 @@ export function AppShell({ children }: AppShellProps) {
         onClick={handleNavClick}
         aria-label={label}
         className={cn(
-          'relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-200',
+          'relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200',
           active
             ? admin
-              ? 'text-warning-300'
+              ? 'text-warning-500'
               : 'text-dark-50'
             : admin
-              ? 'text-warning-500/70 hover:bg-warning-500/10 hover:text-warning-300'
-              : 'text-dark-400 hover:bg-dark-800/60 hover:text-dark-100',
+              ? 'text-warning-500 hover:bg-gray-300 hover:text-warning-300 dark:hover:bg-gray-800'
+              : 'text-dark-300 hover:bg-gray-300 hover:text-dark-100 dark:hover:bg-gray-800',
         )}
       >
         {active && (
@@ -167,8 +167,8 @@ export function AppShell({ children }: AppShellProps) {
               // Подсветка-пилюля активного пункта — «приподнята» над треком капсулы
               'absolute inset-0 rounded-full shadow-sm',
               admin
-                ? 'bg-warning-500/15 ring-1 ring-warning-500/20'
-                : 'bg-dark-700/80 ring-1 ring-dark-600/40',
+                ? 'bg-gray-250 ring-1 ring-warning-500 dark:bg-gray-850'
+                : 'bg-gray-300/80 ring-1 ring-dark-600/40 dark:bg-gray-700/80',
             )}
             transition={{ type: 'spring', stiffness: 500, damping: 35 }}
           />
@@ -194,7 +194,7 @@ export function AppShell({ children }: AppShellProps) {
           скроллбара, и капсула по центру прыгала бы на полширины скроллбара при
           переходах между страницами со скроллом и без. 100vw даёт ту же ось
           центрирования, что и у body (тоже 100vw). */}
-      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-dark-800/50 bg-dark-950/95 lg:block">
+      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200/50 bg-gray-050/95 dark:border-gray-800/50 dark:bg-gray-950/95 lg:block">
         {/* 3-зонный grid: лого | капсула | действия. Колонки 1fr_auto_1fr держат
             капсулу строго по центру вьюпорта НЕЗАВИСИМО от ширины лого/действий,
             а действия — у правого края. Поэтому ничего не «скачет» при переходах
@@ -206,10 +206,10 @@ export function AppShell({ children }: AppShellProps) {
             className="flex shrink-0 items-center gap-2.5 justify-self-start"
             onClick={handleNavClick}
           >
-            <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-dark-800">
+            <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-250 dark:bg-gray-850">
               <span
                 className={cn(
-                  'absolute text-sm font-bold text-accent-400 transition-opacity duration-200',
+                  'absolute text-sm font-bold text-accent-500 transition-opacity duration-200',
                   hasCustomLogo && isLogoPreloaded() ? 'opacity-0' : 'opacity-100',
                 )}
               >
@@ -232,11 +232,11 @@ export function AppShell({ children }: AppShellProps) {
           {/* Navigation — единая «капсула» (segmented control): все пункты видны
               всегда, без скролла/сжатия/сворачивания. Центрируется средней
               колонкой grid (justify-self-center), а не auto-margin'ами. */}
-          <nav className="flex items-center gap-0.5 justify-self-center rounded-full border border-dark-800/70 bg-dark-900/50 p-1 shadow-sm backdrop-blur-sm">
+          <nav className="flex items-center gap-0.5 justify-self-center rounded-full border border-gray-200/70 bg-gray-100/50 p-1 shadow-sm backdrop-blur-sm dark:border-gray-800/70 dark:bg-gray-900/50">
             {desktopNav.map((item) => renderNavLink(item.path, item.label, item.icon))}
             {isAdmin && (
               <>
-                <div className="mx-1 h-5 w-px shrink-0 bg-dark-700/60" />
+                <div className="mx-1 h-5 w-px shrink-0 bg-gray-300/60 dark:bg-gray-700/60" />
                 {renderNavLink('/admin', t('admin.nav.title'), ShieldIcon, true)}
               </>
             )}
@@ -250,7 +250,7 @@ export function AppShell({ children }: AppShellProps) {
                 toggleTheme();
               }}
               className={cn(
-                'rounded-xl border border-dark-700/50 bg-dark-800/50 p-2 text-dark-400 transition-colors duration-200 hover:bg-dark-700 hover:text-accent-400',
+                'rounded-xl border border-gray-200/50 bg-gray-250 p-2 text-dark-300 transition-colors duration-200 hover:bg-gray-300 hover:text-accent-400 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800',
                 !canToggleTheme && 'hidden',
               )}
               aria-label={
@@ -267,7 +267,7 @@ export function AppShell({ children }: AppShellProps) {
                 haptic.impact('light');
                 logout();
               }}
-              className="rounded-xl border border-dark-700/50 bg-dark-800/50 p-2 text-dark-400 transition-colors duration-200 hover:bg-dark-700 hover:text-accent-400"
+              className="rounded-xl border border-gray-200/50 bg-gray-250 p-2 text-dark-300 transition-colors duration-200 hover:bg-gray-300 hover:text-accent-400 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800"
               title={t('nav.logout')}
             >
               <LogoutIcon className="h-5 w-5" />

@@ -28,8 +28,8 @@ export const DropdownMenuSubTrigger = forwardRef<HTMLDivElement, DropdownMenuSub
       className={cn(
         'flex cursor-pointer select-none items-center gap-2 rounded-linear px-2 py-2',
         'text-sm text-dark-200 outline-none',
-        'focus:bg-dark-800/80 focus:text-dark-100',
-        'data-[state=open]:bg-dark-800/80',
+        'focus:bg-gray-250 focus:text-dark-100 dark:bg-gray-850',
+        'data-[state=open]:bg-gray-250 dark:bg-gray-850',
         inset && 'pl-8',
         className,
       )}
@@ -54,7 +54,7 @@ export const DropdownMenuSubContent = forwardRef<HTMLDivElement, DropdownMenuSub
       ref={ref}
       className={cn(
         'z-50 min-w-[8rem] overflow-hidden',
-        'rounded-linear-lg border border-dark-700/50 bg-dark-900/95 backdrop-blur-linear',
+        'rounded-linear-lg border border-gray-200/50 bg-gray-100/95 backdrop-blur-linear dark:border-gray-800/50 dark:bg-gray-900/95',
         'p-1 text-dark-100 shadow-linear-lg',
         className,
       )}
@@ -90,7 +90,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
           sideOffset={sideOffset}
           className={cn(
             'z-50 min-w-[8rem] overflow-hidden',
-            'rounded-linear-lg border border-dark-700/50 bg-dark-900/95 backdrop-blur-linear',
+            'rounded-linear-lg border border-gray-200/50 bg-gray-100/95 backdrop-blur-linear dark:border-gray-800/50 dark:bg-gray-900/95',
             'p-1 text-dark-100 shadow-linear-lg',
             className,
           )}
@@ -131,8 +131,8 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
           'relative flex cursor-pointer select-none items-center gap-2 rounded-linear px-2 py-2',
           'text-sm outline-none transition-colors duration-150',
           destructive
-            ? 'text-error-400 focus:bg-error-500/10 focus:text-error-300'
-            : 'text-dark-200 focus:bg-dark-800/80 focus:text-dark-100',
+            ? 'text-error-500 focus:bg-gray-300 focus:text-error-400 dark:bg-gray-700'
+            : 'text-dark-200 focus:bg-gray-250 focus:text-dark-100 dark:bg-gray-850',
           'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           inset && 'pl-8',
           className,
@@ -158,7 +158,7 @@ export const DropdownMenuCheckboxItem = forwardRef<HTMLDivElement, DropdownMenuC
       className={cn(
         'relative flex cursor-pointer select-none items-center rounded-linear py-2 pl-8 pr-2',
         'text-sm text-dark-200 outline-none transition-colors duration-150',
-        'focus:bg-dark-800/80 focus:text-dark-100',
+        'focus:bg-gray-250 focus:text-dark-100 dark:bg-gray-850',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         className,
       )}
@@ -189,7 +189,7 @@ export const DropdownMenuRadioItem = forwardRef<HTMLDivElement, DropdownMenuRadi
       className={cn(
         'relative flex cursor-pointer select-none items-center rounded-linear py-2 pl-8 pr-2',
         'text-sm text-dark-200 outline-none transition-colors duration-150',
-        'focus:bg-dark-800/80 focus:text-dark-100',
+        'focus:bg-gray-250 focus:text-dark-100 dark:bg-gray-850',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         className,
       )}
@@ -217,7 +217,7 @@ export const DropdownMenuLabel = forwardRef<HTMLDivElement, DropdownMenuLabelPro
   ({ className, inset, ...props }, ref) => (
     <DropdownMenuPrimitive.Label
       ref={ref}
-      className={cn('px-2 py-1.5 text-xs font-medium text-dark-400', inset && 'pl-8', className)}
+      className={cn('px-2 py-1.5 text-xs font-medium text-dark-300', inset && 'pl-8', className)}
       {...props}
     />
   ),
@@ -234,7 +234,7 @@ export const DropdownMenuSeparator = forwardRef<HTMLDivElement, DropdownMenuSepa
   ({ className, ...props }, ref) => (
     <DropdownMenuPrimitive.Separator
       ref={ref}
-      className={cn('-mx-1 my-1 h-px bg-dark-700/50', className)}
+      className={cn('-mx-1 my-1 h-px bg-gray-300/50 dark:bg-gray-700/50', className)}
       {...props}
     />
   ),
@@ -246,7 +246,7 @@ DropdownMenuSeparator.displayName = 'DropdownMenuSeparator';
 export type DropdownMenuShortcutProps = React.HTMLAttributes<HTMLSpanElement>;
 
 export const DropdownMenuShortcut = ({ className, ...props }: DropdownMenuShortcutProps) => (
-  <span className={cn('ml-auto text-xs tracking-widest text-dark-400', className)} {...props} />
+  <span className={cn('ml-auto text-xs tracking-widest text-dark-300', className)} {...props} />
 );
 
 DropdownMenuShortcut.displayName = 'DropdownMenuShortcut';

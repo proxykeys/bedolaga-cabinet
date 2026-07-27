@@ -68,9 +68,9 @@ function formatPeriodLabel(
 
 function LoadingSkeleton() {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-dark-950">
+    <div className="flex min-h-dvh items-center justify-center bg-gray-050 dark:bg-gray-950">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-dark-600 border-t-accent-500" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-accent-500 dark:border-gray-700" />
       </div>
     </div>
   );
@@ -80,11 +80,11 @@ function ErrorState({ message }: { message: string }) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-dark-950 px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-gray-050 px-4 dark:bg-gray-950">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-error-500/10">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
           <svg
-            className="h-8 w-8 text-error-400"
+            className="h-8 w-8 text-error-500"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -125,8 +125,8 @@ function PeriodTabs({
           className={cn(
             'whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200',
             selectedDays === period.days
-              ? 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25'
-              : 'bg-dark-800/50 text-dark-300 hover:bg-dark-700/50 hover:text-dark-100',
+              ? 'bg-accent-500 text-on-accent'
+              : 'bg-gray-250 text-dark-300 hover:bg-gray-300 hover:text-dark-100 dark:bg-gray-850 dark:hover:bg-gray-800',
           )}
         >
           {formatPeriodLabel(period.days, t)}
@@ -143,7 +143,7 @@ function GiftToggle({ isGift, onToggle }: { isGift: boolean; onToggle: (v: boole
     <div
       role="group"
       aria-label={t('landing.giftToggleLabel', 'Purchase type')}
-      className="flex rounded-xl bg-dark-800/50 p-1"
+      className="flex rounded-xl bg-gray-250 p-1 dark:bg-gray-850"
     >
       <button
         type="button"
@@ -151,7 +151,9 @@ function GiftToggle({ isGift, onToggle }: { isGift: boolean; onToggle: (v: boole
         aria-pressed={!isGift}
         className={cn(
           'flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200',
-          !isGift ? 'bg-dark-700 text-dark-50 shadow-sm' : 'text-dark-400 hover:text-dark-200',
+          !isGift
+            ? 'bg-gray-300 text-dark-50 shadow-sm dark:bg-gray-700'
+            : 'text-dark-300 hover:text-dark-200',
         )}
       >
         {t('landing.forMe', 'For me')}
@@ -162,7 +164,9 @@ function GiftToggle({ isGift, onToggle }: { isGift: boolean; onToggle: (v: boole
         aria-pressed={isGift}
         className={cn(
           'flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200',
-          isGift ? 'bg-dark-700 text-dark-50 shadow-sm' : 'text-dark-400 hover:text-dark-200',
+          isGift
+            ? 'bg-gray-300 text-dark-50 shadow-sm dark:bg-gray-700'
+            : 'text-dark-300 hover:text-dark-200',
         )}
       >
         {t('landing.asGift', 'As a gift')}
@@ -191,7 +195,7 @@ function ContactForm({
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-4 rounded-2xl border border-dark-800/50 bg-dark-900/50 p-5">
+    <div className="space-y-4 rounded-2xl border border-gray-200/50 bg-gray-100/50 p-5 dark:border-gray-800/50 dark:bg-gray-900/50">
       {/* Main contact */}
       <div>
         <label htmlFor="contact-input" className="mb-2 block text-sm font-medium text-dark-200">
@@ -203,9 +207,9 @@ function ContactForm({
           value={contactValue}
           onChange={(e) => onContactChange(e.target.value)}
           placeholder={t('landing.contactPlaceholder', 'email@example.com or @telegram')}
-          className="w-full rounded-xl border border-dark-700/50 bg-dark-800/50 px-4 py-3 text-sm text-dark-50 placeholder-dark-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/25"
+          className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
         />
-        <p className="mt-1.5 text-xs text-dark-500">{t('landing.contactHint')}</p>
+        <p className="mt-1.5 text-xs text-dark-300">{t('landing.contactHint')}</p>
       </div>
 
       {/* Gift fields */}
@@ -218,7 +222,7 @@ function ContactForm({
             transition={{ duration: 0.2 }}
             className="space-y-4 overflow-hidden"
           >
-            <div className="border-t border-dark-800/50 pt-4">
+            <div className="border-t border-gray-200/50 pt-4 dark:border-gray-800/50">
               <label
                 htmlFor="gift-recipient-input"
                 className="mb-2 block text-sm font-medium text-dark-200"
@@ -231,7 +235,7 @@ function ContactForm({
                 value={giftRecipient}
                 onChange={(e) => onGiftRecipientChange(e.target.value)}
                 placeholder={t('landing.recipientPlaceholder', 'Recipient email or @telegram')}
-                className="w-full rounded-xl border border-dark-700/50 bg-dark-800/50 px-4 py-3 text-sm text-dark-50 placeholder-dark-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/25"
+                className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
               />
             </div>
             <div>
@@ -250,7 +254,7 @@ function ContactForm({
                   'Add a personal message (optional)',
                 )}
                 rows={3}
-                className="w-full resize-none rounded-xl border border-dark-700/50 bg-dark-800/50 px-4 py-3 text-sm text-dark-50 placeholder-dark-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/25"
+                className="w-full resize-none rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
               />
             </div>
           </motion.div>
@@ -282,8 +286,8 @@ function TariffCard({
       className={cn(
         'relative flex w-full flex-col rounded-2xl border p-5 text-start transition-all duration-200',
         isSelected
-          ? 'border-accent-500/50 bg-accent-500/5 ring-1 ring-accent-500/25'
-          : 'border-dark-800/50 bg-dark-900/50 hover:border-dark-700/50 hover:bg-dark-800/30',
+          ? 'border-accent-500 bg-gray-250 ring-1 ring-accent-500/25 dark:bg-gray-850'
+          : 'border-gray-200/50 bg-gray-100/50 hover:border-gray-200/50 hover:bg-gray-300 dark:border-gray-800/50 dark:bg-gray-900/50 dark:hover:bg-gray-800',
       )}
     >
       {/* Header */}
@@ -291,21 +295,21 @@ function TariffCard({
         <div>
           <h3 className="text-base font-semibold text-dark-50">{tariff.name}</h3>
           {tariff.description && (
-            <p className="mt-0.5 text-xs text-dark-400">{tariff.description}</p>
+            <p className="mt-0.5 text-xs text-dark-300">{tariff.description}</p>
           )}
         </div>
         <div
           className={cn(
             'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
-            isSelected ? 'border-accent-500 bg-accent-500' : 'border-dark-600',
+            isSelected ? 'border-accent-500 bg-accent-500' : 'border-gray-300 dark:border-gray-700',
           )}
         >
-          {isSelected && <CheckIcon className="h-3 w-3 text-white" />}
+          {isSelected && <CheckIcon className="h-3 w-3 text-on-accent" />}
         </div>
       </div>
 
       {/* Info row */}
-      <div className="flex items-center gap-3 text-xs text-dark-400">
+      <div className="flex items-center gap-3 text-xs text-dark-300">
         <span className="flex items-center gap-1">
           <DownloadIcon className="h-3.5 w-3.5" />
           {tariff.traffic_limit_gb === 0 ? '∞' : tariff.traffic_limit_gb} {t('landing.gb', 'GB')}
@@ -318,19 +322,19 @@ function TariffCard({
 
       {/* Price */}
       {selectedPeriod && (
-        <div className="mt-3 border-t border-dark-800/30 pt-3">
+        <div className="mt-3 border-t border-gray-200/30 pt-3 dark:border-gray-800/30">
           <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-accent-400">
+            <span className="text-lg font-bold text-accent-500">
               {formatPrice(selectedPeriod.price_kopeks)}
             </span>
             {selectedPeriod.original_price_kopeks != null &&
               selectedPeriod.original_price_kopeks > selectedPeriod.price_kopeks && (
                 <>
-                  <span className="text-sm text-dark-500 line-through">
+                  <span className="text-sm text-dark-300 line-through">
                     {formatPrice(selectedPeriod.original_price_kopeks)}
                   </span>
                   {selectedPeriod.discount_percent != null && (
-                    <span className="rounded-full bg-accent-500/20 px-1.5 py-0.5 text-[10px] font-bold text-accent-400">
+                    <span className="rounded-full bg-accent-500 px-1.5 py-0.5 text-xs font-bold text-black">
                       -{selectedPeriod.discount_percent}%
                     </span>
                   )}
@@ -363,8 +367,8 @@ function PaymentMethodCard({
       className={cn(
         'rounded-2xl border transition-all duration-200',
         isSelected
-          ? 'border-accent-500/50 bg-accent-500/5'
-          : 'border-dark-800/50 bg-dark-900/50 hover:border-dark-700/50 hover:bg-dark-800/30',
+          ? 'border-accent-500 bg-gray-250 dark:bg-gray-850'
+          : 'border-gray-200/50 bg-gray-100/50 hover:border-gray-200/50 hover:bg-gray-300 dark:border-gray-800/50 dark:bg-gray-900/50 dark:hover:bg-gray-800',
       )}
     >
       <button
@@ -376,7 +380,7 @@ function PaymentMethodCard({
       >
         {/* Icon */}
         {method.icon_url && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-dark-800/50">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-250 dark:bg-gray-850">
             <img src={method.icon_url} alt="" className="h-6 w-6 object-contain" />
           </div>
         )}
@@ -385,7 +389,7 @@ function PaymentMethodCard({
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-dark-100">{method.display_name}</p>
           {method.description && (
-            <p className="mt-0.5 truncate text-xs text-dark-400">{method.description}</p>
+            <p className="mt-0.5 truncate text-xs text-dark-300">{method.description}</p>
           )}
         </div>
 
@@ -393,7 +397,7 @@ function PaymentMethodCard({
         <div
           className={cn(
             'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
-            isSelected ? 'border-accent-500 bg-accent-500' : 'border-dark-600',
+            isSelected ? 'border-accent-500 bg-accent-500' : 'border-gray-300 dark:border-gray-700',
           )}
         >
           {isSelected && <div className="h-2 w-2 rounded-full bg-white" />}
@@ -402,7 +406,7 @@ function PaymentMethodCard({
 
       {/* Sub-options */}
       {isSelected && hasSubOptions && (
-        <div className="border-t border-dark-800/30 px-4 pb-4 pt-3">
+        <div className="border-t border-gray-200/30 px-4 pb-4 pt-3 dark:border-gray-800/30">
           <div className="flex flex-wrap gap-2">
             {method.sub_options!.map((opt) => (
               <button
@@ -412,8 +416,8 @@ function PaymentMethodCard({
                 className={cn(
                   'rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200',
                   selectedSubOption === opt.id
-                    ? 'bg-accent-500 text-on-accent shadow-sm shadow-accent-500/25'
-                    : 'bg-dark-800/50 text-dark-300 hover:bg-dark-700/50 hover:text-dark-100',
+                    ? 'bg-accent-500 text-on-accent'
+                    : 'bg-gray-250 text-dark-300 hover:bg-gray-300 hover:text-dark-100 dark:bg-gray-850 dark:hover:bg-gray-800',
                 )}
               >
                 {opt.name}
@@ -483,10 +487,10 @@ function SummaryCard({
   return (
     <div className="space-y-5">
       {/* Summary */}
-      <div className="rounded-2xl border border-dark-800/50 bg-dark-900/50 p-5">
+      <div className="rounded-2xl border border-gray-200/50 bg-gray-100/50 p-5 dark:border-gray-800/50 dark:bg-gray-900/50">
         {selectedTariff && (
           <div className="mb-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-dark-500">
+            <p className="text-xs font-medium uppercase tracking-wider text-dark-300">
               {t('landing.selectedTariff', 'Tariff')}
             </p>
             <p className="mt-1 text-sm font-semibold text-dark-50">{selectedTariff.name}</p>
@@ -494,7 +498,7 @@ function SummaryCard({
         )}
         {selectedPeriod && (
           <div className="mb-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-dark-500">
+            <p className="text-xs font-medium uppercase tracking-wider text-dark-300">
               {t('landing.period', 'Period')}
             </p>
             <p className="mt-1 text-sm text-dark-200">
@@ -502,20 +506,20 @@ function SummaryCard({
             </p>
           </div>
         )}
-        <div className="border-t border-dark-800/50 pt-4">
-          <p className="text-xs font-medium uppercase tracking-wider text-dark-500">
+        <div className="border-t border-gray-200/50 pt-4 dark:border-gray-800/50">
+          <p className="text-xs font-medium uppercase tracking-wider text-dark-300">
             {t('landing.total', 'Total')}
           </p>
           <div className="mt-1 flex items-center gap-2">
-            <span className="text-2xl font-bold text-accent-400">{formatPrice(currentPrice)}</span>
+            <span className="text-2xl font-bold text-accent-500">{formatPrice(currentPrice)}</span>
             {selectedPeriod?.original_price_kopeks != null &&
               selectedPeriod.original_price_kopeks > selectedPeriod.price_kopeks && (
                 <>
-                  <span className="text-base text-dark-500 line-through">
+                  <span className="text-base text-dark-300 line-through">
                     {formatPrice(selectedPeriod.original_price_kopeks)}
                   </span>
                   {selectedPeriod.discount_percent != null && (
-                    <span className="rounded-full bg-accent-500/20 px-2 py-0.5 text-xs font-bold text-accent-400">
+                    <span className="rounded-full bg-accent-500 px-2 py-0.5 text-xs font-bold text-black">
                       -{selectedPeriod.discount_percent}%
                     </span>
                   )}
@@ -530,12 +534,12 @@ function SummaryCard({
         <div className="space-y-3">
           {config.features.map((feature, idx) => (
             <div key={idx} className="flex gap-3">
-              <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success-500/10">
+              <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-success-500">
                 <CheckCircleIcon className="h-3 w-3 text-success-500" />
               </div>
               <div>
                 <p className="text-sm font-medium text-dark-100">{feature.title}</p>
-                <p className="text-xs text-dark-400">{feature.description}</p>
+                <p className="text-xs text-dark-300">{feature.description}</p>
               </div>
             </div>
           ))}
@@ -549,9 +553,9 @@ function SummaryCard({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="rounded-xl border border-error-500/20 bg-error-500/5 p-3"
+            className="rounded-xl border border-error-500 bg-gray-250 p-3 dark:bg-gray-850"
           >
-            <p className="text-sm text-error-400">{submitError}</p>
+            <p className="text-sm text-error-500">{submitError}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -586,8 +590,8 @@ function SummaryCard({
               className={cn(
                 'flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-base font-semibold transition-all duration-200',
                 canSubmit && !isSubmitting
-                  ? 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 hover:bg-accent-400 hover:shadow-accent-500/40 active:scale-[0.98]'
-                  : 'cursor-not-allowed bg-dark-800 text-dark-500',
+                  ? 'bg-accent-500 text-on-accent hover:bg-accent-400 active:scale-[0.98]'
+                  : 'cursor-not-allowed bg-gray-250 text-dark-300 dark:bg-gray-850',
               )}
             >
               {isSubmitting ? (
@@ -597,7 +601,7 @@ function SummaryCard({
                   {t('landing.pay', 'Pay')}{' '}
                   {selectedPeriod?.original_price_kopeks != null &&
                     selectedPeriod.original_price_kopeks > selectedPeriod.price_kopeks && (
-                      <span className="mr-1 text-sm font-normal text-white/50 line-through">
+                      <span className="mr-1 text-sm font-normal text-white/60 line-through">
                         {formatPrice(selectedPeriod.original_price_kopeks)}
                       </span>
                     )}
@@ -632,8 +636,8 @@ function SummaryCard({
           className={cn(
             'flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-base font-semibold transition-all duration-200',
             canSubmit && !isSubmitting
-              ? 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 hover:bg-accent-400 hover:shadow-accent-500/40 active:scale-[0.98]'
-              : 'cursor-not-allowed bg-dark-800 text-dark-500',
+              ? 'bg-accent-500 text-on-accent hover:bg-accent-400 active:scale-[0.98]'
+              : 'cursor-not-allowed bg-gray-250 text-dark-300 dark:bg-gray-850',
           )}
         >
           {isSubmitting ? (
@@ -643,7 +647,7 @@ function SummaryCard({
               {t('landing.pay', 'Pay')}{' '}
               {selectedPeriod?.original_price_kopeks != null &&
                 selectedPeriod.original_price_kopeks > selectedPeriod.price_kopeks && (
-                  <span className="mr-1 text-sm font-normal text-white/50 line-through">
+                  <span className="mr-1 text-sm font-normal text-white/60 line-through">
                     {formatPrice(selectedPeriod.original_price_kopeks)}
                   </span>
                 )}
@@ -657,7 +661,7 @@ function SummaryCard({
       {config.footer_text && (
         <SanitizedHtml
           html={config.footer_text}
-          className="text-center text-xs leading-relaxed text-dark-500 [&_a]:text-accent-400 [&_a]:underline [&_a]:underline-offset-2"
+          className="text-center text-xs leading-relaxed text-dark-300 [&_a]:text-accent-500 [&_a]:underline [&_a]:underline-offset-2"
         />
       )}
     </div>
@@ -667,10 +671,10 @@ function SummaryCard({
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-dark-800/80 text-lg font-bold tabular-nums text-dark-50 sm:h-12 sm:w-12 sm:text-xl">
+      <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-250 text-lg font-bold tabular-nums text-dark-50 dark:bg-gray-850 sm:h-12 sm:w-12 sm:text-xl">
         {String(value).padStart(2, '0')}
       </span>
-      <span className="mt-1 text-[10px] uppercase tracking-wider text-dark-500">{label}</span>
+      <span className="mt-1 text-xs uppercase tracking-wider text-dark-300">{label}</span>
     </div>
   );
 }
@@ -732,12 +736,12 @@ function DiscountBanner({
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="mb-8 overflow-hidden rounded-2xl border border-accent-500/30 bg-gradient-to-r from-accent-500/10 via-accent-500/5 to-transparent"
+      className="mb-8 overflow-hidden rounded-2xl border border-accent-500 bg-gray-250 dark:bg-gray-850"
     >
       <div className="flex flex-col items-center gap-4 px-5 py-5 sm:flex-row sm:justify-between">
         {/* Left: badge + text */}
         <div className="flex items-center gap-3">
-          <span className="shrink-0 rounded-full bg-accent-500 px-3 py-1 text-sm font-bold text-on-accent shadow-lg shadow-accent-500/25">
+          <span className="shrink-0 rounded-full bg-accent-500 px-3 py-1 text-sm font-bold text-black">
             -{discount.percent}%
           </span>
           {discount.badge_text && (
@@ -750,13 +754,13 @@ function DiscountBanner({
           {timeLeft.days > 0 && (
             <>
               <TimeUnit value={timeLeft.days} label={t('landing.discount.days', 'd')} />
-              <span className="text-lg font-bold text-dark-500">:</span>
+              <span className="text-lg font-bold text-dark-300">:</span>
             </>
           )}
           <TimeUnit value={timeLeft.hours} label={t('landing.discount.hours', 'h')} />
-          <span className="text-lg font-bold text-dark-500">:</span>
+          <span className="text-lg font-bold text-dark-300">:</span>
           <TimeUnit value={timeLeft.minutes} label={t('landing.discount.minutes', 'm')} />
-          <span className="text-lg font-bold text-dark-500">:</span>
+          <span className="text-lg font-bold text-dark-300">:</span>
           <TimeUnit value={timeLeft.seconds} label={t('landing.discount.seconds', 's')} />
         </div>
       </div>
@@ -1177,7 +1181,7 @@ export default function QuickPurchase() {
             {/* Period tabs */}
             {allPeriods.length > 0 && (
               <div>
-                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-400">
+                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-300">
                   {t('landing.choosePeriod', 'Choose period')}
                 </h2>
                 <PeriodTabs
@@ -1216,7 +1220,7 @@ export default function QuickPurchase() {
             {/* Tariff cards */}
             {showTariffCards && (
               <div>
-                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-400">
+                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-300">
                   {t('landing.chooseTariff', 'Choose tariff')}
                 </h2>
                 <div
@@ -1243,7 +1247,7 @@ export default function QuickPurchase() {
             {/* Payment methods */}
             {config.payment_methods.length > 0 && (
               <div>
-                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-400">
+                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-dark-300">
                   {t('landing.paymentMethod', 'Payment method')}
                 </h2>
                 <div

@@ -97,7 +97,7 @@ function LoadingSkeleton() {
   return (
     <div className="flex min-h-dvh items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-dark-600 border-t-accent-500" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-accent-500 dark:border-gray-700" />
       </div>
     </div>
   );
@@ -109,8 +109,8 @@ function ErrorState({ message }: { message: string }) {
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-error-500/10">
-          <WarningCircleIcon className="h-8 w-8 text-error-400" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+          <WarningCircleIcon className="h-8 w-8 text-error-500" />
         </div>
         <h2 className="text-lg font-semibold text-dark-50">{t('gift.failedTitle')}</h2>
         <p className="text-sm text-dark-300">{message}</p>
@@ -131,8 +131,8 @@ function DisabledState() {
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-dark-800/50">
-          <BanIcon className="h-8 w-8 text-dark-400" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+          <BanIcon className="h-8 w-8 text-dark-300" />
         </div>
         <h2 className="text-lg font-semibold text-dark-50">{t('gift.featureDisabled')}</h2>
         <p className="text-sm text-dark-300">{t('gift.redirecting')}</p>
@@ -161,21 +161,21 @@ function TariffCard({
       className={cn(
         'flex w-full items-center gap-4 rounded-2xl border p-4 text-start transition-all duration-200',
         isSelected
-          ? 'border-accent-500/50 bg-accent-500/5'
-          : 'border-dark-800/50 bg-dark-900/50 hover:border-dark-700/50',
+          ? 'border-accent-500 bg-gray-250 dark:bg-gray-850'
+          : 'border-gray-200/50 bg-gray-100/50 hover:border-gray-200/50 dark:border-gray-800/50 dark:bg-gray-900/50',
       )}
     >
       {/* Gift circle icon */}
       <div
         className={cn(
           'flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-colors',
-          isSelected ? 'bg-accent-500/20' : 'bg-dark-800/50',
+          isSelected ? 'border border-accent-500' : 'bg-gray-250 dark:bg-gray-850',
         )}
       >
         <GiftIcon
           className={cn(
             'h-6 w-6 transition-colors',
-            isSelected ? 'text-accent-400' : 'text-dark-400',
+            isSelected ? 'text-accent-500' : 'text-dark-300',
           )}
         />
       </div>
@@ -186,7 +186,7 @@ function TariffCard({
         <p
           className={cn(
             'text-xs font-medium uppercase tracking-wider transition-colors',
-            isSelected ? 'text-accent-400' : 'text-dark-400',
+            isSelected ? 'text-accent-500' : 'text-dark-300',
           )}
         >
           {tariff.traffic_limit_gb > 0
@@ -201,7 +201,7 @@ function TariffCard({
       <div
         className={cn(
           'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
-          isSelected ? 'border-accent-500 bg-accent-500' : 'border-dark-600',
+          isSelected ? 'border-accent-500 bg-accent-500' : 'border-gray-300 dark:border-gray-700',
         )}
       >
         {isSelected && <CheckIcon className="h-3.5 w-3.5 text-white" />}
@@ -230,8 +230,8 @@ function PeriodCard({
       className={cn(
         'flex w-full items-center justify-between rounded-2xl p-4 transition-all duration-200',
         isSelected
-          ? 'bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25'
-          : 'bg-dark-800/50 hover:bg-dark-700/50',
+          ? 'bg-accent-500 text-on-accent'
+          : 'bg-gray-250 hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800',
       )}
     >
       {/* Left: period + discount */}
@@ -241,7 +241,7 @@ function PeriodCard({
           <span
             className={cn(
               'rounded-md px-2 py-0.5 text-xs font-bold',
-              isSelected ? 'bg-white/20 text-on-accent' : 'bg-accent-500/20 text-accent-400',
+              isSelected ? 'bg-white/20 text-on-accent' : 'bg-accent-500 text-on-accent',
             )}
           >
             -{period.discount_percent}%
@@ -251,12 +251,14 @@ function PeriodCard({
 
       {/* Right: prices */}
       <div className="flex flex-col items-end gap-0.5">
-        <span className={cn('text-lg font-bold', isSelected ? 'text-white' : 'text-accent-400')}>
+        <span
+          className={cn('text-lg font-bold', isSelected ? 'text-on-accent' : 'text-accent-500')}
+        >
           {formatPrice(period.price_kopeks)}
         </span>
         {hasDiscount && period.original_price_kopeks != null && (
           <span
-            className={cn('text-xs line-through', isSelected ? 'text-white/50' : 'text-dark-500')}
+            className={cn('text-xs line-through', isSelected ? 'text-white/60' : 'text-dark-300')}
           >
             {formatPrice(period.original_price_kopeks)}
           </span>
@@ -281,7 +283,7 @@ function PaymentModeToggle({
     <div
       role="group"
       aria-label={t('gift.paymentMode')}
-      className="flex rounded-xl bg-dark-800/50 p-1"
+      className="flex rounded-xl bg-gray-250 p-1 dark:bg-gray-850"
     >
       <button
         type="button"
@@ -290,8 +292,8 @@ function PaymentModeToggle({
         className={cn(
           'flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200',
           mode === 'balance'
-            ? 'bg-dark-700 text-dark-50 shadow-sm'
-            : 'text-dark-400 hover:text-dark-200',
+            ? 'bg-gray-300 text-dark-50 shadow-sm dark:bg-gray-700'
+            : 'text-dark-300 hover:text-dark-200',
         )}
       >
         {balanceLabel}
@@ -303,8 +305,8 @@ function PaymentModeToggle({
         className={cn(
           'flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200',
           mode === 'gateway'
-            ? 'bg-dark-700 text-dark-50 shadow-sm'
-            : 'text-dark-400 hover:text-dark-200',
+            ? 'bg-gray-300 text-dark-50 shadow-sm dark:bg-gray-700'
+            : 'text-dark-300 hover:text-dark-200',
         )}
       >
         {t('gift.viaGateway')}
@@ -333,8 +335,8 @@ function PaymentMethodCard({
       className={cn(
         'rounded-2xl border transition-all duration-200',
         isSelected
-          ? 'border-accent-500/50 bg-accent-500/5'
-          : 'border-dark-800/50 bg-dark-900/50 hover:border-dark-700/50',
+          ? 'border-accent-500 bg-gray-250 dark:bg-gray-850'
+          : 'border-gray-200/50 bg-gray-100/50 hover:border-gray-200/50 dark:border-gray-800/50 dark:bg-gray-900/50',
       )}
     >
       <button
@@ -345,20 +347,20 @@ function PaymentMethodCard({
         className="flex w-full items-center gap-4 p-4 text-start"
       >
         {method.icon_url && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-dark-800/50">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-250 dark:bg-gray-850">
             <img src={method.icon_url} alt="" className="h-6 w-6 object-contain" />
           </div>
         )}
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-dark-100">{method.display_name}</p>
           {method.description && (
-            <p className="mt-0.5 truncate text-xs text-dark-400">{method.description}</p>
+            <p className="mt-0.5 truncate text-xs text-dark-300">{method.description}</p>
           )}
         </div>
         <div
           className={cn(
             'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
-            isSelected ? 'border-accent-500 bg-accent-500' : 'border-dark-600',
+            isSelected ? 'border-accent-500 bg-accent-500' : 'border-gray-300 dark:border-gray-700',
           )}
         >
           {isSelected && <div className="h-2 w-2 rounded-full bg-white" />}
@@ -366,7 +368,7 @@ function PaymentMethodCard({
       </button>
 
       {isSelected && hasSubOptions && (
-        <div className="border-t border-dark-800/30 px-4 pb-4 pt-3">
+        <div className="border-t border-gray-200/30 px-4 pb-4 pt-3 dark:border-gray-800/30">
           <div className="flex flex-wrap gap-2">
             {method.sub_options!.map((opt) => (
               <button
@@ -376,8 +378,8 @@ function PaymentMethodCard({
                 className={cn(
                   'rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200',
                   selectedSubOption === opt.id
-                    ? 'bg-accent-500 text-on-accent shadow-sm shadow-accent-500/25'
-                    : 'bg-dark-800/50 text-dark-300 hover:bg-dark-700/50',
+                    ? 'bg-accent-500 text-on-accent'
+                    : 'bg-gray-250 text-dark-300 hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800',
                 )}
               >
                 {opt.name}
@@ -554,7 +556,7 @@ function BuyTabContent({
       {/* Tariff selection */}
       {showTariffCards && (
         <div>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-300">
             {t('gift.selectTariff')}
           </h2>
           <div role="radiogroup" aria-label={t('gift.chooseTariff')} className="space-y-2">
@@ -572,22 +574,22 @@ function BuyTabContent({
 
       {/* Selected tariff description */}
       {selectedTariff?.description && (
-        <div className="rounded-xl border border-dark-800/30 bg-dark-800/20 px-4 py-3">
+        <div className="rounded-xl border border-gray-200/30 bg-gray-250 px-4 py-3 dark:border-gray-800/30 dark:bg-gray-850">
           <p className="text-sm text-dark-300">{selectedTariff.description}</p>
         </div>
       )}
 
       {/* Promo group banner */}
       {config.promo_group_name && (
-        <div className="flex items-center gap-3 rounded-xl border border-success-500/30 bg-success-500/10 p-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-success-500/20">
-            <SparklesIcon className="h-4 w-4 text-success-400" />
+        <div className="flex items-center gap-3 rounded-xl border border-success-500 bg-gray-250 p-3 dark:bg-gray-850">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-success-500">
+            <SparklesIcon className="h-4 w-4 text-success-500" />
           </div>
           <div>
-            <div className="text-sm font-medium text-success-400">
+            <div className="text-sm font-medium text-success-500">
               {t('subscription.promoGroup.yourGroup', { name: config.promo_group_name })}
             </div>
-            <div className="text-xs text-dark-400">
+            <div className="text-xs text-dark-300">
               {t('subscription.promoGroup.personalDiscountsApplied')}
             </div>
           </div>
@@ -596,11 +598,11 @@ function BuyTabContent({
 
       {/* Active discount banner */}
       {config.active_discount_percent != null && config.active_discount_percent > 0 && (
-        <div className="flex items-center gap-3 rounded-xl border border-warning-500/30 bg-warning-500/10 p-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-warning-500/20">
-            <SparklesIcon className="h-4 w-4 text-warning-400" />
+        <div className="flex items-center gap-3 rounded-xl border border-warning-500 bg-gray-250 p-3 dark:bg-gray-850">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-warning-500">
+            <SparklesIcon className="h-4 w-4 text-warning-500" />
           </div>
-          <div className="text-sm font-medium text-warning-400">
+          <div className="text-sm font-medium text-warning-500">
             {t('promo.discountApplied')} -{config.active_discount_percent}%
           </div>
         </div>
@@ -609,7 +611,7 @@ function BuyTabContent({
       {/* Period selection */}
       {periodsForDisplay.length > 0 && (
         <div>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-300">
             {t('gift.selectPeriod')}
           </h2>
           <div className="space-y-2">
@@ -627,7 +629,7 @@ function BuyTabContent({
 
       {/* Payment mode toggle */}
       <div>
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-400">
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-300">
           {t('gift.paymentMode')}
         </h2>
         <PaymentModeToggle
@@ -672,9 +674,9 @@ function BuyTabContent({
 
       {/* Summary / Balance info */}
       {paymentMode === 'balance' && (
-        <div className="rounded-2xl border border-dark-800/50 bg-dark-900/50 p-4">
+        <div className="rounded-2xl border border-gray-200/50 bg-gray-100/50 p-4 dark:border-gray-800/50 dark:bg-gray-900/50">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-dark-400">{t('gift.yourBalance')}</span>
+            <span className="text-sm text-dark-300">{t('gift.yourBalance')}</span>
             <span className="text-sm font-semibold text-dark-200">
               {formatPrice(config.balance_kopeks)}
             </span>
@@ -689,13 +691,13 @@ function BuyTabContent({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="rounded-xl border border-warning-500/20 bg-warning-500/5 p-3"
+            className="rounded-xl border border-warning-500 bg-gray-250 p-3 dark:bg-gray-850"
           >
-            <p className="text-sm text-warning-400">
+            <p className="text-sm text-warning-500">
               {t('gift.insufficientBalance')}{' '}
               <Link
                 to="/balance"
-                className="font-medium text-accent-400 underline underline-offset-2"
+                className="font-medium text-accent-500 underline underline-offset-2"
               >
                 {t('gift.topUpBalance')}
               </Link>
@@ -711,9 +713,9 @@ function BuyTabContent({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="rounded-xl border border-error-500/20 bg-error-500/5 p-3"
+            className="rounded-xl border border-error-500 bg-gray-250 p-3 dark:bg-gray-850"
           >
-            <p className="text-sm text-error-400">{submitError}</p>
+            <p className="text-sm text-error-500">{submitError}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -726,8 +728,8 @@ function BuyTabContent({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-base font-semibold transition-all duration-200',
           canSubmit && !purchaseMutation.isPending
-            ? 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 hover:bg-accent-400 hover:shadow-accent-500/40 active:scale-[0.98]'
-            : 'cursor-not-allowed bg-dark-800 text-dark-500',
+            ? 'bg-accent-500 text-on-accent hover:bg-accent-400 active:scale-[0.98]'
+            : 'cursor-not-allowed bg-gray-250 text-dark-300 dark:bg-gray-850',
         )}
       >
         {purchaseMutation.isPending ? (
@@ -857,8 +859,8 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
     const result = activateMutation.data;
     return (
       <div className="flex flex-col items-center gap-4 py-12 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-500/20">
-          <CheckCircleIcon className="h-8 w-8 text-accent-400" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-accent-500">
+          <CheckCircleIcon className="h-8 w-8 text-accent-500" />
         </div>
         <h2 className="text-xl font-bold text-dark-50">{t('gift.activateSuccess')}</h2>
         <p className="text-sm text-dark-300">
@@ -875,11 +877,11 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
     <div className="flex flex-col items-center gap-6 py-8">
       {/* Icon + title */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-500/20">
-          <KeyIcon className="h-8 w-8 text-accent-400" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-accent-500">
+          <KeyIcon className="h-8 w-8 text-accent-500" />
         </div>
         <h2 className="text-xl font-bold text-dark-50">{t('gift.activateTitle')}</h2>
-        <p className="max-w-xs text-sm text-dark-400">{t('gift.activateDescription')}</p>
+        <p className="max-w-xs text-sm text-dark-300">{t('gift.activateDescription')}</p>
       </div>
 
       {/* Code input */}
@@ -892,7 +894,7 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
             setActivateError(null);
           }}
           placeholder={t('gift.activateCodePlaceholder')}
-          className="w-full rounded-2xl border border-dark-700/50 bg-dark-800/50 px-6 py-4 text-center font-mono text-sm text-dark-50 placeholder-dark-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/25"
+          className="w-full rounded-2xl border border-gray-200/50 bg-gray-250 px-6 py-4 text-center font-mono text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
           aria-label={t('gift.activateTitle')}
         />
 
@@ -930,9 +932,9 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="w-full max-w-sm rounded-xl border border-error-500/20 bg-error-500/5 p-3"
+            className="w-full max-w-sm rounded-xl border border-error-500 bg-gray-250 p-3 dark:bg-gray-850"
           >
-            <p className="text-center text-sm text-error-400">{activateError}</p>
+            <p className="text-center text-sm text-error-500">{activateError}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -945,8 +947,8 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
         className={cn(
           'w-full max-w-sm rounded-2xl px-6 py-4 text-base font-semibold transition-all duration-200',
           code.trim() && !activateMutation.isPending
-            ? 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 hover:bg-accent-400 active:scale-[0.98]'
-            : 'cursor-not-allowed bg-dark-800 text-dark-500',
+            ? 'bg-accent-500 text-on-accent hover:bg-accent-400 active:scale-[0.98]'
+            : 'cursor-not-allowed bg-gray-250 text-dark-300 dark:bg-gray-850',
         )}
       >
         {activateMutation.isPending ? (
@@ -975,9 +977,9 @@ function CopiedToast({ onDismiss }: { onDismiss: () => void }) {
       transition={{ duration: 0.2, ease: 'easeOut' }}
       className="fixed inset-x-0 bottom-6 z-50 flex justify-center"
     >
-      <div className="flex items-center gap-2 rounded-full border border-dark-700/50 bg-dark-900/95 px-5 py-2.5 shadow-2xl shadow-black/40 backdrop-blur-md">
-        <CheckIcon className="h-4 w-4 text-success-400" />
-        <span className="text-sm font-medium text-success-400">{t('gift.shareToastCopied')}</span>
+      <div className="flex items-center gap-2 rounded-full border border-gray-200/50 bg-gray-100/95 px-5 py-2.5 shadow-2xl shadow-black/40 backdrop-blur-md dark:border-gray-800/50 dark:bg-gray-900/95">
+        <CheckIcon className="h-4 w-4 text-success-500" />
+        <span className="text-sm font-medium text-success-500">{t('gift.shareToastCopied')}</span>
       </div>
     </motion.div>
   );
@@ -1034,7 +1036,7 @@ function SentGiftCard({ gift }: { gift: SentGift }) {
   const handleDismissToast = useCallback(() => setShowToast(false), []);
 
   return (
-    <div className="rounded-2xl border border-dark-800/50 bg-dark-900/50 p-4">
+    <div className="rounded-2xl border border-gray-200/50 bg-gray-100/50 p-4 dark:border-gray-800/50 dark:bg-gray-900/50">
       {/* Header: tariff name + status badge */}
       <div className="mb-3 flex items-start justify-between">
         <h3 className="text-base font-bold text-dark-50">{gift.tariff_name ?? t('gift.tariff')}</h3>
@@ -1042,10 +1044,10 @@ function SentGiftCard({ gift }: { gift: SentGift }) {
           className={cn(
             'rounded-lg px-2.5 py-1 text-xs font-bold',
             isActivated
-              ? 'bg-dark-700 text-dark-400'
+              ? 'bg-gray-300 text-dark-300 dark:bg-gray-700'
               : isAvailable
-                ? 'bg-success-500/20 text-success-400'
-                : 'bg-dark-700 text-dark-400',
+                ? 'bg-success-500 text-on-success'
+                : 'bg-gray-300 text-dark-300 dark:bg-gray-700',
           )}
         >
           {statusText}
@@ -1053,7 +1055,7 @@ function SentGiftCard({ gift }: { gift: SentGift }) {
       </div>
 
       {/* Info line */}
-      <p className="mb-3 text-xs text-dark-400">
+      <p className="mb-3 text-xs text-dark-300">
         {formatGiftDate(gift.created_at)}
         {' \u2022 '}
         {gift.period_days} {t('gift.daysShort')}
@@ -1085,14 +1087,14 @@ function SentGiftCard({ gift }: { gift: SentGift }) {
 
       {/* Activated by */}
       {isActivated && gift.activated_by_username && (
-        <p className="mt-2 text-xs text-dark-500">
+        <p className="mt-2 text-xs text-dark-300">
           {t('gift.activatedBy', { username: gift.activated_by_username })}
         </p>
       )}
 
       {/* Sent to */}
       {gift.gift_recipient_value && (
-        <p className="mt-1 text-xs text-dark-500">
+        <p className="mt-1 text-xs text-dark-300">
           {t('gift.sentTo', { recipient: gift.gift_recipient_value })}
         </p>
       )}
@@ -1115,17 +1117,17 @@ function ReceivedGiftCard({ gift }: { gift: ReceivedGift }) {
   const statusText = t(statusKey);
 
   return (
-    <div className="rounded-2xl border border-dark-800/50 bg-dark-900/50 p-4">
+    <div className="rounded-2xl border border-gray-200/50 bg-gray-100/50 p-4 dark:border-gray-800/50 dark:bg-gray-900/50">
       {/* Header */}
       <div className="mb-3 flex items-start justify-between">
         <h3 className="text-base font-bold text-dark-50">{gift.tariff_name ?? t('gift.tariff')}</h3>
-        <span className="rounded-lg bg-dark-700 px-2.5 py-1 text-xs font-bold text-dark-400">
+        <span className="rounded-lg bg-gray-300 px-2.5 py-1 text-xs font-bold text-dark-300 dark:bg-gray-700">
           {statusText}
         </span>
       </div>
 
       {/* Info line */}
-      <p className="mb-2 text-xs text-dark-400">
+      <p className="mb-2 text-xs text-dark-300">
         {formatGiftDate(gift.created_at)}
         {' \u2022 '}
         {gift.period_days} {t('gift.daysShort')}
@@ -1135,14 +1137,14 @@ function ReceivedGiftCard({ gift }: { gift: ReceivedGift }) {
 
       {/* Sender */}
       {gift.sender_display && (
-        <p className="text-xs text-dark-500">
+        <p className="text-xs text-dark-300">
           {t('gift.pending.from', { sender: gift.sender_display })}
         </p>
       )}
 
       {/* Gift message */}
       {gift.gift_message && (
-        <div className="mt-2 rounded-xl bg-dark-800/50 p-3">
+        <div className="mt-2 rounded-xl bg-gray-250 p-3 dark:bg-gray-850">
           <p className="text-xs italic text-dark-300">{gift.gift_message}</p>
         </div>
       )}
@@ -1201,7 +1203,7 @@ function MyGiftsTabContent() {
   if (sentError || receivedError) {
     return (
       <div className="flex flex-col items-center gap-4 py-12 text-center">
-        <p className="text-sm text-error-400">{t('gift.failedDesc')}</p>
+        <p className="text-sm text-error-500">{t('gift.failedDesc')}</p>
       </div>
     );
   }
@@ -1209,11 +1211,11 @@ function MyGiftsTabContent() {
   if (isEmpty) {
     return (
       <div className="flex flex-col items-center gap-4 py-12 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-dark-800/50">
-          <InboxIcon className="h-8 w-8 text-dark-400" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+          <InboxIcon className="h-8 w-8 text-dark-300" />
         </div>
         <h2 className="text-lg font-semibold text-dark-200">{t('gift.myGiftsEmpty')}</h2>
-        <p className="max-w-xs text-sm text-dark-400">{t('gift.myGiftsEmptyDesc')}</p>
+        <p className="max-w-xs text-sm text-dark-300">{t('gift.myGiftsEmptyDesc')}</p>
       </div>
     );
   }
@@ -1223,7 +1225,7 @@ function MyGiftsTabContent() {
       {/* Active gifts (awaiting activation) */}
       {hasActive && (
         <div>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-300">
             {t('gift.activeGiftsTitle')}
           </h2>
           <div className="space-y-3">
@@ -1237,7 +1239,7 @@ function MyGiftsTabContent() {
       {/* Activated gifts */}
       {hasActivated && (
         <div>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-300">
             {t('gift.activatedGiftsTitle')}
           </h2>
           <div className="space-y-3">
@@ -1251,7 +1253,7 @@ function MyGiftsTabContent() {
       {/* Received gifts */}
       {hasReceived && (
         <div>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-300">
             {t('gift.receivedGiftsTitle')}
           </h2>
           <div className="space-y-3">
@@ -1330,8 +1332,8 @@ export default function GiftSubscription() {
           transition={{ duration: 0.4 }}
           className="mb-6 flex items-center gap-3"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-500/20">
-            <GiftIcon className="h-5 w-5 text-accent-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
+            <GiftIcon className="h-5 w-5 text-accent-500" />
           </div>
           <h1 className="text-2xl font-bold text-dark-50">{t('gift.pageTitle')}</h1>
         </motion.div>
@@ -1341,7 +1343,7 @@ export default function GiftSubscription() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="mb-6 rounded-2xl bg-dark-800/50 p-1"
+          className="mb-6 rounded-2xl bg-gray-250 p-1 dark:bg-gray-850"
         >
           <div className="flex" role="tablist" aria-label={t('gift.pageTitle')}>
             {tabs.map((tab) => (
@@ -1357,7 +1359,7 @@ export default function GiftSubscription() {
                   'flex-1 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                   activeTab === tab.id
                     ? 'bg-accent-500 text-on-accent shadow-sm'
-                    : 'text-dark-400 hover:text-dark-200',
+                    : 'text-dark-300 hover:text-dark-200',
                 )}
               >
                 {tab.label}

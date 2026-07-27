@@ -35,7 +35,7 @@ function StatusBadge({
 
   if (isTrial) {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-warning-400/25 bg-warning-400/10 px-2 py-0.5 text-[10px] font-semibold text-warning-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-warning-500 px-2 py-0.5 text-xs font-semibold text-black">
         <svg className="h-2.5 w-2.5" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
         </svg>
@@ -45,10 +45,10 @@ function StatusBadge({
   }
 
   const color = isActive
-    ? 'bg-success-400/15 text-success-400 border-success-400/20'
+    ? 'bg-success-500 text-black'
     : isLimited
-      ? 'bg-warning-400/15 text-warning-400 border-warning-400/20'
-      : 'bg-error-400/15 text-error-400 border-error-400/20';
+      ? 'bg-warning-500 text-black'
+      : 'bg-error-500 text-black';
 
   const label = isActive
     ? t('subscription.statusActive', 'Активна')
@@ -60,7 +60,7 @@ function StatusBadge({
 
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${color}`}
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${color}`}
     >
       {label}
     </span>
@@ -100,7 +100,6 @@ export default function SubscriptionListCard({
     subscription.status === 'active' ||
     subscription.status === 'trial' ||
     subscription.status === 'limited';
-  const isExpired = subscription.status === 'expired' || subscription.status === 'disabled';
   const trafficLimit = subscription.traffic_limit_gb;
   const trafficUsed = subscription.traffic_used_gb;
   const isUnlimited = trafficLimit === 0;
@@ -111,30 +110,14 @@ export default function SubscriptionListCard({
       : 0;
   const trafficColor =
     trafficPercent >= 90
-      ? 'bg-error-400'
+      ? 'bg-error-500'
       : trafficPercent >= 70
-        ? 'bg-warning-400'
-        : 'bg-success-400';
+        ? 'bg-warning-500'
+        : 'bg-success-500';
 
-  const isLimitedStatus = subscription.status === 'limited';
+  const borderColor = g.cardBorder;
 
-  const borderColor =
-    isTrial || isLimitedStatus
-      ? 'rgba(251,191,36,0.2)'
-      : isExpired
-        ? 'rgba(255,59,92,0.15)'
-        : g.cardBorder;
-
-  const bgColor =
-    isTrial || isLimitedStatus
-      ? isDark
-        ? 'rgba(251,191,36,0.04)'
-        : 'rgba(251,191,36,0.03)'
-      : isExpired
-        ? isDark
-          ? 'rgba(255,59,92,0.04)'
-          : 'rgba(255,59,92,0.03)'
-        : g.cardBg;
+  const bgColor = g.cardBg;
 
   const footer = connect
     ? connectFooterState({

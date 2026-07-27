@@ -37,13 +37,15 @@ export function TimelineBlock({
                 isMobile={isMobile}
               />
               {!isLast && (
-                <div className={`w-0.5 flex-1 ${isLight ? 'bg-dark-700/40' : 'bg-dark-700'}`} />
+                <div
+                  className={`w-0.5 flex-1 ${isLight ? 'bg-gray-300/40 dark:bg-gray-700/40' : 'bg-gray-300 dark:bg-gray-700'}`}
+                />
               )}
             </div>
             {/* Right column: content */}
             <div className={`min-w-0 flex-1 ${isLast ? '' : 'pb-6'}`}>
               <h3 className="font-semibold text-dark-100">{getLocalizedText(block.title)}</h3>
-              <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-dark-400">
+              <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-dark-300">
                 {getLocalizedText(block.description)}
               </p>
               {renderBlockButtons(block.buttons, 'light')}

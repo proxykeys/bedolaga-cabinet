@@ -57,8 +57,8 @@ export function TariffPickerGrid({
     <>
       {/* Promo group discount banner */}
       {tariffs.some((tariff) => tariff.promo_group_name) && (
-        <div className="mb-4 flex items-center gap-3 rounded-xl border border-success-500/30 bg-success-500/10 p-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success-500/20 text-success-400">
+        <div className="mb-4 flex items-center gap-3 rounded-xl border border-gray-200/40 bg-gray-250 p-3 dark:border-gray-800/40 dark:bg-gray-850">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-success-500">
             <svg
               className="h-5 w-5"
               fill="none"
@@ -74,12 +74,12 @@ export function TariffPickerGrid({
             </svg>
           </div>
           <div>
-            <div className="text-sm font-medium text-success-400">
+            <div className="text-sm font-medium text-success-500">
               {t('subscription.promoGroup.yourGroup', {
                 name: tariffs.find((tariff) => tariff.promo_group_name)?.promo_group_name,
               })}
             </div>
-            <div className="text-xs text-dark-400">
+            <div className="text-xs text-dark-300">
               {t('subscription.promoGroup.personalDiscountsApplied')}
             </div>
           </div>
@@ -160,14 +160,14 @@ export function TariffPickerGrid({
               <div
                 key={tariff.id}
                 className={`bento-card-hover p-5 text-left transition-all ${
-                  isCurrentTariff ? 'bento-card-glow border-accent-500' : ''
+                  isCurrentTariff ? 'bento-card-glow border-dark-50' : ''
                 }`}
               >
                 <div className="mb-3 flex items-start justify-between">
                   <div>
                     <div className="text-lg font-semibold text-dark-100">{tariff.name}</div>
                     {tariff.description && (
-                      <div className="mt-1 whitespace-pre-line text-sm text-dark-400">
+                      <div className="mt-1 whitespace-pre-line text-sm text-dark-300">
                         {tariff.description}
                       </div>
                     )}
@@ -178,11 +178,11 @@ export function TariffPickerGrid({
                 </div>
                 <div className="flex flex-wrap gap-4 text-sm">
                   <div className="flex items-center gap-1.5">
-                    <ArrowDownIcon className="h-4 w-4 text-accent-400" />
+                    <ArrowDownIcon className="h-4 w-4 text-accent-500" />
                     <span className="font-medium text-dark-200">{tariff.traffic_limit_label}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <DevicesIcon className="h-4 w-4 text-dark-400" />
+                    <DevicesIcon className="h-4 w-4 text-dark-300" />
                     <span className="text-dark-300">
                       {tariff.device_limit === 0
                         ? '∞'
@@ -191,7 +191,7 @@ export function TariffPickerGrid({
                   </div>
                   {tariff.traffic_reset_mode && tariff.traffic_reset_mode !== 'NO_RESET' && (
                     <div className="flex items-center gap-1.5">
-                      <RestartIcon className="h-4 w-4 text-dark-400" />
+                      <RestartIcon className="h-4 w-4 text-dark-300" />
                       <span className="text-dark-300">
                         {t(`subscription.trafficReset.${tariff.traffic_reset_mode}`)}
                       </span>
@@ -199,7 +199,7 @@ export function TariffPickerGrid({
                   )}
                 </div>
                 {/* Price info */}
-                <div className="mt-3 border-t border-dark-700/50 pt-3 text-sm text-dark-400">
+                <div className="mt-3 border-t border-gray-200/50 pt-3 text-sm text-dark-300 dark:border-gray-800/50">
                   {(() => {
                     const dailyPrice =
                       tariff.daily_price_kopeks ?? tariff.price_per_day_kopeks ?? 0;
@@ -211,11 +211,11 @@ export function TariffPickerGrid({
                       );
                       return (
                         <span className="flex items-center gap-2">
-                          <span className="font-medium text-accent-400">
+                          <span className="font-medium text-accent-500">
                             {formatPrice(promoDaily.price)}
                           </span>
                           {promoDaily.original && promoDaily.original > promoDaily.price && (
-                            <span className="text-xs text-dark-500 line-through">
+                            <span className="text-xs text-dark-300 line-through">
                               {formatPrice(promoDaily.original)}
                             </span>
                           )}
@@ -224,8 +224,8 @@ export function TariffPickerGrid({
                             <span
                               className={`rounded px-1.5 py-0.5 text-xs ${
                                 promoDaily.isPromoGroup
-                                  ? 'bg-success-500/20 text-success-400'
-                                  : 'bg-warning-500/20 text-warning-400'
+                                  ? 'bg-success-500 text-black'
+                                  : 'bg-warning-500 text-black'
                               }`}
                             >
                               -{promoDaily.percent}%
@@ -243,11 +243,11 @@ export function TariffPickerGrid({
                       return (
                         <span className="flex flex-wrap items-center gap-2">
                           <span>{t('subscription.from')}</span>
-                          <span className="font-medium text-accent-400">
+                          <span className="font-medium text-accent-500">
                             {formatPrice(promoPeriod.price)}
                           </span>
                           {promoPeriod.original && promoPeriod.original > promoPeriod.price && (
-                            <span className="text-xs text-dark-500 line-through">
+                            <span className="text-xs text-dark-300 line-through">
                               {formatPrice(promoPeriod.original)}
                             </span>
                           )}
@@ -255,8 +255,8 @@ export function TariffPickerGrid({
                             <span
                               className={`rounded px-1.5 py-0.5 text-xs ${
                                 promoPeriod.isPromoGroup
-                                  ? 'bg-success-500/20 text-success-400'
-                                  : 'bg-warning-500/20 text-warning-400'
+                                  ? 'bg-success-500 text-black'
+                                  : 'bg-warning-500 text-black'
                               }`}
                             >
                               -{promoPeriod.percent}%
@@ -266,7 +266,7 @@ export function TariffPickerGrid({
                       );
                     }
                     return (
-                      <span className="font-medium text-accent-400">
+                      <span className="font-medium text-accent-500">
                         {t('subscription.tariff.flexiblePayment')}
                       </span>
                     );
@@ -277,7 +277,7 @@ export function TariffPickerGrid({
                 <div className="mt-4 flex gap-2">
                   {isCurrentTariff ? (
                     subscription?.is_daily ? (
-                      <div className="flex-1 py-2 text-center text-sm text-dark-500">
+                      <div className="flex-1 py-2 text-center text-sm text-dark-300">
                         {t('subscription.currentTariff')}
                       </div>
                     ) : (

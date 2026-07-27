@@ -16,9 +16,9 @@ interface PaymentHealthTabProps {
 
 /** Green when healthy, amber when shaky, red when most attempts fail. */
 function rateColor(rate: number): string {
-  if (rate >= 90) return 'text-success-400';
-  if (rate >= 70) return 'text-warning-400';
-  return 'text-error-400';
+  if (rate >= 90) return 'text-success-500';
+  if (rate >= 70) return 'text-warning-500';
+  return 'text-error-500';
 }
 
 function barColor(rate: number): string {

@@ -60,7 +60,7 @@ export default function ReferralPartnerApply() {
   return (
     <div className="animate-fade-in space-y-6">
       <h1 className="text-2xl font-bold text-dark-50">{t('referral.partner.applyTitle')}</h1>
-      <p className="text-sm text-dark-400">{t('referral.partner.applyDesc')}</p>
+      <p className="text-sm text-dark-300">{t('referral.partner.applyDesc')}</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="bento-card space-y-4">
@@ -176,7 +176,7 @@ export default function ReferralPartnerApply() {
         </div>
 
         {applyMutation.isError && (
-          <div className="rounded-lg bg-error-500/10 p-3 text-sm text-error-400">
+          <div className="rounded-lg border border-error-500 bg-gray-250 p-3 text-sm text-error-500 dark:bg-gray-850">
             {t('referral.partner.applyError')}
           </div>
         )}

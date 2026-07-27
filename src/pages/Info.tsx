@@ -180,7 +180,7 @@ function ReplacementFaqItem({
   const sanitizedAnswer = useMemo(() => sanitizeRichHtml(item.a), [item.a]);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-dark-700 bg-dark-800/50 transition-all hover:border-dark-600">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-250 transition-all hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700">
       <button
         type="button"
         onClick={onToggle}
@@ -194,7 +194,10 @@ function ReplacementFaqItem({
         style={{ height }}
         className="overflow-hidden transition-[height] duration-300 ease-in-out"
       >
-        <div ref={contentRef} className="border-t border-dark-700/50 px-5 pb-4 pt-3">
+        <div
+          ref={contentRef}
+          className="border-t border-gray-200/50 px-5 pb-4 pt-3 dark:border-gray-800/50"
+        >
           <div
             className="prose prose-sm max-w-none text-dark-300"
             dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
@@ -394,18 +397,18 @@ export default function Info() {
     }
 
     if (!infoPage) {
-      return <div className="py-8 text-center text-dark-400">{t('info.noContent')}</div>;
+      return <div className="py-8 text-center text-dark-300">{t('info.noContent')}</div>;
     }
 
     if (infoPage.page_type === 'faq') {
       if (infoPageFaqItems.length === 0) {
-        return <div className="py-8 text-center text-dark-400">{t('info.noFaq')}</div>;
+        return <div className="py-8 text-center text-dark-300">{t('info.noFaq')}</div>;
       }
       return <ReplacementFaqView items={infoPageFaqItems} />;
     }
 
     if (!infoPageHtml) {
-      return <div className="py-8 text-center text-dark-400">{t('info.noContent')}</div>;
+      return <div className="py-8 text-center text-dark-300">{t('info.noContent')}</div>;
     }
 
     return (
@@ -445,7 +448,7 @@ export default function Info() {
       }
 
       if (!faqPages || faqPages.length === 0) {
-        return <div className="py-8 text-center text-dark-400">{t('info.noFaq')}</div>;
+        return <div className="py-8 text-center text-dark-300">{t('info.noFaq')}</div>;
       }
 
       return (
@@ -454,7 +457,7 @@ export default function Info() {
             <div key={faq.id} className="bento-card overflow-hidden p-0">
               <button
                 onClick={() => toggleFaq(faq.id)}
-                className="flex min-h-[52px] w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-dark-800/50"
+                className="flex min-h-[52px] w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-gray-300 dark:hover:bg-gray-800"
               >
                 <span className="font-medium">{faq.title}</span>
                 <ChevronIcon expanded={expandedFaq === faq.id} />
@@ -480,7 +483,7 @@ export default function Info() {
       }
 
       if (!rules?.content) {
-        return <div className="py-8 text-center text-dark-400">{t('info.noContent')}</div>;
+        return <div className="py-8 text-center text-dark-300">{t('info.noContent')}</div>;
       }
 
       return (
@@ -490,9 +493,9 @@ export default function Info() {
             dangerouslySetInnerHTML={{ __html: formatContent(rules.content) }}
           />
           {rules.updated_at && (
-            <p className="mt-6 border-t border-dark-700 pt-4 text-sm text-dark-400">
+<div className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
               {t('info.updatedAt')}: {new Date(rules.updated_at).toLocaleDateString(uiLocale())}
-            </p>
+</div>            </p>
           )}
         </div>
       );
@@ -508,7 +511,7 @@ export default function Info() {
       }
 
       if (!privacy?.content) {
-        return <div className="py-8 text-center text-dark-400">{t('info.noContent')}</div>;
+        return <div className="py-8 text-center text-dark-300">{t('info.noContent')}</div>;
       }
 
       return (
@@ -518,7 +521,7 @@ export default function Info() {
             dangerouslySetInnerHTML={{ __html: formatContent(privacy.content) }}
           />
           {privacy.updated_at && (
-            <p className="mt-6 border-t border-dark-700 pt-4 text-sm text-dark-400">
+            <p className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
               {t('info.updatedAt')}: {new Date(privacy.updated_at).toLocaleDateString(uiLocale())}
             </p>
           )}
@@ -536,7 +539,7 @@ export default function Info() {
       }
 
       if (!offer?.content) {
-        return <div className="py-8 text-center text-dark-400">{t('info.noContent')}</div>;
+        return <div className="py-8 text-center text-dark-300">{t('info.noContent')}</div>;
       }
 
       return (
@@ -546,7 +549,7 @@ export default function Info() {
             dangerouslySetInnerHTML={{ __html: formatContent(offer.content) }}
           />
           {offer.updated_at && (
-            <p className="mt-6 border-t border-dark-700 pt-4 text-sm text-dark-400">
+            <p className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
               {t('info.updatedAt')}: {new Date(offer.updated_at).toLocaleDateString(uiLocale())}
             </p>
           )}
@@ -564,7 +567,7 @@ export default function Info() {
       }
 
       if (!loyaltyData || loyaltyData.tiers.length === 0) {
-        return <div className="py-8 text-center text-dark-400">{t('info.noLoyaltyTiers')}</div>;
+        return <div className="py-8 text-center text-dark-300">{t('info.noLoyaltyTiers')}</div>;
       }
 
       const formatCurrency = (amount: number) => {
@@ -579,20 +582,20 @@ export default function Info() {
       const getStatusBadge = (tier: LoyaltyTierInfo) => {
         if (tier.is_current) {
           return (
-            <span className="rounded-full bg-accent-500/20 px-2 py-1 text-xs font-medium text-accent-400">
+            <span className="rounded-full bg-accent-500 px-2 py-1 text-xs font-medium text-black">
               {t('info.statusCurrent')}
             </span>
           );
         }
         if (tier.is_achieved) {
           return (
-            <span className="rounded-full bg-success-500/20 px-2 py-1 text-xs font-medium text-success-400">
+            <span className="rounded-full bg-success-500 px-2 py-1 text-xs font-medium text-black">
               {t('info.statusAchieved')}
             </span>
           );
         }
         return (
-          <span className="rounded-full bg-dark-600 px-2 py-1 text-xs font-medium text-dark-400">
+          <span className="rounded-full bg-gray-350 px-2 py-1 text-xs font-medium text-dark-300 dark:bg-gray-650">
             {t('info.statusLocked')}
           </span>
         );
@@ -614,15 +617,15 @@ export default function Info() {
             <h3 className="mb-4 text-lg font-semibold text-dark-50">{t('info.yourProgress')}</h3>
 
             <div className="mb-4 grid grid-cols-2 gap-4">
-              <div className="rounded-xl bg-dark-800/50 p-3">
-                <div className="mb-1 text-xs text-dark-400">{t('info.totalSpent')}</div>
+              <div className="rounded-xl bg-gray-250 p-3 dark:bg-gray-850">
+                <div className="mb-1 text-xs text-dark-300">{t('info.totalSpent')}</div>
                 <div className="truncate text-base font-bold text-dark-50 sm:text-lg">
                   {formatCurrency(loyaltyData.current_spent_rubles)}
                 </div>
               </div>
-              <div className="rounded-xl bg-dark-800/50 p-3">
-                <div className="mb-1 text-xs text-dark-400">{t('info.currentStatus')}</div>
-                <div className="truncate text-base font-bold text-accent-400 sm:text-lg">
+              <div className="rounded-xl bg-gray-250 p-3 dark:bg-gray-850">
+                <div className="mb-1 text-xs text-dark-300">{t('info.currentStatus')}</div>
+                <div className="truncate text-base font-bold text-accent-500 sm:text-lg">
                   {loyaltyData.current_tier_name || '-'}
                 </div>
               </div>
@@ -631,7 +634,7 @@ export default function Info() {
             {/* Progress bar to next tier */}
             {loyaltyData.next_tier_name && loyaltyData.next_tier_threshold_rubles ? (
               <div>
-                <div className="mb-2 flex flex-col gap-1 text-xs text-dark-400 sm:flex-row sm:justify-between">
+                <div className="mb-2 flex flex-col gap-1 text-xs text-dark-300 sm:flex-row sm:justify-between">
                   <span>
                     {t('info.nextStatus')}: {loyaltyData.next_tier_name}
                   </span>
@@ -645,18 +648,18 @@ export default function Info() {
                     )}
                   </span>
                 </div>
-                <div className="h-3 overflow-hidden rounded-full bg-dark-700">
+                <div className="h-3 overflow-hidden rounded-full bg-gray-300 dark:bg-gray-700">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-accent-500 to-accent-400 transition-all duration-500"
                     style={{ width: `${Math.min(100, loyaltyData.progress_percent)}%` }}
                   />
                 </div>
-                <div className="mt-1 text-right text-xs text-dark-400">
+                <div className="mt-1 text-right text-xs text-dark-300">
                   {loyaltyData.progress_percent.toFixed(1)}%
                 </div>
               </div>
             ) : (
-              <div className="py-2 text-center font-medium text-success-400">
+              <div className="py-2 text-center font-medium text-success-500">
                 {t('info.allStatusesAchieved')}
               </div>
             )}
@@ -669,9 +672,9 @@ export default function Info() {
                 key={tier.id}
                 className={`bento-card p-4 transition-all ${
                   tier.is_current
-                    ? 'bg-accent-500/5 ring-2 ring-accent-500/50'
+                    ? 'bg-gray-250 ring-2 ring-accent-500/50 dark:bg-gray-850'
                     : tier.is_achieved
-                      ? 'bg-success-500/5'
+                      ? 'bg-gray-250 dark:bg-gray-850'
                       : 'opacity-70'
                 }`}
               >
@@ -680,17 +683,17 @@ export default function Info() {
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-xl ${
                         tier.is_current
-                          ? 'bg-accent-500/20 text-accent-400'
+                          ? 'border border-accent-500 text-accent-500'
                           : tier.is_achieved
-                            ? 'bg-success-500/20 text-success-400'
-                            : 'bg-dark-700 text-dark-400'
+                            ? 'border border-success-500 text-success-500'
+                            : 'bg-gray-300 text-dark-300 dark:bg-gray-700'
                       }`}
                     >
                       <StarIcon />
                     </div>
                     <div className="min-w-0">
                       <h4 className="truncate font-semibold text-dark-50">{tier.name}</h4>
-                      <p className="text-xs text-dark-400">
+                      <p className="text-xs text-dark-300">
                         {t('info.threshold')}: {formatCurrency(tier.threshold_rubles)}
                       </p>
                     </div>
@@ -700,28 +703,28 @@ export default function Info() {
 
                 {/* Discounts */}
                 {hasAnyDiscount(tier) ? (
-                  <div className="rounded-xl bg-dark-800/50 p-3">
-                    <div className="mb-2 text-xs text-dark-400">{t('info.discounts')}:</div>
+                  <div className="rounded-xl bg-gray-250 p-3 dark:bg-gray-850">
+                    <div className="mb-2 text-xs text-dark-300">{t('info.discounts')}:</div>
                     <div className="flex flex-wrap gap-2">
                       {tier.server_discount_percent > 0 && (
-                        <span className="rounded-lg bg-dark-700 px-2 py-1 text-xs text-dark-200">
+                        <span className="rounded-lg bg-gray-300 px-2 py-1 text-xs text-dark-200 dark:bg-gray-700">
                           {t('info.serverDiscount')}: -{tier.server_discount_percent}%
                         </span>
                       )}
                       {tier.traffic_discount_percent > 0 && (
-                        <span className="rounded-lg bg-dark-700 px-2 py-1 text-xs text-dark-200">
+                        <span className="rounded-lg bg-gray-300 px-2 py-1 text-xs text-dark-200 dark:bg-gray-700">
                           {t('info.trafficDiscount')}: -{tier.traffic_discount_percent}%
                         </span>
                       )}
                       {tier.device_discount_percent > 0 && (
-                        <span className="rounded-lg bg-dark-700 px-2 py-1 text-xs text-dark-200">
+                        <span className="rounded-lg bg-gray-300 px-2 py-1 text-xs text-dark-200 dark:bg-gray-700">
                           {t('info.deviceDiscount')}: -{tier.device_discount_percent}%
                         </span>
                       )}
                       {Object.entries(tier.period_discounts).map(([days, percent]) => (
                         <span
                           key={days}
-                          className="rounded-lg bg-dark-700 px-2 py-1 text-xs text-dark-200"
+                          className="rounded-lg bg-gray-300 px-2 py-1 text-xs text-dark-200 dark:bg-gray-700"
                         >
                           {t('info.periodDiscount', { days })}: -{percent}%
                         </span>
@@ -729,7 +732,7 @@ export default function Info() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-xs italic text-dark-500">{t('info.noDiscounts')}</div>
+                  <div className="text-xs italic text-dark-300">{t('info.noDiscounts')}</div>
                 )}
               </div>
             ))}
@@ -757,7 +760,7 @@ export default function Info() {
             className={`flex min-h-[44px] shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
               activeTab === tab.id
                 ? 'bg-accent-500 text-on-accent'
-                : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
+                : 'bg-gray-250 text-dark-300 hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800'
             }`}
           >
             {tab.emoji ? <span className="text-base">{tab.emoji}</span> : <tab.icon />}

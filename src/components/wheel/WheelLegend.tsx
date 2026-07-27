@@ -29,7 +29,7 @@ const WheelLegend = memo(function WheelLegend({ prizes }: WheelLegendProps) {
         return (
           <div
             key={prize.id}
-            className="flex items-center gap-3 rounded-lg border border-dark-700/30 bg-dark-800/50 p-2.5 transition-colors hover:bg-dark-800"
+            className="flex items-center gap-3 rounded-lg border border-gray-200/30 bg-gray-250 p-2.5 transition-colors hover:bg-gray-300 dark:border-gray-800/30 dark:bg-gray-850 dark:hover:bg-gray-800"
           >
             {/* Color indicator */}
             <div className="h-8 w-1 shrink-0 rounded-full" style={{ backgroundColor: color }} />

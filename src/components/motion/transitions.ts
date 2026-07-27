@@ -47,29 +47,33 @@ export const scaleTransition: Transition = {
   ease: easeOutExpo,
 };
 
-// Stagger container for lists
+// Stagger container for lists — decorative cascade removed (instant render)
 export const staggerContainer: Variants = {
   initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.02,
+      staggerChildren: 0,
+      delayChildren: 0,
     },
   },
   exit: {
     transition: {
-      staggerChildren: 0.02,
+      staggerChildren: 0,
       staggerDirection: -1,
     },
   },
 };
 
 // Stagger item (use with staggerContainer)
-// Exit is instant to avoid visual glitches in Telegram Mini App
+// Empty variants: the stagger cascade was removed per claude.com flat
+// aesthetic (staggerChildren: 0 in staggerContainer). Keeping opacity:0
+// in initial caused a race condition — children mounted AFTER the parent's
+// stagger cycle completed (async data load) never received the "animate"
+// event and stayed invisible. Empty variants render content immediately.
 export const staggerItem: Variants = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, transition: { duration: 0 } },
+  initial: {},
+  animate: {},
+  exit: {},
 };
 
 // Backdrop overlay
@@ -83,14 +87,15 @@ export const backdropTransition: Transition = {
   duration: 0.15,
 };
 
-// Button press animation values
+// Button press animation values — tap kept for tactile feedback,
+// hover scale removed per claude.com flat aesthetic (no scale on hover).
 export const buttonTap = {
   scale: 0.98,
 };
 
-export const buttonHover = {
-  scale: 1.02,
-};
+// buttonHover kept as empty object for API compatibility (consumers import it);
+// the scale-on-hover was removed per claude.com aesthetic.
+export const buttonHover = {};
 
 // Sheet/drawer slide up from bottom
 export const sheetSlideUp: Variants = {
