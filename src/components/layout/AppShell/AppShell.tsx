@@ -10,10 +10,10 @@ import { useTelegramSDK } from '@/hooks/useTelegramSDK';
 import { useHeaderHeight } from '@/hooks/useHeaderHeight';
 import { useTheme } from '@/hooks/useTheme';
 import { useBranding } from '@/hooks/useBranding';
+import { getUiLogoSrc } from '@/utils/brandLogo';
 import { useFeatureFlags } from '@/hooks/useFeatureFlags';
 import { useScrollRestoration } from '@/hooks/useScrollRestoration';
 import { themeColorsApi } from '@/api/themeColors';
-import { isLogoPreloaded } from '@/api/branding';
 import { cn } from '@/lib/utils';
 
 import WebSocketNotifications from '@/components/WebSocketNotifications';
@@ -57,7 +57,8 @@ export function AppShell({ children }: AppShellProps) {
   const { toggleTheme, isDark } = useTheme();
 
   // Extracted hooks
-  const { appName, logoLetter, hasCustomLogo, logoUrl } = useBranding();
+  const { appName } = useBranding();
+  const logoUrl = getUiLogoSrc(isDark);
   const { referralEnabled, wheelEnabled, hasContests, hasPolls, giftEnabled } = useFeatureFlags();
   useScrollRestoration();
   // Анимированный фон рендерит BackgroundHost в App (не перемонтируется при
@@ -206,25 +207,8 @@ export function AppShell({ children }: AppShellProps) {
             className="flex shrink-0 items-center gap-2.5 justify-self-start"
             onClick={handleNavClick}
           >
-            <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-250 dark:bg-gray-850">
-              <span
-                className={cn(
-                  'absolute text-sm font-bold text-accent-500 transition-opacity duration-200',
-                  hasCustomLogo && isLogoPreloaded() ? 'opacity-0' : 'opacity-100',
-                )}
-              >
-                {logoLetter}
-              </span>
-              {hasCustomLogo && logoUrl && (
-                <img
-                  src={logoUrl}
-                  alt={appName || 'Logo'}
-                  className={cn(
-                    'absolute h-full w-full object-contain transition-opacity duration-200',
-                    isLogoPreloaded() ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-              )}
+            <div className="flex h-8 items-center overflow-hidden">
+              <img src={logoUrl} alt={appName || 'Logo'} className="h-7 w-auto object-contain" />
             </div>
             <span className="text-base font-semibold text-dark-100">{appName}</span>
           </Link>
@@ -244,21 +228,50 @@ export function AppShell({ children }: AppShellProps) {
 
           {/* Right side actions — правая колонка grid, прижата к краю, не сжимается */}
           <div className="flex shrink-0 items-center gap-2 justify-self-end">
+            {/* Theme toggle — pill slider (v1 pattern, same as Login/Mobile).
+                Uses global .login-header-control from src/styles/auth.css.
+                `invisible` сохраняет слот в grid-разметке, чтобы nav-капсула
+                по центру не прыгала при canToggle=false. */}
             <button
               onClick={() => {
                 haptic.impact('light');
                 toggleTheme();
               }}
               className={cn(
-                'rounded-xl border border-gray-200/50 bg-gray-250 p-2 text-dark-300 transition-colors duration-200 hover:bg-gray-300 hover:text-accent-400 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800',
-                !canToggleTheme && 'hidden',
+                'login-header-control relative flex h-10 w-[72px] items-center rounded-full px-1.5 transition-colors duration-200',
+                !canToggleTheme && 'pointer-events-none invisible',
               )}
+              title={isDark ? t('theme.light') || 'Light mode' : t('theme.dark') || 'Dark mode'}
               aria-label={
                 isDark ? t('theme.light') || 'Light mode' : t('theme.dark') || 'Dark mode'
               }
-              title={isDark ? t('theme.light') || 'Light mode' : t('theme.dark') || 'Dark mode'}
             >
-              {isDark ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
+              <div
+                className={`absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border border-gray-600 transition-all duration-300 dark:border-gray-600 ${
+                  isDark ? 'left-[7px]' : 'left-[37px]'
+                }`}
+                style={{
+                  backgroundColor: isDark
+                    ? 'rgb(var(--color-gray-950))'
+                    : 'rgb(var(--color-gray-050))',
+                }}
+              />
+              <div className="pointer-events-none absolute inset-0 z-10">
+                <div
+                  className={`absolute left-[11px] top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center transition-colors duration-300 ${
+                    isDark ? 'text-gray-100' : 'text-gray-500'
+                  }`}
+                >
+                  <MoonIcon className="h-4 w-4" />
+                </div>
+                <div
+                  className={`absolute left-[41px] top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center transition-colors duration-300 ${
+                    isDark ? 'text-gray-500' : 'text-gray-900'
+                  }`}
+                >
+                  <SunIcon className="h-4 w-4" />
+                </div>
+              </div>
             </button>
             <TicketNotificationBell isAdmin={location.pathname.startsWith('/admin')} />
             <LanguageSwitcher />
@@ -267,7 +280,7 @@ export function AppShell({ children }: AppShellProps) {
                 haptic.impact('light');
                 logout();
               }}
-              className="rounded-xl border border-gray-200/50 bg-gray-250 p-2 text-dark-300 transition-colors duration-200 hover:bg-gray-300 hover:text-accent-400 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800"
+              className="login-header-control rounded-xl p-2 transition-colors duration-200"
               title={t('nav.logout')}
             >
               <LogoutIcon className="h-5 w-5" />
@@ -280,7 +293,6 @@ export function AppShell({ children }: AppShellProps) {
       <AppHeader
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
-        onCommandPaletteOpen={() => {}}
         headerHeight={headerHeight}
         isFullscreen={isMobileFullscreen}
         safeAreaInset={safeAreaInset}

@@ -8,6 +8,8 @@ import { brandingApi } from '../api/branding';
 import { isInTelegramWebApp, getTelegramInitData } from '../hooks/useTelegramSDK';
 import { tokenStorage } from '../utils/token';
 import { getSafeRedirectPath } from '../utils/safeRedirect';
+import { getUiLogoSrc } from '../utils/brandLogo';
+import { useTheme } from '../hooks/useTheme';
 import { CheckIcon, XIcon, ExclamationIcon } from '@/components/icons';
 import { safeLocal, safeSession } from '../utils/safeStorage';
 
@@ -44,8 +46,8 @@ export default function TelegramRedirect() {
   });
 
   const appName = branding ? branding.name : import.meta.env.VITE_APP_NAME || 'VPN';
-  const logoLetter = branding?.logo_letter || import.meta.env.VITE_APP_LOGO || 'V';
-  const logoUrl = branding ? brandingApi.getLogoUrl(branding) : null;
+  const { isDark } = useTheme();
+  const logoUrl = getUiLogoSrc(isDark);
 
   // Get redirect target from URL params (validated)
   const redirectTo = getSafeRedirectPath(searchParams.get('redirect'));
@@ -142,12 +144,8 @@ export default function TelegramRedirect() {
 
       <div className="relative w-full max-w-sm text-center">
         {/* Logo */}
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-accent-500">
-          {branding?.has_custom_logo && logoUrl ? (
-            <img src={logoUrl} alt={appName} className="h-full w-full object-cover" />
-          ) : (
-            <span className="text-3xl font-bold text-on-accent">{logoLetter}</span>
-          )}
+        <div className="mx-auto mb-6 flex h-20 items-center justify-center overflow-hidden">
+          <img src={logoUrl} alt={appName} className="h-16 w-auto object-contain" />
         </div>
 
         <h1 className="mb-2 text-2xl font-bold text-dark-50">{appName}</h1>

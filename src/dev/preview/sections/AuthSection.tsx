@@ -25,6 +25,8 @@ import { EmailIcon as CentralEmailIcon, ChevronDownIcon, UsersIcon } from '@/com
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ThemeTogglePill from '@/components/ThemeTogglePill';
 import LegalFooter from '@/components/LegalFooter';
+import { getUiLogoSrc } from '@/utils/brandLogo';
+import { useTheme } from '@/hooks/useTheme';
 
 /**
  * Auth section — full login card, provider icons, verification screens.
@@ -220,6 +222,8 @@ function FullLoginCard({
   passwordError?: string;
   referralCode?: string;
 }) {
+  const { isDark } = useTheme();
+  const logoUrl = getUiLogoSrc(isDark);
   const { t } = useTranslation();
   const [authMode, setAuthMode] = useState<'login' | 'register'>(mode);
 
@@ -231,12 +235,12 @@ function FullLoginCard({
         <LanguageSwitcher />
       </div>
       <div className="relative w-full max-w-md space-y-5">
-        {/* Logo & branding — minimal treatment, no card container (claude.com aesthetic) */}
+        {/* Logo & branding — minimal treatment, no card container (claude.com aesthetic).
+            Logo is theme-aware (dark/light PNG variants, v1 pattern). */}
         <div className="text-center">
           <div className="mx-auto mb-3 flex h-12 items-center justify-center overflow-hidden">
-            <span className="text-2xl font-bold text-gray-900 dark:text-gray-050">PK</span>
+            <img src={logoUrl} alt="ProxyKeys" className="h-10 w-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-050">ProxyKeys</h1>
           {referralCode && (
             <div className="mt-3 rounded-xl border border-gray-200 bg-gray-250 p-2.5 dark:border-gray-800 dark:bg-gray-850">
               <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">

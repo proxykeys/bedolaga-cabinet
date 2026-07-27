@@ -16,6 +16,7 @@ import {
   preloadLogo,
   isLogoPreloaded,
 } from '@/api/branding';
+import { getUiLogoSrc } from '@/utils/brandLogo';
 import { themeColorsApi } from '@/api/themeColors';
 import { cn } from '@/lib/utils';
 
@@ -41,18 +42,15 @@ import {
   CloseIcon,
   SunIcon,
   MoonIcon,
-  SearchIcon,
 } from './icons';
 
 const FALLBACK_NAME = import.meta.env.VITE_APP_NAME || 'Cabinet';
-const FALLBACK_LOGO = import.meta.env.VITE_APP_LOGO || 'V';
 
 import type { TelegramPlatform } from '@/hooks/useTelegramSDK';
 
 interface AppHeaderProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
-  onCommandPaletteOpen: () => void;
   headerHeight: number;
   isFullscreen: boolean;
   safeAreaInset: { top: number; bottom: number; left: number; right: number };
@@ -68,7 +66,6 @@ interface AppHeaderProps {
 export function AppHeader({
   mobileMenuOpen,
   setMobileMenuOpen,
-  onCommandPaletteOpen,
   headerHeight,
   isFullscreen,
   safeAreaInset,
@@ -86,7 +83,7 @@ export function AppHeader({
     useShallow((state) => ({ user: state.user, logout: state.logout, isAdmin: state.isAdmin })),
   );
   const { toggleTheme, isDark } = useTheme();
-  const { haptic, platform } = usePlatform();
+  const { haptic } = usePlatform();
   const [userPhotoUrl, setUserPhotoUrl] = useState<string | null>(null);
   const [logoLoaded, setLogoLoaded] = useState(() => isLogoPreloaded());
 
@@ -107,9 +104,9 @@ export function AppHeader({
   });
 
   const appName = branding ? branding.name : FALLBACK_NAME;
-  const logoLetter = branding?.logo_letter || FALLBACK_LOGO;
-  const hasCustomLogo = branding?.has_custom_logo || false;
-  const logoUrl = branding ? brandingApi.getLogoUrl(branding) : null;
+  // Static theme-aware logo (v1 pattern) — operator's branding API logo
+  // is intentionally ignored to preserve ProxyKeys identity.
+  const logoUrl = getUiLogoSrc(isDark);
 
   // Theme toggle visibility
   const { data: enabledThemes } = useQuery({
@@ -194,26 +191,16 @@ export function AppHeader({
               onClick={() => setMobileMenuOpen(false)}
               className={cn('flex flex-shrink-0 items-center gap-2.5', !appName && 'mr-4')}
             >
-              <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-linear-lg border border-gray-200/50 bg-gray-250 shadow-md dark:border-gray-800/50 dark:bg-gray-850">
-                <span
+              <div className="flex h-10 items-center overflow-hidden">
+                <img
+                  src={logoUrl}
+                  alt={appName || 'Logo'}
                   className={cn(
-                    'absolute text-lg font-bold text-accent-500 transition-opacity duration-200',
-                    hasCustomLogo && logoLoaded ? 'opacity-0' : 'opacity-100',
+                    'h-8 w-auto object-contain transition-opacity duration-200',
+                    logoLoaded ? 'opacity-100' : 'opacity-0',
                   )}
-                >
-                  {logoLetter}
-                </span>
-                {hasCustomLogo && logoUrl && (
-                  <img
-                    src={logoUrl}
-                    alt={appName || 'Logo'}
-                    className={cn(
-                      'absolute h-full w-full object-contain transition-opacity duration-200',
-                      logoLoaded ? 'opacity-100' : 'opacity-0',
-                    )}
-                    onLoad={() => setLogoLoaded(true)}
-                  />
-                )}
+                  onLoad={() => setLogoLoaded(true)}
+                />
               </div>
               {appName && (
                 <span className="whitespace-nowrap text-base font-semibold text-dark-100">
@@ -224,21 +211,8 @@ export function AppHeader({
 
             {/* Right side */}
             <div className="flex items-center gap-1.5">
-              {/* Command palette trigger (web only) */}
-              {platform !== 'telegram' && (
-                <button
-                  onClick={() => {
-                    haptic.impact('light');
-                    onCommandPaletteOpen();
-                  }}
-                  className="btn-icon hidden sm:flex"
-                  title="Search (⌘K)"
-                >
-                  <SearchIcon className="h-5 w-5" />
-                </button>
-              )}
-
-              {/* Theme toggle */}
+              {/* Theme toggle — pill slider (v1 pattern, same as Login page).
+                  Uses global .login-header-control from src/styles/auth.css. */}
               {canToggle && (
                 <button
                   onClick={() => {
@@ -246,25 +220,38 @@ export function AppHeader({
                     toggleTheme();
                     setMobileMenuOpen(false);
                   }}
-                  className="relative rounded-linear-lg border border-gray-200/50 bg-gray-250 p-2 text-dark-300 transition-all duration-200 hover:bg-gray-300 hover:text-accent-400 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800"
+                  className="login-header-control relative flex h-10 w-[72px] items-center rounded-full px-1.5 transition-colors duration-200"
                   title={isDark ? t('theme.light') || 'Light mode' : t('theme.dark') || 'Dark mode'}
+                  aria-label={
+                    isDark ? t('theme.light') || 'Light mode' : t('theme.dark') || 'Dark mode'
+                  }
                 >
-                  <div className="relative h-5 w-5">
+                  {/* Sliding knob */}
+                  <div
+                    className={`absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border border-gray-600 transition-all duration-300 dark:border-gray-600 ${
+                      isDark ? 'left-[7px]' : 'left-[37px]'
+                    }`}
+                    style={{
+                      backgroundColor: isDark
+                        ? 'rgb(var(--color-gray-950))'
+                        : 'rgb(var(--color-gray-050))',
+                    }}
+                  />
+                  {/* Icons layer (non-interactive) */}
+                  <div className="pointer-events-none absolute inset-0 z-10">
                     <div
-                      className={cn(
-                        'absolute inset-0 transition-all duration-300',
-                        isDark ? 'rotate-0 opacity-100' : 'rotate-90 opacity-0',
-                      )}
+                      className={`absolute left-[11px] top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center transition-colors duration-300 ${
+                        isDark ? 'text-gray-100' : 'text-gray-500'
+                      }`}
                     >
-                      <MoonIcon className="h-5 w-5" />
+                      <MoonIcon className="h-4 w-4" />
                     </div>
                     <div
-                      className={cn(
-                        'absolute inset-0 transition-all duration-300',
-                        isDark ? '-rotate-90 opacity-0' : 'rotate-0 opacity-100',
-                      )}
+                      className={`absolute left-[41px] top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center transition-colors duration-300 ${
+                        isDark ? 'text-gray-500' : 'text-gray-900'
+                      }`}
                     >
-                      <SunIcon className="h-5 w-5" />
+                      <SunIcon className="h-4 w-4" />
                     </div>
                   </div>
                 </button>
