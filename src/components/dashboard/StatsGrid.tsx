@@ -20,7 +20,7 @@ export default function StatsGrid({
   const { t } = useTranslation();
   const { formatAmount, currencySymbol } = useCurrency();
 
-  const chevron = <ChevronRightIcon className="h-4 w-4 shrink-0 text-dark-500" />;
+  const chevron = <ChevronRightIcon className="h-4 w-4 shrink-0 text-dark-300" />;
 
   return (
     <div className="grid grid-cols-2 gap-2.5">

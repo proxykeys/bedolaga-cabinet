@@ -169,20 +169,12 @@ export default function SubscriptionPurchase() {
               'subscription_is_expired' in purchaseOptions &&
               purchaseOptions.subscription_is_expired
             ) && (
-              <div
-                className="mb-6 rounded-[14px] p-4"
-                style={{
-                  background:
-                    'linear-gradient(135deg, rgba(255,184,0,0.08), rgba(var(--color-accent-400),0.06))',
-                  border: '1px solid rgba(255,184,0,0.15)',
-                }}
-              >
+              <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
                 <div className="flex items-start gap-3">
                   <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px]"
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-300/60 dark:bg-gray-700/60"
                     style={{
-                      background: 'rgba(255,184,0,0.12)',
-                      color: 'rgb(var(--color-urgent-400))',
+                      color: 'rgb(var(--color-warning-500))',
                     }}
                   >
                     <SparklesIcon className="h-4 w-4" />
@@ -190,11 +182,11 @@ export default function SubscriptionPurchase() {
                   <div>
                     <div
                       className="text-sm font-semibold"
-                      style={{ color: 'rgb(var(--color-urgent-400))' }}
+                      style={{ color: 'rgb(var(--color-warning-500))' }}
                     >
                       {t('subscription.trialUpgrade.title')}
                     </div>
-                    <div className="mt-1 text-[12px] text-dark-50/40">
+                    <div className="mt-1 text-sm text-dark-300">
                       {t('subscription.trialUpgrade.description')}
                     </div>
                   </div>
@@ -207,19 +199,12 @@ export default function SubscriptionPurchase() {
             purchaseOptions &&
             'subscription_is_expired' in purchaseOptions &&
             purchaseOptions.subscription_is_expired && (
-              <div
-                className="mb-6 rounded-[14px] p-4"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255,59,92,0.08), rgba(255,184,0,0.06))',
-                  border: '1px solid rgba(255,59,92,0.15)',
-                }}
-              >
+              <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
                 <div className="flex items-start gap-3">
                   <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px]"
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-300/60 dark:bg-gray-700/60"
                     style={{
-                      background: 'rgba(255,59,92,0.12)',
-                      color: 'rgb(var(--color-critical-500))',
+                      color: 'rgb(var(--color-error-500))',
                     }}
                   >
                     <ExclamationIcon className="h-4 w-4" />
@@ -227,11 +212,11 @@ export default function SubscriptionPurchase() {
                   <div>
                     <div
                       className="text-sm font-semibold"
-                      style={{ color: 'rgb(var(--color-critical-500))' }}
+                      style={{ color: 'rgb(var(--color-error-500))' }}
                     >
                       {t('subscription.expiredBanner.title')}
                     </div>
-                    <div className="mt-1 text-[12px] text-dark-50/40">
+                    <div className="mt-1 text-sm text-dark-300">
                       {t('subscription.expiredBanner.selectTariff')}
                     </div>
                   </div>
@@ -241,14 +226,14 @@ export default function SubscriptionPurchase() {
 
           {/* Legacy subscription notice */}
           {subscription && !subscription.is_trial && !subscription.tariff_id && (
-            <div className="mb-6 rounded-xl border border-accent-500/30 bg-accent-500/10 p-4">
-              <div className="mb-2 font-medium text-accent-400">
+            <div className="mb-6 rounded-xl border border-gray-200/40 bg-gray-250 p-4 dark:border-gray-800/40 dark:bg-gray-850">
+              <div className="mb-2 font-medium text-accent-500">
                 {t('subscription.legacy.selectTariffTitle')}
               </div>
               <div className="text-sm text-dark-300">
                 {t('subscription.legacy.selectTariffDescription')}
               </div>
-              <div className="mt-2 text-xs text-dark-500">
+              <div className="mt-2 text-xs text-dark-300">
                 {t('subscription.legacy.currentSubContinues')}
               </div>
             </div>

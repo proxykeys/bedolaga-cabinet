@@ -15,13 +15,11 @@ export function ThemeIcon({ getSvgHtml, svgIconKey, gradientStyle, isMobile }: T
 
   return (
     <div
-      className="flex shrink-0 items-center justify-center rounded-full"
+      className="flex shrink-0 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60"
       style={{
         width: size,
         height: size,
-        background: gradientStyle.background,
-        border: gradientStyle.border,
-        boxShadow: gradientStyle.boxShadow,
+        color: gradientStyle.color,
       }}
     >
       <div

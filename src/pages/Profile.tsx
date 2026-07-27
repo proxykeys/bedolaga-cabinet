@@ -288,22 +288,22 @@ export default function Profile() {
         <Card>
           <h2 className="mb-6 text-lg font-semibold text-dark-100">{t('profile.accountInfo')}</h2>
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-dark-800/50 py-3">
-              <span className="text-dark-400">{t('profile.telegramId')}</span>
+            <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
+              <span className="text-dark-300">{t('profile.telegramId')}</span>
               <span className="font-medium text-dark-100">{user?.telegram_id}</span>
             </div>
             {user?.username && (
-              <div className="flex items-center justify-between border-b border-dark-800/50 py-3">
-                <span className="text-dark-400">{t('profile.username')}</span>
+              <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
+                <span className="text-dark-300">{t('profile.username')}</span>
                 <span className="font-medium text-dark-100">@{user.username}</span>
               </div>
             )}
-            <div className="flex items-center justify-between border-b border-dark-800/50 py-3">
-              <span className="text-dark-400">{t('profile.name')}</span>
+            <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
+              <span className="text-dark-300">{t('profile.name')}</span>
               <span className="font-medium text-dark-100">{displayName(user)}</span>
             </div>
             <div className="flex items-center justify-between py-3">
-              <span className="text-dark-400">{t('profile.registeredAt')}</span>
+              <span className="text-dark-300">{t('profile.registeredAt')}</span>
               <span className="font-medium text-dark-100">
                 {user?.created_at ? new Date(user.created_at).toLocaleDateString(uiLocale()) : '-'}
               </span>
@@ -320,9 +320,9 @@ export default function Profile() {
               <h2 className="text-lg font-semibold text-dark-100">
                 {t('profile.accounts.goToAccounts')}
               </h2>
-              <p className="text-sm text-dark-400">{t('profile.accounts.subtitle')}</p>
+              <p className="text-sm text-dark-300">{t('profile.accounts.subtitle')}</p>
             </div>
-            <ArrowRightIcon className="h-5 w-5 text-dark-400" />
+            <ArrowRightIcon className="h-5 w-5 text-dark-300" />
           </div>
         </Card>
       </motion.div>
@@ -337,7 +337,7 @@ export default function Profile() {
               <h2 className="text-lg font-semibold text-dark-100">{t('referral.yourLink')}</h2>
               <Link
                 to="/referral"
-                className="flex items-center gap-1 text-accent-400 transition-colors hover:text-accent-300"
+                className="flex items-center gap-1 text-accent-500 transition-colors hover:text-accent-300"
               >
                 <span className="text-sm">{t('referral.title')}</span>
                 <ArrowRightIcon className="h-4 w-4" />
@@ -364,7 +364,7 @@ export default function Profile() {
                 </Button>
               </div>
             </div>
-            <p className="mt-3 text-sm text-dark-500">
+            <p className="mt-3 text-sm text-dark-300">
               {t('referral.shareHint', { percent: referralInfo?.commission_percent || 0 })}
             </p>
           </Card>
@@ -379,8 +379,8 @@ export default function Profile() {
 
             {user?.email ? (
               <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-dark-800/50 py-3">
-                  <span className="text-dark-400">Email</span>
+                <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
+                  <span className="text-dark-300">Email</span>
                   <div className="flex items-center gap-3">
                     <span className="font-medium text-dark-100">{user.email}</span>
                     {user.email_verified ? (
@@ -392,8 +392,8 @@ export default function Profile() {
                 </div>
 
                 {!user.email_verified && isEmailVerificationEnabled && (
-                  <div className="rounded-linear border border-warning-500/30 bg-warning-500/10 p-4">
-                    <p className="mb-4 text-sm text-warning-400">
+                  <div className="rounded-linear border border-warning-500 bg-gray-250 p-4 dark:bg-gray-850">
+                    <p className="mb-4 text-sm text-warning-500">
                       {t('profile.verificationRequired')}
                     </p>
                     <div className="flex items-center gap-3">
@@ -408,7 +408,7 @@ export default function Profile() {
                       </Button>
                       <button
                         onClick={() => setChangeEmailStep('email')}
-                        className="text-sm text-accent-400 transition-colors hover:text-accent-300"
+                        className="text-sm text-accent-500 transition-colors hover:text-accent-300"
                       >
                         {t('profile.changeEmail.button')}
                       </button>
@@ -418,10 +418,10 @@ export default function Profile() {
 
                 {user.email_verified && (
                   <div className="flex items-center justify-between">
-                    <p className="text-sm text-dark-400">{t('profile.canLoginWithEmail')}</p>
+                    <p className="text-sm text-dark-300">{t('profile.canLoginWithEmail')}</p>
                     <button
                       onClick={() => setChangeEmailStep('email')}
-                      className="flex items-center gap-2 text-sm text-accent-400 transition-colors hover:text-accent-300"
+                      className="flex items-center gap-2 text-sm text-accent-500 transition-colors hover:text-accent-300"
                     >
                       <PencilIcon />
                       <span>{t('profile.changeEmail.button')}</span>
@@ -439,8 +439,8 @@ export default function Profile() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="space-y-3 border-t border-dark-800/50 pt-4">
-                        <label className="block text-sm font-medium text-dark-400">
+                      <div className="space-y-3 border-t border-gray-200/50 pt-4 dark:border-gray-800/50">
+                        <label className="block text-sm font-medium text-dark-300">
                           {t('profile.changeEmail.newEmail')}
                         </label>
                         <input
@@ -458,7 +458,7 @@ export default function Profile() {
                           className="input w-full"
                           autoComplete="email"
                         />
-                        {changeError && <p className="text-sm text-error-400">{changeError}</p>}
+                        {changeError && <p className="text-sm text-error-500">{changeError}</p>}
                         <div className="flex items-center gap-3">
                           <Button
                             onClick={handleSendChangeCode}
@@ -469,7 +469,7 @@ export default function Profile() {
                           </Button>
                           <button
                             onClick={resetChangeEmail}
-                            className="text-sm text-dark-400 hover:text-dark-200"
+                            className="text-sm text-dark-300 hover:text-dark-200"
                           >
                             {t('common.cancel')}
                           </button>
@@ -486,13 +486,13 @@ export default function Profile() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="space-y-3 border-t border-dark-800/50 pt-4">
-                        <div className="rounded-linear border border-accent-500/30 bg-accent-500/10 p-3">
-                          <p className="text-sm text-accent-400">
+                      <div className="space-y-3 border-t border-gray-200/50 pt-4 dark:border-gray-800/50">
+                        <div className="rounded-linear border border-accent-500 bg-gray-250 p-3 dark:bg-gray-850">
+                          <p className="text-sm text-accent-500">
                             {t('profile.changeEmail.codeSentTo', { email: newEmail })}
                           </p>
                         </div>
-                        <label className="block text-sm font-medium text-dark-400">
+                        <label className="block text-sm font-medium text-dark-300">
                           {t('profile.changeEmail.verificationCode')}
                         </label>
                         <input
@@ -512,7 +512,7 @@ export default function Profile() {
                           className="input w-full text-center text-2xl tracking-[0.5em]"
                           autoComplete="one-time-code"
                         />
-                        {changeError && <p className="text-sm text-error-400">{changeError}</p>}
+                        {changeError && <p className="text-sm text-error-500">{changeError}</p>}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <Button
@@ -528,7 +528,7 @@ export default function Profile() {
                                 setChangeCode('');
                                 setChangeError(null);
                               }}
-                              className="text-sm text-dark-400 hover:text-dark-200"
+                              className="text-sm text-dark-300 hover:text-dark-200"
                             >
                               {t('common.back')}
                             </button>
@@ -536,7 +536,7 @@ export default function Profile() {
                           <button
                             onClick={handleResendChangeCode}
                             disabled={resendCooldown > 0 || requestEmailChangeMutation.isPending}
-                            className={`text-sm ${resendCooldown > 0 ? 'text-dark-500' : 'text-accent-400 hover:text-accent-300'}`}
+                            className={`text-sm ${resendCooldown > 0 ? 'text-dark-300' : 'text-accent-500 hover:text-accent-300'}`}
                           >
                             {resendCooldown > 0
                               ? t('profile.changeEmail.resendIn', { seconds: resendCooldown })
@@ -555,14 +555,14 @@ export default function Profile() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="border-t border-dark-800/50 pt-4">
-                        <div className="flex items-center gap-3 rounded-linear border border-success-500/30 bg-success-500/10 p-4">
+                      <div className="border-t border-gray-200/50 pt-4 dark:border-gray-800/50">
+                        <div className="flex items-center gap-3 rounded-linear border border-success-500 bg-gray-250 p-4 dark:bg-gray-850">
                           <CheckIcon />
                           <div>
-                            <p className="font-medium text-success-400">
+                            <p className="font-medium text-success-500">
                               {t('profile.changeEmail.success')}
                             </p>
-                            <p className="text-sm text-dark-400">{newEmail}</p>
+                            <p className="text-sm text-dark-300">{newEmail}</p>
                           </div>
                         </div>
                       </div>
@@ -572,7 +572,7 @@ export default function Profile() {
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm text-dark-400">{t('profile.linkEmailDescription')}</p>
+                <p className="text-sm text-dark-300">{t('profile.linkEmailDescription')}</p>
                 <Button variant="primary" onClick={() => navigate('/profile/accounts')}>
                   {t('profile.linkEmail')}
                 </Button>
@@ -582,12 +582,12 @@ export default function Profile() {
             {(error || success) && user?.email && (
               <div className="mt-4">
                 {error && (
-                  <div className="rounded-linear border border-error-500/30 bg-error-500/10 p-4 text-sm text-error-400">
+                  <div className="rounded-linear border border-error-500 bg-gray-250 p-4 text-sm text-error-500 dark:bg-gray-850">
                     {error}
                   </div>
                 )}
                 {success && (
-                  <div className="rounded-linear border border-success-500/30 bg-success-500/10 p-4 text-sm text-success-400">
+                  <div className="rounded-linear border border-success-500 bg-gray-250 p-4 text-sm text-success-500 dark:bg-gray-850">
                     {success}
                   </div>
                 )}
@@ -617,7 +617,7 @@ export default function Profile() {
                     <p className="font-medium text-dark-100">
                       {t('profile.notifications.subscriptionExpiry')}
                     </p>
-                    <p className="text-sm text-dark-400">
+                    <p className="text-sm text-dark-300">
                       {t('profile.notifications.subscriptionExpiryDesc')}
                     </p>
                   </div>
@@ -630,7 +630,7 @@ export default function Profile() {
                 </div>
                 {notificationSettings.subscription_expiry_enabled && (
                   <div className="flex items-center gap-3 pl-4">
-                    <span className="text-sm text-dark-400">
+                    <span className="text-sm text-dark-300">
                       {t('profile.notifications.daysBeforeExpiry')}
                     </span>
                     <select
@@ -651,13 +651,13 @@ export default function Profile() {
               </div>
 
               {/* Traffic Warning */}
-              <div className="space-y-3 border-t border-dark-800/50 pt-6">
+              <div className="space-y-3 border-t border-gray-200/50 pt-6 dark:border-gray-800/50">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-dark-100">
                       {t('profile.notifications.trafficWarning')}
                     </p>
-                    <p className="text-sm text-dark-400">
+                    <p className="text-sm text-dark-300">
                       {t('profile.notifications.trafficWarningDesc')}
                     </p>
                   </div>
@@ -670,7 +670,7 @@ export default function Profile() {
                 </div>
                 {notificationSettings.traffic_warning_enabled && (
                   <div className="flex items-center gap-3 pl-4">
-                    <span className="text-sm text-dark-400">
+                    <span className="text-sm text-dark-300">
                       {t('profile.notifications.atPercent')}
                     </span>
                     <select
@@ -691,13 +691,13 @@ export default function Profile() {
               </div>
 
               {/* Balance Low */}
-              <div className="space-y-3 border-t border-dark-800/50 pt-6">
+              <div className="space-y-3 border-t border-gray-200/50 pt-6 dark:border-gray-800/50">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-dark-100">
                       {t('profile.notifications.balanceLow')}
                     </p>
-                    <p className="text-sm text-dark-400">
+                    <p className="text-sm text-dark-300">
                       {t('profile.notifications.balanceLowDesc')}
                     </p>
                   </div>
@@ -710,7 +710,7 @@ export default function Profile() {
                 </div>
                 {notificationSettings.balance_low_enabled && (
                   <div className="flex items-center gap-3 pl-4">
-                    <span className="text-sm text-dark-400">
+                    <span className="text-sm text-dark-300">
                       {t('profile.notifications.threshold')}
                     </span>
                     <input
@@ -727,10 +727,10 @@ export default function Profile() {
               </div>
 
               {/* News */}
-              <div className="flex items-center justify-between border-t border-dark-800/50 pt-6">
+              <div className="flex items-center justify-between border-t border-gray-200/50 pt-6 dark:border-gray-800/50">
                 <div>
                   <p className="font-medium text-dark-100">{t('profile.notifications.news')}</p>
-                  <p className="text-sm text-dark-400">{t('profile.notifications.newsDesc')}</p>
+                  <p className="text-sm text-dark-300">{t('profile.notifications.newsDesc')}</p>
                 </div>
                 <Switch
                   checked={notificationSettings.news_enabled}
@@ -739,12 +739,12 @@ export default function Profile() {
               </div>
 
               {/* Promo Offers */}
-              <div className="flex items-center justify-between border-t border-dark-800/50 pt-6">
+              <div className="flex items-center justify-between border-t border-gray-200/50 pt-6 dark:border-gray-800/50">
                 <div>
                   <p className="font-medium text-dark-100">
                     {t('profile.notifications.promoOffers')}
                   </p>
-                  <p className="text-sm text-dark-400">
+                  <p className="text-sm text-dark-300">
                     {t('profile.notifications.promoOffersDesc')}
                   </p>
                 </div>
@@ -757,7 +757,7 @@ export default function Profile() {
               </div>
             </div>
           ) : (
-            <p className="text-dark-400">{t('profile.notifications.unavailable')}</p>
+            <p className="text-dark-300">{t('profile.notifications.unavailable')}</p>
           )}
         </Card>
       </motion.div>

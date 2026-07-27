@@ -52,7 +52,7 @@ export function CampaignDetailPanel({ campaignId, className }: CampaignDetailPan
         )}
 
         {isError && (
-          <div className="py-8 text-center text-sm text-error-400">
+          <div className="py-8 text-center text-sm text-error-500">
             {t('admin.referralNetwork.error')}
           </div>
         )}
@@ -73,7 +73,7 @@ export function CampaignDetailPanel({ campaignId, className }: CampaignDetailPan
                 <span
                   className={`rounded px-2 py-0.5 text-xs font-medium ${
                     campaign.is_active
-                      ? 'bg-success-500/20 text-success-400'
+                      ? 'bg-success-500 text-on-success'
                       : 'bg-dark-700/50 text-dark-400'
                   }`}
                 >
@@ -103,7 +103,7 @@ export function CampaignDetailPanel({ campaignId, className }: CampaignDetailPan
                   <span className="text-dark-400">
                     {t('admin.referralNetwork.campaign.totalRevenue')}
                   </span>
-                  <span className="font-mono text-accent-400">
+                  <span className="font-mono text-accent-500">
                     {formatKopeksToRubles(campaign.total_revenue_kopeks)} ₽
                   </span>
                 </div>

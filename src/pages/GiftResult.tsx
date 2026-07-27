@@ -35,7 +35,7 @@ function PendingState() {
         <h1 className="text-xl font-bold text-dark-50">
           {t('gift.processing', 'Processing your gift...')}
         </h1>
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t('gift.pendingDesc', 'Please wait while we process your payment')}
         </p>
       </div>
@@ -115,11 +115,11 @@ function CodeOnlySuccessState({
       </div>
 
       {/* Gift code display */}
-      <div className="w-full rounded-xl border border-accent-500/20 bg-accent-500/5 p-4">
-        <p className="mb-1 text-xs font-medium uppercase tracking-wider text-dark-400">
+      <div className="w-full rounded-xl border border-accent-500 bg-gray-250 p-4 dark:bg-gray-850">
+        <p className="mb-1 text-xs font-medium uppercase tracking-wider text-dark-300">
           {t('gift.codeLabel', 'Gift code')}
         </p>
-        <p className="select-all font-mono text-lg font-bold text-accent-400">{giftCode}</p>
+        <p className="select-all font-mono text-lg font-bold text-accent-500">{giftCode}</p>
       </div>
 
       {/* QR — получателю проще отсканировать, чем копировать ссылку.
@@ -131,27 +131,27 @@ function CodeOnlySuccessState({
       <p className="-mt-3 text-xs text-dark-400">{t('gift.qrHint', 'Scan to activate the gift')}</p>
 
       {/* Share message preview */}
-      <div className="w-full rounded-xl border border-dark-700/30 bg-dark-800/40 p-4 text-left">
+      <div className="w-full rounded-xl border border-gray-200/30 bg-gray-250 p-4 text-left dark:border-gray-800/30 dark:bg-gray-850">
         <p className="mb-3 text-sm font-medium text-dark-100">
           {t('gift.shareText', 'I have a gift for you! Activate it here:')}
         </p>
 
         {botLink && (
           <div className="mb-2">
-            <p className="mb-1 text-xs font-medium text-dark-400">
+            <p className="mb-1 text-xs font-medium text-dark-300">
               {t('gift.shareModalActivateVia', 'Activate via bot:')}
             </p>
-            <p className="truncate rounded-lg bg-dark-900/60 px-3 py-2 text-sm text-accent-400">
+            <p className="truncate rounded-lg bg-gray-100/60 px-3 py-2 text-sm text-accent-500 dark:bg-gray-900/60">
               {botLink}
             </p>
           </div>
         )}
 
         <div>
-          <p className="mb-1 text-xs font-medium text-dark-400">
+          <p className="mb-1 text-xs font-medium text-dark-300">
             {t('gift.shareModalActivateViaCabinet', 'Or via website:')}
           </p>
-          <p className="truncate rounded-lg bg-dark-900/60 px-3 py-2 text-sm text-accent-400">
+          <p className="truncate rounded-lg bg-gray-100/60 px-3 py-2 text-sm text-accent-500 dark:bg-gray-900/60">
             {cabinetLink}
           </p>
         </div>
@@ -164,8 +164,8 @@ function CodeOnlySuccessState({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-bold transition-all duration-200 active:scale-[0.98]',
           copied
-            ? 'bg-success-500/20 text-success-400'
-            : 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 hover:bg-accent-400',
+            ? 'bg-success-500 text-on-success'
+            : 'bg-accent-500 text-on-accent hover:bg-accent-400',
         )}
       >
         {copied ? (
@@ -184,7 +184,7 @@ function CodeOnlySuccessState({
       <button
         type="button"
         onClick={() => navigate('/gift?tab=myGifts')}
-        className="w-full rounded-xl border border-dark-700/50 px-6 py-3 text-sm font-medium text-dark-300 transition-colors hover:bg-dark-800/50"
+        className="w-full rounded-xl border border-gray-200/50 px-6 py-3 text-sm font-medium text-dark-300 transition-colors hover:bg-gray-300 dark:border-gray-800/50 dark:hover:bg-gray-800"
       >
         {t('gift.tabMyGifts', 'My Gifts')}
       </button>
@@ -224,7 +224,7 @@ function DeliveredState({
           </p>
         )}
         {recipientContact && (
-          <p className="mt-2 text-sm text-dark-400">
+          <p className="mt-2 text-sm text-dark-300">
             {t('gift.successDesc', {
               contact: recipientContact,
               defaultValue: `Sent to ${recipientContact}`,
@@ -232,13 +232,13 @@ function DeliveredState({
           </p>
         )}
         {giftMessage && (
-          <p className="mt-2 text-sm italic text-dark-400">&ldquo;{giftMessage}&rdquo;</p>
+          <p className="mt-2 text-sm italic text-dark-300">&ldquo;{giftMessage}&rdquo;</p>
         )}
       </div>
 
       {warning && (
-        <div className="w-full rounded-xl border border-warning-500/20 bg-warning-500/5 p-3">
-          <p className="text-sm text-warning-400">{t(`gift.warning.${warning}`)}</p>
+        <div className="w-full rounded-xl border border-warning-500 bg-gray-250 p-3 dark:bg-gray-850">
+          <p className="text-sm text-warning-500">{t(`gift.warning.${warning}`)}</p>
         </div>
       )}
 
@@ -274,8 +274,8 @@ function PendingActivationState({
       className="flex flex-col items-center gap-6 text-center"
     >
       {/* Info icon */}
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-warning-500/10">
-        <InfoIcon className="h-10 w-10 text-warning-400" />
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
+        <InfoIcon className="h-10 w-10 text-warning-500" />
       </div>
 
       <div>
@@ -288,14 +288,14 @@ function PendingActivationState({
           </p>
         )}
         {recipientContact && (
-          <p className="mt-2 text-sm text-dark-400">
+          <p className="mt-2 text-sm text-dark-300">
             {t('gift.successDesc', {
               contact: recipientContact,
               defaultValue: `Sent to ${recipientContact}`,
             })}
           </p>
         )}
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t(
             'gift.pendingActivationDesc',
             'The recipient currently has an active subscription. Your gift will be activated once their current subscription expires.',
@@ -304,8 +304,8 @@ function PendingActivationState({
       </div>
 
       {warning && (
-        <div className="w-full rounded-xl border border-warning-500/20 bg-warning-500/5 p-3">
-          <p className="text-sm text-warning-400">{t(`gift.warning.${warning}`)}</p>
+        <div className="w-full rounded-xl border border-warning-500 bg-gray-250 p-3 dark:bg-gray-850">
+          <p className="text-sm text-warning-500">{t(`gift.warning.${warning}`)}</p>
         </div>
       )}
 
@@ -336,7 +336,7 @@ function FailedState() {
         <h1 className="text-xl font-bold text-dark-50">
           {t('gift.failedTitle', 'Something went wrong')}
         </h1>
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t('gift.failedDesc', 'Your gift could not be processed. Please try again.')}
         </p>
       </div>
@@ -362,15 +362,15 @@ function PollErrorState() {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-warning-500/10">
-        <ExclamationIcon className="h-10 w-10 text-warning-400" />
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
+        <ExclamationIcon className="h-10 w-10 text-warning-500" />
       </div>
 
       <div>
         <h1 className="text-xl font-bold text-dark-50">
           {t('gift.pollErrorTitle', 'Could not check gift status')}
         </h1>
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t(
             'gift.pollErrorDesc',
             'Your purchase was successful. Check your dashboard for details.',
@@ -398,14 +398,14 @@ function PollTimedOutState({ onRetry }: { onRetry: () => void }) {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-dark-800/50">
-        <ClockIcon className="h-10 w-10 text-dark-400" />
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+        <ClockIcon className="h-10 w-10 text-dark-300" />
       </div>
       <div>
         <h1 className="text-xl font-bold text-dark-50">
           {t('gift.pollTimeout', 'Taking longer than expected')}
         </h1>
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t(
             'gift.pollTimeoutDesc',
             'Payment processing is taking longer than usual. You can try checking again.',
@@ -433,12 +433,12 @@ function NoTokenState() {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-dark-800/50">
-        <ExclamationIcon className="h-10 w-10 text-dark-400" />
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+        <ExclamationIcon className="h-10 w-10 text-dark-300" />
       </div>
       <div>
         <h1 className="text-xl font-bold text-dark-50">{t('gift.noToken', 'Invalid link')}</h1>
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t('gift.noTokenDesc', 'This gift link is invalid or has expired.')}
         </p>
       </div>
@@ -511,7 +511,7 @@ export default function GiftResult() {
     return (
       <div className="flex min-h-dvh items-center justify-center px-4">
         <div
-          className="w-full max-w-md rounded-2xl border border-dark-800/50 bg-dark-900/50 p-8"
+          className="w-full max-w-md rounded-2xl border border-gray-200/50 bg-gray-100/50 p-8 dark:border-gray-800/50 dark:bg-gray-900/50"
           aria-live="polite"
           aria-atomic="true"
         >
@@ -535,7 +535,7 @@ export default function GiftResult() {
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div
-        className="w-full max-w-md rounded-2xl border border-dark-800/50 bg-dark-900/50 p-8"
+        className="w-full max-w-md rounded-2xl border border-gray-200/50 bg-gray-100/50 p-8 dark:border-gray-800/50 dark:bg-gray-900/50"
         aria-live="polite"
         aria-atomic="true"
       >

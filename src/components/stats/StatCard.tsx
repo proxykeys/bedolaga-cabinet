@@ -11,11 +11,17 @@ export interface StatCardDelta {
 
 /** Soft tinted chip + matching value colour, in the spirit of the Remnawave stats. */
 const TONE = {
-  neutral: { chip: 'bg-dark-700/60 text-dark-300', value: 'text-dark-100' },
-  success: { chip: 'bg-success-500/15 text-success-400', value: 'text-success-400' },
-  accent: { chip: 'bg-accent-500/15 text-accent-400', value: 'text-accent-400' },
-  warning: { chip: 'bg-warning-500/15 text-warning-400', value: 'text-warning-400' },
-  error: { chip: 'bg-error-500/15 text-error-400', value: 'text-error-400' },
+  neutral: { chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-dark-300', value: 'text-dark-100' },
+  success: {
+    chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-success-500',
+    value: 'text-success-500',
+  },
+  accent: { chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-accent-500', value: 'text-accent-500' },
+  warning: {
+    chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-warning-500',
+    value: 'text-warning-500',
+  },
+  error: { chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-error-500', value: 'text-error-500' },
 } as const;
 
 interface StatCardProps {
@@ -52,7 +58,7 @@ export function StatCard({
   const trendStyle = delta ? (TREND_STYLES[delta.trend] ?? TREND_STYLES.stable) : null;
 
   return (
-    <div className="h-full rounded-xl bg-dark-800/30 p-3 transition-colors hover:bg-dark-800/50">
+    <div className="h-full rounded-xl bg-gray-250 p-3 transition-colors hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800">
       <div className="flex items-center justify-between gap-2">
         {loading && !label ? (
           // Карточка сама себе скелетон: страницам не нужно угадывать её высоту.
@@ -86,7 +92,7 @@ export function StatCard({
               <div className={`truncate text-lg font-semibold sm:text-xl ${valueClass}`}>
                 {value}
               </div>
-              {subValue && <div className="truncate text-xs text-dark-500">{subValue}</div>}
+              {subValue && <div className="truncate text-xs text-dark-300">{subValue}</div>}
             </>
           )}
         </div>

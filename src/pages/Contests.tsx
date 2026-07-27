@@ -65,8 +65,8 @@ export default function Contests() {
 
   if (error) {
     return (
-      <div className="card border-error-500/20 bg-error-500/10">
-        <p className="text-error-400">{t('contests.error')}</p>
+      <div className="card bg-gray-250 dark:bg-gray-850">
+        <p className="text-error-500">{t('contests.error')}</p>
       </div>
     );
   }
@@ -80,14 +80,14 @@ export default function Contests() {
 
       {/* Game Modal */}
       {selectedContest && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-dark-950/70 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-gray-1000/70 p-4 backdrop-blur-sm">
           <div
             className="bento-card max-h-[80vh] w-full max-w-lg overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-bold">{selectedContest.name}</h2>
-              <button onClick={handleCloseGame} className="text-dark-400 hover:text-dark-200">
+              <button onClick={handleCloseGame} className="text-dark-300 hover:text-dark-200">
                 <XIcon className="h-6 w-6" />
               </button>
             </div>
@@ -100,7 +100,7 @@ export default function Contests() {
 
             {result && (
               <div
-                className={`mb-4 rounded-lg p-4 ${result.is_winner ? 'bg-success-500/20 text-success-400' : 'bg-error-500/20 text-error-400'}`}
+                className={`mb-4 rounded-lg p-4 ${result.is_winner ? 'bg-success-500 text-on-success' : 'bg-error-500 text-on-error'}`}
               >
                 <p className="font-medium">{result.message}</p>
               </div>
@@ -120,7 +120,7 @@ export default function Contests() {
                         key={i}
                         onClick={() => handleSubmitAnswer(`${i}_${gameData.game_data.secret}`)}
                         disabled={submitAnswerMutation.isPending}
-                        className="flex aspect-square items-center justify-center rounded-lg bg-dark-700 text-2xl transition-colors hover:bg-dark-600"
+                        className="flex aspect-square items-center justify-center rounded-lg bg-gray-300 text-2xl transition-colors hover:bg-gray-350 dark:bg-gray-700 dark:hover:bg-gray-650"
                       >
                         {gameData.game_type === 'locks' ? '🔒' : '🎛'}
                       </button>
@@ -135,7 +135,7 @@ export default function Contests() {
                         key={i}
                         onClick={() => handleSubmitAnswer(flag)}
                         disabled={submitAnswerMutation.isPending}
-                        className="rounded-lg bg-dark-700 p-3 text-2xl transition-colors hover:bg-dark-600"
+                        className="rounded-lg bg-gray-300 p-3 text-2xl transition-colors hover:bg-gray-350 dark:bg-gray-700 dark:hover:bg-gray-650"
                       >
                         {flag}
                       </button>
@@ -164,14 +164,14 @@ export default function Contests() {
                     }}
                     className="space-y-3"
                   >
-                    <div className="rounded-lg bg-dark-700 p-4 text-center font-mono text-2xl">
+                    <div className="rounded-lg bg-gray-300 p-4 text-center font-mono text-2xl dark:bg-gray-700">
                       {gameData.game_data.question || gameData.game_data.letters}
                     </div>
                     <input
                       name="answer"
                       type="text"
                       placeholder={t('contests.enterAnswer')}
-                      className="w-full rounded-lg border border-dark-600 bg-dark-700 px-4 py-3 focus:border-accent-500 focus:outline-none"
+                      className="w-full rounded-lg border border-gray-300 bg-gray-300 px-4 py-3 focus:border-accent-500 focus:outline-none dark:border-gray-700 dark:bg-gray-700"
                     />
                     <button
                       type="submit"
@@ -203,10 +203,10 @@ export default function Contests() {
                 <div className="min-w-0">
                   <h3 className="break-words text-lg font-semibold">{contest.name}</h3>
                   {contest.description && (
-                    <p className="mt-1 text-sm text-dark-400">{contest.description}</p>
+                    <p className="mt-1 text-sm text-dark-300">{contest.description}</p>
                   )}
                 </div>
-                <div className="flex shrink-0 items-center gap-1 text-accent-400">
+                <div className="flex shrink-0 items-center gap-1 text-accent-500">
                   <TrophyIcon />
                   <span className="text-sm font-medium">
                     +{t('contests.days', { count: contest.prize_days })}
@@ -231,7 +231,7 @@ export default function Contests() {
       ) : (
         <div className="card py-12 text-center">
           <GamepadIcon className="h-6 w-6" />
-          <p className="mt-4 text-dark-400">{t('contests.noContests')}</p>
+          <p className="mt-4 text-dark-300">{t('contests.noContests')}</p>
         </div>
       )}
     </div>

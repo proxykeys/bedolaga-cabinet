@@ -238,8 +238,8 @@ export default function Onboarding({ steps, onComplete, onSkip }: OnboardingProp
                 index === currentStep
                   ? 'w-6 bg-accent-500'
                   : index < currentStep
-                    ? 'w-2 bg-accent-500/50'
-                    : 'w-2 bg-dark-700'
+                    ? 'w-2 bg-accent-500'
+                    : 'w-2 bg-gray-300 dark:bg-gray-700'
               }`}
             />
           ))}
@@ -249,7 +249,7 @@ export default function Onboarding({ steps, onComplete, onSkip }: OnboardingProp
         <h3 id="onboarding-title" className="mb-2 text-lg font-semibold text-dark-50">
           {step.title}
         </h3>
-        <p id="onboarding-desc" className="mb-5 text-sm text-dark-400">
+        <p id="onboarding-desc" className="mb-5 text-sm text-dark-300">
           {step.description}
         </p>
 
@@ -257,7 +257,7 @@ export default function Onboarding({ steps, onComplete, onSkip }: OnboardingProp
         <div className="flex items-center justify-between">
           <button
             onClick={handleSkip}
-            className="text-sm text-dark-500 transition-colors hover:text-dark-300"
+            className="text-sm text-dark-300 transition-colors hover:text-dark-300"
           >
             {t('onboarding.skip', 'Skip')}
           </button>

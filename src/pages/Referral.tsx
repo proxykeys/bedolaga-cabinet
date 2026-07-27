@@ -625,12 +625,12 @@ export default function Referral() {
   if (terms && !terms.is_enabled) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-dark-800">
-          <UsersIcon className="h-12 w-12 text-dark-500" />
+        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+          <UsersIcon className="h-12 w-12 text-dark-300" />
         </div>
         <div className="text-center">
           <h1 className="mb-2 text-2xl font-bold text-dark-100">{t('referral.title')}</h1>
-          <p className="text-dark-400">{t('referral.disabled')}</p>
+          <p className="text-dark-300">{t('referral.disabled')}</p>
         </div>
       </div>
     );
@@ -701,7 +701,7 @@ export default function Referral() {
           {botReferralLink && (
             <div>
               <div className="mb-1.5 flex items-center gap-2 text-sm font-medium text-dark-300">
-                <TelegramIcon className="h-4 w-4 text-accent-400" />
+                <TelegramIcon className="h-4 w-4 text-accent-500" />
                 {t('referral.botLink')}
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
@@ -728,7 +728,7 @@ export default function Referral() {
           {/* Cabinet link */}
           <div>
             <div className="mb-1.5 flex items-center gap-2 text-sm font-medium text-dark-300">
-              <LinkIcon className="h-4 w-4 text-accent-400" />
+              <LinkIcon className="h-4 w-4 text-accent-500" />
               {t('referral.cabinetLink')}
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -799,13 +799,13 @@ export default function Referral() {
             {referralList.items.map((ref) => (
               <div
                 key={ref.id}
-                className="flex items-center justify-between rounded-xl border border-dark-700/30 bg-dark-800/30 p-3"
+                className="flex items-center justify-between rounded-xl border border-gray-200/30 bg-gray-250 p-3 dark:border-gray-800/30 dark:bg-gray-850"
               >
                 <div>
                   <div className="font-medium text-dark-100">
                     {ref.first_name || ref.username || t('referral.anonymousUser', { id: ref.id })}
                   </div>
-                  <div className="mt-0.5 text-xs text-dark-500">
+                  <div className="mt-0.5 text-xs text-dark-300">
                     {new Date(ref.created_at).toLocaleDateString(i18n.language)}
                   </div>
                 </div>
@@ -819,10 +819,10 @@ export default function Referral() {
           </div>
         ) : (
           <div className="py-12 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-dark-800">
-              <UsersIcon className="h-8 w-8 text-dark-500" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
+              <UsersIcon className="h-8 w-8 text-dark-300" />
             </div>
-            <div className="text-dark-400">{t('referral.noReferrals')}</div>
+            <div className="text-dark-300">{t('referral.noReferrals')}</div>
           </div>
         )}
       </div>
@@ -837,7 +837,7 @@ export default function Referral() {
             {earnings.items.map((earning) => (
               <div
                 key={earning.id}
-                className="flex items-center justify-between rounded-xl border border-dark-700/30 bg-dark-800/30 p-3"
+                className="flex items-center justify-between rounded-xl border border-gray-200/30 bg-gray-250 p-3 dark:border-gray-800/30 dark:bg-gray-850"
               >
                 <div>
                   <div className="text-dark-100">
@@ -865,14 +865,14 @@ export default function Referral() {
       {terms?.partner_section_visible !== false && showApplySection && (
         <div className="bento-card">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent-500/10 text-accent-400">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
               <PartnerIcon className="h-8 w-8" />
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-semibold text-dark-100">
                 {t('referral.partner.becomePartner')}
               </h2>
-              <p className="mt-1 text-sm text-dark-400">
+              <p className="mt-1 text-sm text-dark-300">
                 {t('referral.partner.becomePartnerDesc')}
               </p>
               <button
@@ -888,18 +888,18 @@ export default function Referral() {
 
       {/* Status: pending — Application Under Review */}
       {terms?.partner_section_visible !== false && showPendingSection && (
-        <div className="bento-card border-warning-500/20">
+        <div className="bento-card">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-warning-500/10 text-warning-400">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-warning-500 dark:bg-gray-700/60">
               <ClockIcon />
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-semibold text-dark-100">
                 {t('referral.partner.underReview')}
               </h2>
-              <p className="mt-1 text-sm text-dark-400">{t('referral.partner.underReviewDesc')}</p>
+              <p className="mt-1 text-sm text-dark-300">{t('referral.partner.underReviewDesc')}</p>
               {partnerStatus?.latest_application?.created_at && (
-                <p className="mt-2 text-xs text-dark-500">
+                <p className="mt-2 text-xs text-dark-300">
                   {t('referral.partner.submittedAt', {
                     date: new Date(partnerStatus.latest_application.created_at).toLocaleDateString(
                       i18n.language,
@@ -914,9 +914,9 @@ export default function Referral() {
 
       {/* Status: approved — Partner Badge */}
       {terms?.partner_section_visible !== false && showApprovedSection && (
-        <div className="bento-card border-success-500/20">
+        <div className="bento-card">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-success-500/10 text-success-400">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-success-500 dark:bg-gray-700/60">
               <PartnerIcon className="h-8 w-8" />
             </div>
             <div className="flex-1">
@@ -926,7 +926,7 @@ export default function Referral() {
                 </h2>
                 <span className="badge-success">{t('referral.partner.active')}</span>
               </div>
-              <p className="mt-1 text-sm text-dark-400">
+              <p className="mt-1 text-sm text-dark-300">
                 {t('referral.partner.commissionInfo', {
                   percent: partnerStatus?.commission_percent ?? 0,
                 })}
@@ -941,9 +941,9 @@ export default function Referral() {
 
       {/* Status: rejected — Rejection Notice */}
       {terms?.partner_section_visible !== false && showRejectedSection && (
-        <div className="bento-card border-error-500/20">
+        <div className="bento-card">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-error-500/10 text-error-400">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-error-500 dark:bg-gray-700/60">
               <ExclamationIcon className="h-8 w-8" />
             </div>
             <div className="flex-1">
@@ -974,7 +974,7 @@ export default function Referral() {
         partnerStatus.campaigns.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-500/10 text-accent-400">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
                 <LinkIcon />
               </div>
               <h2 className="text-lg font-semibold text-dark-100">
@@ -996,7 +996,7 @@ export default function Referral() {
           {withdrawalBalance && (
             <div className="bento-card">
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-500/10 text-accent-400">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
                   <WalletIcon className="h-8 w-8" />
                 </div>
                 <h2 className="text-lg font-semibold text-dark-100">
@@ -1050,12 +1050,12 @@ export default function Referral() {
                   {t('referral.withdrawal.requestButton')}
                 </button>
                 {!withdrawalBalance.can_request && withdrawalBalance.cannot_request_reason ? (
-                  <p className="mt-2 text-xs text-dark-500">
+                  <p className="mt-2 text-xs text-dark-300">
                     {withdrawalBalance.cannot_request_reason}
                   </p>
                 ) : (
                   withdrawalBalance.min_amount_kopeks > 0 && (
-                    <p className="mt-2 text-xs text-dark-500">
+                    <p className="mt-2 text-xs text-dark-300">
                       {t('referral.withdrawal.minAmount', {
                         amount: formatWithCurrency(withdrawalBalance.min_amount_kopeks / 100),
                       })}
@@ -1076,7 +1076,7 @@ export default function Referral() {
                 {withdrawalHistory.items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between rounded-xl border border-dark-700/30 bg-dark-800/30 p-3"
+                    className="flex items-center justify-between rounded-xl border border-gray-200/30 bg-gray-250 p-3 dark:border-gray-800/30 dark:bg-gray-850"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
@@ -1087,7 +1087,7 @@ export default function Referral() {
                           {t(`referral.withdrawal.status.${item.status}`, item.status)}
                         </span>
                       </div>
-                      <div className="mt-0.5 text-xs text-dark-500">
+                      <div className="mt-0.5 text-xs text-dark-300">
                         {new Date(item.created_at).toLocaleDateString(i18n.language)}
                         {item.payment_details && (
                           <span className="ml-1">
@@ -1099,14 +1099,14 @@ export default function Referral() {
                         )}
                       </div>
                       {item.admin_comment && (
-                        <div className="mt-1 text-xs text-dark-400">{item.admin_comment}</div>
+                        <div className="mt-1 text-xs text-dark-300">{item.admin_comment}</div>
                       )}
                     </div>
                     {item.status === 'pending' && (
                       <button
                         onClick={() => cancelWithdrawalMutation.mutate(item.id)}
                         disabled={cancelWithdrawalMutation.isPending}
-                        className="ml-3 shrink-0 text-sm text-error-400 transition-colors hover:text-error-300"
+                        className="ml-3 shrink-0 text-sm text-error-500 transition-colors hover:text-error-300"
                       >
                         {t('common.cancel')}
                       </button>
@@ -1116,7 +1116,7 @@ export default function Referral() {
               </div>
             ) : (
               <div className="py-8 text-center">
-                <div className="text-dark-400">{t('referral.withdrawal.noHistory')}</div>
+                <div className="text-dark-300">{t('referral.withdrawal.noHistory')}</div>
               </div>
             )}
           </div>

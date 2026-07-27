@@ -47,12 +47,12 @@ export default function AutoLogin() {
   }, [token, navigate, setTokens, setUser, checkAdminStatus]);
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-dark-950 px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-dark-800/50 bg-dark-900/50 p-8 text-center">
+    <div className="flex min-h-dvh items-center justify-center bg-gray-050 px-4 dark:bg-gray-950">
+      <div className="w-full max-w-sm rounded-2xl border border-gray-200/50 bg-gray-100/50 p-8 text-center dark:border-gray-800/50 dark:bg-gray-900/50">
         {error ? (
           <div className="space-y-4">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-error-500/10">
-              <XIcon className="h-8 w-8 text-error-400" />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+              <XIcon className="h-8 w-8 text-error-500" />
             </div>
             <p className="text-sm text-dark-300">{t('landing.autoLoginFailed')}</p>
             <button
@@ -65,7 +65,7 @@ export default function AutoLogin() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-dark-600 border-t-accent-500" />
+            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-gray-300 border-t-accent-500 dark:border-gray-700" />
             <p className="text-sm text-dark-300">{t('landing.autoLoginProcessing')}</p>
           </div>
         )}

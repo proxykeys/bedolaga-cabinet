@@ -56,3 +56,9 @@ DESIGN.json
 
 # Локальные архивы исходников — не для репозитория
 *.zip
+# Dev screenshots & Playwright artifacts
+.playwright-mcp/
+*.png
+
+# Saved HTML snapshots
+UI State Preview*.html

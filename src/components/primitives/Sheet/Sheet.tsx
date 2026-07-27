@@ -79,7 +79,7 @@ export const SheetOverlay = forwardRef<HTMLDivElement, SheetOverlayProps>(
   ({ className, ...props }, ref) => (
     <DialogPrimitive.Overlay
       ref={ref}
-      className={cn('fixed inset-0 z-50 bg-dark-950/60 backdrop-blur-sm', className)}
+      className={cn('fixed inset-0 z-50 bg-gray-1000/60 backdrop-blur-sm', className)}
       asChild
       {...props}
     >
@@ -148,7 +148,7 @@ export const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(
                   'fixed inset-x-0 bottom-0 z-50',
                   'flex flex-col',
                   'max-h-[85vh]',
-                  'rounded-t-2xl border-t border-dark-700/50 bg-dark-900/95 backdrop-blur-linear',
+                  'rounded-t-2xl border-t border-gray-200/50 bg-gray-100/95 backdrop-blur-linear dark:border-gray-800/50 dark:bg-gray-900/95',
                   'shadow-linear-lg',
                   'focus:outline-none',
                   'pb-[env(safe-area-inset-bottom,0px)]',
@@ -175,7 +175,7 @@ export const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(
                       className="flex cursor-grab justify-center pb-2 pt-3 active:cursor-grabbing"
                       onPointerDown={(e) => dragControls.start(e)}
                     >
-                      <div className="h-1 w-10 rounded-full bg-dark-600" />
+                      <div className="h-1 w-10 rounded-full bg-gray-350 dark:bg-gray-650" />
                     </div>
                   )}
 
@@ -184,8 +184,8 @@ export const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(
                     <DialogPrimitive.Close
                       className={cn(
                         'absolute right-4 top-4 rounded-linear p-1.5',
-                        'text-dark-400 opacity-70 transition-all',
-                        'hover:bg-dark-800/80 hover:opacity-100',
+                        'text-dark-300 opacity-70 transition-all',
+                        'hover:bg-gray-300/80 hover:opacity-100 dark:hover:bg-gray-800',
                         'focus:outline-none focus:ring-2 focus:ring-accent-500/50',
                       )}
                     >
@@ -254,7 +254,7 @@ export const SheetDescription = forwardRef<HTMLParagraphElement, SheetDescriptio
   ({ className, ...props }, ref) => (
     <DialogPrimitive.Description
       ref={ref}
-      className={cn('text-sm text-dark-400', className)}
+      className={cn('text-sm text-dark-300', className)}
       {...props}
     />
   ),

@@ -30,7 +30,7 @@ function PendingState() {
         <h1 className="text-xl font-bold text-dark-50">
           {t('landing.awaitingPayment', 'Awaiting payment')}
         </h1>
-        <p className="mt-2 text-sm text-dark-400">{t('landing.awaitingPaymentDesc')}</p>
+        <p className="mt-2 text-sm text-dark-300">{t('landing.awaitingPaymentDesc')}</p>
       </div>
     </motion.div>
   );
@@ -59,9 +59,9 @@ function CopyableField({ label, value }: { label: string; value: string }) {
   }, [value]);
 
   return (
-    <div className="flex items-center gap-2 rounded-xl bg-dark-800/50 px-4 py-3">
+    <div className="flex items-center gap-2 rounded-xl bg-gray-250 px-4 py-3 dark:bg-gray-850">
       <div className="min-w-0 flex-1 text-left">
-        <p className="text-xs text-dark-400">{label}</p>
+        <p className="text-xs text-dark-300">{label}</p>
         <p className="mt-0.5 break-all font-mono text-sm text-dark-100">{value}</p>
       </div>
       <button
@@ -70,8 +70,8 @@ function CopyableField({ label, value }: { label: string; value: string }) {
         className={cn(
           'shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
           copied
-            ? 'bg-success-500/10 text-success-500'
-            : 'bg-dark-700/50 text-dark-300 hover:bg-dark-600/50',
+            ? 'bg-success-500 text-on-success'
+            : 'bg-gray-300/50 text-dark-300 hover:bg-gray-350/50 dark:bg-gray-700/50 dark:hover:bg-gray-650/50',
         )}
       >
         {copied ? t('landing.copied', 'Copied!') : t('landing.copy', 'Copy')}
@@ -142,9 +142,9 @@ function CabinetCredentialsState({
         {cabinetPassword && (
           <CopyableField label={t('landing.cabinetPassword')} value={cabinetPassword} />
         )}
-        {cabinetPassword && <p className="text-xs text-dark-400">{t('landing.saveCredentials')}</p>}
+        {cabinetPassword && <p className="text-xs text-dark-300">{t('landing.saveCredentials')}</p>}
         {!cabinetPassword && (
-          <p className="text-xs text-dark-400">{t('landing.credentialsSentToEmail')}</p>
+          <p className="text-xs text-dark-300">{t('landing.credentialsSentToEmail')}</p>
         )}
       </div>
 
@@ -154,7 +154,7 @@ function CabinetCredentialsState({
         onClick={handleGoToCabinet}
         disabled={isLoggingIn}
         className={cn(
-          'flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium text-white transition-colors',
+          'flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium text-on-accent transition-colors',
           isLoggingIn ? 'cursor-not-allowed bg-accent-500/50' : 'bg-accent-500 hover:bg-accent-400',
         )}
       >
@@ -167,7 +167,7 @@ function CabinetCredentialsState({
           t('landing.goToCabinet')
         )}
       </button>
-      {loginError && <p className="text-xs text-error-400">{t('landing.autoLoginFailed')}</p>}
+      {loginError && <p className="text-xs text-error-500">{t('landing.autoLoginFailed')}</p>}
     </motion.div>
   );
 }
@@ -243,20 +243,20 @@ function SuccessState({
           </p>
         )}
         {isGift && contactType === 'telegram' && recipientInBot === true && (
-          <p className="mt-2 text-sm text-dark-400">{t('landing.giftTelegramSent')}</p>
+          <p className="mt-2 text-sm text-dark-300">{t('landing.giftTelegramSent')}</p>
         )}
         {isGift && contactType === 'telegram' && recipientInBot !== true && (
-          <p className="mt-2 text-sm text-dark-400">{t('landing.giftTelegramNotInBot')}</p>
+          <p className="mt-2 text-sm text-dark-300">{t('landing.giftTelegramNotInBot')}</p>
         )}
         {!(isGift && contactType === 'telegram') && displayContact && (
-          <p className="mt-2 text-sm text-dark-400">
+          <p className="mt-2 text-sm text-dark-300">
             {isGift
               ? t('landing.giftSentTo', { contact: displayContact })
               : t('landing.keySentTo', { contact: displayContact })}
           </p>
         )}
         {isGift && giftMessage && (
-          <p className="mt-2 text-sm italic text-dark-400">
+          <p className="mt-2 text-sm italic text-dark-300">
             {t('landing.giftMessage')}: {giftMessage}
           </p>
         )}
@@ -294,8 +294,8 @@ function SuccessState({
             className={cn(
               'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
               copied
-                ? 'bg-success-500/10 text-success-500'
-                : 'bg-dark-800/50 text-dark-200 hover:bg-dark-700/50',
+                ? 'bg-success-500 text-on-success'
+                : 'bg-gray-250 text-dark-200 hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800',
             )}
           >
             {copied ? (
@@ -363,8 +363,8 @@ function PendingActivationState({
       className="flex flex-col items-center gap-6 text-center"
     >
       {/* Warning icon */}
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-warning-500/10">
-        <ExclamationIcon className="h-10 w-10 text-warning-400" />
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
+        <ExclamationIcon className="h-10 w-10 text-warning-500" />
       </div>
 
       <div>
@@ -374,9 +374,9 @@ function PendingActivationState({
             {tariffName} — {periodDays} {t('landing.daysAccess')}
           </p>
         )}
-        <p className="mt-2 text-sm text-dark-400">{t('landing.pendingActivationDesc')}</p>
+        <p className="mt-2 text-sm text-dark-300">{t('landing.pendingActivationDesc')}</p>
         {isGift && giftMessage && (
-          <p className="mt-2 text-sm italic text-dark-400">
+          <p className="mt-2 text-sm italic text-dark-300">
             {t('landing.giftMessage')}: {giftMessage}
           </p>
         )}
@@ -388,7 +388,7 @@ function PendingActivationState({
           onClick={onActivate}
           disabled={isActivating}
           className={cn(
-            'flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium text-white transition-colors',
+            'flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium text-on-accent transition-colors',
             isActivating
               ? 'cursor-not-allowed bg-accent-500/50'
               : 'bg-accent-500 hover:bg-accent-400',
@@ -412,8 +412,8 @@ function PendingActivationState({
             className={cn(
               'flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium transition-colors',
               isLoggingIn
-                ? 'cursor-not-allowed bg-dark-800/30 text-dark-400'
-                : 'bg-dark-800/50 text-dark-200 hover:bg-dark-700/50',
+                ? 'cursor-not-allowed bg-gray-250 text-dark-300 dark:bg-gray-850'
+                : 'bg-gray-250 text-dark-200 hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800',
             )}
           >
             {isLoggingIn ? (
@@ -466,21 +466,21 @@ function GiftPendingActivationState({
           </p>
         )}
         {contactType === 'telegram' && recipientInBot === true && (
-          <p className="mt-2 text-sm text-dark-400">{t('landing.giftTelegramPendingSent')}</p>
+          <p className="mt-2 text-sm text-dark-300">{t('landing.giftTelegramPendingSent')}</p>
         )}
         {contactType === 'telegram' && recipientInBot !== true && (
-          <p className="mt-2 text-sm text-dark-400">{t('landing.giftTelegramPendingNotInBot')}</p>
+          <p className="mt-2 text-sm text-dark-300">{t('landing.giftTelegramPendingNotInBot')}</p>
         )}
         {contactType !== 'telegram' && (
-          <p className="mt-2 text-sm text-dark-400">{t('landing.giftPendingActivationDesc')}</p>
+          <p className="mt-2 text-sm text-dark-300">{t('landing.giftPendingActivationDesc')}</p>
         )}
         {contactType !== 'telegram' && recipientContactValue && (
-          <p className="mt-2 text-sm text-dark-400">
+          <p className="mt-2 text-sm text-dark-300">
             {t('landing.giftSentTo', { contact: recipientContactValue })}
           </p>
         )}
         {giftMessage && (
-          <p className="mt-2 text-sm italic text-dark-400">
+          <p className="mt-2 text-sm italic text-dark-300">
             {t('landing.giftMessage')}: {giftMessage}
           </p>
         )}
@@ -513,7 +513,7 @@ function FailedState() {
       <AnimatedCrossmark />
       <div>
         <h1 className="text-xl font-bold text-dark-50">{t('landing.purchaseFailed')}</h1>
-        <p className="mt-2 text-sm text-dark-400">{t('landing.purchaseFailedDesc')}</p>
+        <p className="mt-2 text-sm text-dark-300">{t('landing.purchaseFailedDesc')}</p>
       </div>
     </motion.div>
   );
@@ -528,14 +528,14 @@ function PollTimedOutState({ onRetry }: { onRetry: () => void }) {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-dark-800/50">
-        <ClockIcon className="h-10 w-10 text-dark-400" />
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+        <ClockIcon className="h-10 w-10 text-dark-300" />
       </div>
       <div>
         <h1 className="text-xl font-bold text-dark-50">
           {t('landing.pollTimedOut', 'Taking longer than expected')}
         </h1>
-        <p className="mt-2 text-sm text-dark-400">
+        <p className="mt-2 text-sm text-dark-300">
           {t(
             'landing.pollTimedOutDesc',
             'Payment processing is taking longer than usual. You can try checking again.',
@@ -626,7 +626,7 @@ function GiftLinkShareState({
       )}
 
       {recipientContactValue && contactType === 'email' && (
-        <p className="text-xs text-dark-500">
+        <p className="text-xs text-dark-300">
           {t('landing.giftLink.alsoSent', {
             contact: recipientContactValue,
             defaultValue: 'We also emailed it to {{contact}}.',
@@ -640,8 +640,8 @@ function GiftLinkShareState({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-bold transition-all duration-200 active:scale-[0.98]',
           copied
-            ? 'bg-success-500/20 text-success-400'
-            : 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 hover:bg-accent-400',
+            ? 'bg-success-500 text-on-success'
+            : 'bg-accent-500 text-on-accent hover:bg-accent-400',
         )}
       >
         {copied ? (
@@ -780,9 +780,9 @@ export default function PurchaseSuccess() {
     purchaseStatus.cabinet_email;
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-dark-950 px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-gray-050 px-4 dark:bg-gray-950">
       <div
-        className="w-full max-w-md rounded-2xl border border-dark-800/50 bg-dark-900/50 p-8"
+        className="w-full max-w-md rounded-2xl border border-gray-200/50 bg-gray-100/50 p-8 dark:border-gray-800/50 dark:bg-gray-900/50"
         aria-live="polite"
         aria-atomic="true"
       >
@@ -841,7 +841,7 @@ export default function PurchaseSuccess() {
               autoLoginToken={purchaseStatus.auto_login_token}
             />
             {activationError && (
-              <p className="text-center text-sm text-error-400">{t('landing.activationFailed')}</p>
+              <p className="text-center text-sm text-error-500">{t('landing.activationFailed')}</p>
             )}
           </div>
         ) : isFailed ? (

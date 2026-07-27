@@ -213,10 +213,10 @@ export default function Balance() {
           SaaS hero-metric template. */}
       <motion.div variants={staggerItem}>
         <Card>
-          <div className="mb-2 text-sm text-dark-400">{t('balance.currentBalance')}</div>
+          <div className="mb-2 text-sm text-dark-300">{t('balance.currentBalance')}</div>
           <div className="text-4xl font-bold text-dark-50 sm:text-5xl">
             {formatAmount(balanceData?.balance_rubles || 0)}
-            <span className="ml-2 text-2xl text-dark-400">{currencySymbol}</span>
+            <span className="ml-2 text-2xl text-dark-300">{currencySymbol}</span>
           </div>
         </Card>
       </motion.div>
@@ -251,7 +251,7 @@ export default function Balance() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mt-3 rounded-linear border border-error-500/30 bg-error-500/10 p-3 text-sm text-error-400"
+                className="mt-3 rounded-linear border border-error-500 bg-gray-250 p-3 text-sm text-error-500 dark:bg-gray-850"
               >
                 {promocodeError}
               </motion.div>
@@ -261,7 +261,7 @@ export default function Balance() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mt-3 rounded-linear border border-success-500/30 bg-success-500/10 p-3 text-sm text-success-400"
+                className="mt-3 rounded-linear border border-success-500 bg-gray-250 p-3 text-sm text-success-500 dark:bg-gray-850"
               >
                 <div className="font-medium">{promocodeSuccess.message}</div>
                 {promocodeSuccess.amount > 0 && (
@@ -278,7 +278,7 @@ export default function Balance() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-3 space-y-2 rounded-linear border border-accent-500/30 bg-accent-500/10 p-3"
+              className="mt-3 space-y-2 rounded-linear border border-accent-500 bg-gray-250 p-3 dark:bg-gray-850"
             >
               <div className="text-sm font-medium text-dark-200">
                 {t('balance.promocode.selectSubscription', 'К какой подписке применить промокод?')}
@@ -288,10 +288,10 @@ export default function Balance() {
                   key={sub.id}
                   onClick={() => handlePromocodeActivate(sub.id)}
                   disabled={promocodeLoading}
-                  className="flex w-full min-w-0 items-center justify-between gap-3 rounded-linear border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-200 transition-colors hover:border-accent-500/50 hover:bg-dark-600"
+                  className="flex w-full min-w-0 items-center justify-between gap-3 rounded-linear border border-gray-300 bg-gray-300 px-3 py-2 text-sm text-dark-200 transition-colors hover:border-accent-500 hover:bg-gray-350 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-650"
                 >
                   <span className="truncate">{sub.tariff_name}</span>
-                  <span className="shrink-0 text-dark-400">
+                  <span className="shrink-0 text-dark-300">
                     {t('balance.promocode.daysLeft', '{{count}} дн.', { count: sub.days_left })}
                   </span>
                 </button>
@@ -301,7 +301,7 @@ export default function Balance() {
                   setPromoSelectSubs(null);
                   setPromoSelectCode(null);
                 }}
-                className="text-xs text-dark-400 hover:text-dark-200"
+                className="text-xs text-dark-300 hover:text-dark-200"
               >
                 {t('common.cancel', 'Отмена')}
               </button>
@@ -340,11 +340,11 @@ export default function Balance() {
                       {method.name || translatedName}
                     </div>
                     {(method.description || translatedDesc) && (
-                      <div className="mt-1 text-sm text-dark-500">
+                      <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {method.description || translatedDesc}
                       </div>
                     )}
-                    <div className="mt-3 text-xs text-dark-400">
+                    <div className="mt-3 text-xs text-gray-600 dark:text-gray-400">
                       {formatAmount(method.min_amount_kopeks / 100, 0)} {t('common.rangeTo', 'to')}{' '}
                       {formatAmount(method.max_amount_kopeks / 100, 0)} {currencySymbol}
                     </div>
@@ -367,7 +367,7 @@ export default function Balance() {
               {t('balance.transactionHistory')}
             </h2>
             <ChevronDownIcon
-              className={`h-5 w-5 text-dark-400 transition-transform duration-200 ${isHistoryOpen ? 'rotate-180' : ''}`}
+              className={`h-5 w-5 text-dark-300 transition-transform duration-200 ${isHistoryOpen ? 'rotate-180' : ''}`}
             />
           </button>
 
@@ -398,28 +398,30 @@ export default function Balance() {
                         const displayAmount = Math.abs(tx.amount_rubles);
                         const sign = isZero ? '' : isPositive ? '+' : '-';
                         const colorClass = isZero
-                          ? 'text-dark-400'
+                          ? 'text-dark-300'
                           : isPositive
-                            ? 'text-success-400'
-                            : 'text-error-400';
+                            ? 'text-success-500'
+                            : 'text-error-500';
 
                         return (
                           <motion.div
                             key={tx.id}
                             variants={staggerItem}
-                            className="flex items-center justify-between rounded-linear border border-dark-700/30 bg-dark-800/30 p-4"
+                            className="flex items-center justify-between rounded-linear border border-gray-200/30 bg-gray-250 p-4 dark:border-gray-800/30 dark:bg-gray-850"
                           >
                             <div className="flex-1">
                               <div className="mb-1 flex items-center gap-3">
                                 <span className={getTypeBadge(tx.type)}>
                                   {getTypeLabel(tx.type)}
                                 </span>
-                                <span className="text-xs text-dark-500">
+                                <span className="text-xs text-gray-600 dark:text-gray-400">
                                   {new Date(tx.created_at).toLocaleDateString(uiLocale())}
                                 </span>
                               </div>
                               {tx.description && (
-                                <div className="text-sm text-dark-400">{tx.description}</div>
+                                <div className="text-sm text-gray-600 dark:text-gray-400">
+                                  {tx.description}
+                                </div>
                               )}
                             </div>
                             <div className={`text-lg font-semibold ${colorClass}`}>
@@ -432,15 +434,15 @@ export default function Balance() {
                     </motion.div>
                   ) : (
                     <div className="py-12 text-center">
-                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-dark-800">
-                        <WalletIcon className="h-8 w-8 text-dark-500" />
+                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-gray-250 dark:bg-gray-850">
+                        <WalletIcon className="h-8 w-8 text-dark-300" />
                       </div>
-                      <div className="text-dark-400">{t('balance.noTransactions')}</div>
+                      <div className="text-dark-300">{t('balance.noTransactions')}</div>
                     </div>
                   )}
 
                   {transactions && transactions.pages > 1 && (
-                    <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-dark-500">
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-dark-300">
                       <Button
                         variant="secondary"
                         size="sm"
@@ -485,10 +487,10 @@ export default function Balance() {
           <Card interactive onClick={() => navigate('/balance/saved-cards')}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <CreditCardIcon className="h-5 w-5 text-dark-400" />
+                <CreditCardIcon className="h-5 w-5 text-dark-300" />
                 <span className="font-medium text-dark-100">{t('balance.savedCards.title')}</span>
               </div>
-              <ChevronRightIcon className="h-5 w-5 text-dark-400" />
+              <ChevronRightIcon className="h-5 w-5 text-dark-300" />
             </div>
           </Card>
         </motion.div>

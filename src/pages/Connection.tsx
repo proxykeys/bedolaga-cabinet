@@ -184,9 +184,9 @@ export default function Connection() {
   if (error || !appConfig || !hasApps) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-dark-800">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
           <svg
-            className="h-8 w-8 text-dark-400"
+            className="h-8 w-8 text-dark-300"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -202,7 +202,7 @@ export default function Connection() {
         <h3 className="mb-2 text-xl font-bold text-dark-100">
           {t('subscription.connection.notConfigured')}
         </h3>
-        <p className="mb-6 max-w-sm text-dark-400">
+        <p className="mb-6 max-w-sm text-dark-300">
           {isAdmin
             ? t('subscription.connection.notConfiguredAdmin')
             : t('subscription.connection.notConfiguredUser')}
@@ -224,7 +224,7 @@ export default function Connection() {
         <h3 className="mb-2 text-xl font-bold text-dark-100">
           {t('subscription.connection.title')}
         </h3>
-        <p className="mb-4 text-dark-400">{t('subscription.connection.noSubscription')}</p>
+        <p className="mb-4 text-dark-300">{t('subscription.connection.noSubscription')}</p>
         <button onClick={handleGoBack} className="btn-primary px-6 py-2">
           {t('common.close')}
         </button>

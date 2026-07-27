@@ -98,8 +98,8 @@ export default function Polls() {
 
   if (error) {
     return (
-      <div className="card border-error-500/20 bg-error-500/10">
-        <p className="text-error-400">{t('polls.error')}</p>
+      <div className="card bg-gray-250 dark:bg-gray-850">
+        <p className="text-error-500">{t('polls.error')}</p>
       </div>
     );
   }
@@ -115,7 +115,7 @@ export default function Polls() {
       {selectedPoll && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-dark-950/60"
+            className="absolute inset-0 bg-gray-1000/60"
             onClick={handleClosePoll}
             aria-hidden="true"
           />
@@ -134,7 +134,7 @@ export default function Polls() {
               <button
                 onClick={handleClosePoll}
                 aria-label={t('common.close')}
-                className="text-dark-400 hover:text-dark-200"
+                className="text-dark-300 hover:text-dark-200"
               >
                 <CloseIcon className="h-6 w-6" />
               </button>
@@ -148,7 +148,7 @@ export default function Polls() {
 
             {completionMessage && (
               <div className="space-y-4">
-                <div className="rounded-lg bg-success-500/20 p-4 text-center text-success-400">
+                <div className="rounded-lg bg-success-500 p-4 text-center text-on-success">
                   <CheckIcon className="h-5 w-5" />
                   <p className="mt-2 font-medium">{completionMessage.message}</p>
                   {completionMessage.reward && (
@@ -165,10 +165,10 @@ export default function Polls() {
 
             {currentQuestion && !completionMessage && (
               <div className="space-y-4">
-                <div className="text-sm text-dark-400">
+                <div className="text-sm text-dark-300">
                   {t('polls.question')} {questionIndex + 1} {t('polls.of')} {totalQuestions}
                 </div>
-                <div className="h-2 w-full rounded-full bg-dark-700">
+                <div className="h-2 w-full rounded-full bg-gray-300 dark:bg-gray-700">
                   <div
                     className="h-2 rounded-full bg-accent-500 transition-all"
                     style={{ width: `${((questionIndex + 1) / totalQuestions) * 100}%` }}
@@ -183,7 +183,7 @@ export default function Polls() {
                       key={option.id}
                       onClick={() => handleAnswer(option.id)}
                       disabled={answerMutation.isPending}
-                      className="w-full rounded-lg bg-dark-700 p-4 text-left transition-colors hover:bg-dark-600 disabled:opacity-50"
+                      className="w-full rounded-lg bg-gray-300 p-4 text-left transition-colors hover:bg-gray-350 disabled:opacity-50 dark:bg-gray-700 dark:hover:bg-gray-650"
                     >
                       {option.text}
                     </button>
@@ -210,9 +210,9 @@ export default function Polls() {
                 <div className="min-w-0 flex-1">
                   <h3 className="break-words text-lg font-semibold">{poll.title}</h3>
                   {poll.description && (
-                    <p className="mt-1 text-sm text-dark-400">{poll.description}</p>
+                    <p className="mt-1 text-sm text-dark-300">{poll.description}</p>
                   )}
-                  <div className="mt-2 flex items-center gap-4 text-sm text-dark-400">
+                  <div className="mt-2 flex items-center gap-4 text-sm text-dark-300">
                     <span>
                       {poll.answered_questions}/
                       {t('polls.questions', { count: poll.total_questions })}
@@ -220,7 +220,7 @@ export default function Polls() {
                   </div>
                 </div>
                 {poll.reward_amount && (
-                  <div className="flex shrink-0 items-center gap-1 text-accent-400">
+                  <div className="flex shrink-0 items-center gap-1 text-accent-500">
                     <GiftIcon className="h-5 w-5" />
                     <span className="text-sm font-medium">+{poll.reward_amount}</span>
                   </div>
@@ -245,7 +245,7 @@ export default function Polls() {
       ) : (
         <div className="card py-12 text-center">
           <ClipboardIcon className="h-6 w-6" />
-          <p className="mt-4 text-dark-400">{t('polls.noPolls')}</p>
+          <p className="mt-4 text-dark-300">{t('polls.noPolls')}</p>
         </div>
       )}
     </div>

@@ -20,8 +20,8 @@ export default function BlacklistedScreen() {
       footer={t('blocking.blacklisted.contactSupport')}
     >
       {blacklistedInfo?.message && (
-        <div className="rounded-xl border border-dark-700/30 bg-dark-800/50 p-4">
-          <p className="mb-1 text-xs font-medium uppercase tracking-wide text-dark-500">
+        <div className="rounded-xl border border-gray-200/30 bg-gray-250 p-4 dark:border-gray-800/30 dark:bg-gray-850">
+          <p className="mb-1 text-xs font-medium uppercase tracking-wide text-dark-300">
             {t('blocking.blacklisted.reason')}:
           </p>
           <p className="text-sm text-dark-300">{blacklistedInfo.message}</p>

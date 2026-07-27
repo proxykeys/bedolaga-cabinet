@@ -221,7 +221,7 @@ export default function InstallationGuide({
           <button
             onClick={onGoBack}
             aria-label={t('common.back', 'Back')}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-dark-700 bg-dark-800 transition-colors hover:border-dark-600"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-250 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
           >
             <BackIcon className="h-6 w-6" />
           </button>
@@ -233,7 +233,7 @@ export default function InstallationGuide({
           <button
             onClick={() => onOpenQR()}
             aria-label={t('subscription.connection.openQr', 'Open QR code')}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-dark-700 bg-dark-800 text-dark-200 transition-colors hover:border-dark-600"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-250 text-dark-200 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
           >
             <svg
               className="h-5 w-5"
@@ -259,7 +259,7 @@ export default function InstallationGuide({
           <div className="relative flex items-center">
             {currentPlatformSvg && (
               <div
-                className="pointer-events-none absolute left-3 z-10 h-5 w-5 text-dark-400 [&>svg]:h-full [&>svg]:w-full"
+                className="pointer-events-none absolute left-3 z-10 h-5 w-5 text-dark-300 [&>svg]:h-full [&>svg]:w-full"
                 dangerouslySetInnerHTML={{ __html: currentPlatformSvg }}
               />
             )}
@@ -281,8 +281,8 @@ export default function InstallationGuide({
               }}
               className={`appearance-none rounded-xl border py-2 pr-8 text-sm font-medium outline-none transition-colors ${
                 isLight
-                  ? 'border-dark-700/60 bg-white/80 text-dark-200 shadow-sm hover:border-dark-600'
-                  : 'border-dark-700 bg-dark-800 text-dark-200 hover:border-dark-600'
+                  ? 'border-gray-200/60 bg-white/80 text-dark-200 shadow-sm hover:border-gray-300 dark:border-gray-800/60 dark:hover:border-gray-700'
+                  : 'border-gray-200 bg-gray-250 text-dark-200 hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700'
               } ${currentPlatformSvg ? 'pl-10' : 'pl-4'}`}
             >
               {availablePlatforms.map((p) => (
@@ -291,7 +291,7 @@ export default function InstallationGuide({
                 </option>
               ))}
             </select>
-            <div className="pointer-events-none absolute right-2.5 text-dark-400">
+            <div className="pointer-events-none absolute right-2.5 text-dark-300">
               <ChevronIcon className="h-4 w-4" />
             </div>
           </div>
@@ -310,19 +310,15 @@ export default function InstallationGuide({
                 onClick={() => setSelectedApp(app)}
                 className={`relative flex min-w-[calc(50%-0.25rem)] items-center gap-2 overflow-hidden rounded-xl px-4 py-2 text-sm font-medium transition-all active:scale-[0.97] ${
                   isSelected
-                    ? isLight
-                      ? 'bg-accent-500/15 text-accent-600 ring-1 ring-accent-500/40'
-                      : 'bg-accent-500/15 text-accent-400 ring-1 ring-accent-500/40'
-                    : isLight
-                      ? 'border border-dark-700/60 bg-white/80 text-dark-200 shadow-sm hover:border-dark-600/50 hover:bg-white'
-                      : 'border border-dark-700/50 bg-dark-800/80 text-dark-200 hover:border-dark-600/50 hover:bg-dark-700/80'
+                    ? 'border border-accent-500 bg-gray-250 text-accent-500 dark:bg-gray-850'
+                    : 'border border-gray-200 bg-gray-250 text-dark-200 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800'
                 }`}
               >
-                {app.featured && <span className="h-2 w-2 shrink-0 rounded-full bg-warning-400" />}
+                {app.featured && <span className="h-2 w-2 shrink-0 rounded-full bg-warning-500" />}
                 <span className="relative z-10 truncate">{app.name}</span>
                 {appIconSvg && (
                   <div
-                    className="ml-auto h-7 w-7 shrink-0 opacity-30 [&>svg]:h-full [&>svg]:w-full"
+                    className="ml-auto h-7 w-7 shrink-0 opacity-50 [&>svg]:h-full [&>svg]:w-full"
                     dangerouslySetInnerHTML={{ __html: appIconSvg }}
                   />
                 )}

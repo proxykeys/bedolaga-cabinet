@@ -1,0 +1,180 @@
+/*!
+ * claude-overrides.css — ProxyKeys Cabinet
+ *
+ * Catch-all overrides that neutralize decorative visual effects across all
+ * components to match the flat, monochrome aesthetic of claude.com.
+ *
+ * This file is imported LAST in main.tsx so its rules win over component-level
+ * Tailwind utilities. It is a NEW file (no upstream conflict on rebase).
+ *
+ * What it kills:
+ *   1. backdrop-filter (glassmorphism / blur) — everywhere
+ *   2. Hover scale / translate transforms (decorative lift) — keeps active:scale (tap)
+ *   3. Residual glow shadows and gradient backgrounds in component utilities
+ *   4. Inset highlight shadows on cards/surfaces
+ *
+ * What it preserves:
+ *   - active:scale-[0.98] and similar tap feedback (tactile UX)
+ *   - Functional transitions (color, background-color, border-color, opacity)
+ *   - Sheet/modal/dropdown enter-exit animations (framer-motion, not CSS)
+ */
+
+/* ── 1. Backdrop blur / glassmorphism — removed globally ── */
+*,
+*::before,
+*::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── 2. Hover transforms (decorative lift/scale) — removed ──
+   Targeted: only hover: variants of scale/translate. Active: (tap) is kept. */
+.hover\:scale-105:hover,
+.hover\:scale-110:hover,
+.hover\:scale-\[1\.01\]:hover,
+.hover\:scale-\[1\.02\]:hover,
+.hover\:scale-100:hover {
+  transform: none !important;
+}
+
+.hover\:translate-y-1:hover,
+.hover\:translate-y-2:hover,
+.hover\:translate-y-\[-2px\]:hover,
+.hover\:translate-x-1:hover,
+.hover\:translate-x-2:hover,
+.hover\:translate-x-full:hover {
+  transform: none !important;
+}
+
+/* ── 3. Residual glow shadows — removed ──
+   These Tailwind utilities may survive in component classes even though the
+   boxShadow tokens were removed from tailwind.config.js (component files still
+   contain the class names). Neutralize any rendered box-shadow glow. */
+.shadow-glow,
+.shadow-glow-lg,
+.shadow-\[0_0_20px_rgba\(var\(--color-accent-500\)\,\s*0\.15\)\] {
+  box-shadow: none !important;
+}
+
+/* ── 4. Inset highlight shadows on surfaces — removed ──
+   The "glass border" inset top-highlight (inset 0 1px 0 0 rgba(255,255,255,.05))
+   was a bento/card signature. Kill any residual inline usage. */
+[class*='shadow-\[inset'] {
+  box-shadow: none !important;
+}
+
+/* ── 5. Gradient text utilities — forced solid ──
+   .text-gradient is already neutralized in globals.css; this catches any
+   inline bg-clip-text + text-transparent gradient combos in components. */
+.bg-clip-text.text-transparent {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  color: rgb(var(--color-accent-500)) !important;
+}
+
+/* ── 6. Light theme: CVA Button primary inversion ──
+   No longer needed: Button.variants.ts now uses bg-dark-50 text-dark-950
+   which auto-inverts in light theme via the .light remapping
+   (dark-50 → champagne-950, dark-950 → champagne-50). */
+
+/* ── 7. Decorative drop-shadow glows on SVG/icons — removed ── */
+[class*='drop-shadow-[0_0_'],
+[class*='drop-shadow-\[0_0'] {
+  filter: none !important;
+}
+
+/* ── 8. ALL Tailwind gradient utilities — collapsed to solid ──
+   Every bg-gradient-to-* (with from-/via-/to-) becomes a flat fill of the
+   from- color. This neutralizes card gradients, gradient buttons, progress
+   bar gradients, icon backgrounds, etc. across all components in one rule.
+   For translucent from- colors (e.g. from-accent-500/10) this yields a soft
+   flat tint — never a gradient. */
+[class*='bg-gradient-'] {
+  --tw-gradient-via: initial !important;
+  --tw-gradient-stops: var(--tw-gradient-from) !important;
+}
+
+/* ── 9. Arbitrary inline gradients (bg-[radial/linear/conic-gradient(...)]) ──
+   These bypass --tw-gradient-stops (literal background-image). Strip them. */
+[class*='bg-\[radial-gradient'],
+[class*='bg-\[linear-gradient'],
+[class*='bg-\[conic-gradient'] {
+  background-image: none !important;
+}
+
+/* ── 9b. INLINE-STYLE gradients — attribute selectors ──
+   CSS attribute selectors match on the style attribute STRING, so they reach
+   inline style={{ background: 'linear-gradient(...)' }} that no class-based
+   selector can touch. !important beats inline (non-important) values.
+   This is the catch-all for every component using inline gradient styles. */
+[style*='linear-gradient' i],
+[style*='radial-gradient' i],
+[style*='conic-gradient' i] {
+  background-image: none !important;
+}
+
+/* ── 10. Colored shadows — color component stripped ──
+   Tailwind colored shadows (shadow-{color}-NNN/N) set --tw-shadow-colored
+   which overrides the neutral shadow. By clearing it, elements fall back to
+   the plain (or no) neutral shadow. Targets every palette color. */
+[class*='shadow-accent'],
+[class*='shadow-success'],
+[class*='shadow-warning'],
+[class*='shadow-error'],
+[class*='shadow-primary'],
+[class*='shadow-secondary'],
+[class*='shadow-purple'],
+[class*='shadow-cyan'],
+[class*='shadow-blue'],
+[class*='shadow-yellow'],
+[class*='shadow-orange'],
+[class*='shadow-red'],
+[class*='shadow-green'],
+[class*='shadow-pink'],
+[class*='shadow-indigo'],
+[class*='shadow-violet'],
+[class*='shadow-teal'],
+[class*='shadow-emerald'],
+[class*='shadow-rose'],
+[class*='shadow-amber'],
+[class*='shadow-lime'],
+[class*='shadow-sky'] {
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* Arbitrary glow shadows: shadow-[0_0_Npx_rgba(...)] — always decorative */
+[class*='shadow-[0_0_'] {
+  box-shadow: none !important;
+}
+
+/* ── 10b. INLINE-STYLE glow/colored shadows — attribute selectors ──
+   claude.com uses NO box-shadows anywhere. Kill ALL inline box-shadow
+   regardless of value format. This catches every pattern:
+     - "0 0 20px rgba(...)"      (radial glow)
+     - "0 4px 20px rgba(...)"    (colored drop shadow)
+     - "rgba(...) 0px 4px 20px"  (color-first, rare)
+   !important beats inline (non-important) values. */
+[style*='box-shadow' i] {
+  box-shadow: none !important;
+}
+
+/* ── 11. Decorative glow/pulse animations — killed globally ──
+   These Tailwind animation classes were decorative glows/pulses on icons,
+   cards and buttons. The keyframes were already removed from tailwind.config.js
+   (so the classes produce no animation), but we also kill any residual
+   filter/opacity state they might leave, and catch future reintroductions.
+   Functional animations (spin, pulse for skeletons, fade-in for pages) are
+   NOT targeted. */
+.animate-trial-glow,
+.animate-glow-pulse,
+.animate-spotlight,
+.animate-float,
+.animate-pulse-slow,
+.animate-traffic-shimmer,
+.animate-unlimited-flow,
+.animate-unlimited-pulse,
+.animate-wheel-glow {
+  animation: none !important;
+  filter: none !important;
+}

@@ -120,12 +120,12 @@ export function SwitchTariffSheet({
   if (!open || !tariffId) return null;
 
   return (
-    <div ref={ref} className="mb-6 space-y-4 rounded-xl bg-dark-800/50 p-5">
+    <div ref={ref} className="mb-6 space-y-4 rounded-xl bg-gray-250 p-5 dark:bg-gray-850">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-dark-100">{t('subscription.switchTariff.title')}</h3>
         <button
           onClick={onClose}
-          className="text-sm text-dark-400 hover:text-dark-200"
+          className="text-sm text-dark-300 hover:text-dark-200"
           aria-label={t('common.close', 'Close')}
         >
           ✕
@@ -155,7 +155,7 @@ export function SwitchTariffSheet({
                 </div>
                 <div className="flex justify-between gap-2 text-dark-300">
                   <span className="shrink-0">{t('subscription.switchTariff.newTariff')}</span>
-                  <span className="min-w-0 truncate font-medium text-accent-400">
+                  <span className="min-w-0 truncate font-medium text-accent-500">
                     {switchPreview.new_tariff_name}
                   </span>
                 </div>
@@ -166,24 +166,24 @@ export function SwitchTariffSheet({
               </div>
 
               {isDailyTariff && (
-                <div className="rounded-lg border border-accent-500/30 bg-accent-500/10 p-3 text-center">
+                <div className="rounded-lg border border-gray-200/40 bg-gray-250 p-3 text-center dark:border-gray-800/40 dark:bg-gray-850">
                   <div className="text-sm text-dark-300">
                     {t('subscription.switchTariff.dailyPayment')}
                   </div>
-                  <div className="text-lg font-bold text-accent-400">{formatPrice(dailyPrice)}</div>
-                  <div className="mt-1 text-xs text-dark-400">
+                  <div className="text-lg font-bold text-accent-500">{formatPrice(dailyPrice)}</div>
+                  <div className="mt-1 text-xs text-dark-300">
                     {t('subscription.switchTariff.dailyChargeDescription')}
                   </div>
                 </div>
               )}
 
-              <div className="flex items-center justify-between border-t border-dark-700/50 pt-3">
+              <div className="flex items-center justify-between border-t border-gray-200/50 pt-3 dark:border-gray-800/50">
                 <div>
                   <span className="font-medium text-dark-100">
                     {t('subscription.switchTariff.upgradeCost')}
                   </span>
                   {switchPreview.discount_percent && switchPreview.discount_percent > 0 && (
-                    <span className="ml-2 inline-block rounded-full bg-success-500/20 px-2 py-0.5 text-xs font-medium text-success-400">
+                    <span className="ml-2 inline-block rounded-full bg-success-500 px-2 py-0.5 text-xs font-medium text-black">
                       -{switchPreview.discount_percent}%
                     </span>
                   )}
@@ -193,12 +193,12 @@ export function SwitchTariffSheet({
                     switchPreview.discount_percent > 0 &&
                     switchPreview.base_upgrade_cost_kopeks &&
                     switchPreview.base_upgrade_cost_kopeks > 0 && (
-                      <span className="mr-2 text-sm text-dark-500 line-through">
+                      <span className="mr-2 text-sm text-dark-300 line-through">
                         {formatPrice(switchPreview.base_upgrade_cost_kopeks)}
                       </span>
                     )}
                   <span
-                    className={`text-lg font-bold ${switchPreview.upgrade_cost_kopeks === 0 ? 'text-success-400' : 'text-accent-400'}`}
+                    className={`text-lg font-bold ${switchPreview.upgrade_cost_kopeks === 0 ? 'text-success-500' : 'text-accent-500'}`}
                   >
                     {switchPreview.upgrade_cost_kopeks > 0
                       ? switchPreview.upgrade_cost_label
@@ -237,7 +237,7 @@ export function SwitchTariffSheet({
                     return null;
                   }
                   return (
-                    <div className="mt-3 text-center text-sm text-error-400">
+                    <div className="mt-3 text-center text-sm text-error-500">
                       {getErrorMessage(switchMutation.error)}
                     </div>
                   );

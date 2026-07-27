@@ -171,7 +171,7 @@ export default function SavedCards() {
       <motion.div variants={staggerItem} className="flex items-center gap-3">
         <button
           onClick={() => navigate('/balance')}
-          className="flex h-10 w-10 items-center justify-center rounded-linear border border-dark-700/30 bg-dark-800/50 text-dark-300 transition-colors hover:bg-dark-700/50 hover:text-dark-100"
+          className="flex h-10 w-10 items-center justify-center rounded-linear border border-gray-200/30 bg-gray-250 text-dark-300 transition-colors hover:bg-gray-300 hover:text-dark-100 dark:border-gray-800/30 dark:bg-gray-850 dark:hover:bg-gray-800"
         >
           <BackIcon className="h-5 w-5" />
         </button>
@@ -188,7 +188,7 @@ export default function SavedCards() {
               {[1, 2].map((i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-linear border border-dark-700/30 bg-dark-800/30 p-4"
+                  className="flex items-center justify-between rounded-linear border border-gray-200/30 bg-gray-250 p-4 dark:border-gray-800/30 dark:bg-gray-850"
                 >
                   <div className="flex items-center gap-3">
                     <Skeleton className="h-6 w-6 shrink-0" />
@@ -210,7 +210,7 @@ export default function SavedCards() {
         <motion.div variants={staggerItem}>
           <Card>
             <div className="py-12 text-center">
-              <div className="text-error-400">{t('balance.savedCards.loadError')}</div>
+              <div className="text-error-500">{t('balance.savedCards.loadError')}</div>
             </div>
           </Card>
         </motion.div>
@@ -224,7 +224,7 @@ export default function SavedCards() {
               {savedCards.map((card) => (
                 <div
                   key={card.id}
-                  className="flex items-center justify-between rounded-linear border border-dark-700/30 bg-dark-800/30 p-4"
+                  className="flex items-center justify-between rounded-linear border border-gray-200/30 bg-gray-250 p-4 dark:border-gray-800/30 dark:bg-gray-850"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-xl">💳</span>
@@ -233,7 +233,7 @@ export default function SavedCards() {
                         {card.title ||
                           `${card.card_type || t('balance.savedCards.card')} ${card.card_last4 ? `*${card.card_last4}` : ''}`}
                       </div>
-                      <div className="text-xs text-dark-500">
+                      <div className="text-xs text-dark-300">
                         {t('balance.savedCards.linkedAt', {
                           date: formatCardDate(card.created_at),
                         })}
@@ -245,7 +245,7 @@ export default function SavedCards() {
                     size="sm"
                     onClick={() => handleDeleteCard(card.id)}
                     loading={deletingCardId === card.id}
-                    className="text-error-400 hover:text-error-300"
+                    className="text-error-500 hover:text-error-300"
                   >
                     {t('balance.savedCards.unlink')}
                   </Button>
@@ -259,10 +259,10 @@ export default function SavedCards() {
         <motion.div variants={staggerItem}>
           <Card>
             <div className="py-12 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-dark-800">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-gray-250 dark:bg-gray-850">
                 <span className="text-3xl">💳</span>
               </div>
-              <div className="text-dark-400">{t('balance.savedCards.empty')}</div>
+              <div className="text-dark-300">{t('balance.savedCards.empty')}</div>
             </div>
           </Card>
         </motion.div>

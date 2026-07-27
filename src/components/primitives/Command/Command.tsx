@@ -11,7 +11,7 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>(({ className, ..
     ref={ref}
     className={cn(
       'flex h-full w-full flex-col overflow-hidden rounded-linear-lg',
-      'bg-dark-900/95 text-dark-100 backdrop-blur-linear',
+      'bg-gray-100/95 text-dark-100 backdrop-blur-linear dark:bg-gray-900/95',
       className,
     )}
     {...props}
@@ -25,13 +25,16 @@ export type CommandInputProps = ComponentPropsWithoutRef<typeof CommandPrimitive
 
 export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
   ({ className, ...props }, ref) => (
-    <div className="flex items-center border-b border-dark-700/50 px-3" cmdk-input-wrapper="">
+    <div
+      className="flex items-center border-b border-gray-200/50 px-3 dark:border-gray-800/50"
+      cmdk-input-wrapper=""
+    >
       <SearchIcon />
       <CommandPrimitive.Input
         ref={ref}
         className={cn(
           'flex h-12 w-full bg-transparent py-3 pl-2 text-sm text-dark-100',
-          'placeholder:text-dark-400',
+          'placeholder:text-dark-300',
           'focus:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
@@ -70,7 +73,7 @@ export const CommandEmpty = forwardRef<HTMLDivElement, CommandEmptyProps>(
   ({ className, ...props }, ref) => (
     <CommandPrimitive.Empty
       ref={ref}
-      className={cn('py-6 text-center text-sm text-dark-400', className)}
+      className={cn('py-6 text-center text-sm text-dark-300', className)}
       {...props}
     />
   ),
@@ -88,7 +91,7 @@ export const CommandGroup = forwardRef<HTMLDivElement, CommandGroupProps>(
       className={cn(
         'overflow-hidden p-1 text-dark-100',
         '[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5',
-        '[&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-dark-400',
+        '[&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-dark-300',
         className,
       )}
       {...props}
@@ -105,7 +108,7 @@ export const CommandSeparator = forwardRef<HTMLDivElement, CommandSeparatorProps
   ({ className, ...props }, ref) => (
     <CommandPrimitive.Separator
       ref={ref}
-      className={cn('-mx-1 h-px bg-dark-700/50', className)}
+      className={cn('-mx-1 h-px bg-gray-300/50 dark:bg-gray-700/50', className)}
       {...props}
     />
   ),
@@ -123,7 +126,7 @@ export const CommandItem = forwardRef<HTMLDivElement, CommandItemProps>(
       className={cn(
         'relative flex cursor-pointer select-none items-center gap-2 rounded-linear px-2 py-2',
         'text-sm text-dark-200 outline-none',
-        'aria-selected:bg-dark-800/80 aria-selected:text-dark-100',
+        'aria-selected:bg-gray-250 aria-selected:text-dark-100 dark:bg-gray-850',
         'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',
         'transition-colors duration-150',
         className,
@@ -139,7 +142,7 @@ CommandItem.displayName = 'CommandItem';
 export type CommandShortcutProps = HTMLAttributes<HTMLSpanElement>;
 
 export const CommandShortcut = ({ className, ...props }: CommandShortcutProps) => (
-  <span className={cn('ml-auto text-xs tracking-widest text-dark-400', className)} {...props} />
+  <span className={cn('ml-auto text-xs tracking-widest text-dark-300', className)} {...props} />
 );
 
 CommandShortcut.displayName = 'CommandShortcut';
@@ -151,7 +154,7 @@ export const CommandLoading = forwardRef<HTMLDivElement, CommandLoadingProps>(
   ({ className, ...props }, ref) => (
     <CommandPrimitive.Loading
       ref={ref}
-      className={cn('py-6 text-center text-sm text-dark-400', className)}
+      className={cn('py-6 text-center text-sm text-dark-300', className)}
       {...props}
     />
   ),

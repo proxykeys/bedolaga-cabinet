@@ -272,11 +272,11 @@ export default function Support() {
     return (
       <div className="mx-auto mt-12 max-w-md">
         <Card className="text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-dark-800">
-            <ChatIcon className="h-8 w-8 text-dark-400" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
+            <ChatIcon className="h-8 w-8 text-dark-300" />
           </div>
           <h2 className="mb-2 text-xl font-semibold text-dark-100">{supportMessage.title}</h2>
-          <p className="mb-6 text-dark-400">{supportMessage.message}</p>
+          <p className="mb-6 text-gray-600 dark:text-gray-400">{supportMessage.message}</p>
           {contact && (
             <Button onClick={() => openSupportContact(supportConfig)} fullWidth>
               {supportMessage.buttonText}
@@ -304,27 +304,27 @@ export default function Support() {
                 src={att.preview}
                 alt="Preview"
                 loading="lazy"
-                className="h-16 w-16 rounded-lg border border-dark-700 object-cover"
+                className="h-16 w-16 rounded-lg border border-gray-200 object-cover dark:border-gray-800"
               />
             ) : (
-              <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-dark-700 text-xs text-dark-400">
+              <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gray-300 text-xs text-dark-300 dark:bg-gray-700">
                 {att.file.name.slice(-6)}
               </div>
             )}
             {att.uploading && (
-              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-dark-950/50">
+              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-gray-1000/50">
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
               </div>
             )}
             {att.error && (
-              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-error-500/30">
-                <span className="text-xs text-error-300">!</span>
+              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-error-500/80">
+                <span className="text-xs text-error-500">!</span>
               </div>
             )}
             <button
               type="button"
               onClick={() => onRemove(idx)}
-              className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-dark-600 text-dark-300 hover:bg-error-500 hover:text-white"
+              className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gray-350 text-dark-300 hover:bg-error-500 hover:text-white dark:bg-gray-650"
             >
               <CloseIcon className="h-4 w-4" />
             </button>
@@ -367,12 +367,16 @@ export default function Support() {
           <motion.div variants={staggerItem} initial="initial" animate="animate">
             <Card className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-dark-800">
-                  <ChatIcon className="h-5 w-5 text-dark-400" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-250 dark:bg-gray-850">
+                  <ChatIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-dark-100">{t('support.contactUs')}</div>
-                  <div className="text-xs text-dark-400">{supportConfig.support_username}</div>
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {t('support.contactUs')}
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    {supportConfig.support_username}
+                  </div>
                 </div>
               </div>
               <Button
@@ -408,8 +412,8 @@ export default function Support() {
                   }}
                   className={`w-full rounded-bento border p-4 text-left transition-all ${
                     selectedTicket?.id === ticket.id
-                      ? 'border-accent-500 bg-accent-500/10'
-                      : 'border-dark-700/50 bg-dark-800/30 hover:border-dark-600'
+                      ? 'border-accent-500 bg-gray-250 dark:bg-gray-850'
+                      : 'border-gray-200/50 bg-gray-250 hover:border-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700'
                   }`}
                 >
                   <div className="mb-2 flex items-start justify-between gap-2">
@@ -418,7 +422,7 @@ export default function Support() {
                       {getStatusLabel(ticket.status)}
                     </span>
                   </div>
-                  <div className="text-xs text-dark-500">
+                  <div className="text-xs text-gray-500 dark:text-gray-500">
                     {new Date(ticket.updated_at).toLocaleDateString(uiLocale())}
                   </div>
                 </button>
@@ -426,10 +430,10 @@ export default function Support() {
             </div>
           ) : (
             <div className="py-12 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-dark-800">
-                <ChatIcon className="h-8 w-8 text-dark-500" />
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
+                <ChatIcon className="h-8 w-8 text-dark-300" />
               </div>
-              <div className="text-dark-400">{t('support.noTickets')}</div>
+              <div className="text-dark-300">{t('support.noTickets')}</div>
             </div>
           )}
         </Card>
@@ -516,7 +520,7 @@ export default function Support() {
                       type="button"
                       onClick={() => createFileInputRef.current?.click()}
                       disabled={createAttachments.some((a) => a.uploading)}
-                      className="mt-2 flex items-center gap-2 text-sm text-dark-400 transition-colors hover:text-dark-200 disabled:opacity-50"
+                      className="mt-2 flex items-center gap-2 text-sm text-dark-300 transition-colors hover:text-dark-200 disabled:opacity-50"
                     >
                       <ImageIcon />
                       {t('support.attachImage')}{' '}
@@ -526,7 +530,7 @@ export default function Support() {
                 </div>
 
                 {formError && (
-                  <div className="rounded-xl border border-error-500/30 bg-error-500/10 p-3 text-sm text-error-400">
+                  <div className="rounded-xl border border-error-500 bg-gray-250 p-3 text-sm text-error-500 dark:bg-gray-850">
                     {formError}
                   </div>
                 )}
@@ -556,7 +560,7 @@ export default function Support() {
             </div>
           ) : selectedTicket ? (
             <div className="flex h-full flex-col">
-              <div className="mb-6 flex flex-col gap-2 border-b border-dark-800/50 pb-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="mb-6 flex flex-col gap-2 border-b border-gray-200/50 pb-4 dark:border-gray-800/50 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-dark-100">
                     {ticketDetail?.title || selectedTicket.title}
@@ -565,7 +569,7 @@ export default function Support() {
                     <span className={getStatusBadge(ticketDetail?.status || selectedTicket.status)}>
                       {getStatusLabel(ticketDetail?.status || selectedTicket.status)}
                     </span>
-                    <span className="text-xs text-dark-500">
+                    <span className="text-xs text-dark-300">
                       {t('support.created')}{' '}
                       {new Date(selectedTicket.created_at).toLocaleDateString(uiLocale())}
                     </span>
@@ -585,17 +589,17 @@ export default function Support() {
                       key={msg.id}
                       className={`rounded-xl p-4 ${
                         msg.is_from_admin
-                          ? 'ml-4 border border-accent-500/20 bg-accent-500/10'
-                          : 'mr-4 border border-dark-700/30 bg-dark-800/50'
+                          ? 'ml-4 border border-accent-500 bg-gray-250 dark:bg-gray-850'
+                          : 'mr-4 border border-gray-200/30 bg-gray-250 dark:border-gray-800/30 dark:bg-gray-850'
                       }`}
                     >
                       <div className="mb-2 flex items-center justify-between">
                         <span
-                          className={`text-xs font-medium ${msg.is_from_admin ? 'text-accent-400' : 'text-dark-400'}`}
+                          className={`text-xs font-medium ${msg.is_from_admin ? 'text-accent-500' : 'text-dark-300'}`}
                         >
                           {msg.is_from_admin ? t('support.supportTeam') : t('support.you')}
                         </span>
-                        <span className="text-xs text-dark-500">
+                        <span className="text-xs text-gray-500 dark:text-gray-500">
                           {new Date(msg.created_at).toLocaleString(uiLocale())}
                         </span>
                       </div>
@@ -629,7 +633,7 @@ export default function Support() {
                     }
                     replyMutation.mutate();
                   }}
-                  className="border-t border-dark-800/50 pt-4"
+                  className="border-t border-gray-200/50 pt-4 dark:border-gray-800/50"
                 >
                   <div className="space-y-3">
                     <div className="flex gap-3">
@@ -673,7 +677,7 @@ export default function Support() {
                           type="button"
                           onClick={() => replyFileInputRef.current?.click()}
                           disabled={replyAttachments.some((a) => a.uploading)}
-                          className="flex items-center gap-2 text-sm text-dark-400 transition-colors hover:text-dark-200 disabled:opacity-50"
+                          className="flex items-center gap-2 text-sm text-dark-300 transition-colors hover:text-dark-200 disabled:opacity-50"
                         >
                           <ImageIcon />
                           {t('support.attachImage')}{' '}
@@ -694,7 +698,7 @@ export default function Support() {
                       </Button>
                     </div>
                     {formError && (
-                      <div className="mt-2 rounded-lg border border-error-500/30 bg-error-500/10 p-2 text-sm text-error-400">
+                      <div className="mt-2 rounded-lg border border-error-500 bg-gray-250 p-2 text-sm text-error-500 dark:bg-gray-850">
                         {formError}
                       </div>
                     )}
@@ -703,16 +707,16 @@ export default function Support() {
               )}
 
               {ticketDetail?.is_reply_blocked && (
-                <div className="border-t border-dark-800/50 py-4 text-center text-sm text-dark-500">
+                <div className="border-t border-gray-200/50 py-4 text-center text-sm text-dark-300 dark:border-gray-800/50">
                   {t('support.repliesDisabled')}
                 </div>
               )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-dark-800">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
                 <svg
-                  className="h-8 w-8 text-dark-500"
+                  className="h-8 w-8 text-dark-300"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -725,7 +729,7 @@ export default function Support() {
                   />
                 </svg>
               </div>
-              <div className="text-dark-400">{t('support.selectTicket')}</div>
+              <div className="text-dark-300">{t('support.selectTicket')}</div>
             </div>
           )}
         </Card>

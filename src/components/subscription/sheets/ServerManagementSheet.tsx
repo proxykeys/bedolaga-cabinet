@@ -26,7 +26,6 @@ export interface ServerManagementSheetProps {
   selectedServers: string[];
   onSelectedServersChange: (uuids: string[] | ((prev: string[]) => string[])) => void;
   purchaseOptions: PurchaseOptions | undefined;
-  isDark: boolean;
 }
 
 export function ServerManagementSheet({
@@ -38,7 +37,6 @@ export function ServerManagementSheet({
   selectedServers,
   onSelectedServersChange,
   purchaseOptions,
-  isDark,
 }: ServerManagementSheetProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -79,18 +77,18 @@ export function ServerManagementSheet({
     return (
       <button
         onClick={onOpen}
-        className={`w-full rounded-xl border p-4 text-left transition-colors ${isDark ? 'border-dark-700/50 bg-dark-800/50 hover:border-dark-600' : 'border-champagne-300/60 bg-champagne-200/40 hover:border-champagne-400'}`}
+        className={`w-full rounded-xl border border-gray-200/50 bg-gray-250 p-4 text-left transition-colors hover:border-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700`}
       >
         <div className="flex items-center justify-between">
           <div>
             <div className="font-medium text-dark-100">
               {t('subscription.additionalOptions.manageServers')}
             </div>
-            <div className="mt-1 text-sm text-dark-400">
+            <div className="mt-1 text-sm text-dark-300">
               {t('subscription.servers', { count: subscription.servers?.length || 0 })}
             </div>
           </div>
-          <ChevronRightIcon className="text-dark-400" />
+          <ChevronRightIcon className="text-dark-300" />
         </div>
       </button>
     );
@@ -98,7 +96,7 @@ export function ServerManagementSheet({
 
   return (
     <div
-      className={`rounded-xl border p-5 ${isDark ? 'border-dark-700/50 bg-dark-800/50' : 'border-champagne-300/60 bg-champagne-200/40'}`}
+      className={`rounded-xl border border-gray-200/50 bg-gray-250 p-5 dark:border-gray-800/50 dark:bg-gray-850`}
     >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-medium text-dark-100">
@@ -109,7 +107,7 @@ export function ServerManagementSheet({
             onClose();
             onSelectedServersChange([]);
           }}
-          className="text-sm text-dark-400 hover:text-dark-200"
+          className="text-sm text-dark-300 hover:text-dark-200"
           aria-label={t('common.close', 'Close')}
         >
           ✕
@@ -123,13 +121,13 @@ export function ServerManagementSheet({
       ) : countriesData && countriesData.countries.length > 0 ? (
         <div className="space-y-4">
           <div
-            className={`rounded-lg p-2 text-xs ${isDark ? 'bg-dark-700/30 text-dark-500' : 'bg-champagne-300/40 text-champagne-600'}`}
+            className={`rounded-lg bg-gray-300/30 p-2 text-xs text-dark-300 dark:bg-gray-700/30`}
           >
             {t('subscription.serverManagement.statusLegend')}
           </div>
 
           {countriesData.discount_percent > 0 && (
-            <div className="rounded-lg border border-success-500/30 bg-success-500/10 p-2 text-xs text-success-400">
+            <div className="rounded-lg border border-gray-200/40 bg-gray-250 p-2 text-xs text-success-500 dark:border-gray-800/40 dark:bg-gray-850">
               🎁{' '}
               {t('subscription.serverManagement.discountBanner', {
                 percent: countriesData.discount_percent,
@@ -160,13 +158,11 @@ export function ServerManagementSheet({
                     className={`flex w-full items-center justify-between rounded-xl border p-3 text-left transition-all ${
                       isSelected
                         ? willBeAdded
-                          ? 'border-success-500 bg-success-500/10'
-                          : 'border-accent-500 bg-accent-500/10'
+                          ? 'border-dark-50 bg-gray-250 dark:bg-gray-850'
+                          : 'border-dark-50 bg-gray-250 dark:bg-gray-850'
                         : willBeRemoved
-                          ? 'border-error-500/50 bg-error-500/5'
-                          : isDark
-                            ? 'border-dark-700/50 bg-dark-800/50 hover:border-dark-600'
-                            : 'border-champagne-300/60 bg-champagne-200/40 hover:border-champagne-400'
+                          ? 'border-dark-50 bg-gray-250 dark:bg-gray-850'
+                          : 'border-gray-200/50 bg-gray-250 hover:border-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700'
                     } ${!country.is_available && !isCurrentlyConnected ? 'cursor-not-allowed opacity-50' : ''}`}
                   >
                     <div className="flex min-w-0 items-center gap-3">
@@ -177,19 +173,19 @@ export function ServerManagementSheet({
                         <div className="flex min-w-0 items-center gap-2 font-medium text-dark-100">
                           <span className="truncate">{country.name}</span>
                           {country.has_discount && !isCurrentlyConnected && (
-                            <span className="shrink-0 rounded bg-success-500/20 px-1.5 py-0.5 text-xs text-success-400">
+                            <span className="shrink-0 rounded bg-success-500 px-1.5 py-0.5 text-xs text-black">
                               -{country.discount_percent}%
                             </span>
                           )}
                         </div>
                         {willBeAdded && (
-                          <div className="text-xs text-success-400">
+                          <div className="text-xs text-success-500">
                             +{formatPrice(country.price_kopeks)}{' '}
                             {t('subscription.serverManagement.forDays', {
                               days: countriesData.days_left,
                             })}
                             {country.has_discount && (
-                              <span className="ml-1 text-dark-500 line-through">
+                              <span className="ml-1 text-dark-300 line-through">
                                 {formatPrice(
                                   Math.round(
                                     (country.base_price_kopeks * countriesData.days_left) / 30,
@@ -200,18 +196,18 @@ export function ServerManagementSheet({
                           </div>
                         )}
                         {!willBeAdded && !isCurrentlyConnected && (
-                          <div className="text-xs text-dark-500">
+                          <div className="text-xs text-dark-300">
                             {formatPrice(country.price_per_month_kopeks)}
                             {t('subscription.serverManagement.perMonth')}
                             {country.has_discount && (
-                              <span className="ml-1 text-dark-600 line-through">
+                              <span className="ml-1 text-dark-300 line-through">
                                 {formatPrice(country.base_price_kopeks)}
                               </span>
                             )}
                           </div>
                         )}
                         {!country.is_available && !isCurrentlyConnected && (
-                          <div className="text-xs text-dark-500">
+                          <div className="text-xs text-dark-300">
                             {t('subscription.serverManagement.unavailable')}
                           </div>
                         )}
@@ -240,12 +236,10 @@ export function ServerManagementSheet({
             const missingAmount = purchaseOptions ? totalCost - purchaseOptions.balance_kopeks : 0;
 
             return hasChanges ? (
-              <div
-                className={`space-y-3 border-t pt-3 ${isDark ? 'border-dark-700/50' : 'border-champagne-300/60'}`}
-              >
+              <div className={`space-y-3 border-t border-gray-200/50 pt-3 dark:border-gray-800/50`}>
                 {added.length > 0 && (
                   <div className="text-sm">
-                    <span className="text-success-400">
+                    <span className="text-success-500">
                       {t('subscription.serverManagement.toAdd')}
                     </span>{' '}
                     <span className="text-dark-300">
@@ -255,7 +249,7 @@ export function ServerManagementSheet({
                 )}
                 {removed.length > 0 && (
                   <div className="text-sm">
-                    <span className="text-error-400">
+                    <span className="text-error-500">
                       {t('subscription.serverManagement.toDisconnect')}
                     </span>{' '}
                     <span className="text-dark-300">
@@ -268,10 +262,10 @@ export function ServerManagementSheet({
                 )}
                 {totalCost > 0 && (
                   <div className="text-center">
-                    <div className="text-sm text-dark-400">
+                    <div className="text-sm text-dark-300">
                       {t('subscription.serverManagement.paymentProrated')}
                     </div>
-                    <div className="text-xl font-bold text-accent-400">
+                    <div className="text-xl font-bold text-accent-500">
                       {formatPrice(totalCost)}
                     </div>
                   </div>
@@ -300,20 +294,20 @@ export function ServerManagementSheet({
                 </button>
               </div>
             ) : (
-              <div className="py-2 text-center text-sm text-dark-500">
+              <div className="py-2 text-center text-sm text-dark-300">
                 {t('subscription.serverManagement.selectServersHint')}
               </div>
             );
           })()}
 
           {updateMutation.isError && (
-            <div className="text-center text-sm text-error-400">
+            <div className="text-center text-sm text-error-500">
               {getErrorMessage(updateMutation.error)}
             </div>
           )}
         </div>
       ) : (
-        <div className="py-4 text-center text-sm text-dark-400">
+        <div className="py-4 text-center text-sm text-dark-300">
           {t('subscription.serverManagement.noServersAvailable')}
         </div>
       )}

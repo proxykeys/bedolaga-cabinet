@@ -120,9 +120,9 @@ export default function Subscriptions() {
             onClick={() => navigate('/subscription/purchase')}
             className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-colors"
             style={{
-              background: 'rgba(var(--color-accent-400), 0.1)',
-              color: 'rgb(var(--color-accent-400))',
-              border: '1px solid rgba(var(--color-accent-400), 0.2)',
+              background: 'transparent',
+              color: 'rgb(var(--color-accent-500))',
+              border: '1px solid rgb(var(--color-accent-500))',
             }}
           >
             <PlusIcon className="h-4 w-4" />

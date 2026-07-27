@@ -74,11 +74,11 @@ export function DateField({ value, onChange, placeholder, min, max, className }:
           type="button"
           className={
             className ??
-            'flex min-w-[8rem] items-center justify-start gap-2 whitespace-nowrap rounded-lg border border-dark-600 bg-dark-800 px-3 py-1.5 text-sm text-dark-200 transition-colors hover:border-dark-500'
+            'flex min-w-[8rem] items-center justify-start gap-2 whitespace-nowrap rounded-lg border border-gray-300 bg-gray-250 px-3 py-1.5 text-sm text-dark-200 transition-colors hover:border-gray-350 dark:border-gray-700 dark:bg-gray-850 dark:hover:border-gray-650'
           }
         >
-          <CalendarIcon className="h-4 w-4 shrink-0 text-dark-500" />
-          <span className={`truncate ${selected ? '' : 'text-dark-500'}`}>
+          <CalendarIcon className="h-4 w-4 shrink-0 text-dark-300" />
+          <span className={`truncate ${selected ? '' : 'text-dark-300'}`}>
             {display || placeholder}
           </span>
         </button>
@@ -88,7 +88,7 @@ export function DateField({ value, onChange, placeholder, min, max, className }:
           align="start"
           sideOffset={6}
           collisionPadding={8}
-          className="rdp-dark z-50 max-w-[calc(100vw-1rem)] rounded-xl border border-dark-700 bg-dark-800 p-2 shadow-xl"
+          className="rdp-dark z-50 max-w-[calc(100vw-1rem)] rounded-xl border border-gray-200 bg-gray-250 p-2 shadow-xl dark:border-gray-800 dark:bg-gray-850"
         >
           <DayPicker
             mode="single"

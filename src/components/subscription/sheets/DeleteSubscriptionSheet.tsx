@@ -71,7 +71,7 @@ export function DeleteSubscriptionSheet({
       <button
         onClick={handleTriggerClick}
         disabled={deleteLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl border border-error-400/20 bg-error-400/5 p-3.5 text-sm font-medium text-error-400 transition-colors hover:bg-error-400/10 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl border border-gray-200/40 bg-gray-250 p-3.5 text-sm font-medium text-error-500 transition-colors hover:bg-gray-300 disabled:opacity-50 dark:border-gray-800/40 dark:bg-gray-850 dark:hover:bg-gray-800"
       >
         <TrashIcon className="h-4 w-4" />
         {t('subscription.delete', 'Удалить подписку')}
@@ -80,11 +80,8 @@ export function DeleteSubscriptionSheet({
   }
 
   return (
-    <div
-      className="rounded-2xl border border-error-400/20 p-4"
-      style={{ background: 'rgba(255,59,92,0.04)' }}
-    >
-      <div className="mb-3 text-sm font-semibold text-error-400">
+    <div className="rounded-2xl border border-gray-200/40 bg-gray-250 p-4 dark:border-gray-800/40 dark:bg-gray-850">
+      <div className="mb-3 text-sm font-semibold text-error-500">
         {t('subscription.deleteTitle', 'Удалить подписку?')}
       </div>
       <div className="mb-4 text-xs" style={{ color: textSecondary }}>
@@ -97,7 +94,8 @@ export function DeleteSubscriptionSheet({
         <button
           onClick={performDelete}
           disabled={deleteLoading}
-          className="flex-1 rounded-xl bg-error-500 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-error-600 disabled:opacity-50"
+          className="flex-1 rounded-xl bg-error-500 py-2.5 text-sm font-semibold transition-colors hover:bg-error-600 disabled:opacity-50"
+          style={{ color: 'rgb(var(--color-on-error))' }}
         >
           {deleteLoading
             ? t('common.processing', 'Удаление...')
@@ -105,7 +103,7 @@ export function DeleteSubscriptionSheet({
         </button>
         <button
           onClick={onClose}
-          className="flex-1 rounded-xl border border-dark-700 py-2.5 text-sm font-medium transition-colors hover:bg-dark-700"
+          className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium transition-colors hover:bg-gray-300 dark:border-gray-800 dark:hover:bg-gray-800"
           style={{ color: textSecondary }}
         >
           {t('common.cancel', 'Отмена')}

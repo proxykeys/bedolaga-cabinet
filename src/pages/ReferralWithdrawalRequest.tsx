@@ -50,7 +50,7 @@ export default function ReferralWithdrawalRequest() {
   return (
     <div className="animate-fade-in space-y-6">
       <h1 className="text-2xl font-bold text-dark-50">{t('referral.withdrawal.requestTitle')}</h1>
-      <p className="text-sm text-dark-400">
+      <p className="text-sm text-dark-300">
         {t('referral.withdrawal.requestDesc', {
           available: balance ? formatWithCurrency(balance.available_total / 100) : '',
         })}
@@ -79,7 +79,7 @@ export default function ReferralWithdrawalRequest() {
                 currency: currencySymbol,
               })}
             />
-            <p className="mt-1 text-xs text-dark-500">
+            <p className="mt-1 text-xs text-dark-300">
               {t('referral.withdrawal.fields.amountHint', {
                 min: balance ? Math.ceil(balance.min_amount_kopeks / 100) : 0,
                 currency: currencySymbol,
@@ -106,7 +106,7 @@ export default function ReferralWithdrawalRequest() {
         </div>
 
         {withdrawMutation.isError && (
-          <div className="rounded-lg bg-error-500/10 p-3 text-sm text-error-400">
+          <div className="rounded-lg border border-error-500 bg-gray-250 p-3 text-sm text-error-500 dark:bg-gray-850">
             {t('referral.withdrawal.requestError')}
           </div>
         )}

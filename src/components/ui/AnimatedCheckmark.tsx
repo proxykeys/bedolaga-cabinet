@@ -8,7 +8,7 @@ export function AnimatedCheckmark({ className }: { className?: string }) {
       animate={{ scale: 1 }}
       transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
       className={cn(
-        'flex h-20 w-20 items-center justify-center rounded-full bg-success-500/10',
+        'flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60',
         className,
       )}
     >

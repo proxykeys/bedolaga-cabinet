@@ -421,14 +421,14 @@ export default function TopUpAmount() {
           className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
             isStarsMethod
               ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 text-yellow-400'
-              : 'bg-gradient-to-br from-accent-500/20 to-accent-600/20 text-accent-400'
+              : 'border border-accent-500 bg-gray-250 text-accent-500 dark:bg-gray-850'
           }`}
         >
           <div className="flex h-7 w-7 items-center justify-center">{getMethodIcon(method.id)}</div>
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-bold text-dark-100">{methodName}</h3>
-          <p className="text-sm text-dark-400">
+          <p className="text-sm text-dark-300">
             {formatAmount(minRubles, 0)} – {formatAmount(maxRubles, 0)} {currencySymbol}
           </p>
         </div>
@@ -437,7 +437,7 @@ export default function TopUpAmount() {
       {/* Payment options (if any) */}
       {hasOptions && orderedOptions.length > 0 && (
         <motion.div variants={staggerItem} className="space-y-2">
-          <label className="text-sm font-medium text-dark-400">{t('balance.paymentMethod')}</label>
+          <label className="text-sm font-medium text-dark-300">{t('balance.paymentMethod')}</label>
           <div className="grid grid-cols-2 gap-2">
             {orderedOptions.map((opt) => (
               <button
@@ -446,8 +446,8 @@ export default function TopUpAmount() {
                 onClick={() => setSelectedOption(opt.id)}
                 className={`relative rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                   selectedOption === opt.id
-                    ? 'bg-accent-500/15 text-accent-400 ring-2 ring-accent-500/40'
-                    : 'border border-dark-700/50 bg-dark-800/70 text-dark-300 hover:bg-dark-700/70'
+                    ? 'bg-gray-250 text-accent-500 ring-2 ring-accent-500/40 dark:bg-gray-850'
+                    : 'border border-gray-200/50 bg-gray-250 text-dark-300 hover:bg-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:bg-gray-800'
                 }`}
               >
                 {opt.name}
@@ -464,13 +464,13 @@ export default function TopUpAmount() {
 
       {/* Amount input + Submit button - inline */}
       <motion.div variants={staggerItem} className="space-y-2">
-        <label className="text-sm font-medium text-dark-400">{t('balance.enterAmount')}</label>
+        <label className="text-sm font-medium text-dark-300">{t('balance.enterAmount')}</label>
         <div className="flex gap-2">
           <div
             className={`relative flex-1 rounded-2xl transition-all duration-200 ${
               isInputFocused
-                ? 'bg-dark-800 ring-2 ring-accent-500/50'
-                : 'border border-dark-700/50 bg-dark-800/70'
+                ? 'bg-gray-250 ring-2 ring-accent-500/50 dark:bg-gray-850'
+                : 'border border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850'
             }`}
           >
             <input
@@ -492,10 +492,10 @@ export default function TopUpAmount() {
                 }
               }}
               placeholder="0"
-              className="h-14 w-full bg-transparent px-4 pr-12 text-xl font-bold text-dark-100 placeholder:text-dark-600 focus:outline-none"
+              className="h-14 w-full bg-transparent px-4 pr-12 text-xl font-bold text-dark-100 placeholder:text-dark-300 focus:outline-none"
               autoComplete="off"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base font-semibold text-dark-500">
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base font-semibold text-dark-300">
               {currencySymbol}
             </span>
           </div>
@@ -505,10 +505,10 @@ export default function TopUpAmount() {
             disabled={isPending || !amount || parseFloat(amount) <= 0}
             className={`flex h-14 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 text-base font-bold transition-colors duration-200 ${
               isPending || !amount || parseFloat(amount) <= 0
-                ? 'cursor-not-allowed bg-dark-700 text-dark-500'
+                ? 'cursor-not-allowed bg-gray-300 text-dark-300 dark:bg-gray-700'
                 : isStarsMethod
                   ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg shadow-yellow-500/25 hover:from-yellow-400 hover:to-orange-400 active:from-yellow-600 active:to-orange-600'
-                  : 'bg-accent-500 text-on-accent shadow-lg shadow-accent-500/25 transition-colors hover:bg-accent-400 active:bg-accent-600'
+                  : 'bg-accent-500 text-on-accent shadow-lg transition-colors hover:bg-accent-400 active:bg-accent-600'
             }`}
           >
             {isPending ? (
@@ -542,16 +542,16 @@ export default function TopUpAmount() {
                 hover
                 glow={isSelected}
                 className={`flex flex-col items-center justify-center px-2 py-3 ${
-                  isSelected ? 'border-accent-500/50 bg-accent-500/10' : ''
+                  isSelected ? 'border-accent-500 bg-gray-250 dark:bg-gray-850' : ''
                 }`}
               >
                 <span
-                  className={`text-base font-bold ${isSelected ? 'text-accent-400' : 'text-dark-200'}`}
+                  className={`text-base font-bold ${isSelected ? 'text-accent-500' : 'text-dark-200'}`}
                 >
                   {formatAmount(a, 0)}
                 </span>
                 <span
-                  className={`mt-0.5 text-xs ${isSelected ? 'text-accent-400/70' : 'text-dark-500'}`}
+                  className={`mt-0.5 text-xs ${isSelected ? 'text-accent-500' : 'text-dark-300'}`}
                 >
                   {currencySymbol}
                 </span>
@@ -565,10 +565,10 @@ export default function TopUpAmount() {
       {error && (
         <motion.div
           variants={staggerItem}
-          className="flex items-center gap-2 rounded-xl border border-error-500/20 bg-error-500/10 p-3"
+          className="flex items-center gap-2 rounded-xl border border-error-500 bg-gray-250 p-3 dark:bg-gray-850"
         >
-          <ExclamationIcon className="h-5 w-5 shrink-0 text-error-400" />
-          <span className="text-sm text-error-400">{error}</span>
+          <ExclamationIcon className="h-5 w-5 shrink-0 text-error-500" />
+          <span className="text-sm text-error-500">{error}</span>
         </motion.div>
       )}
 
@@ -576,35 +576,35 @@ export default function TopUpAmount() {
       {paymentUrl && (
         <motion.div
           variants={staggerItem}
-          className="space-y-3 rounded-2xl border border-success-500/20 bg-success-500/10 p-4"
+          className="space-y-3 rounded-2xl border border-success-500 bg-gray-250 p-4 dark:bg-gray-850"
         >
-          <div className="flex items-center gap-2 text-success-400">
+          <div className="flex items-center gap-2 text-success-500">
             <CheckIcon className="h-5 w-5" />
             <span className="font-semibold">{t('balance.paymentReady')}</span>
           </div>
 
-          <p className="text-sm text-dark-400">{t('balance.clickToOpenPayment')}</p>
+          <p className="text-sm text-dark-300">{t('balance.clickToOpenPayment')}</p>
 
           <button
             type="button"
             onClick={handleOpenPayment}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-success-500 font-bold text-white transition-colors hover:bg-success-400 active:bg-success-600"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-success-500 font-bold text-on-success transition-colors hover:bg-success-400 active:bg-success-600"
           >
             <ExternalLinkIcon />
             <span>{t('balance.openPaymentPage')}</span>
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="min-w-0 flex-1 rounded-lg border border-dark-700/50 bg-dark-800/70 px-3 py-2">
-              <p className="truncate text-xs text-dark-500">{paymentUrl}</p>
+            <div className="min-w-0 flex-1 rounded-lg border border-gray-200/50 bg-gray-250 px-3 py-2 dark:border-gray-800/50 dark:bg-gray-850">
+              <p className="truncate text-xs text-dark-300">{paymentUrl}</p>
             </div>
             <button
               type="button"
               onClick={handleCopyUrl}
               className={`shrink-0 rounded-lg p-2.5 transition-colors ${
                 copied
-                  ? 'bg-success-500/20 text-success-400'
-                  : 'bg-dark-800/70 text-dark-400 hover:bg-dark-700 hover:text-dark-200'
+                  ? 'bg-success-500 text-on-success'
+                  : 'bg-gray-250 text-dark-300 hover:bg-gray-300 hover:text-dark-200 dark:bg-gray-850 dark:hover:bg-gray-800'
               }`}
               title={t('common.copy')}
             >

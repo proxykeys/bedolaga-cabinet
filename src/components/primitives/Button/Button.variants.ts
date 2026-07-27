@@ -1,10 +1,10 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  // Base styles
+  // Base styles — monochrome per claude.com, color-only transitions (no scale on hover)
   [
     'inline-flex items-center justify-center gap-2',
-    'font-medium transition-all duration-200',
+    'font-medium transition-colors duration-200',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950',
     'disabled:pointer-events-none disabled:opacity-50',
     'select-none',
@@ -12,32 +12,33 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: [
-          'bg-accent-500 text-on-accent',
-          'hover:bg-accent-600',
-          'active:bg-accent-700',
-          'shadow-linear-sm hover:shadow-linear',
-        ],
+        // Monochrome primary: light fill / dark text (auto-inverts in light theme
+        // via .light remapping dark-50 → champagne-950, dark-950 → champagne-50).
+        primary: ['bg-dark-50 text-dark-950', 'hover:bg-dark-200', 'active:bg-dark-300'],
         secondary: [
-          'bg-dark-800/80 text-dark-100',
-          'border border-dark-700/50',
-          'hover:bg-dark-700/80 hover:border-dark-600/50',
-          'active:bg-dark-800',
+          'bg-gray-250 dark:bg-gray-850 text-dark-100',
+          'border border-gray-200 dark:border-gray-800',
+          'hover:bg-gray-300 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-700',
+          'active:bg-gray-250 dark:bg-gray-850',
         ],
-        ghost: ['text-dark-300', 'hover:text-dark-100 hover:bg-dark-800/50', 'active:bg-dark-800'],
+        ghost: [
+          'text-dark-300',
+          'hover:text-dark-100 hover:bg-gray-300 dark:hover:bg-gray-800',
+          'active:bg-gray-250 dark:bg-gray-850',
+        ],
         destructive: [
-          'bg-error-500/10 text-error-400',
-          'border border-error-500/20',
-          'hover:bg-error-500/20 hover:border-error-500/30',
-          'active:bg-error-500/30',
+          'bg-gray-250 dark:bg-gray-850 text-error-500',
+          'border border-error-500',
+          'hover:bg-gray-300 dark:hover:bg-gray-800 hover:border-error-400',
+          'active:bg-gray-350 dark:bg-gray-650',
         ],
         outline: [
-          'border border-dark-700/50 text-dark-200',
-          'hover:bg-dark-800/50 hover:border-dark-600/50 hover:text-dark-100',
-          'active:bg-dark-800',
+          'border border-gray-200 dark:border-gray-800 text-dark-200',
+          'hover:bg-gray-300 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:text-dark-100',
+          'active:bg-gray-250 dark:bg-gray-850',
         ],
         link: [
-          'text-accent-400',
+          'text-accent-500',
           'hover:text-accent-300 hover:underline',
           'active:text-accent-500',
         ],

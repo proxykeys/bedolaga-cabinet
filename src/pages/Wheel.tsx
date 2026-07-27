@@ -476,10 +476,10 @@ export default function Wheel() {
   if (error || !config) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-error-500/10">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
           <span className="text-4xl">😔</span>
         </div>
-        <p className="text-lg text-dark-400">{t('wheel.errors.loadFailed')}</p>
+        <p className="text-lg text-dark-300">{t('wheel.errors.loadFailed')}</p>
       </div>
     );
   }
@@ -487,12 +487,12 @@ export default function Wheel() {
   if (!config.is_enabled) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-dark-800">
+        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
           <span className="text-5xl">🎡</span>
         </div>
         <div className="text-center">
           <h1 className="mb-2 text-2xl font-bold text-dark-100">{t('wheel.title')}</h1>
-          <p className="text-dark-400">{t('wheel.disabled')}</p>
+          <p className="text-dark-300">{t('wheel.disabled')}</p>
         </div>
       </div>
     );
@@ -525,9 +525,9 @@ export default function Wheel() {
       <div>
         <h1 className="text-2xl font-bold text-dark-50">{t('wheel.title')}</h1>
         {config.daily_limit > 0 && (
-          <p className="mt-1 text-dark-400">
+          <p className="mt-1 text-dark-300">
             {t('wheel.spinsRemaining')}:{' '}
-            <span className="inline-flex items-center rounded-full bg-accent-500/15 px-2 py-0.5 text-sm font-medium text-accent-400">
+            <span className="inline-flex items-center rounded-full bg-accent-500 px-2 py-0.5 text-sm font-medium text-black">
               {Math.max(0, config.daily_limit - config.user_spins_today)}/{config.daily_limit}
             </span>
           </p>
@@ -551,8 +551,8 @@ export default function Wheel() {
             <div className="mt-8 space-y-4">
               {/* Payment type selector */}
               {(starsEnabled || daysEnabled) && (
-                <div className="rounded-xl border border-dark-700/30 bg-dark-800/30 px-1 pb-1 pt-2">
-                  <p className="mb-1 text-center text-xs text-dark-400">{t('wheel.spinCost')}</p>
+                <div className="rounded-xl border border-gray-200/30 bg-gray-250 px-1 pb-1 pt-2 dark:border-gray-800/30 dark:bg-gray-850">
+                  <p className="mb-1 text-center text-xs text-dark-300">{t('wheel.spinCost')}</p>
                   <div
                     className={`grid gap-1 ${bothMethodsAvailable ? 'grid-cols-2' : 'grid-cols-1'}`}
                   >
@@ -562,8 +562,8 @@ export default function Wheel() {
                         disabled={isSpinning}
                         className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                           paymentType === 'telegram_stars'
-                            ? 'bg-accent-500/15 text-accent-400'
-                            : 'text-dark-400 hover:text-dark-200'
+                            ? 'bg-gray-250 text-accent-500 dark:bg-gray-850'
+                            : 'text-dark-300 hover:text-dark-200'
                         }`}
                       >
                         <StarIcon />
@@ -576,8 +576,8 @@ export default function Wheel() {
                         disabled={isSpinning}
                         className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                           paymentType === 'subscription_days'
-                            ? 'bg-accent-500/15 text-accent-400'
-                            : 'text-dark-400 hover:text-dark-200'
+                            ? 'bg-gray-250 text-accent-500 dark:bg-gray-850'
+                            : 'text-dark-300 hover:text-dark-200'
                         }`}
                       >
                         <CalendarIcon />
@@ -592,8 +592,8 @@ export default function Wheel() {
               {paymentType === 'subscription_days' &&
                 config.eligible_subscriptions &&
                 config.eligible_subscriptions.length > 1 && (
-                  <div className="rounded-xl border border-dark-700/30 bg-dark-800/30 p-3">
-                    <p className="mb-2 text-center text-xs text-dark-400">
+                  <div className="rounded-xl border border-gray-200/30 bg-gray-250 p-3 dark:border-gray-800/30 dark:bg-gray-850">
+                    <p className="mb-2 text-center text-xs text-dark-300">
                       {t('wheel.selectSubscription', 'Выберите подписку')}
                     </p>
                     <div className="space-y-1.5">
@@ -604,8 +604,8 @@ export default function Wheel() {
                           disabled={isSpinning}
                           className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition-all ${
                             selectedSubscriptionId === sub.id
-                              ? 'bg-accent-500/15 text-accent-400'
-                              : 'text-dark-400 hover:text-dark-200'
+                              ? 'bg-gray-250 text-accent-500 dark:bg-gray-850'
+                              : 'text-dark-300 hover:text-dark-200'
                           }`}
                         >
                           <span className="min-w-0 truncate font-medium">
@@ -622,14 +622,14 @@ export default function Wheel() {
 
               {/* Stars confirmation panel */}
               {showStarsConfirm && !isSpinning && !isPayingStars ? (
-                <div className="space-y-3 rounded-xl border border-accent-500/30 bg-accent-500/5 p-4">
+                <div className="space-y-3 rounded-xl border border-accent-500 bg-gray-250 p-4 dark:bg-gray-850">
                   <p className="text-center text-sm text-dark-300">
                     {t('wheel.confirmStarsPayment')}
                   </p>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setShowStarsConfirm(false)}
-                      className="rounded-lg border border-dark-700 bg-dark-800 px-4 py-2.5 text-sm font-medium text-dark-300 transition-colors hover:bg-dark-700"
+                      className="rounded-lg border border-gray-200 bg-gray-250 px-4 py-2.5 text-sm font-medium text-dark-300 transition-colors hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:bg-gray-800"
                     >
                       {t('common.cancel')}
                     </button>
@@ -657,8 +657,8 @@ export default function Wheel() {
 
               {/* No subscription hint */}
               {!isSpinning && noSubscription && (
-                <div className="rounded-linear border border-warning-500/30 bg-warning-500/5 p-4 text-center">
-                  <p className="text-warning-400">{t('wheel.errors.noSubscription')}</p>
+                <div className="rounded-linear border border-warning-500 bg-gray-250 p-4 text-center dark:bg-gray-850">
+                  <p className="text-warning-500">{t('wheel.errors.noSubscription')}</p>
                 </div>
               )}
               {/* Cannot spin hint — only show for days payment (Stars via invoice always works) */}
@@ -666,8 +666,8 @@ export default function Wheel() {
                 !noSubscription &&
                 paymentType !== 'telegram_stars' &&
                 !config.can_spin && (
-                  <div className="rounded-linear border border-dark-700/30 bg-dark-800/30 p-4 text-center">
-                    <p className="text-dark-400">
+                  <div className="rounded-linear border border-gray-200/30 bg-gray-250 p-4 text-center dark:border-gray-800/30 dark:bg-gray-850">
+                    <p className="text-dark-300">
                       {config.can_spin_reason === 'daily_limit_reached'
                         ? t('wheel.errors.dailyLimitReached')
                         : t('wheel.errors.cannotSpin')}
@@ -679,14 +679,14 @@ export default function Wheel() {
                 !noSubscription &&
                 paymentType === 'telegram_stars' &&
                 dailyLimitReached && (
-                  <div className="rounded-linear border border-dark-700/30 bg-dark-800/30 p-4 text-center">
-                    <p className="text-dark-400">{t('wheel.errors.dailyLimitReached')}</p>
+                  <div className="rounded-linear border border-gray-200/30 bg-gray-250 p-4 text-center dark:border-gray-800/30 dark:bg-gray-850">
+                    <p className="text-dark-300">{t('wheel.errors.dailyLimitReached')}</p>
                   </div>
                 )}
               {/* Subscription selection required hint */}
               {!isSpinning && needsSubscriptionPick && (
-                <div className="rounded-linear border border-warning-500/30 bg-warning-500/5 p-4 text-center">
-                  <p className="text-warning-400">
+                <div className="rounded-linear border border-warning-500 bg-gray-250 p-4 text-center dark:bg-gray-850">
+                  <p className="text-warning-500">
                     {t('wheel.errors.selectSubscription', 'Выберите подписку для списания дней')}
                   </p>
                 </div>
@@ -697,12 +697,12 @@ export default function Wheel() {
                 <div
                   className={`animate-fade-in rounded-linear border p-4 ${
                     spinResult.success
-                      ? 'border-accent-500/30 bg-accent-500/10'
-                      : 'border-error-500/30 bg-error-500/10'
+                      ? 'border-accent-500 bg-gray-250 dark:bg-gray-850'
+                      : 'border-error-500 bg-gray-250 dark:bg-gray-850'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-linear bg-dark-700/50 text-2xl">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-linear bg-gray-300/50 text-2xl dark:bg-gray-700/50">
                       {spinResult.success ? spinResult.emoji || '🎉' : '😔'}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -715,11 +715,11 @@ export default function Wheel() {
                               : t('wheel.congratulations')
                             : t('wheel.oops')}
                       </div>
-                      <div className="text-sm text-dark-400">{spinResult.message}</div>
+                      <div className="text-sm text-dark-300">{spinResult.message}</div>
                     </div>
                     <button
                       onClick={closeResultModal}
-                      className="shrink-0 rounded-lg p-2 text-dark-400 transition-colors hover:bg-white/5 hover:text-dark-200"
+                      className="shrink-0 rounded-lg p-2 text-dark-300 transition-colors hover:bg-white/5 hover:text-dark-200"
                     >
                       <CloseIcon className="h-6 w-6" />
                     </button>
@@ -727,8 +727,8 @@ export default function Wheel() {
 
                   {/* Promocode if won */}
                   {spinResult.promocode && (
-                    <div className="mt-3 rounded-linear border border-accent-500/20 bg-accent-500/10 p-3 text-center">
-                      <p className="mb-1 text-xs text-accent-400">{t('wheel.yourPromoCode')}</p>
+                    <div className="mt-3 rounded-linear border border-accent-500 bg-gray-250 p-3 text-center dark:bg-gray-850">
+                      <p className="mb-1 text-xs text-accent-500">{t('wheel.yourPromoCode')}</p>
                       <p className="select-all font-mono text-lg font-bold tracking-wider text-white">
                         {spinResult.promocode}
                       </p>
@@ -760,7 +760,7 @@ export default function Wheel() {
             <HistoryIcon />
             {t('wheel.recentSpins')}
             {history && history.items.length > 0 && (
-              <span className="text-sm font-normal text-dark-500">({history.items.length})</span>
+              <span className="text-sm font-normal text-dark-300">({history.items.length})</span>
             )}
           </h3>
           <ChevronIcon expanded={historyExpanded} />
@@ -775,7 +775,7 @@ export default function Wheel() {
               transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="overflow-hidden"
             >
-              <div className="border-t border-dark-700/30 px-4 pb-4 pt-2">
+              <div className="border-t border-gray-200/30 px-4 pb-4 pt-2 dark:border-gray-800/30">
                 {history && history.items.length > 0 ? (
                   // "hidden"/"show" don't exist in staggerContainer/staggerItem
                   // (their keys are initial/animate/exit), so the stagger here
@@ -790,22 +790,22 @@ export default function Wheel() {
                       <motion.div
                         key={item.id}
                         variants={staggerItem}
-                        className="flex items-center justify-between rounded-linear border border-dark-700/30 bg-dark-800/30 p-3"
+                        className="flex items-center justify-between rounded-linear border border-gray-200/30 bg-gray-250 p-3 dark:border-gray-800/30 dark:bg-gray-850"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-linear bg-dark-700/50 text-xl">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-linear bg-gray-300/50 text-xl dark:bg-gray-700/50">
                             {item.emoji}
                           </div>
                           <div className="min-w-0">
                             <div className="truncate text-sm font-medium text-dark-100">
                               {item.prize_display_name}
                             </div>
-                            <div className="text-xs text-dark-500">
+                            <div className="text-xs text-gray-500 dark:text-gray-500">
                               {new Date(item.created_at).toLocaleDateString(uiLocale())}
                             </div>
                           </div>
                         </div>
-                        <div className="whitespace-nowrap text-sm text-dark-400">
+                        <div className="whitespace-nowrap text-sm text-dark-300">
                           -
                           {item.payment_type === 'telegram_stars'
                             ? `${item.payment_amount} ⭐`
@@ -815,7 +815,7 @@ export default function Wheel() {
                     ))}
                   </motion.div>
                 ) : (
-                  <div className="py-6 text-center text-dark-500">
+                  <div className="py-6 text-center text-dark-300">
                     <div className="mb-2 text-3xl">🎰</div>
                     {t('wheel.noHistory')}
                   </div>

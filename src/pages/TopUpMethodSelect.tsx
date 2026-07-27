@@ -51,7 +51,7 @@ export default function TopUpMethodSelect() {
               <Skeleton variant="card" count={3} className="h-16" />
             </SkeletonGroup>
           ) : !paymentMethods || paymentMethods.length === 0 ? (
-            <div className="py-6 text-center text-sm text-dark-400">
+            <div className="py-6 text-center text-sm text-dark-300">
               {t('balance.noPaymentMethods')}
             </div>
           ) : (
@@ -79,11 +79,11 @@ export default function TopUpMethodSelect() {
                       </div>
                     </div>
                     {(method.description || translatedDesc) && (
-                      <div className="mt-1 text-sm text-dark-500">
+                      <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {method.description || translatedDesc}
                       </div>
                     )}
-                    <div className="mt-3 text-xs text-dark-400">
+                    <div className="mt-3 text-xs text-dark-300">
                       {formatAmount(method.min_amount_kopeks / 100, 0)} –{' '}
                       {formatAmount(method.max_amount_kopeks / 100, 0)} {currencySymbol}
                     </div>

@@ -36,11 +36,11 @@ export function AccordionBlock({
             className={`overflow-hidden rounded-2xl border transition-colors ${
               isLight
                 ? isOpen
-                  ? 'border-accent-500/30 bg-white/80 shadow-sm'
-                  : 'border-dark-700/60 bg-white/60'
+                  ? 'border-dark-50 bg-white'
+                  : 'border-gray-200 bg-white dark:border-gray-800'
                 : isOpen
-                  ? 'border-accent-500/30 bg-dark-800/50'
-                  : 'border-dark-700/50 bg-dark-800/50'
+                  ? 'border-dark-50 bg-gray-250 dark:bg-gray-850'
+                  : 'border-gray-200 bg-gray-250 dark:border-gray-800 dark:bg-gray-850'
             }`}
           >
             {/* Control */}
@@ -58,7 +58,7 @@ export function AccordionBlock({
                 {getLocalizedText(block.title)}
               </span>
               <ChevronDownIcon
-                className={`h-[18px] w-[18px] shrink-0 text-dark-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                className={`h-[18px] w-[18px] shrink-0 text-dark-300 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
               />
             </button>
             {/* Panel */}
@@ -68,7 +68,7 @@ export function AccordionBlock({
               }`}
             >
               <div className="px-4 pb-4">
-                <p className="whitespace-pre-line text-sm leading-relaxed text-dark-400">
+                <p className="whitespace-pre-line text-sm leading-relaxed text-dark-300">
                   {getLocalizedText(block.description)}
                 </p>
                 {renderBlockButtons(block.buttons, 'light')}

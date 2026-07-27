@@ -124,27 +124,27 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   // background tint flood — the contained icon is enough at this size.
   const typeStyles = {
     success: {
-      border: 'border-success-500/40',
-      icon: 'text-success-400',
-      iconBg: 'bg-success-500/15',
+      border: 'border-success-500',
+      icon: 'text-success-500',
+      iconBg: 'bg-transparent border border-success-500',
       progress: 'bg-success-500',
     },
     error: {
-      border: 'border-error-500/40',
-      icon: 'text-error-400',
-      iconBg: 'bg-error-500/15',
+      border: 'border-error-500',
+      icon: 'text-error-500',
+      iconBg: 'bg-transparent border border-error-500',
       progress: 'bg-error-500',
     },
     warning: {
-      border: 'border-warning-500/40',
-      icon: 'text-warning-400',
-      iconBg: 'bg-warning-500/15',
+      border: 'border-warning-500',
+      icon: 'text-warning-500',
+      iconBg: 'bg-transparent border border-warning-500',
       progress: 'bg-warning-500',
     },
     info: {
-      border: 'border-accent-500/40',
-      icon: 'text-accent-400',
-      iconBg: 'bg-accent-500/15',
+      border: 'border-accent-500',
+      icon: 'text-accent-500',
+      iconBg: 'bg-transparent border border-accent-500',
       progress: 'bg-accent-500',
     },
   };
@@ -177,7 +177,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={`pointer-events-auto w-full cursor-pointer overflow-hidden rounded-2xl border bg-dark-900 shadow-xl shadow-black/30 backdrop-blur-xl ${style.border} animate-slide-in-right transition-transform duration-200 hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 active:scale-[0.99] sm:max-w-sm`}
+      className={`pointer-events-auto w-full cursor-pointer overflow-hidden rounded-2xl border bg-gray-100 shadow-xl shadow-black/30 backdrop-blur-xl dark:bg-gray-900 ${style.border} animate-slide-in-right transition-transform duration-200 hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 active:scale-[0.99] sm:max-w-sm`}
     >
       <div className="relative p-4">
         <div className="flex gap-3">
@@ -201,7 +201,10 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
         {/* Progress bar — visual countdown until auto-dismiss. scaleX animates
             on the compositor, no layout reflow. aria-hidden because the visual
             timer doesn't carry meaning beyond the toast lifetime. */}
-        <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-0.5 bg-dark-800/50">
+        <div
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-250 dark:bg-gray-850"
+        >
           <div
             className={`h-full w-full ${style.progress} opacity-70`}
             style={{

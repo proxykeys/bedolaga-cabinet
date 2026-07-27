@@ -162,7 +162,7 @@ function sanitizeHtml(html: string): string {
 // --- FAQ Accordion ---
 const ChevronIcon = ({ open }: { open: boolean }) => (
   <PiCaretDown
-    className={`h-5 w-5 text-dark-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+    className={`h-5 w-5 text-dark-300 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
   />
 );
 
@@ -197,7 +197,7 @@ function FaqAccordionItem({
   const sanitizedAnswer = useMemo(() => sanitizeHtml(item.a), [item.a]);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-dark-700 bg-dark-800/50 transition-all hover:border-dark-600">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-250 transition-all hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700">
       <button
         type="button"
         onClick={onToggle}
@@ -211,7 +211,10 @@ function FaqAccordionItem({
         style={{ height }}
         className="overflow-hidden transition-[height] duration-300 ease-in-out"
       >
-        <div ref={contentRef} className="border-t border-dark-700/50 px-5 pb-4 pt-3">
+        <div
+          ref={contentRef}
+          className="border-t border-gray-200/50 px-5 pb-4 pt-3 dark:border-gray-800/50"
+        >
           <div
             className="prose prose-sm max-w-none text-dark-300"
             dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
@@ -260,7 +263,7 @@ function FaqView({ items }: { items: FaqItem[] }) {
 
       {/* Accordion items */}
       {filteredItems.length === 0 ? (
-        <div className="rounded-xl border border-dark-700 bg-dark-800/50 p-6 text-center text-sm text-dark-400">
+        <div className="rounded-xl border border-gray-200 bg-gray-250 p-6 text-center text-sm text-dark-300 dark:border-gray-800 dark:bg-gray-850">
           {search ? t('admin.infoPages.faq.noResults') : t('admin.infoPages.faq.noQuestions')}
         </div>
       ) : (
@@ -362,13 +365,13 @@ export default function InfoPageView() {
         {!capabilities.hasBackButton && (
           <button
             onClick={() => navigate('/info')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-dark-700 bg-dark-800 transition-colors hover:border-dark-600"
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-gray-200 bg-gray-250 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
             aria-label={t('common.back')}
           >
             <BackIcon />
           </button>
         )}
-        <div className="rounded-xl border border-dark-700 bg-dark-800/50 p-8 text-center text-dark-400">
+        <div className="rounded-xl border border-gray-200 bg-gray-250 p-8 text-center text-dark-300 dark:border-gray-800 dark:bg-gray-850">
           {t('admin.infoPages.notFound')}
         </div>
       </div>
@@ -381,7 +384,7 @@ export default function InfoPageView() {
       {!capabilities.hasBackButton && (
         <button
           onClick={() => navigate(-1)}
-          className="flex min-h-[44px] items-center gap-2 rounded-xl border border-dark-700 bg-dark-800 px-4 text-sm text-dark-400 transition-colors hover:border-dark-600 hover:text-dark-200"
+          className="flex min-h-[44px] items-center gap-2 rounded-xl border border-gray-200 bg-gray-250 px-4 text-sm text-dark-300 transition-colors hover:border-gray-300 hover:text-dark-200 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
           aria-label={t('common.back')}
         >
           <BackIcon />

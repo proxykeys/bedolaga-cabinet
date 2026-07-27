@@ -39,7 +39,7 @@ const FortuneWheel = memo(function FortuneWheel({
   if (prizes.length === 0) {
     return (
       <div className="mx-auto flex aspect-square w-full max-w-md items-center justify-center">
-        <p className="text-dark-400">No prizes configured</p>
+        <p className="text-dark-300">No prizes configured</p>
       </div>
     );
   }

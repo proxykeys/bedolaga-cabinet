@@ -20,8 +20,8 @@ function isValidEmail(value: string): boolean {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-dark-950 px-4 py-10">
-      <div className="w-full max-w-md rounded-2xl border border-dark-800/50 bg-dark-900/50 p-6 sm:p-8">
+    <div className="flex min-h-dvh items-center justify-center bg-gray-050 px-4 py-10 dark:bg-gray-950">
+      <div className="w-full max-w-md rounded-2xl border border-gray-200/50 bg-gray-100/50 p-6 dark:border-gray-800/50 dark:bg-gray-900/50 sm:p-8">
         {children}
       </div>
     </div>
@@ -119,7 +119,7 @@ export default function GiftClaim() {
           <h1 className="text-lg font-semibold text-dark-50">
             {t('landing.giftClaim.notFoundTitle', 'Gift not found')}
           </h1>
-          <p className="text-sm text-dark-400">
+          <p className="text-sm text-dark-300">
             {t(
               'landing.giftClaim.notFoundDesc',
               'This gift link is invalid or no longer available.',
@@ -135,11 +135,11 @@ export default function GiftClaim() {
     return (
       <Shell>
         <div className="flex flex-col items-center gap-4 py-4 text-center">
-          <CheckCircleIcon className="h-14 w-14 text-success-400" />
+          <CheckCircleIcon className="h-14 w-14 text-success-500" />
           <h1 className="text-xl font-bold text-dark-50">
             {t('landing.giftClaim.alreadyTitle', 'Gift already activated')}
           </h1>
-          <p className="text-sm text-dark-400">
+          <p className="text-sm text-dark-300">
             {t('landing.giftClaim.alreadyDesc', 'This gift has already been claimed.')}
           </p>
         </div>
@@ -155,7 +155,7 @@ export default function GiftClaim() {
           <h1 className="text-lg font-semibold text-dark-50">
             {t('landing.giftClaim.failedTitle', 'Gift unavailable')}
           </h1>
-          <p className="text-sm text-dark-400">
+          <p className="text-sm text-dark-300">
             {t(
               'landing.giftClaim.failedDesc',
               'The payment for this gift did not go through, so it cannot be activated.',
@@ -184,7 +184,7 @@ export default function GiftClaim() {
               <p className="text-sm text-dark-300">
                 {t('landing.giftClaim.connectDesc', 'Use this link to connect:')}
               </p>
-              <p className="w-full select-all truncate rounded-lg bg-dark-900/60 px-3 py-2 text-sm text-accent-400">
+              <p className="w-full select-all truncate rounded-lg bg-gray-100/60 px-3 py-2 text-sm text-accent-500 dark:bg-gray-900/60">
                 {result.subscription_url}
               </p>
               <button
@@ -193,7 +193,7 @@ export default function GiftClaim() {
                 className={cn(
                   'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all active:scale-[0.98]',
                   copied
-                    ? 'bg-success-500/20 text-success-400'
+                    ? 'bg-success-500 text-on-success'
                     : 'bg-accent-500 text-on-accent hover:bg-accent-400',
                 )}
               >
@@ -218,7 +218,7 @@ export default function GiftClaim() {
           <h1 className="text-lg font-semibold text-dark-50">
             {t('landing.giftClaim.pendingTitle', 'Almost ready...')}
           </h1>
-          <p className="text-sm text-dark-400">
+          <p className="text-sm text-dark-300">
             {t(
               'landing.giftClaim.pendingDesc',
               'The payment is still being confirmed. This page will update automatically.',
@@ -251,13 +251,13 @@ export default function GiftClaim() {
         </div>
 
         {gift.gift_message && (
-          <div className="w-full rounded-xl border border-dark-700/30 bg-dark-800/40 p-4 text-left">
+          <div className="w-full rounded-xl border border-gray-200/30 bg-gray-250 p-4 text-left dark:border-gray-800/30 dark:bg-gray-850">
             <p className="text-sm italic text-dark-200">&ldquo;{gift.gift_message}&rdquo;</p>
           </div>
         )}
 
         {willReplace && (
-          <p className="w-full rounded-lg border border-warning-500/20 bg-warning-500/5 p-3 text-xs text-warning-400">
+          <p className="w-full rounded-lg border border-warning-500 bg-gray-250 p-3 text-xs text-warning-500 dark:bg-gray-850">
             {t(
               'landing.giftClaim.replaceWarning',
               'You already have a subscription — activating this gift will replace it.',
@@ -269,7 +269,7 @@ export default function GiftClaim() {
         {gift.bot_claim_link && (
           <a
             href={gift.bot_claim_link}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 px-6 py-3.5 text-sm font-bold text-on-accent shadow-lg shadow-accent-500/25 transition-all hover:bg-accent-400 active:scale-[0.98]"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 px-6 py-3.5 text-sm font-bold text-on-accent transition-all hover:bg-accent-400 active:scale-[0.98]"
           >
             {t('landing.giftClaim.activateTelegram', 'Activate in Telegram')}
           </a>
@@ -280,7 +280,7 @@ export default function GiftClaim() {
           <button
             type="button"
             onClick={() => setShowEmail(true)}
-            className="w-full rounded-xl border border-dark-700/50 px-6 py-3 text-sm font-medium text-dark-200 transition-colors hover:bg-dark-800/50"
+            className="w-full rounded-xl border border-gray-200/50 px-6 py-3 text-sm font-medium text-dark-200 transition-colors hover:bg-gray-300 dark:border-gray-800/50 dark:hover:bg-gray-800"
           >
             {t('landing.giftClaim.activateWeb', 'Activate by email')}
           </button>
@@ -298,9 +298,9 @@ export default function GiftClaim() {
                 setClaimError(null);
               }}
               placeholder="email@example.com"
-              className="w-full rounded-xl border border-dark-700/50 bg-dark-800/50 px-4 py-3 text-sm text-dark-50 placeholder-dark-500 outline-none focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/25"
+              className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
             />
-            {claimError && <p className="text-sm text-error-400">{claimError}</p>}
+            {claimError && <p className="text-sm text-error-500">{claimError}</p>}
             <button
               type="button"
               disabled={!isValidEmail(email) || claimMutation.isPending}
@@ -309,7 +309,7 @@ export default function GiftClaim() {
                 'flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold transition-all',
                 isValidEmail(email) && !claimMutation.isPending
                   ? 'bg-accent-500 text-on-accent hover:bg-accent-400 active:scale-[0.98]'
-                  : 'cursor-not-allowed bg-dark-800 text-dark-500',
+                  : 'cursor-not-allowed bg-gray-250 text-dark-300 dark:bg-gray-850',
               )}
             >
               {claimMutation.isPending ? (

@@ -64,7 +64,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
           onClick={handleToggleExpand}
           aria-expanded={expanded}
           aria-controls={`campaign-detail-${campaign.id}`}
-          className="flex shrink-0 items-center gap-1 text-sm text-accent-400 transition-colors hover:text-accent-300"
+          className="flex shrink-0 items-center gap-1 text-sm text-accent-500 transition-colors hover:text-accent-300"
         >
           <span>
             {expanded
@@ -84,22 +84,22 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         <StatCard
           label={t('referral.partner.stats.referrals')}
           value={campaign.referrals_count}
-          valueClassName="text-accent-400"
+          valueClassName="text-accent-500"
         />
         <StatCard
           label={t('referral.partner.stats.earnings')}
           value={formatPositive(campaign.earnings_kopeks / PARTNER_STATS.KOPEKS_DIVISOR)}
-          valueClassName="text-success-400"
+          valueClassName="text-success-500"
         />
       </div>
 
       {/* Bonus info */}
       {campaign.bonus_type !== 'none' && (
-        <div className="rounded-lg bg-success-500/10 p-3">
+        <div className="rounded-lg border border-dark-700/40 bg-dark-800 p-3">
           <div className="mb-1 text-xs font-medium text-success-500">
             {t('referral.partner.campaignBonus.title')}
           </div>
-          <div className="text-sm font-semibold text-success-400">
+          <div className="text-sm font-semibold text-success-500">
             {campaign.bonus_type === 'balance' &&
               t('referral.partner.campaignBonus.balanceDesc', {
                 amount: formatWithCurrency(
@@ -122,7 +122,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
       {/* Bot link */}
       {campaign.deep_link && (
         <div>
-          <div className="mb-1 text-xs font-medium text-dark-500">
+          <div className="mb-1 text-xs font-medium text-dark-300">
             {t('referral.partner.campaignLinks.bot')}
           </div>
           <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
       {/* Web link */}
       {campaign.web_link && (
         <div>
-          <div className="mb-1 text-xs font-medium text-dark-500">
+          <div className="mb-1 text-xs font-medium text-dark-300">
             {t('referral.partner.campaignLinks.web')}
           </div>
           <div className="flex items-center gap-2">

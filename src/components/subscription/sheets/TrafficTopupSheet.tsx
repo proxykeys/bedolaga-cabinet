@@ -24,7 +24,6 @@ export interface TrafficTopupSheetProps {
   selectedTrafficPackage: number | null;
   onSelectedTrafficPackageChange: (gb: number | null) => void;
   purchaseOptions: PurchaseOptions | undefined;
-  isDark: boolean;
 }
 
 export function TrafficTopupSheet({
@@ -36,7 +35,6 @@ export function TrafficTopupSheet({
   selectedTrafficPackage,
   onSelectedTrafficPackageChange,
   purchaseOptions,
-  isDark,
 }: TrafficTopupSheetProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -68,21 +66,21 @@ export function TrafficTopupSheet({
     return (
       <button
         onClick={onOpen}
-        className={`w-full rounded-xl border p-4 text-left transition-colors ${isDark ? 'border-dark-700/50 bg-dark-800/50 hover:border-dark-600' : 'border-champagne-300/60 bg-champagne-200/40 hover:border-champagne-400'}`}
+        className={`w-full rounded-xl border border-gray-200/50 bg-gray-250 p-4 text-left transition-colors hover:border-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700`}
       >
         <div className="flex items-center justify-between">
           <div>
             <div className="font-medium text-dark-100">
               {t('subscription.additionalOptions.buyTraffic')}
             </div>
-            <div className="mt-1 text-sm text-dark-400">
+            <div className="mt-1 text-sm text-dark-300">
               {t('subscription.additionalOptions.currentTrafficLimit', {
                 limit: subscription.traffic_limit_gb,
                 used: subscription.traffic_used_gb.toFixed(1),
               })}
             </div>
           </div>
-          <ChevronRightIcon className="text-dark-400" />
+          <ChevronRightIcon className="text-dark-300" />
         </div>
       </button>
     );
@@ -90,7 +88,7 @@ export function TrafficTopupSheet({
 
   return (
     <div
-      className={`rounded-xl border p-5 ${isDark ? 'border-dark-700/50 bg-dark-800/50' : 'border-champagne-300/60 bg-champagne-200/40'}`}
+      className={`rounded-xl border border-gray-200/50 bg-gray-250 p-5 dark:border-gray-800/50 dark:bg-gray-850`}
     >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-medium text-dark-100">
@@ -101,7 +99,7 @@ export function TrafficTopupSheet({
             onClose();
             onSelectedTrafficPackageChange(null);
           }}
-          className="text-sm text-dark-400 hover:text-dark-200"
+          className="text-sm text-dark-300 hover:text-dark-200"
           aria-label={t('common.close', 'Close')}
         >
           ✕
@@ -109,13 +107,13 @@ export function TrafficTopupSheet({
       </div>
 
       <div
-        className={`mb-4 rounded-lg p-2 text-xs ${isDark ? 'bg-dark-700/30 text-dark-500' : 'bg-champagne-300/40 text-champagne-600'}`}
+        className={`mb-4 rounded-lg bg-gray-300/30 p-2 text-xs text-dark-300 dark:bg-gray-700/30`}
       >
         ⚠️ {t('subscription.additionalOptions.trafficWarning')}
       </div>
 
       {!trafficPackages || trafficPackages.length === 0 ? (
-        <div className="py-4 text-center text-sm text-dark-400">
+        <div className="py-4 text-center text-sm text-dark-300">
           {t('subscription.additionalOptions.trafficUnavailable')}
         </div>
       ) : (
@@ -127,10 +125,8 @@ export function TrafficTopupSheet({
                 onClick={() => onSelectedTrafficPackageChange(pkg.gb)}
                 className={`rounded-xl border p-4 text-center transition-all ${
                   selectedTrafficPackage === pkg.gb
-                    ? 'border-accent-500 bg-accent-500/10'
-                    : isDark
-                      ? 'border-dark-700/50 bg-dark-800/50 hover:border-dark-600'
-                      : 'border-champagne-300/60 bg-champagne-200/40 hover:border-champagne-400'
+                    ? 'border-dark-50 bg-gray-250 dark:bg-gray-850'
+                    : 'border-gray-200/50 bg-gray-250 hover:border-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700'
                 }`}
               >
                 <div className="text-lg font-semibold text-dark-100">
@@ -140,15 +136,15 @@ export function TrafficTopupSheet({
                 </div>
                 {pkg.discount_percent && pkg.discount_percent > 0 && (
                   <div className="mb-1">
-                    <span className="inline-block rounded-full bg-success-500/20 px-2 py-0.5 text-xs font-medium text-success-400">
+                    <span className="inline-block rounded-full bg-success-500 px-2 py-0.5 text-xs font-medium text-black">
                       -{pkg.discount_percent}%
                     </span>
                   </div>
                 )}
-                <div className="font-medium text-accent-400">
+                <div className="font-medium text-accent-500">
                   {pkg.discount_percent && pkg.discount_percent > 0 && pkg.base_price_kopeks ? (
                     <>
-                      <span className="mr-1 text-sm text-dark-500 line-through">
+                      <span className="mr-1 text-sm text-dark-300 line-through">
                         {formatPrice(pkg.base_price_kopeks)}
                       </span>
                       {formatPrice(pkg.price_kopeks)}
@@ -210,7 +206,7 @@ export function TrafficTopupSheet({
             })()}
 
           {purchaseMutation.isError && (
-            <div className="text-center text-sm text-error-400">
+            <div className="text-center text-sm text-error-500">
               {getErrorMessage(purchaseMutation.error)}
             </div>
           )}

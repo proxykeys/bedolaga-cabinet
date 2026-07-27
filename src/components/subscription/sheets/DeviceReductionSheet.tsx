@@ -21,7 +21,6 @@ export interface DeviceReductionSheetProps {
   subscriptionId: number | undefined;
   targetDeviceLimit: number;
   onTargetDeviceLimitChange: (n: number) => void;
-  isDark: boolean;
 }
 
 export function DeviceReductionSheet({
@@ -32,7 +31,6 @@ export function DeviceReductionSheet({
   subscriptionId,
   targetDeviceLimit,
   onTargetDeviceLimitChange,
-  isDark,
 }: DeviceReductionSheetProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -73,18 +71,18 @@ export function DeviceReductionSheet({
     return (
       <button
         onClick={onOpen}
-        className={`w-full rounded-xl border p-4 text-left transition-colors ${isDark ? 'border-dark-700/50 bg-dark-800/50 hover:border-dark-600' : 'border-champagne-300/60 bg-champagne-200/40 hover:border-champagne-400'}`}
+        className={`w-full rounded-xl border border-gray-200/50 bg-gray-250 p-4 text-left transition-colors hover:border-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700`}
       >
         <div className="flex items-center justify-between">
           <div>
             <div className="font-medium text-dark-100">
               {t('subscription.additionalOptions.reduceDevices')}
             </div>
-            <div className="mt-1 text-sm text-dark-400">
+            <div className="mt-1 text-sm text-dark-300">
               {t('subscription.additionalOptions.reduceDevicesDescription')}
             </div>
           </div>
-          <ChevronRightIcon className="text-dark-400" />
+          <ChevronRightIcon className="text-dark-300" />
         </div>
       </button>
     );
@@ -92,7 +90,7 @@ export function DeviceReductionSheet({
 
   return (
     <div
-      className={`rounded-xl border p-5 ${isDark ? 'border-dark-700/50 bg-dark-800/50' : 'border-champagne-300/60 bg-champagne-200/40'}`}
+      className={`rounded-xl border border-gray-200/50 bg-gray-250 p-5 dark:border-gray-800/50 dark:bg-gray-850`}
     >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-medium text-dark-100">
@@ -100,7 +98,7 @@ export function DeviceReductionSheet({
         </h3>
         <button
           onClick={onClose}
-          className="text-sm text-dark-400 hover:text-dark-200"
+          className="text-sm text-dark-300 hover:text-dark-200"
           aria-label={t('common.close', 'Close')}
         >
           ✕
@@ -108,7 +106,7 @@ export function DeviceReductionSheet({
       </div>
 
       {deviceReductionInfo?.available === false ? (
-        <div className="py-4 text-center text-sm text-dark-400">
+        <div className="py-4 text-center text-sm text-dark-300">
           {deviceReductionInfo.reason || t('subscription.additionalOptions.reduceUnavailable')}
         </div>
       ) : deviceReductionInfo ? (
@@ -140,7 +138,7 @@ export function DeviceReductionSheet({
             </button>
             <div className="text-center">
               <div className="text-4xl font-bold text-dark-100">{targetDeviceLimit}</div>
-              <div className="text-sm text-dark-500">
+              <div className="text-sm text-dark-300">
                 {t('subscription.additionalOptions.devicesUnit')}
               </div>
             </div>
@@ -158,7 +156,7 @@ export function DeviceReductionSheet({
             </button>
           </div>
 
-          <div className="space-y-1 text-center text-sm text-dark-400">
+          <div className="space-y-1 text-center text-sm text-dark-300">
             <div>
               {t('subscription.additionalOptions.currentDeviceLimit', {
                 count: deviceReductionInfo.current_device_limit,
@@ -177,7 +175,7 @@ export function DeviceReductionSheet({
           </div>
 
           {deviceReductionInfo.connected_devices_count > deviceReductionInfo.min_device_limit && (
-            <div className="rounded-lg bg-warning-500/10 p-3 text-center text-sm text-warning-400">
+            <div className="rounded-lg border border-gray-200/40 bg-gray-250 p-3 text-center text-sm text-warning-500 dark:border-gray-800/40 dark:bg-gray-850">
               {t('subscription.additionalOptions.disconnectDevicesFirst', {
                 count: deviceReductionInfo.connected_devices_count,
               })}
@@ -185,7 +183,7 @@ export function DeviceReductionSheet({
           )}
 
           <div className="text-center">
-            <div className="text-sm text-dark-400">
+            <div className="text-sm text-dark-300">
               {t('subscription.additionalOptions.newDeviceLimit', {
                 count: targetDeviceLimit,
               })}
@@ -213,14 +211,14 @@ export function DeviceReductionSheet({
           </button>
 
           {reduceMutation.isError && (
-            <div className="text-center text-sm text-error-400">
+            <div className="text-center text-sm text-error-500">
               {getErrorMessage(reduceMutation.error)}
             </div>
           )}
         </div>
       ) : (
         <div className="flex items-center justify-center py-4">
-          <span className="h-5 w-5 animate-spin rounded-full border-2 border-accent-400/30 border-t-accent-400" />
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
         </div>
       )}
     </div>

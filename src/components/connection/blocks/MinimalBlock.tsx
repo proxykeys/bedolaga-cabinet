@@ -32,7 +32,7 @@ export function MinimalBlock({
             className={
               isLast
                 ? 'pb-4'
-                : `mb-4 border-b pb-4 ${isLight ? 'border-dark-700/40' : 'border-dark-700/50'}`
+                : `mb-4 border-b pb-4 ${isLight ? 'border-gray-200/40 dark:border-gray-800/40' : 'border-gray-200/50 dark:border-gray-800/50'}`
             }
           >
             <div className="mb-2 flex items-center gap-3">
@@ -44,7 +44,7 @@ export function MinimalBlock({
               />
               <span className="font-medium text-dark-100">{getLocalizedText(block.title)}</span>
             </div>
-            <p className="whitespace-pre-line text-sm leading-relaxed text-dark-400">
+            <p className="whitespace-pre-line text-sm leading-relaxed text-dark-300">
               {getLocalizedText(block.description)}
             </p>
             {renderBlockButtons(block.buttons, 'subtle')}

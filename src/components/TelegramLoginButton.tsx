@@ -59,6 +59,10 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     widgetConfig?.bot_username || import.meta.env.VITE_TELEGRAM_BOT_USERNAME || '';
   const isOIDC = Boolean(widgetConfig?.oidc_enabled && widgetConfig?.oidc_client_id);
 
+  const forceDeepLinkMode =
+    String(import.meta.env.VITE_FORCE_TELEGRAM_DEEPLINK_AUTH ?? '').toLowerCase() === 'true' &&
+    !isOIDC;
+
   // OIDC callback handler
   const handleOIDCCallbackRef =
     useRef<(data: { id_token?: string; error?: string }) => void>(undefined);
@@ -177,7 +181,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     // эффект не перезапустится — на legacy-пути scriptLoaded не меняется
     // никогда, поэтому ни одна из остальных зависимостей не дрогнет, и
     // пользователь получил бы пустое место вместо виджета.
-    if (showDeepLinkUI || isOIDC || !containerRef.current || !botUsername || !widgetConfig) return;
+    if (showDeepLinkUI || isOIDC || forceDeepLinkMode || !containerRef.current || !botUsername || !widgetConfig) return;
 
     const container = containerRef.current;
     while (container.firstChild) {
@@ -443,7 +447,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     // 404 on the config route = the bot build predates the cabinet endpoints,
     // which reads as "not configured" but is actually a version mismatch (#345).
     return (
-      <div className="py-4 text-center text-sm text-dark-400">
+      <div className="py-4 text-center text-sm text-gray-600 dark:text-gray-400">
         {t(widgetConfig?.endpoint_missing ? 'auth.botOutdated' : 'auth.telegramNotConfigured')}
       </div>
     );
@@ -472,7 +476,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
               <div className="rounded-2xl bg-white p-4">
                 <QRCodeSVG value={deepLinkUrl} size={180} level="M" includeMargin={false} />
               </div>
-              <p className="text-[11px] text-dark-500">{t('auth.scanQrToLogin')}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">{t('auth.scanQrToLogin')}</p>
             </div>
 
             {/* Open bot button */}
@@ -480,7 +484,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
               href={deepLinkUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#54a9eb] px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#4a96d2]"
+              className="telegram-login-button inline-flex items-center gap-2 rounded-lg bg-[#229ED9] px-6 py-3 text-sm font-medium text-white transition-colors"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
@@ -490,7 +494,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
 
             {/* Manual command */}
             <div className="flex w-full max-w-xs flex-col items-center space-y-1.5">
-              <p className="text-[11px] text-dark-500">{t('auth.orSendCommand')}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-500">{t('auth.orSendCommand')}</p>
               <button
                 type="button"
                 onClick={() => {
@@ -502,10 +506,12 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
                     })
                     .catch(() => {});
                 }}
-                className="group flex w-full items-center justify-between rounded-lg border border-dark-700 bg-dark-800/50 px-3 py-2 transition-colors hover:border-dark-600"
+                className="auth-secondary-surface group flex w-full items-center justify-between rounded-lg px-3 py-2 transition-colors"
               >
-                <code className="truncate text-xs text-dark-300">{startCommand}</code>
-                <span className="ml-2 flex-shrink-0 text-[10px] text-dark-500 transition-colors group-hover:text-dark-300">
+                <code className="truncate text-xs text-gray-600 dark:text-gray-300">
+                  {startCommand}
+                </code>
+                <span className="ml-2 flex-shrink-0 text-xs text-gray-600 transition-colors group-hover:text-gray-800 dark:text-gray-300 dark:group-hover:text-gray-100">
                   {copied ? t('auth.commandCopied') : t('common.copy')}
                 </span>
               </button>
@@ -513,26 +519,26 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
 
             {/* Polling status */}
             {deepLinkPolling && (
-              <div className="flex items-center gap-2 text-xs text-dark-400">
-                <span className="h-3 w-3 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <span className="h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent dark:border-gray-500" />
                 {t('auth.waitingForConfirmation')}
               </div>
             )}
           </>
         ) : deepLinkError ? (
           <div className="flex flex-col items-center space-y-2">
-            <p className="text-xs text-error-500">{deepLinkError}</p>
+            <p className="text-xs text-error-400">{deepLinkError}</p>
             <button
               type="button"
               onClick={startDeepLinkAuth}
-              className="text-sm text-accent-400 transition-colors hover:text-accent-300"
+              className="text-sm text-gray-800 transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
             >
               {t('auth.tryAgain')}
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-2 text-xs text-dark-400">
-            <span className="h-3 w-3 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
+          <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+            <span className="h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent dark:border-gray-500" />
             {t('common.loading')}
           </div>
         )}
@@ -578,14 +584,14 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
               }
             }}
             disabled={oidcLoading || !scriptLoaded}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#54a9eb] px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#4a96d2] disabled:opacity-50"
+            className="telegram-login-button inline-flex items-center gap-2 rounded-lg bg-[#229ED9] px-6 py-3 text-sm font-medium text-white transition-colors disabled:opacity-50"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
             </svg>
             {oidcLoading ? t('common.loading') : t('auth.loginWithTelegram')}
           </button>
-          {oidcError && <p className="text-xs text-error-500">{oidcError}</p>}
+          {oidcError && <p className="text-xs text-error-400">{oidcError}</p>}
         </div>
       ) : (
         <div ref={containerRef} className="flex justify-center" />

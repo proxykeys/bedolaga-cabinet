@@ -293,16 +293,9 @@ export default function Dashboard() {
           {userName ? t('dashboard.welcome', { name: userName }) : t('dashboard.welcomeNoName')}
         </h1>
         <div className="mt-1 flex flex-wrap items-center gap-2">
-          <p className="text-dark-400">{t('dashboard.yourSubscription')}</p>
+          <p className="text-dark-300">{t('dashboard.yourSubscription')}</p>
           {promoGroupData?.group_name && (
-            <span
-              className="inline-flex max-w-[160px] items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
-              style={{
-                background: 'rgba(var(--color-accent-400), 0.1)',
-                border: '1px solid rgba(var(--color-accent-400), 0.2)',
-                color: 'rgb(var(--color-accent-400))',
-              }}
-            >
+            <span className="inline-flex max-w-[160px] items-center gap-1 rounded-full bg-accent-500 px-2.5 py-0.5 text-xs font-semibold text-black">
               <StarIcon filled className="h-2.5 w-2.5 shrink-0" />
               <span className="truncate">{promoGroupData.group_name}</span>
             </span>
@@ -322,7 +315,7 @@ export default function Dashboard() {
             <span className="text-sm font-medium opacity-60">
               {t('dashboard.subscriptions', 'Подписки')}
             </span>
-            <Link to="/subscriptions" className="text-xs text-accent-400 hover:underline">
+            <Link to="/subscriptions" className="text-xs text-accent-500 hover:underline">
               {t('dashboard.manageAll', 'Управление')} →
             </Link>
           </div>
@@ -349,7 +342,7 @@ export default function Dashboard() {
           {hasActivePaid ? (
             <Link
               to="/subscription/purchase"
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-500/15 p-3.5 text-sm font-medium text-accent-400 transition-all hover:bg-accent-500/25"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gray-250 p-3.5 text-sm font-medium text-accent-500 transition-all hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800"
             >
               <span className="text-base">+</span>{' '}
               {t('subscriptions.buyAnother', 'Купить ещё тариф')}
@@ -443,10 +436,10 @@ export default function Dashboard() {
             <span className="text-3xl">🎰</span>
             <div className="min-w-0 flex-1">
               <h3 className="text-base font-semibold text-dark-100">{t('wheel.banner.title')}</h3>
-              <p className="text-sm text-dark-400">{t('wheel.banner.description')}</p>
+              <p className="text-sm text-dark-300">{t('wheel.banner.description')}</p>
             </div>
           </div>
-          <div className="flex-shrink-0 text-dark-500 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent-400">
+          <div className="flex-shrink-0 text-dark-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent-400">
             <ChevronRightIcon />
           </div>
         </Link>

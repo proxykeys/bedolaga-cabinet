@@ -24,9 +24,9 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
     ref,
   ) => {
     const trendColors = {
-      up: 'text-success-400',
-      down: 'text-error-400',
-      neutral: 'text-dark-400',
+      up: 'text-success-500',
+      down: 'text-error-500',
+      neutral: 'text-dark-300',
     };
 
     const trendIcon = {
@@ -72,14 +72,14 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
                   {change.value > 0 ? '+' : ''}
                   {change.value}%
                 </span>
-                {change.label && <span className="text-dark-500">{change.label}</span>}
+                {change.label && <span className="text-dark-300">{change.label}</span>}
               </div>
             )}
           </div>
 
           {/* Icon */}
           {icon && (
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-linear bg-dark-800/80 text-dark-400">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-linear bg-gray-250 text-dark-300 dark:bg-gray-850">
               {icon}
             </div>
           )}

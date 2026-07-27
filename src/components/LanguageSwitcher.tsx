@@ -49,28 +49,28 @@ export default function LanguageSwitcher() {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-2 text-sm transition-all ${
           isOpen
-            ? 'border-dark-600 bg-dark-700'
-            : 'border-dark-700/50 bg-dark-800/50 hover:border-dark-600 hover:bg-dark-700'
+            ? 'border-gray-300 bg-gray-300 dark:border-gray-700 dark:bg-gray-700'
+            : 'border-gray-200/50 bg-gray-250 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800'
         }`}
         aria-label="Change language"
       >
         <span>{currentLang.flag}</span>
         <span className="font-medium text-dark-200">{currentLang.code.toUpperCase()}</span>
         <ChevronDownIcon
-          className={`h-3.5 w-3.5 text-dark-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`h-3.5 w-3.5 text-dark-300 transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-40 animate-fade-in rounded-xl border border-dark-700/50 bg-dark-800 py-1 shadow-lg">
+        <div className="absolute right-0 z-50 mt-2 w-40 animate-fade-in rounded-xl border border-gray-200/50 bg-gray-250 py-1 shadow-lg dark:border-gray-800/50 dark:bg-gray-850">
           {availableLanguages.map((lang) => (
             <button
               key={lang.code}
               onClick={() => changeLanguage(lang.code)}
               className={`flex w-full items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                 lang.code === i18n.language
-                  ? 'bg-accent-500/10 text-accent-400'
-                  : 'text-dark-300 hover:bg-dark-700/50'
+                  ? 'bg-accent-500 text-on-accent'
+                  : 'text-dark-300 hover:bg-gray-300 dark:hover:bg-gray-800'
               }`}
             >
               <span>{lang.flag}</span>
