@@ -1077,7 +1077,7 @@ function SentGiftCard({ gift }: { gift: SentGift }) {
           <button
             type="button"
             onClick={handleShare}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 px-4 py-3 text-sm font-bold uppercase tracking-wider text-on-accent transition-colors hover:bg-accent-400 active:scale-[0.98]"
+            className="btn-cta-md flex w-full items-center justify-center gap-2 font-bold uppercase tracking-wider"
           >
             <ExportIcon className="h-4 w-4" />
             {t('gift.shareGift')}

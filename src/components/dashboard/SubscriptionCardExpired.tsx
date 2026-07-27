@@ -103,21 +103,6 @@ export default function SubscriptionCardExpired({
     navigate(`/balance/top-up?${params.toString()}`);
   };
 
-  // Color scheme: warning for limited, error for expired/disabled
-  const accent = isLimited
-    ? {
-        rgb: 'var(--color-warning-500)',
-        hex: 'rgb(var(--color-warning-500))',
-        solid: 'rgb(var(--color-warning-500))',
-        onColor: 'rgb(var(--color-on-warning))',
-      }
-    : {
-        rgb: 'var(--color-error-500)',
-        hex: 'rgb(var(--color-error-500))',
-        solid: 'rgb(var(--color-error-500))',
-        onColor: 'rgb(var(--color-on-error))',
-      };
-
   return (
     <div
       className={`relative overflow-hidden rounded-3xl ${className ?? ''}`}
@@ -128,13 +113,12 @@ export default function SubscriptionCardExpired({
       }}
     >
       {/* Decorative glow and grid pattern removed per claude.com flat aesthetic */}
-      {/* Header */}
+      {/* Header — semantic icon color (warning/error) preserved, CTA buttons below are monochrome */}
       <div className="mb-5 flex items-center gap-3">
         <div
-          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[14px] bg-gray-300/60 dark:bg-gray-700/60"
-          style={{
-            color: accent.hex,
-          }}
+          className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[14px] bg-gray-300/60 dark:bg-gray-700/60 ${
+            isLimited ? 'text-warning-500' : 'text-error-500'
+          }`}
         >
           {isLimited ? (
             <ExclamationIcon className="h-[22px] w-[22px]" />
@@ -199,16 +183,13 @@ export default function SubscriptionCardExpired({
         </div>
       )}
 
-      {/* Action buttons */}
+      {/* Action buttons — monochrome per claude.com aesthetic
+          (was: bg-warning/error-500 + on-warning/error; now: .btn-primary pattern). */}
       <div className="flex gap-2.5">
         {isLimited ? (
           <Link
             to={`/subscriptions/${subscription.id}`}
-            className="flex flex-1 items-center justify-center gap-2 rounded-[14px] py-3.5 text-[15px] font-semibold tracking-tight transition-all duration-300"
-            style={{
-              background: accent.solid,
-              color: accent.onColor,
-            }}
+            className="btn-primary-lg flex flex-1 items-center justify-center gap-2"
           >
             <PlusIcon className="h-4 w-4" />
             {t('subscription.buyTraffic')}
@@ -223,19 +204,11 @@ export default function SubscriptionCardExpired({
                     type="button"
                     onClick={handleQuickRenew}
                     disabled={isRenewing}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-[14px] py-3.5 text-[15px] font-semibold tracking-tight transition-all duration-300 disabled:opacity-50"
-                    style={{
-                      background: accent.solid,
-                      color: accent.onColor,
-                    }}
+                    className="btn-primary-lg flex flex-1 items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {isRenewing ? (
                       <span
-                        className="h-4 w-4 animate-spin rounded-full border-2"
-                        style={{
-                          borderColor: g.innerBorder,
-                          borderTopColor: accent.onColor,
-                        }}
+                        className="h-4 w-4 animate-spin rounded-full border-2 border-dark-950/30 border-t-dark-950"
                         aria-hidden="true"
                       />
                     ) : (
@@ -251,10 +224,7 @@ export default function SubscriptionCardExpired({
                   <button
                     type="button"
                     onClick={handleTopUp}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-[14px] py-3.5 text-[15px] font-semibold tracking-tight transition-all duration-300"
-                    style={{
-                      background: accent.solid,
-                    }}
+                    className="btn-primary-lg flex flex-1 items-center justify-center gap-2"
                   >
                     <PlusIcon className="h-4 w-4" />
                     {t('dashboard.expired.topUp')}
@@ -268,17 +238,9 @@ export default function SubscriptionCardExpired({
               to="/subscription/purchase"
               className={`flex items-center justify-center rounded-[14px] px-5 py-3.5 text-[15px] font-semibold tracking-tight transition-colors duration-200 ${
                 subscription.is_trial
-                  ? 'flex-1'
+                  ? 'btn-primary-lg flex-1'
                   : 'flex-1 border border-gray-200 bg-gray-250 text-dark-100 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800'
               }`}
-              style={
-                subscription.is_trial
-                  ? {
-                      background: accent.solid,
-                      color: accent.onColor,
-                    }
-                  : undefined
-              }
             >
               {t('dashboard.expired.tariffs')}
             </Link>

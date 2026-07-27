@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { UseMutationResult } from '@tanstack/react-query';
+import type { UseMutationResult } from '@tanstack/react-query';
 import type { TrialInfo } from '../../types';
 import { useCurrency } from '../../hooks/useCurrency';
 import { useTheme } from '../../hooks/useTheme';
@@ -130,31 +130,21 @@ export default function TrialOfferCard({
         </div>
       )}
 
-      {/* CTA Button */}
+      {/* CTA Button — monochrome per claude.com aesthetic
+          (was: bg-warning/accent-500 + on-*; now: .btn-primary-lg pattern). */}
       {!isFree && trialInfo.price_kopeks > 0 ? (
         canAfford ? (
           <button
             onClick={() => !activateTrialMutation.isPending && activateTrialMutation.mutate()}
             disabled={activateTrialMutation.isPending}
-            className="w-full rounded-[14px] py-4 text-base font-bold tracking-tight transition-all duration-300 disabled:opacity-50"
-            style={{
-              background: 'rgb(var(--color-warning-500))',
-              color: 'rgb(var(--color-on-warning))',
-            }}
+            className="btn-primary-lg w-full py-4 text-base disabled:opacity-50"
           >
             {activateTrialMutation.isPending
               ? t('common.loading')
               : t('subscription.trial.payAndActivate')}
           </button>
         ) : (
-          <Link
-            to="/balance"
-            className="block w-full rounded-[14px] py-4 text-center text-base font-bold tracking-tight transition-all duration-300"
-            style={{
-              background: 'rgb(var(--color-warning-500))',
-              color: 'rgb(var(--color-on-warning))',
-            }}
-          >
+          <Link to="/balance" className="btn-primary-lg block w-full py-4 text-base">
             {t('subscription.trial.topUpToActivate')}
           </Link>
         )
@@ -162,11 +152,7 @@ export default function TrialOfferCard({
         <button
           onClick={() => !activateTrialMutation.isPending && activateTrialMutation.mutate()}
           disabled={activateTrialMutation.isPending}
-          className="w-full rounded-[14px] py-4 text-base font-bold tracking-tight transition-all duration-300 disabled:opacity-50"
-          style={{
-            background: 'rgb(var(--color-accent-500))',
-            color: 'rgb(var(--color-on-accent))',
-          }}
+          className="btn-primary-lg w-full py-4 text-base disabled:opacity-50"
         >
           {activateTrialMutation.isPending ? t('common.loading') : t('subscription.trial.activate')}
         </button>

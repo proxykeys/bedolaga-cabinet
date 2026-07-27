@@ -171,9 +171,11 @@ export function AppHeader({
 
   return (
     <>
-      {/* Header - only on mobile */}
+      {/* Header - only on mobile. Solid bg (no .glass / opacity / shadow) using
+          the same canonical gray tokens as the page (bg-gray-050 / dark:bg-gray-950),
+          so the header matches the page background exactly — claude.com flat. */}
       <header
-        className="glass fixed left-0 right-0 top-0 z-50 shadow-lg shadow-black/10 lg:hidden"
+        className="fixed left-0 right-0 top-0 z-50 border-b border-gray-200 bg-gray-050 dark:border-gray-800 dark:bg-gray-950 lg:hidden"
         style={{
           paddingTop: isFullscreen
             ? `${Math.max(safeAreaInset.top, contentSafeAreaInset.top) + (telegramPlatform === 'android' ? 48 : 45)}px`

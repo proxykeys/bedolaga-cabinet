@@ -269,7 +269,7 @@ export default function GiftClaim() {
         {gift.bot_claim_link && (
           <a
             href={gift.bot_claim_link}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 px-6 py-3.5 text-sm font-bold text-on-accent transition-all hover:bg-accent-400 active:scale-[0.98]"
+            className="btn-cta-md flex w-full items-center justify-center gap-2 py-3.5 font-bold"
           >
             {t('landing.giftClaim.activateTelegram', 'Activate in Telegram')}
           </a>

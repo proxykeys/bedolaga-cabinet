@@ -34,10 +34,7 @@ function EmptyState({ onBuy }: { onBuy: () => void }) {
       <p className="mb-6 text-sm" style={{ color: g.textSecondary }}>
         {t('subscriptions.emptyDesc', 'У вас пока нет активных подписок')}
       </p>
-      <button
-        onClick={onBuy}
-        className="rounded-xl bg-accent-500 px-8 py-3 text-sm font-medium text-on-accent transition-colors hover:bg-accent-600"
-      >
+      <button onClick={onBuy} className="btn-cta-md px-8">
         {t('subscriptions.buy', 'Купить подписку')}
       </button>
     </div>
@@ -174,7 +171,7 @@ export default function Subscriptions() {
               (Telegram-баг #605056/#605063). */}
           <button
             onClick={() => navigate('/subscription/purchase')}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 px-6 py-3 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
+            className="btn-cta-md flex w-full items-center justify-center gap-2 font-semibold"
           >
             <PlusIcon className="h-5 w-5" />
             {t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
