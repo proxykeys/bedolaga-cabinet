@@ -158,6 +158,9 @@ const AdminLandingEditor = lazyWithRetry(() => import('./pages/AdminLandingEdito
 const AdminLandingStats = lazyWithRetry(() => import('./pages/AdminLandingStats'));
 const AdminReferralNetwork = lazyWithRetry(() => import('./pages/ReferralNetwork'));
 
+// Dev-only UI preview page (DEV gate strips the route in production builds)
+const UiPreviewPage = lazyWithRetry(() => import('./dev/preview/UiPreviewPage'));
+
 // News pages
 const NewsArticlePage = lazyWithRetry(() => import('./pages/NewsArticle'));
 const AdminNews = lazyWithRetry(() => import('./pages/AdminNews'));
@@ -228,6 +231,13 @@ function LazyPage({ children }: { children: React.ReactNode }) {
 
 function BlockingOverlay() {
   const blockingType = useBlockingStore((state) => state.blockingType);
+  const location = useLocation();
+
+  // Skip blocking overlay on dev preview page — the preview works without a
+  // backend and shouldn't be blocked by health-check failures.
+  if (import.meta.env.DEV && location.pathname === '/dev/ui-preview') {
+    return null;
+  }
 
   if (blockingType === 'maintenance') {
     return <MaintenanceScreen />;
@@ -331,6 +341,18 @@ function App() {
             </LazyPage>
           }
         />
+
+        {/* Dev-only UI preview — all components in all states. Gated out of prod builds. */}
+        {import.meta.env.DEV && (
+          <Route
+            path="/dev/ui-preview"
+            element={
+              <LazyPage>
+                <UiPreviewPage />
+              </LazyPage>
+            }
+          />
+        )}
 
         {/* Protected routes */}
         <Route
