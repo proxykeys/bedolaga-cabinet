@@ -151,25 +151,25 @@ export function AppShell({ children }: AppShellProps) {
         onClick={handleNavClick}
         aria-label={label}
         className={cn(
-          'relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200',
+          'relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium transition-colors duration-200',
           active
             ? admin
               ? 'text-warning-500'
               : 'text-dark-50'
             : admin
-              ? 'text-warning-500 hover:bg-gray-300 hover:text-warning-300 dark:hover:bg-gray-800'
-              : 'text-dark-300 hover:bg-gray-300 hover:text-dark-100 dark:hover:bg-gray-800',
+              ? 'text-warning-500 hover:bg-gray-300 hover:text-warning-300 dark:hover:bg-gray-700'
+              : 'text-dark-300 hover:bg-gray-300 hover:text-dark-100 dark:hover:bg-gray-700',
         )}
       >
         {active && (
           <motion.span
             layoutId="desktop-nav-active"
             className={cn(
-              // Подсветка-пилюля активного пункта — «приподнята» над треком капсулы
-              'absolute inset-0 rounded-full shadow-sm',
+              // Подсветка-пилюля активного пункта — унифицирована с .login-header-control
+              'absolute inset-0 rounded-xl',
               admin
                 ? 'bg-gray-250 ring-1 ring-warning-500 dark:bg-gray-850'
-                : 'bg-gray-300/80 ring-1 ring-dark-600/40 dark:bg-gray-700/80',
+                : 'bg-gray-300 dark:bg-gray-700',
             )}
             transition={{ type: 'spring', stiffness: 500, damping: 35 }}
           />
@@ -216,7 +216,7 @@ export function AppShell({ children }: AppShellProps) {
           {/* Navigation — единая «капсула» (segmented control): все пункты видны
               всегда, без скролла/сжатия/сворачивания. Центрируется средней
               колонкой grid (justify-self-center), а не auto-margin'ами. */}
-          <nav className="flex items-center gap-0.5 justify-self-center rounded-full border border-gray-200/70 bg-gray-100/50 p-1 shadow-sm backdrop-blur-sm dark:border-gray-800/70 dark:bg-gray-900/50">
+          <nav className="flex items-center gap-0.5 justify-self-center">
             {desktopNav.map((item) => renderNavLink(item.path, item.label, item.icon))}
             {isAdmin && (
               <>
