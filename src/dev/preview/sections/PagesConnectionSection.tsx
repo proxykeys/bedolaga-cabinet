@@ -3,6 +3,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { PreviewSection } from '../components/PreviewSection';
 import { Snapshot } from '../components/Snapshot';
 import InstallationGuide from '@/components/connection/InstallationGuide';
+import { BackIcon } from '@/components/icons';
 import { mockAppConfig } from '../fixtures/appConfig';
 import type { AppConfig } from '@/types';
 
@@ -110,15 +111,7 @@ function ConnectionQRVisual() {
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-200 text-dark-200 dark:border-gray-800 dark:bg-gray-800"
           aria-label="Back"
         >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
+          <BackIcon className="h-6 w-6" />
         </button>
         <h1 className="text-2xl font-bold text-dark-100">QR-код подключения</h1>
       </div>

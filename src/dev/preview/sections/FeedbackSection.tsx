@@ -5,6 +5,7 @@ import { Button } from '@/components/primitives/Button';
 import { useSuccessNotification, type SuccessNotificationData } from '@/store/successNotification';
 import SuccessNotificationModal from '@/components/SuccessNotificationModal';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { WrenchIcon, BanIcon, InfoIcon, TelegramIcon, CloudWarningIcon } from '@/components/icons';
 
 /**
  * Feedback section — full-screen blocking states, success modals, error
@@ -33,7 +34,7 @@ export function FeedbackSection() {
           <BlockingFrame>
             <StaticBlockingCard
               accent="warning"
-              icon={<WrenchIcon />}
+              icon={<WrenchIcon className="h-16 w-16" />}
               title="Технические работы"
               description="Ведутся технические работы. Сервис временно недоступен."
               reason="Обновление серверного оборудования"
@@ -47,7 +48,7 @@ export function FeedbackSection() {
           <BlockingFrame>
             <StaticBlockingCard
               accent="error"
-              icon={<BanIcon />}
+              icon={<BanIcon className="h-16 w-16" />}
               title="Аккаунт заблокирован"
               description="Ваш аккаунт заблокирован за нарушение правил сервиса."
             />
@@ -58,7 +59,7 @@ export function FeedbackSection() {
           <BlockingFrame>
             <StaticBlockingCard
               accent="info"
-              icon={<InfoIcon />}
+              icon={<InfoIcon className="h-16 w-16" />}
               title="Аккаунт удалён"
               description="Ваш аккаунт был отмечен как удалённый."
               actions={
@@ -77,7 +78,7 @@ export function FeedbackSection() {
           <BlockingFrame>
             <StaticBlockingCard
               accent="info"
-              icon={<TelegramIcon />}
+              icon={<TelegramIcon className="h-16 w-16" />}
               title="Подписка на канал"
               description="Подпишитесь на канал, чтобы продолжить использование сервиса."
               actions={
@@ -96,7 +97,7 @@ export function FeedbackSection() {
           <BlockingFrame>
             <StaticBlockingCard
               accent="error"
-              icon={<CloudWarningIcon />}
+              icon={<CloudWarningIcon className="h-16 w-16" />}
               title="Сервис недоступен"
               description="Не удалось подключиться к серверу. Проверьте подключение к интернету и попробуйте снова."
               pulse
@@ -299,83 +300,6 @@ function StaticBlockingCard({
         {footer && <p className="mt-6 text-sm text-dark-500">{footer}</p>}
       </div>
     </div>
-  );
-}
-
-/* ─── Inline icons (avoid importing from blocking screens) ─── */
-
-function WrenchIcon() {
-  return (
-    <svg
-      className="h-16 w-16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.165 1.088-.369 1.611-.612M5.66 7.5l1.24-1.24a.75.75 0 011.06 0l1.06 1.06a.75.75 0 010 1.06l-1.24 1.24m4.96-4.96a.75.75 0 011.06 0l1.06 1.06a.75.75 0 010 1.06l-1.24 1.24"
-      />
-    </svg>
-  );
-}
-
-function BanIcon() {
-  return (
-    <svg
-      className="h-16 w-16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <circle cx="12" cy="12" r="9" />
-      <path strokeLinecap="round" d="M5.64 5.64l12.72 12.72" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg
-      className="h-16 w-16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <circle cx="12" cy="12" r="9" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01" />
-    </svg>
-  );
-}
-
-function TelegramIcon() {
-  return (
-    <svg className="h-16 w-16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
-    </svg>
-  );
-}
-
-function CloudWarningIcon() {
-  return (
-    <svg
-      className="h-16 w-16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
-      />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01" />
-    </svg>
   );
 }
 
