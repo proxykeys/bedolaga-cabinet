@@ -243,7 +243,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
           style={isMobileFullscreen ? { top: dropdownTop } : undefined}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-300 bg-gray-250 px-4 py-3 dark:border-gray-700 dark:bg-gray-850">
+          <div className="flex items-center justify-between border-b border-gray-300 bg-gray-200 px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
             <h3 className="text-sm font-semibold text-dark-100">
               {t('notifications.ticketNotifications', 'Ticket Notifications')}
             </h3>
