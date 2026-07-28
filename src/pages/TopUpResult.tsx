@@ -138,9 +138,9 @@ function TimeoutState({ onRetry, onGoBack }: { onRetry: () => void; onGoBack: ()
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
+      <div className="flex h-16 w-16 items-center justify-center">
         <svg
-          className="h-10 w-10 text-dark-300"
+          className="h-16 w-16 text-dark-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

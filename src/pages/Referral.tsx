@@ -625,9 +625,7 @@ export default function Referral() {
   if (terms && !terms.is_enabled) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
-          <UsersIcon className="h-12 w-12 text-dark-300" />
-        </div>
+        <UsersIcon className="h-20 w-20 text-dark-300" />
         <div className="text-center">
           <h1 className="mb-2 text-2xl font-bold text-dark-100">{t('referral.title')}</h1>
           <p className="text-dark-300">{t('referral.disabled')}</p>
@@ -865,8 +863,8 @@ export default function Referral() {
       {terms?.partner_section_visible !== false && showApplySection && (
         <div className="bento-card">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
-              <PartnerIcon className="h-8 w-8" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center text-accent-500">
+              <PartnerIcon className="h-10 w-10" />
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-semibold text-dark-100">
@@ -890,8 +888,8 @@ export default function Referral() {
       {terms?.partner_section_visible !== false && showPendingSection && (
         <div className="bento-card">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-warning-500 dark:bg-gray-700/60">
-              <ClockIcon />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center text-warning-500">
+              <ClockIcon className="h-10 w-10" />
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-semibold text-dark-100">
@@ -916,8 +914,8 @@ export default function Referral() {
       {terms?.partner_section_visible !== false && showApprovedSection && (
         <div className="bento-card">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-success-500 dark:bg-gray-700/60">
-              <PartnerIcon className="h-8 w-8" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center text-success-500">
+              <PartnerIcon className="h-10 w-10" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
@@ -943,8 +941,8 @@ export default function Referral() {
       {terms?.partner_section_visible !== false && showRejectedSection && (
         <div className="bento-card">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-error-500 dark:bg-gray-700/60">
-              <ExclamationIcon className="h-8 w-8" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center text-error-500">
+              <ExclamationIcon className="h-10 w-10" />
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-semibold text-dark-100">
@@ -974,9 +972,7 @@ export default function Referral() {
         partnerStatus.campaigns.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
-                <LinkIcon />
-              </div>
+              <LinkIcon className="h-10 w-10 shrink-0 text-accent-500" />
               <h2 className="text-lg font-semibold text-dark-100">
                 {t('referral.partner.yourCampaigns')}
               </h2>
@@ -996,9 +992,7 @@ export default function Referral() {
           {withdrawalBalance && (
             <div className="bento-card">
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
-                  <WalletIcon className="h-8 w-8" />
-                </div>
+                <WalletIcon className="h-10 w-10 shrink-0 text-accent-500" />
                 <h2 className="text-lg font-semibold text-dark-100">
                   {t('referral.withdrawal.title')}
                 </h2>

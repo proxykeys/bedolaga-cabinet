@@ -98,24 +98,18 @@ const CountdownTimer = memo(function CountdownTimer({
   return (
     <div className="min-w-0 overflow-hidden rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
       <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-dark-300">
-        <div
-          className="flex h-6 w-6 items-center justify-center rounded-[7px]"
+        <span
+          className="flex h-6 w-6 items-center justify-center"
           style={{
-            background: g.hoverBg,
+            color: isExpired
+              ? 'rgb(var(--color-error-500))'
+              : isUrgent
+                ? 'rgb(var(--color-warning-500))'
+                : g.textSecondary,
           }}
         >
-          <span
-            style={{
-              color: isExpired
-                ? 'rgb(var(--color-error-500))'
-                : isUrgent
-                  ? 'rgb(var(--color-warning-500))'
-                  : g.textSecondary,
-            }}
-          >
-            <CalendarIcon className="h-[13px] w-[13px]" />
-          </span>
-        </div>
+          <CalendarIcon className="h-6 w-6" />
+        </span>
         {t('dashboard.remaining')}
       </div>
       {isExpired ? (
@@ -773,23 +767,20 @@ export default function Subscription() {
               {subscription.is_limited && (
                 <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-300/60 dark:bg-gray-700/60">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="rgb(var(--color-warning-500))"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                        <line x1="12" y1="9" x2="12" y2="13" />
-                        <line x1="12" y1="17" x2="12.01" y2="17" />
-                      </svg>
-                    </div>
+                    <svg
+                      className="h-9 w-9 flex-shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="rgb(var(--color-warning-500))"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
                     <div className="min-w-0 flex-1">
                       <p
                         className="text-sm font-semibold"
@@ -809,21 +800,18 @@ export default function Subscription() {
               {subscription.is_trial && subscription.is_active && (
                 <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-300/60 dark:bg-gray-700/60">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="rgb(var(--color-accent-500))"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
+                    <svg
+                      className="h-9 w-9 flex-shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="rgb(var(--color-accent-500))"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <div className="flex-1">
                       <div
                         className="text-sm font-semibold"
@@ -928,14 +916,12 @@ export default function Subscription() {
                   }}
                   className={`mb-5 flex w-full items-center gap-3.5 rounded-[14px] border border-gray-200 bg-gray-250 p-3.5 text-left transition-colors duration-300 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800${isAtDeviceLimit ? 'cursor-not-allowed opacity-50' : ''}`}
                 >
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-350 dark:bg-gray-750"
-                    style={{
-                      color: zone.mainHex,
-                    }}
+                  <span
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center"
+                    style={{ color: zone.mainHex }}
                   >
-                    <DevicesIcon className="h-4 w-4" />
-                  </div>
+                    <DevicesIcon className="h-9 w-9" />
+                  </span>
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold tracking-tight text-dark-50">
                       {t('dashboard.connectDevice')}
@@ -1824,24 +1810,18 @@ export default function Subscription() {
                     className="flex items-center justify-between rounded-[12px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800"
                   >
                     <div className="flex min-w-0 flex-1 items-center gap-3">
-                      <div
-                        className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px]"
-                        style={{ background: g.trackBg }}
+                      <svg
+                        className="h-9 w-9 flex-shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={g.textSecondary}
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
                       >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke={g.textSecondary}
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                        </svg>
-                      </div>
+                        <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                      </svg>
                       <div className="min-w-0 flex-1">
                         {isEditing ? (
                           <input

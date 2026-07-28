@@ -256,8 +256,8 @@ function FullLoginCard({
         {/* Check Email Screen OR Main auth card */}
         {registeredEmail ? (
           <div className="card text-center dark:bg-gray-850">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-200 dark:bg-gray-950">
-              <CentralEmailIcon className="h-7 w-7 text-success-400" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center">
+              <CentralEmailIcon className="h-14 w-14 text-success-400" />
             </div>
             <h2 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-050">
               {t('auth.checkEmail', 'Check your email')}

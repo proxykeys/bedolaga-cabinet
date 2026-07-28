@@ -11,11 +11,10 @@ export function ThemeIcon({ getSvgHtml, svgIconKey, gradientStyle, isMobile }: T
   const svgHtml = getSvgHtml(svgIconKey);
   if (!svgHtml) return null;
   const size = isMobile ? 36 : 44;
-  const iconSize = isMobile ? 18 : 22;
 
   return (
     <div
-      className="flex shrink-0 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60"
+      className="flex shrink-0 items-center justify-center"
       style={{
         width: size,
         height: size,
@@ -23,7 +22,7 @@ export function ThemeIcon({ getSvgHtml, svgIconKey, gradientStyle, isMobile }: T
       }}
     >
       <div
-        style={{ width: iconSize, height: iconSize }}
+        style={{ width: size, height: size }}
         className="[&>svg]:h-full [&>svg]:w-full"
         dangerouslySetInnerHTML={{ __html: svgHtml }}
       />

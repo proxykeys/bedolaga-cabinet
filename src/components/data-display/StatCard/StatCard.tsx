@@ -79,7 +79,7 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
 
           {/* Icon */}
           {icon && (
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-linear bg-gray-250 text-dark-300 dark:bg-gray-850">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center text-dark-300 [&>svg]:h-10 [&>svg]:w-10">
               {icon}
             </div>
           )}

@@ -7,16 +7,13 @@ export function AnimatedCheckmark({ className }: { className?: string }) {
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
-      className={cn(
-        'flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60',
-        className,
-      )}
+      className={cn('flex h-16 w-16 items-center justify-center', className)}
     >
       <motion.svg
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.3 }}
-        className="h-10 w-10 text-success-500"
+        className="h-16 w-16 text-success-500"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

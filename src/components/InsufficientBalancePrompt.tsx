@@ -84,9 +84,7 @@ export default function InsufficientBalancePrompt({
       className={`rounded-xl border border-gray-200/40 bg-gray-250 p-4 dark:border-gray-800/40 dark:bg-gray-850 ${className}`}
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gray-300 dark:bg-gray-700">
-          <WalletIcon className="h-5 w-5 text-error-500" />
-        </div>
+        <WalletIcon className="h-10 w-10 flex-shrink-0 text-error-500" />
         <div className="min-w-0 flex-1">
           <div className="mb-1 font-medium text-error-500">{t('balance.insufficientFunds')}</div>
           <div className="text-sm text-dark-300">{message || t('balance.topUpToComplete')}</div>

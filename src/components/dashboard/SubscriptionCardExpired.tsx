@@ -116,14 +116,14 @@ export default function SubscriptionCardExpired({
       {/* Header — semantic icon color (warning/error) preserved, CTA buttons below are monochrome */}
       <div className="mb-5 flex items-center gap-3">
         <div
-          className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[14px] bg-gray-300/60 dark:bg-gray-700/60 ${
+          className={`flex h-11 w-11 flex-shrink-0 items-center justify-center ${
             isLimited ? 'text-warning-500' : 'text-error-500'
           }`}
         >
           {isLimited ? (
-            <ExclamationIcon className="h-[22px] w-[22px]" />
+            <ExclamationIcon className="h-11 w-11" />
           ) : (
-            <ClockIcon className="h-[22px] w-[22px]" />
+            <ClockIcon className="h-11 w-11" />
           )}
         </div>
         <h2 className="text-lg font-bold tracking-tight text-dark-50">
