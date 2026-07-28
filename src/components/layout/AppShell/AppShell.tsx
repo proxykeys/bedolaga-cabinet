@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, Link } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,6 @@ import {
   MoonIcon,
 } from '@/components/icons';
 
-import { MobileBottomNav } from './MobileBottomNav';
 import { AppHeader } from './AppHeader';
 import { useBackgroundConsumer } from '@/components/backgrounds/BackgroundHost';
 
@@ -77,42 +76,6 @@ export function AppShell({ children }: AppShellProps) {
   const isMobileFullscreen = isFullscreen && isMobile;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-
-  // Reset keyboard state on route change — prevents bottom nav staying hidden after navigation
-  useEffect(() => {
-    setIsKeyboardOpen(false);
-  }, [location.pathname]);
-
-  // Keyboard detection for hiding bottom nav
-  useEffect(() => {
-    const handleFocusIn = (e: FocusEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
-        setIsKeyboardOpen(true);
-      }
-    };
-
-    const handleFocusOut = (e: FocusEvent) => {
-      const relatedTarget = e.relatedTarget as HTMLElement | null;
-      if (
-        !relatedTarget ||
-        (relatedTarget.tagName !== 'INPUT' &&
-          relatedTarget.tagName !== 'TEXTAREA' &&
-          !relatedTarget.isContentEditable)
-      ) {
-        setIsKeyboardOpen(false);
-      }
-    };
-
-    document.addEventListener('focusin', handleFocusIn);
-    document.addEventListener('focusout', handleFocusOut);
-
-    return () => {
-      document.removeEventListener('focusin', handleFocusIn);
-      document.removeEventListener('focusout', handleFocusOut);
-    };
-  }, []);
 
   // Desktop navigation — labels always visible (no hover-reveal gimmick)
   const desktopNav = [
@@ -312,14 +275,7 @@ export function AppShell({ children }: AppShellProps) {
       <div className="xl:hidden" style={{ height: headerHeight }} />
 
       {/* Main content */}
-      <main className="mx-auto max-w-6xl px-4 py-6 pb-28 xl:px-6 xl:pb-8">{children}</main>
-
-      {/* Mobile Bottom Navigation */}
-      <MobileBottomNav
-        isKeyboardOpen={isKeyboardOpen}
-        referralEnabled={referralEnabled}
-        wheelEnabled={wheelEnabled}
-      />
+      <main className="mx-auto max-w-6xl px-4 py-6 pb-8 xl:px-6 xl:pb-8">{children}</main>
     </div>
   );
 }
