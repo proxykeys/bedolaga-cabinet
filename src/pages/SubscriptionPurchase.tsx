@@ -168,14 +168,12 @@ export default function SubscriptionPurchase() {
             ) && (
               <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
                 <div className="flex items-start gap-3">
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-300/60 dark:bg-gray-700/60"
-                    style={{
-                      color: 'rgb(var(--color-warning-500))',
-                    }}
+                  <span
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center"
+                    style={{ color: 'rgb(var(--color-warning-500))' }}
                   >
-                    <SparklesIcon className="h-4 w-4" />
-                  </div>
+                    <SparklesIcon className="h-9 w-9" />
+                  </span>
                   <div>
                     <div
                       className="text-sm font-semibold"
@@ -198,14 +196,12 @@ export default function SubscriptionPurchase() {
             purchaseOptions.subscription_is_expired && (
               <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
                 <div className="flex items-start gap-3">
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-gray-300/60 dark:bg-gray-700/60"
-                    style={{
-                      color: 'rgb(var(--color-error-500))',
-                    }}
+                  <span
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center"
+                    style={{ color: 'rgb(var(--color-error-500))' }}
                   >
-                    <ExclamationIcon className="h-4 w-4" />
-                  </div>
+                    <ExclamationIcon className="h-9 w-9" />
+                  </span>
                   <div>
                     <div
                       className="text-sm font-semibold"

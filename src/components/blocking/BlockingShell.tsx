@@ -1,4 +1,4 @@
-import { type ReactNode, type Ref } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { motion } from 'framer-motion';
 import { scale, scaleTransition, slideUp, slideUpTransition } from '../motion/transitions';
 import { cn } from '@/lib/utils';
@@ -89,8 +89,10 @@ export default function BlockingShell({
             transition={slideUpTransition}
             className="mb-6 flex justify-center"
           >
-            <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <span className={cn('relative', a.iconColor)}>{icon}</span>
+            <span
+              className={cn('relative flex h-20 w-20 items-center justify-center', a.iconColor)}
+            >
+              {icon}
             </span>
           </motion.div>
 

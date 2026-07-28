@@ -274,8 +274,8 @@ function PendingActivationState({
       className="flex flex-col items-center gap-6 text-center"
     >
       {/* Info icon */}
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-        <InfoIcon className="h-10 w-10 text-warning-500" />
+      <div className="flex h-16 w-16 items-center justify-center">
+        <InfoIcon className="h-16 w-16 text-warning-500" />
       </div>
 
       <div>
@@ -362,8 +362,8 @@ function PollErrorState() {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-        <ExclamationIcon className="h-10 w-10 text-warning-500" />
+      <div className="flex h-16 w-16 items-center justify-center">
+        <ExclamationIcon className="h-16 w-16 text-warning-500" />
       </div>
 
       <div>
@@ -398,8 +398,8 @@ function PollTimedOutState({ onRetry }: { onRetry: () => void }) {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
-        <ClockIcon className="h-10 w-10 text-dark-300" />
+      <div className="flex h-16 w-16 items-center justify-center">
+        <ClockIcon className="h-16 w-16 text-dark-300" />
       </div>
       <div>
         <h1 className="text-xl font-bold text-dark-50">
@@ -429,8 +429,8 @@ function NoTokenState() {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center gap-6 text-center"
     >
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
-        <ExclamationIcon className="h-10 w-10 text-dark-300" />
+      <div className="flex h-16 w-16 items-center justify-center">
+        <ExclamationIcon className="h-16 w-16 text-dark-300" />
       </div>
       <div>
         <h1 className="text-xl font-bold text-dark-50">{t('gift.noToken', 'Invalid link')}</h1>

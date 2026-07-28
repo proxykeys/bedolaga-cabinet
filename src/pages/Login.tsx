@@ -391,8 +391,8 @@ export default function Login() {
         {/* Check Email Screen */}
         {registeredEmail ? (
           <div className="card text-center dark:bg-gray-850">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-200 dark:bg-gray-950">
-              <EmailIcon className="h-7 w-7 text-success-400" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center">
+              <EmailIcon className="h-14 w-14 text-success-400" />
             </div>
             <h2 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-050">
               {t('auth.checkEmail', 'Check your email')}
@@ -527,9 +527,7 @@ export default function Login() {
                         /* Forgot password screen - replaces login/register */
                         forgotPasswordSent ? (
                           <div className="space-y-4 text-center">
-                            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-200 dark:bg-gray-950">
-                              <EmailIcon className="h-6 w-6 text-success-400" />
-                            </div>
+                            <EmailIcon className="mx-auto h-12 w-12 text-success-400" />
                             <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                               {t('auth.checkEmail', 'Check your email')}
                             </p>

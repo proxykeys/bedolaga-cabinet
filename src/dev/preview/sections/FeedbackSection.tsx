@@ -261,9 +261,7 @@ function StaticBlockingCard({
     <div className="flex h-full items-center justify-center bg-gray-050 p-6 dark:bg-gray-950">
       <div className="relative w-full max-w-md overflow-hidden rounded-[var(--bento-radius)] border border-gray-200/40 bg-gray-100 p-8 text-center dark:border-gray-800/40 dark:bg-gray-900 sm:p-10">
         <div className="mb-6 flex justify-center">
-          <span
-            className={`relative flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60 ${a.iconColor}`}
-          >
+          <span className={`relative flex h-16 w-16 items-center justify-center ${a.iconColor}`}>
             {icon}
           </span>
         </div>
@@ -308,7 +306,13 @@ function StaticBlockingCard({
 
 function WrenchIcon() {
   return (
-    <svg className="h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      className="h-16 w-16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -320,7 +324,13 @@ function WrenchIcon() {
 
 function BanIcon() {
   return (
-    <svg className="h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      className="h-16 w-16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <circle cx="12" cy="12" r="9" />
       <path strokeLinecap="round" d="M5.64 5.64l12.72 12.72" />
     </svg>
@@ -329,7 +339,13 @@ function BanIcon() {
 
 function InfoIcon() {
   return (
-    <svg className="h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      className="h-16 w-16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <circle cx="12" cy="12" r="9" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01" />
     </svg>
@@ -338,7 +354,7 @@ function InfoIcon() {
 
 function TelegramIcon() {
   return (
-    <svg className="h-9 w-9" viewBox="0 0 24 24" fill="currentColor">
+    <svg className="h-16 w-16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
     </svg>
   );
@@ -346,7 +362,13 @@ function TelegramIcon() {
 
 function CloudWarningIcon() {
   return (
-    <svg className="h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      className="h-16 w-16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

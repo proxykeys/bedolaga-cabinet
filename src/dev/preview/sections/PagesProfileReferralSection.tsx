@@ -435,9 +435,7 @@ function ReferralVisual() {
       {/* Partner Section — status: none (Become a Partner) */}
       <div className="bento-card">
         <div className="flex items-start gap-4">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
-            <PartnerIcon className="h-8 w-8" />
-          </div>
+          <PartnerIcon className="h-10 w-10 shrink-0 text-accent-500" />
           <div className="flex-1">
             <h2 className="text-lg font-semibold text-dark-100">Стать партнёром</h2>
             <p className="mt-1 text-sm text-dark-400">
@@ -451,9 +449,7 @@ function ReferralVisual() {
       {/* Partner Section — status: approved (example) */}
       <div className="bento-card border-success-500">
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-300/60 text-success-500 dark:bg-gray-700/60">
-            <PartnerIcon className="h-8 w-8" />
-          </div>
+          <PartnerIcon className="h-10 w-10 shrink-0 text-success-500" />
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-semibold text-dark-100">Статус партнёра</h2>
@@ -468,9 +464,7 @@ function ReferralVisual() {
       <div className="space-y-6">
         <div className="bento-card">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-accent-500 dark:bg-gray-700/60">
-              <WalletIcon className="h-8 w-8" />
-            </div>
+            <WalletIcon className="h-10 w-10 shrink-0 text-accent-500" />
             <h2 className="text-lg font-semibold text-dark-100">Вывод средств</h2>
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
@@ -544,9 +538,7 @@ function ReferralVisual() {
 function ReferralDisabledVisual() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 bg-gray-050 p-4 dark:bg-gray-950">
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800">
-        <UsersIcon className="h-12 w-12 text-dark-500" />
-      </div>
+      <UsersIcon className="h-20 w-20 text-dark-500" />
       <div className="text-center">
         <h1 className="mb-2 text-2xl font-bold text-dark-100">Реферальная программа</h1>
         <p className="text-dark-400">Программа отключена</p>
@@ -735,8 +727,8 @@ function TopUpResultVisual({ status }: { status: 'success' | 'failed' | 'pending
       <div className="w-full max-w-sm text-center">
         {status === 'success' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <CheckIcon className="h-10 w-10 text-success-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <CheckIcon className="h-16 w-16 text-success-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Баланс пополнен</h1>
             <div className="mt-4 rounded-linear border border-gray-200 bg-gray-150 p-4 dark:border-gray-800 dark:bg-gray-850">
@@ -750,8 +742,8 @@ function TopUpResultVisual({ status }: { status: 'success' | 'failed' | 'pending
         )}
         {status === 'failed' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <ExclamationIcon className="h-10 w-10 text-error-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <ExclamationIcon className="h-16 w-16 text-error-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Платёж не прошёл</h1>
             <p className="mt-2 text-sm text-dark-400">Попробуйте другой метод оплаты</p>
@@ -776,8 +768,8 @@ function TopUpResultVisual({ status }: { status: 'success' | 'failed' | 'pending
         )}
         {status === 'timeout' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <ClockIcon className="h-10 w-10 text-warning-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <ClockIcon className="h-16 w-16 text-warning-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Время ожидания истекло</h1>
             <p className="mt-2 text-sm text-dark-400">
@@ -811,8 +803,8 @@ function PurchaseSuccessVisual({ mode }: { mode: string }) {
         )}
         {mode === 'success' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <CheckIcon className="h-10 w-10 text-success-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <CheckIcon className="h-16 w-16 text-success-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Подписка активирована!</h1>
             <div className="mt-4 rounded-2xl bg-white p-4">
@@ -835,8 +827,8 @@ function PurchaseSuccessVisual({ mode }: { mode: string }) {
         )}
         {mode === 'failed' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <ExclamationIcon className="h-10 w-10 text-error-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <ExclamationIcon className="h-16 w-16 text-error-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Оплата не прошла</h1>
             <p className="mt-2 text-sm text-dark-400">Попробуйте снова или выберите другой метод</p>
@@ -847,8 +839,8 @@ function PurchaseSuccessVisual({ mode }: { mode: string }) {
         )}
         {mode === 'timeout' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <ClockIcon className="h-10 w-10 text-warning-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <ClockIcon className="h-16 w-16 text-warning-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Время ожидания истекло</h1>
             <p className="mt-2 text-sm text-dark-400">Платёж мог быть обработан с задержкой</p>
@@ -859,8 +851,8 @@ function PurchaseSuccessVisual({ mode }: { mode: string }) {
         )}
         {mode === 'cabinet-creds' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <CheckIcon className="h-10 w-10 text-success-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <CheckIcon className="h-16 w-16 text-success-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Доступ активирован!</h1>
             <div className="mt-4 space-y-2 rounded-linear border border-gray-200 bg-gray-150 p-4 text-left dark:border-gray-800 dark:bg-gray-850">
@@ -881,8 +873,8 @@ function PurchaseSuccessVisual({ mode }: { mode: string }) {
         )}
         {mode === 'gift-link' && (
           <>
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-300/60 dark:bg-gray-700/60">
-              <GiftIcon className="h-10 w-10 text-accent-500" />
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+              <GiftIcon className="h-16 w-16 text-accent-500" />
             </div>
             <h1 className="text-2xl font-bold text-dark-50">Подарок отправлен!</h1>
             <p className="mt-2 text-sm text-dark-400">Поделитесь ссылкой с получателем:</p>

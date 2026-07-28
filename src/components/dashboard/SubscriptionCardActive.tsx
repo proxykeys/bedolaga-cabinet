@@ -177,21 +177,15 @@ export default function SubscriptionCardActive({
         {/* Days remaining */}
         <div className="flex-1 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
           <div className="mb-1 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-dark-300">
-            <div
-              className="flex h-6 w-6 items-center justify-center rounded-[7px] transition-colors duration-300"
+            <span
+              className="flex h-6 w-6 items-center justify-center transition-colors duration-300"
               style={{
-                background: g.hoverBg,
+                color: daysLeft <= 3 ? 'rgb(var(--color-warning-500))' : g.textSecondary,
               }}
+              aria-hidden="true"
             >
-              <span
-                style={{
-                  color: daysLeft <= 3 ? 'rgb(var(--color-warning-500))' : g.textSecondary,
-                }}
-                aria-hidden="true"
-              >
-                <CalendarIcon className="h-[13px] w-[13px]" />
-              </span>
-            </div>
+              <CalendarIcon className="h-6 w-6" />
+            </span>
             {t('dashboard.remaining')}
           </div>
           <div className="flex items-baseline gap-1">

@@ -11,17 +11,11 @@ export interface StatCardDelta {
 
 /** Soft tinted chip + matching value colour, in the spirit of the Remnawave stats. */
 const TONE = {
-  neutral: { chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-dark-300', value: 'text-dark-100' },
-  success: {
-    chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-success-500',
-    value: 'text-success-500',
-  },
-  accent: { chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-accent-500', value: 'text-accent-500' },
-  warning: {
-    chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-warning-500',
-    value: 'text-warning-500',
-  },
-  error: { chip: 'bg-gray-300/60 dark:bg-gray-700/60 text-error-500', value: 'text-error-500' },
+  neutral: { chip: 'text-dark-300', value: 'text-dark-100' },
+  success: { chip: 'text-success-500', value: 'text-success-500' },
+  accent: { chip: 'text-accent-500', value: 'text-accent-500' },
+  warning: { chip: 'text-warning-500', value: 'text-warning-500' },
+  error: { chip: 'text-error-500', value: 'text-error-500' },
 } as const;
 
 interface StatCardProps {
@@ -79,7 +73,7 @@ export function StatCard({
       <div className="mt-1.5 flex items-center gap-2.5">
         {icon && (
           <span
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg [&>svg]:h-5 [&>svg]:w-5 ${toneStyle.chip}`}
+            className={`flex h-9 w-9 shrink-0 items-center justify-center [&>svg]:h-9 [&>svg]:w-9 ${toneStyle.chip}`}
           >
             {icon}
           </span>

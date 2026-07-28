@@ -123,17 +123,10 @@ function SubscriptionPageVisual({ state }: { state: Exclude<SubState, 'not-found
         }}
       >
         <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider text-dark-50/35">
-          <div
-            className="flex h-6 w-6 items-center justify-center rounded-[7px]"
-            style={{
-              background: g.hoverBg,
-            }}
-          >
-            <CalendarIcon
-              className="h-[13px] w-[13px]"
-              {...(config.isExpired ? { style: { color: 'rgb(var(--color-error-500))' } } : {})}
-            />
-          </div>
+          <CalendarIcon
+            className="h-6 w-6"
+            {...(config.isExpired ? { style: { color: 'rgb(var(--color-error-500))' } } : {})}
+          />
           {t('dashboard.remaining')}
         </div>
         {config.isExpired ? (

@@ -41,14 +41,14 @@ export default function TrialOfferCard({
       {/* Decorative glow background and grid pattern removed per claude.com flat aesthetic */}
 
       {/* Icon */}
-      <div className="relative mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-300/60 dark:bg-gray-700/60">
+      <div className="relative mx-auto mb-5 flex h-14 w-14 items-center justify-center">
         {isFree ? (
           <span
             className="flex"
             style={{ color: 'rgb(var(--color-accent-500))' }}
             aria-hidden="true"
           >
-            <SparklesIcon className="h-[26px] w-[26px]" />
+            <SparklesIcon className="h-14 w-14" />
           </span>
         ) : (
           <span
@@ -56,7 +56,7 @@ export default function TrialOfferCard({
             style={{ color: 'rgb(var(--color-warning-500))' }}
             aria-hidden="true"
           >
-            <BoltIcon className="h-[26px] w-[26px]" />
+            <BoltIcon className="h-14 w-14" />
           </span>
         )}
         {/* Glow effect removed per claude.com flat aesthetic */}

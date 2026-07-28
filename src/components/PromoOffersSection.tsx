@@ -204,9 +204,9 @@ export default function PromoOffersSection({ className = '' }: PromoOffersSectio
           <div className="flex flex-col gap-4">
             {/* Header */}
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-success-500 dark:bg-gray-700/60">
-                <span className="text-2xl">🏷️</span>
-              </div>
+              <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center text-2xl text-success-500">
+                🏷️
+              </span>
               <div className="min-w-0 flex-1">
                 <div className="mb-1 flex flex-wrap items-center gap-2">
                   <h3 className="font-semibold text-dark-100">
@@ -273,7 +273,7 @@ export default function PromoOffersSection({ className = '' }: PromoOffersSectio
           {availableOffers.map((offer) => (
             <div key={offer.id} className="card transition-colors">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gray-300/60 text-warning-500 dark:bg-gray-700/60">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center text-warning-500 [&>svg]:h-12 [&>svg]:w-12">
                   {getOfferIcon(offer.effect_type, offer.discount_percent)}
                 </div>
                 <div className="min-w-0 flex-1">

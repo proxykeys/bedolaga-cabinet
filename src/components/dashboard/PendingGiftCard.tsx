@@ -28,9 +28,7 @@ export default function PendingGiftCard({ gifts, className }: PendingGiftCardPro
 
           <div className="relative flex items-start gap-4">
             {/* Gift icon */}
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-300 dark:bg-gray-700">
-              <GiftIcon className="h-6 w-6 text-accent-500" />
-            </div>
+            <GiftIcon className="h-12 w-12 shrink-0 text-accent-500" />
 
             {/* Content */}
             <div className="min-w-0 flex-1">

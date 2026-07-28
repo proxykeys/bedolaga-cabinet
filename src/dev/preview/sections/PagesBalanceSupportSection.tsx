@@ -78,9 +78,7 @@ export function PagesBalanceSection() {
             </div>
             <div className="mt-4">
               <div className="py-12 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-gray-200 dark:bg-gray-800">
-                  <WalletIcon className="h-8 w-8 text-dark-500" />
-                </div>
+                <WalletIcon className="mx-auto mb-4 h-16 w-16 text-dark-500" />
                 <div className="text-dark-400">Нет транзакций</div>
               </div>
             </div>
@@ -451,9 +449,7 @@ function SupportVisual({
 
       {mode === 'empty-list' ? (
         <div className="py-12 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-gray-200 dark:bg-gray-800">
-            <ChatIcon className="h-8 w-8 text-dark-500" />
-          </div>
+          <ChatIcon className="mx-auto mb-4 h-16 w-16 text-dark-500" />
           <div className="text-dark-400">У вас нет тикетов</div>
         </div>
       ) : (
@@ -489,9 +485,7 @@ function SupportVisual({
             {mode === 'list-empty' && (
               <div className="flex h-full min-h-[300px] items-center justify-center rounded-linear border border-gray-200/30 bg-gray-200/20 dark:border-gray-800/30 dark:bg-gray-800/20">
                 <div className="text-center">
-                  <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-linear-lg bg-gray-200 dark:bg-gray-800">
-                    <ChatIcon className="h-6 w-6 text-dark-500" />
-                  </div>
+                  <ChatIcon className="mx-auto mb-3 h-12 w-12 text-dark-500" />
                   <div className="text-dark-400">Выберите тикет</div>
                 </div>
               </div>
@@ -604,9 +598,7 @@ function SupportDisabledVisual() {
     <div className="bg-gray-050 p-4 dark:bg-gray-950">
       <h1 className="mb-6 text-2xl font-bold text-dark-50 sm:text-3xl">Поддержка</h1>
       <div className="py-12 text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-gray-200 dark:bg-gray-800">
-          <ChatIcon className="h-8 w-8 text-dark-500" />
-        </div>
+        <ChatIcon className="mx-auto mb-4 h-16 w-16 text-dark-500" />
         <div className="mb-2 text-lg font-semibold text-dark-100">Поддержка недоступна</div>
         <div className="text-dark-400">Для связи используйте контактные данные ниже</div>
         <div className="mt-4">

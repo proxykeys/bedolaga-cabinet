@@ -56,14 +56,12 @@ export default function PurchaseCTAButton({
           {/* Left: icon + text */}
           <div className="flex items-center gap-3">
             {/* Sparkle icon */}
-            <div
-              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gray-200/60 dark:bg-gray-800/60"
-              style={{
-                color: accentColor,
-              }}
+            <span
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center"
+              style={{ color: accentColor }}
             >
-              <SubscriptionIcon className="h-[18px] w-[18px]" />
-            </div>
+              <SubscriptionIcon className="h-10 w-10" />
+            </span>
             <div>
               <div className="text-[15px] font-semibold text-dark-50">{buttonText}</div>
               <div className="text-sm text-dark-300">{hintText}</div>
