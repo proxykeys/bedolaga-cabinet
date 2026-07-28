@@ -30,7 +30,7 @@ export default function ThemeTogglePill() {
     >
       {/* Sliding knob */}
       <div
-        className={`absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border border-gray-600 transition-all duration-300 light:border-gray-300 dark:border-gray-600 ${
+        className={`absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border border-gray-600 transition-all duration-300 light:border-gray-400 ${
           isDark ? 'left-[7px]' : 'left-[37px]'
         }`}
         style={{
