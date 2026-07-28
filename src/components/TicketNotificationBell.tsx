@@ -239,11 +239,11 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
       {/* Dropdown */}
       {isOpen && (
         <div
-          className="fixed left-4 right-4 z-50 mt-0 w-auto animate-scale-in overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-900 sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96"
+          className="fixed left-4 right-4 z-50 mt-0 w-auto animate-scale-in overflow-hidden rounded-2xl border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-900 sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96"
           style={isMobileFullscreen ? { top: dropdownTop } : undefined}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-200 bg-gray-250 px-4 py-3 dark:border-gray-800 dark:bg-gray-850">
+          <div className="flex items-center justify-between border-b border-gray-300 bg-gray-250 px-4 py-3 dark:border-gray-700 dark:bg-gray-850">
             <h3 className="text-sm font-semibold text-dark-100">
               {t('notifications.ticketNotifications', 'Ticket Notifications')}
             </h3>
@@ -270,7 +270,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
                 <button
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
-                  className={`w-full border-b border-gray-200 px-4 py-3 text-left transition-all duration-200 last:border-b-0 hover:bg-gray-300 dark:border-gray-800 dark:hover:bg-gray-800 ${
+                  className={`w-full border-b border-gray-300 px-4 py-3 text-left transition-all duration-200 last:border-b-0 hover:bg-gray-300 dark:border-gray-700 dark:hover:bg-gray-800 ${
                     !notification.is_read ? 'bg-gray-250 dark:bg-gray-850' : ''
                   }`}
                 >
@@ -297,7 +297,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
                 </button>
               ))
             ) : (
-              <div className="p-8 text-center">
+              <div className="bg-gray-050 p-8 text-center dark:bg-gray-950">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-250 text-dark-300 dark:bg-gray-850">
                   <BellIcon />
                 </div>
@@ -310,7 +310,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
 
           {/* Footer */}
           {notificationsData?.items && notificationsData.items.length > 0 && (
-            <div className="border-t border-gray-200 bg-gray-250 px-4 py-3 dark:border-gray-800 dark:bg-gray-850">
+            <div className="border-t border-gray-300 bg-gray-050 px-4 py-3 dark:border-gray-700 dark:bg-gray-950">
               <button
                 onClick={() => {
                   setIsOpen(false);
