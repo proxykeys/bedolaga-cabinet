@@ -195,20 +195,20 @@ export function AppShell({ children }: AppShellProps) {
           скроллбара, и капсула по центру прыгала бы на полширины скроллбара при
           переходах между страницами со скроллом и без. 100vw даёт ту же ось
           центрирования, что и у body (тоже 100vw). */}
-      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200 bg-gray-050 dark:border-gray-800 dark:bg-gray-950 lg:block">
+      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200 bg-gray-050 dark:border-gray-800 dark:bg-gray-950 xl:block">
         {/* 3-зонный grid: лого | капсула | действия. Колонки 1fr_auto_1fr держат
             капсулу строго по центру вьюпорта НЕЗАВИСИМО от ширины лого/действий,
             а действия — у правого края. Поэтому ничего не «скачет» при переходах
             (в т.ч. в админку): смена ширины в одной зоне не двигает другие. */}
-        <div className="mx-auto grid h-14 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-6">
+        <div className="mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4">
           {/* Logo */}
           <Link
             to="/"
             className="flex shrink-0 items-center gap-2.5 justify-self-start"
             onClick={handleNavClick}
           >
-            <div className="flex h-8 items-center overflow-hidden">
-              <img src={logoUrl} alt={appName || 'Logo'} className="h-7 w-auto object-contain" />
+            <div className="flex h-10 items-center overflow-hidden">
+              <img src={logoUrl} alt={appName || 'Logo'} className="h-8 w-auto object-contain" />
             </div>
             <span className="text-base font-semibold text-dark-100">{appName}</span>
           </Link>
@@ -306,13 +306,13 @@ export function AppShell({ children }: AppShellProps) {
       />
 
       {/* Desktop spacer */}
-      <div className="hidden h-14 lg:block" />
+      <div className="hidden h-16 xl:block" />
 
       {/* Mobile spacer */}
-      <div className="lg:hidden" style={{ height: headerHeight }} />
+      <div className="xl:hidden" style={{ height: headerHeight }} />
 
       {/* Main content */}
-      <main className="mx-auto max-w-6xl px-4 py-6 pb-28 lg:px-6 lg:pb-8">{children}</main>
+      <main className="mx-auto max-w-6xl px-4 py-6 pb-28 xl:px-6 xl:pb-8">{children}</main>
 
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav
