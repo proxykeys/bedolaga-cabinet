@@ -505,9 +505,7 @@ export default function TopUpAmount() {
             className={`flex h-14 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 text-base font-bold transition-colors duration-200 ${
               isPending || !amount || parseFloat(amount) <= 0
                 ? 'cursor-not-allowed bg-gray-300 text-dark-300 dark:bg-gray-700'
-                : isStarsMethod
-                  ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg shadow-yellow-500/25 hover:from-yellow-400 hover:to-orange-400 active:from-yellow-600 active:to-orange-600'
-                  : 'bg-accent-500 text-on-accent shadow-lg transition-colors hover:bg-accent-400 active:bg-accent-600'
+                : 'bg-accent-500 text-on-accent shadow-lg transition-colors hover:bg-accent-400 active:bg-accent-600'
             }`}
           >
             {isPending ? (
