@@ -246,7 +246,7 @@ export function ColoredItemCombobox({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('news.admin.combobox.searchOrCreate')}
-              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500/50"
+              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400/50"
             />
           </div>
 

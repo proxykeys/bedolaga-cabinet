@@ -26,7 +26,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           'border border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850',
           'text-sm text-dark-100 placeholder:text-dark-300',
           'hover:border-gray-300/50 hover:bg-gray-300 dark:hover:border-gray-700/50 dark:hover:bg-gray-800',
-          'focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:ring-offset-2 focus:ring-offset-dark-950',
+          'focus:outline-none focus:ring-2 focus:ring-dark-400/50 focus:ring-offset-2 focus:ring-offset-dark-950',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'transition-all duration-200',
           '[&>span]:line-clamp-1',

@@ -207,7 +207,7 @@ function ContactForm({
           value={contactValue}
           onChange={(e) => onContactChange(e.target.value)}
           placeholder={t('landing.contactPlaceholder', 'email@example.com or @telegram')}
-          className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
+          className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-dark-400 focus:ring-1 focus:ring-dark-400/25 dark:border-gray-800/50 dark:bg-gray-850"
         />
         <p className="mt-1.5 text-xs text-dark-300">{t('landing.contactHint')}</p>
       </div>
@@ -235,7 +235,7 @@ function ContactForm({
                 value={giftRecipient}
                 onChange={(e) => onGiftRecipientChange(e.target.value)}
                 placeholder={t('landing.recipientPlaceholder', 'Recipient email or @telegram')}
-                className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
+                className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-dark-400 focus:ring-1 focus:ring-dark-400/25 dark:border-gray-800/50 dark:bg-gray-850"
               />
             </div>
             <div>
@@ -254,7 +254,7 @@ function ContactForm({
                   'Add a personal message (optional)',
                 )}
                 rows={3}
-                className="w-full resize-none rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
+                className="w-full resize-none rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-dark-400 focus:ring-1 focus:ring-dark-400/25 dark:border-gray-800/50 dark:bg-gray-850"
               />
             </div>
           </motion.div>

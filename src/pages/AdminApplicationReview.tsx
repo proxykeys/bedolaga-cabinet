@@ -167,7 +167,7 @@ export default function AdminApplicationReview() {
             max="100"
             value={commission}
             onChange={(e) => setCommission(e.target.value)}
-            className="mb-4 w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-dark-100 outline-none focus:border-accent-500"
+            className="mb-4 w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-dark-100 outline-none focus:border-dark-400"
             placeholder="10"
           />
           <button
@@ -209,7 +209,7 @@ export default function AdminApplicationReview() {
           <textarea
             value={rejectComment}
             onChange={(e) => setRejectComment(e.target.value)}
-            className="mb-4 w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-dark-100 outline-none focus:border-accent-500"
+            className="mb-4 w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-dark-100 outline-none focus:border-dark-400"
             rows={3}
             placeholder={t('admin.partners.rejectDialog.commentPlaceholder')}
           />

@@ -69,7 +69,7 @@ export default function AdminPartnerCommission() {
           max="100"
           value={commissionValue}
           onChange={(e) => setCommissionValue(e.target.value)}
-          className="mb-6 w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-dark-100 outline-none focus:border-accent-500"
+          className="mb-6 w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-dark-100 outline-none focus:border-dark-400"
         />
 
         <div className="flex gap-3">

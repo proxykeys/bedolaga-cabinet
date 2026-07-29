@@ -157,7 +157,7 @@ export default function AdminPartnerSettings() {
                 onChange={(e) =>
                   setFormData({ ...formData, referral_program_enabled: e.target.checked })
                 }
-                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-offset-0"
+                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-dark-400 focus:ring-offset-0"
               />
               <div>
                 <div className="font-medium text-dark-100">
@@ -179,7 +179,7 @@ export default function AdminPartnerSettings() {
                 onChange={(e) =>
                   setFormData({ ...formData, partner_section_visible: e.target.checked })
                 }
-                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-offset-0"
+                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-dark-400 focus:ring-offset-0"
               />
               <div>
                 <div className="font-medium text-dark-100">
@@ -206,7 +206,7 @@ export default function AdminPartnerSettings() {
                 type="checkbox"
                 checked={formData.withdrawal_enabled}
                 onChange={(e) => setFormData({ ...formData, withdrawal_enabled: e.target.checked })}
-                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-offset-0"
+                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-dark-400 focus:ring-offset-0"
               />
               <div>
                 <div className="font-medium text-dark-100">

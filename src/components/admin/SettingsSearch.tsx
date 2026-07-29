@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SettingDefinition } from '../../api/adminSettings';
+import type { SettingDefinition } from '../../api/adminSettings';
 import { SearchIcon, CloseIcon } from './icons';
 import { formatSettingKey } from './utils';
 
@@ -108,7 +108,7 @@ export function SettingsSearch({
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
         placeholder={t('admin.settings.searchPlaceholder')}
-        className="w-48 rounded-xl border border-dark-700 bg-dark-800 py-2 pl-10 pr-10 text-sm text-dark-100 placeholder-dark-500 focus:border-accent-500 focus:outline-none lg:w-64"
+        className="w-48 rounded-xl border border-dark-700 bg-dark-800 py-2 pl-10 pr-10 text-sm text-dark-100 placeholder-dark-500 focus:border-dark-400 focus:outline-none lg:w-64"
       />
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-500">
         <SearchIcon />
@@ -218,7 +218,7 @@ export function SettingsSearchMobile({
         }}
         onFocus={() => setIsOpen(true)}
         placeholder={t('admin.settings.searchPlaceholder')}
-        className="w-full rounded-xl border border-dark-700 bg-dark-800 py-2 pl-10 pr-10 text-sm text-dark-100 placeholder-dark-500 focus:border-accent-500 focus:outline-none"
+        className="w-full rounded-xl border border-dark-700 bg-dark-800 py-2 pl-10 pr-10 text-sm text-dark-100 placeholder-dark-500 focus:border-dark-400 focus:outline-none"
       />
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-500">
         <SearchIcon />

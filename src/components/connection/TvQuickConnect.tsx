@@ -173,8 +173,8 @@ export default function TvQuickConnect({ subscriptionUrl, isLight }: Props) {
   }, [tgNative, sendToTV, showToast, onScanDecoded, t]);
 
   const inputClass = isLight
-    ? 'w-full rounded-xl border border-gray-200/60 dark:border-gray-800/60 bg-white px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500'
-    : 'w-full rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100/50 dark:bg-gray-900/50 px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500';
+    ? 'w-full rounded-xl border border-gray-200/60 dark:border-gray-800/60 bg-white px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-dark-400 focus:ring-1 focus:ring-dark-400'
+    : 'w-full rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100/50 dark:bg-gray-900/50 px-4 py-3 text-center text-2xl font-bold tracking-[0.3em] uppercase text-dark-100 outline-none focus:border-dark-400 focus:ring-1 focus:ring-dark-400';
 
   // Full-width buttons in the same outlined-accent language as the config blocks
   // (so the Happ TV block adapts to the subscription-page styles, not a one-off).

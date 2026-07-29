@@ -337,7 +337,7 @@ export function ColorPicker({ value, onChange, label, description, disabled }: C
             type="text"
             value={localValue}
             onChange={handleHexInputChange}
-            className="h-9 flex-1 rounded-lg border border-gray-200 bg-gray-250 px-3 font-mono text-sm uppercase text-dark-100 focus:border-accent-500 focus:outline-none dark:border-gray-800 dark:bg-gray-850"
+            className="h-9 flex-1 rounded-lg border border-gray-200 bg-gray-250 px-3 font-mono text-sm uppercase text-dark-100 focus:border-dark-400 focus:outline-none dark:border-gray-800 dark:bg-gray-850"
             placeholder="#000000"
             maxLength={7}
           />
@@ -389,7 +389,7 @@ export function ColorPicker({ value, onChange, label, description, disabled }: C
           value={localValue}
           onChange={handleHexInputChange}
           disabled={disabled}
-          className="h-10 min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-250 px-2 font-mono text-sm uppercase text-dark-100 focus:border-accent-500 focus:outline-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-850"
+          className="h-10 min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-250 px-2 font-mono text-sm uppercase text-dark-100 focus:border-dark-400 focus:outline-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-850"
           placeholder="#000000"
           maxLength={7}
         />

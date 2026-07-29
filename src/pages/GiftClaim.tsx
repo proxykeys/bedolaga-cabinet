@@ -298,7 +298,7 @@ export default function GiftClaim() {
                 setClaimError(null);
               }}
               placeholder="email@example.com"
-              className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
+              className="w-full rounded-xl border border-gray-200/50 bg-gray-250 px-4 py-3 text-sm text-dark-50 placeholder-dark-300 outline-none focus:border-dark-400 focus:ring-1 focus:ring-dark-400/25 dark:border-gray-800/50 dark:bg-gray-850"
             />
             {claimError && <p className="text-sm text-error-500">{claimError}</p>}
             <button

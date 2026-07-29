@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SETTINGS_TREE } from './constants';
 import { StarIcon, SearchIcon, CloseIcon, ChevronDownIcon } from './icons';
-import { SettingDefinition } from '../../api/adminSettings';
+import type { SettingDefinition } from '../../api/adminSettings';
 import { formatSettingKey } from './utils';
 import { cn } from '../../lib/utils';
 
@@ -151,7 +151,7 @@ export function SettingsTreeSidebar({
           onFocus={() => setIsSearchOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={t('admin.settings.searchPlaceholder')}
-          className="w-full rounded-lg border border-dark-700/50 bg-dark-800/50 py-2 pl-9 pr-8 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-accent-500 focus:outline-none"
+          className="w-full rounded-lg border border-dark-700/50 bg-dark-800/50 py-2 pl-9 pr-8 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-dark-400 focus:outline-none"
         />
         <div className="absolute left-6 top-1/2 -translate-y-1/2 text-dark-500">
           <SearchIcon className="h-4 w-4" />

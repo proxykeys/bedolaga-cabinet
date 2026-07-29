@@ -80,7 +80,7 @@ function SettingField({
         <select
           value={selectVal}
           onChange={(e) => onChange(e.target.value)}
-          className="rounded-lg border border-dark-600 bg-dark-700 px-3 py-1.5 text-sm text-dark-200 focus:border-accent-500 focus:outline-none"
+          className="rounded-lg border border-dark-600 bg-dark-700 px-3 py-1.5 text-sm text-dark-200 focus:border-dark-400 focus:outline-none"
         >
           {def.options.map((opt) => (
             <option key={opt.value} value={opt.value}>

@@ -12,7 +12,7 @@ import {
   type SupportedLocale,
   toLocaleDict,
 } from '../api/landings';
-import { tariffsApi, TariffListItem, PeriodPrice } from '../api/tariffs';
+import { tariffsApi, type TariffListItem, type PeriodPrice } from '../api/tariffs';
 import { formatPrice } from '../utils/format';
 import { useCurrency } from '../hooks/useCurrency';
 import { adminPaymentMethodsApi } from '../api/adminPaymentMethods';
@@ -633,7 +633,7 @@ export default function AdminLandingEditor() {
                 onChange={(e) => setSlug(e.target.value)}
                 disabled={isEdit}
                 placeholder="my-landing"
-                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-accent-500 disabled:opacity-50"
+                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-dark-400 disabled:opacity-50"
               />
               <p className="mt-1 text-xs text-dark-500">{t('admin.landings.slugHint')}</p>
             </div>
@@ -872,7 +872,7 @@ export default function AdminLandingEditor() {
                       type="datetime-local"
                       value={discountStartsAt}
                       onChange={(e) => setDiscountStartsAt(e.target.value)}
-                      className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-accent-500 [&::-webkit-calendar-picker-indicator]:invert"
+                      className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-dark-400 [&::-webkit-calendar-picker-indicator]:invert"
                     />
                   </div>
                   <div>
@@ -883,7 +883,7 @@ export default function AdminLandingEditor() {
                       type="datetime-local"
                       value={discountEndsAt}
                       onChange={(e) => setDiscountEndsAt(e.target.value)}
-                      className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-accent-500 [&::-webkit-calendar-picker-indicator]:invert"
+                      className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-dark-400 [&::-webkit-calendar-picker-indicator]:invert"
                     />
                   </div>
                 </div>
@@ -949,7 +949,7 @@ export default function AdminLandingEditor() {
                                   };
                                 });
                               }}
-                              className="w-16 rounded border border-dark-600 bg-dark-700 px-2 py-1 text-center text-sm text-dark-100 outline-none focus:border-accent-500"
+                              className="w-16 rounded border border-dark-600 bg-dark-700 px-2 py-1 text-center text-sm text-dark-100 outline-none focus:border-dark-400"
                             />
                           </div>
                         );
@@ -1112,7 +1112,7 @@ export default function AdminLandingEditor() {
                   value={analyticsViewGoal}
                   onChange={(e) => setAnalyticsViewGoal(e.target.value)}
                   disabled={!analyticsViewEnabled}
-                  className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-accent-500 disabled:opacity-50"
+                  className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-dark-400 disabled:opacity-50"
                   placeholder="landing_view"
                 />
               </div>
@@ -1133,7 +1133,7 @@ export default function AdminLandingEditor() {
                   value={analyticsClickGoal}
                   onChange={(e) => setAnalyticsClickGoal(e.target.value)}
                   disabled={!analyticsClickEnabled}
-                  className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-accent-500 disabled:opacity-50"
+                  className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 text-sm text-dark-100 outline-none focus:border-dark-400 disabled:opacity-50"
                   placeholder="landing_pay"
                 />
               </div>
@@ -1187,7 +1187,7 @@ export default function AdminLandingEditor() {
                 value={customCss}
                 onChange={(e) => setCustomCss(e.target.value)}
                 rows={6}
-                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 font-mono text-sm text-dark-100 outline-none focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-2 font-mono text-sm text-dark-100 outline-none focus:border-dark-400"
               />
             </div>
           </div>

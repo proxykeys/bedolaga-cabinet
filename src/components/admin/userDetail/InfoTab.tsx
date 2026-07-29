@@ -595,7 +595,7 @@ export function InfoTab(props: InfoTabProps) {
               rows={5}
               autoFocus
               placeholder={t('admin.users.sendMessage.placeholder')}
-              className="w-full resize-y rounded-lg border border-dark-600 bg-dark-900/60 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 focus:border-accent-500 focus:outline-none"
+              className="w-full resize-y rounded-lg border border-dark-600 bg-dark-900/60 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 focus:border-dark-400 focus:outline-none"
             />
             <div className="mt-1 text-right text-xs text-dark-500">{sendMsgText.length}/4096</div>
             <div className="mt-3 flex justify-end gap-2">

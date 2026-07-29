@@ -408,7 +408,7 @@ export default function AdminPolicyEdit() {
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
                 placeholder={t('admin.policies.form.namePlaceholder')}
                 autoFocus
               />
@@ -426,7 +426,7 @@ export default function AdminPolicyEdit() {
                 id="policy-description"
                 value={formData.description}
                 onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
                 placeholder={t('admin.policies.form.descriptionPlaceholder')}
                 rows={2}
               />
@@ -480,7 +480,7 @@ export default function AdminPolicyEdit() {
                 id="policy-resource"
                 value={formData.resource}
                 onChange={(e) => handleResourceChange(e.target.value)}
-                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors focus:border-dark-400"
               >
                 <option value="">{t('admin.policies.form.selectResource')}</option>
                 {permissionRegistry?.map((section) => (
@@ -534,7 +534,7 @@ export default function AdminPolicyEdit() {
                     role_id: e.target.value ? Number(e.target.value) : null,
                   }))
                 }
-                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors focus:border-dark-400"
               >
                 <option value="">{t('admin.policies.form.globalOption')}</option>
                 {roles?.map((role) => (
@@ -566,7 +566,7 @@ export default function AdminPolicyEdit() {
                     priority: Math.min(999, Math.max(0, Number(e.target.value) || 0)),
                   }))
                 }
-                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors focus:border-dark-400"
               />
               <p className="mt-1 text-xs text-dark-500">{t('admin.policies.form.priorityHint')}</p>
             </div>
@@ -609,7 +609,7 @@ export default function AdminPolicyEdit() {
                       },
                     }))
                   }
-                  className="rounded-lg border border-dark-600 bg-dark-900 px-2 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+                  className="rounded-lg border border-dark-600 bg-dark-900 px-2 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
                   aria-label={t('admin.policies.conditions.timeStart')}
                 />
                 <span className="text-dark-500">-</span>
@@ -628,7 +628,7 @@ export default function AdminPolicyEdit() {
                       },
                     }))
                   }
-                  className="rounded-lg border border-dark-600 bg-dark-900 px-2 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+                  className="rounded-lg border border-dark-600 bg-dark-900 px-2 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
                   aria-label={t('admin.policies.conditions.timeEnd')}
                 />
               </div>
@@ -691,7 +691,7 @@ export default function AdminPolicyEdit() {
                       },
                     }))
                   }
-                  className="w-24 rounded-lg border border-dark-600 bg-dark-900 px-2 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+                  className="w-24 rounded-lg border border-dark-600 bg-dark-900 px-2 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
                   aria-label={t('admin.policies.conditions.rateLimitValue')}
                 />
                 <span className="text-xs text-dark-500">

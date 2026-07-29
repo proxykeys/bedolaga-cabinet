@@ -468,7 +468,7 @@ export default function TopUpAmount() {
           <div
             className={`relative flex-1 rounded-2xl border transition-colors duration-200 ${
               isInputFocused
-                ? 'border-accent-500/50 bg-gray-250 dark:bg-gray-850'
+                ? 'border-dark-400/50 bg-gray-250 dark:bg-gray-850'
                 : 'border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850'
             }`}
           >

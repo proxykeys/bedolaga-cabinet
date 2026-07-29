@@ -103,7 +103,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
                         'absolute right-4 top-4 rounded-linear p-1.5',
                         'text-dark-300 opacity-70 transition-all',
                         'hover:bg-gray-300/80 hover:opacity-100 dark:hover:bg-gray-800',
-                        'focus:outline-none focus:ring-2 focus:ring-accent-500/50',
+                        'focus:outline-none focus:ring-2 focus:ring-dark-400/50',
                       )}
                     >
                       <CloseIcon />

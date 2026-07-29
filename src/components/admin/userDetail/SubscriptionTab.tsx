@@ -989,7 +989,7 @@ export function SubscriptionTab(props: SubscriptionTabProps) {
                                 onEditingDeviceNameChange('');
                               }
                             }}
-                            className="w-full rounded-md bg-dark-900/70 px-2 py-1 text-xs font-medium text-dark-50 outline-none ring-1 ring-dark-600/60 focus:ring-accent-500/50"
+                            className="w-full rounded-md bg-dark-900/70 px-2 py-1 text-xs font-medium text-dark-50 outline-none ring-1 ring-dark-600/60 focus:ring-dark-400/50"
                           />
                         ) : (
                           <div className="truncate text-xs font-medium text-dark-200">

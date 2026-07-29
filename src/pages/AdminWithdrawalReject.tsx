@@ -67,7 +67,7 @@ export default function AdminWithdrawalReject() {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder={t('admin.withdrawals.detail.commentPlaceholder')}
-          className="mb-6 w-full rounded-lg border border-dark-600 bg-dark-700 p-3 text-sm text-dark-200 placeholder:text-dark-500 focus:border-accent-500 focus:outline-none"
+          className="mb-6 w-full rounded-lg border border-dark-600 bg-dark-700 p-3 text-sm text-dark-200 placeholder:text-dark-500 focus:border-dark-400 focus:outline-none"
           rows={3}
         />
 
