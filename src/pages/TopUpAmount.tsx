@@ -466,10 +466,10 @@ export default function TopUpAmount() {
         <label className="text-sm font-medium text-dark-300">{t('balance.enterAmount')}</label>
         <div className="flex gap-2">
           <div
-            className={`relative flex-1 rounded-2xl transition-all duration-200 ${
+            className={`relative flex-1 rounded-2xl border transition-colors duration-200 ${
               isInputFocused
-                ? 'bg-gray-250 ring-2 ring-accent-500/50 dark:bg-gray-850'
-                : 'border border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850'
+                ? 'border-accent-500/50 bg-gray-250 dark:bg-gray-850'
+                : 'border-gray-200/50 bg-gray-250 dark:border-gray-800/50 dark:bg-gray-850'
             }`}
           >
             <input
