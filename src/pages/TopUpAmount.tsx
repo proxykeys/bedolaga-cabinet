@@ -24,7 +24,6 @@ import {
   CryptoIcon,
   ExclamationIcon,
   ExternalLinkIcon,
-  SparklesIcon,
   StarIcon,
 } from '@/components/icons';
 
@@ -501,16 +500,13 @@ export default function TopUpAmount() {
             className={`flex h-14 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 text-base font-bold transition-colors duration-200 ${
               isPending || !amount || parseFloat(amount) <= 0
                 ? 'cursor-not-allowed bg-gray-300 text-dark-300 dark:bg-gray-700'
-                : 'bg-accent-500 text-on-accent shadow-lg transition-colors hover:bg-accent-400 active:bg-accent-600'
+                : 'bg-gray-100 text-gray-900 transition-colors hover:bg-gray-200 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200'
             }`}
           >
             {isPending ? (
-              <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-current/30 border-t-current" />
             ) : (
-              <>
-                <SparklesIcon className="h-4 w-4" />
-                <span>{t('balance.topUp')}</span>
-              </>
+              <span>{t('balance.topUp')}</span>
             )}
           </button>
         </div>
