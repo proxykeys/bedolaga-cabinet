@@ -30,10 +30,10 @@ import {
 
 const getMethodIcon = (methodId: string) => {
   const id = methodId.toLowerCase();
-  if (id.includes('stars')) return <StarIcon className="h-8 w-8" />;
+  if (id.includes('stars')) return <StarIcon className="h-14 w-14" />;
   if (id.includes('crypto') || id.includes('ton') || id.includes('usdt'))
-    return <CryptoIcon className="h-8 w-8" />;
-  return <CardIcon className="h-8 w-8" />;
+    return <CryptoIcon className="h-14 w-14" />;
+  return <CardIcon className="h-14 w-14" />;
 };
 
 const getPreferredOptionId = (options?: PaymentMethod['options']) => {
@@ -419,11 +419,11 @@ export default function TopUpAmount() {
       {/* Header icon and method */}
       <motion.div variants={staggerItem} className="flex items-center gap-4 pb-1">
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
+          className={`flex shrink-0 items-center justify-center rounded-2xl ${
             isStarsMethod ? 'text-yellow-400' : 'text-accent-500'
           }`}
         >
-          <div className="flex items-center justify-center">{getMethodIcon(method.id)}</div>
+          {getMethodIcon(method.id)}
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-bold text-dark-100">{methodName}</h3>
