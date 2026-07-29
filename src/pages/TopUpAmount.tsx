@@ -528,8 +528,7 @@ export default function TopUpAmount() {
                   setQuickRub(a);
                   inputRef.current?.blur();
                 }}
-                hover
-                className={`flex flex-col items-center justify-center px-2 py-3 ${
+                className={`flex cursor-pointer flex-col items-center justify-center px-2 py-3 ${
                   isSelected ? 'border-accent-500 bg-gray-250 dark:bg-gray-850' : ''
                 }`}
               >
