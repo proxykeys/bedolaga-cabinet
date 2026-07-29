@@ -162,7 +162,7 @@ export default function TelegramRedirect() {
         {/* Success State */}
         {status === 'success' && (
           <div className="mt-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-success-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <CheckIcon className="h-8 w-8 text-success-500" />
             </div>
             <p className="text-dark-200">{t('auth.loginSuccess')}</p>
@@ -173,7 +173,7 @@ export default function TelegramRedirect() {
         {/* Error State */}
         {status === 'error' && (
           <div className="mt-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <XIcon className="h-8 w-8 text-error-500" />
             </div>
             <p className="mb-2 text-dark-200">{t('auth.loginFailed')}</p>
@@ -192,7 +192,7 @@ export default function TelegramRedirect() {
         {/* Not in Telegram State */}
         {status === 'not-telegram' && (
           <div className="mt-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-warning-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <ExclamationIcon className="h-8 w-8 text-warning-500" />
             </div>
             <p className="mb-2 text-dark-200">{t('telegramRedirect.openInTelegram')}</p>

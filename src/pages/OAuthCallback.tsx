@@ -145,7 +145,7 @@ export default function OAuthCallback() {
         <div className="fixed inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950" />
         <div className="relative w-full max-w-md text-center">
           <div className="card">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-success-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <CheckIcon className="h-8 w-8 text-success-500" />
             </div>
             <h2 className="mb-2 text-lg font-semibold text-dark-50">
@@ -201,7 +201,7 @@ export default function OAuthCallback() {
         <div className="fixed inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950" />
         <div className="relative w-full max-w-md text-center">
           <div className="card">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-error-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <ExclamationIcon className="h-8 w-8 text-error-500" />
             </div>
             <h2 className="mb-2 text-lg font-semibold text-dark-50">{t('auth.loginFailed')}</h2>

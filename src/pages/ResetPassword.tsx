@@ -96,7 +96,7 @@ export default function ResetPassword() {
         <div className="card">
           {status === 'success' ? (
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-success-500">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
                 <CheckIcon className="h-8 w-8 text-success-500" />
               </div>
               <h2 className="mb-2 text-xl font-bold text-dark-50">

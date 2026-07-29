@@ -51,7 +51,7 @@ export default function AutoLogin() {
       <div className="w-full max-w-sm rounded-2xl border border-gray-200/50 bg-gray-100/50 p-8 text-center dark:border-gray-800/50 dark:bg-gray-900/50">
         {error ? (
           <div className="space-y-4">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center">
               <XIcon className="h-8 w-8 text-error-500" />
             </div>
             <p className="text-sm text-dark-300">{t('landing.autoLoginFailed')}</p>

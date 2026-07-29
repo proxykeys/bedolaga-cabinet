@@ -109,7 +109,7 @@ function ErrorState({ message }: { message: string }) {
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+        <div className="flex h-16 w-16 items-center justify-center">
           <WarningCircleIcon className="h-8 w-8 text-error-500" />
         </div>
         <h2 className="text-lg font-semibold text-dark-50">{t('gift.failedTitle')}</h2>
@@ -859,7 +859,7 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
     const result = activateMutation.data;
     return (
       <div className="flex flex-col items-center gap-4 py-12 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-accent-500">
+        <div className="flex h-16 w-16 items-center justify-center">
           <CheckCircleIcon className="h-8 w-8 text-accent-500" />
         </div>
         <h2 className="text-xl font-bold text-dark-50">{t('gift.activateSuccess')}</h2>
@@ -877,7 +877,7 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
     <div className="flex flex-col items-center gap-6 py-8">
       {/* Icon + title */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-accent-500">
+        <div className="flex h-16 w-16 items-center justify-center">
           <KeyIcon className="h-8 w-8 text-accent-500" />
         </div>
         <h2 className="text-xl font-bold text-dark-50">{t('gift.activateTitle')}</h2>

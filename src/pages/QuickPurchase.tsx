@@ -82,7 +82,7 @@ function ErrorState({ message }: { message: string }) {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-gray-050 px-4 dark:bg-gray-950">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+        <div className="flex h-16 w-16 items-center justify-center">
           <svg
             className="h-8 w-8 text-error-500"
             fill="none"
