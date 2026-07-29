@@ -190,7 +190,7 @@ export default function DeepLinkRedirect() {
         {status === 'countdown' && (
           <div className="card !bg-gray-250 p-6 backdrop-blur-sm dark:bg-gray-850">
             {/* App icon */}
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-accent-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <span className="text-2xl font-bold text-accent-500">{appIcon}</span>
             </div>
 
@@ -231,7 +231,7 @@ export default function DeepLinkRedirect() {
         {status === 'fallback' && (
           <div className="card !bg-gray-250 p-6 backdrop-blur-sm dark:bg-gray-850">
             {/* App icon */}
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-accent-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <span className="text-2xl font-bold text-accent-500">{appIcon}</span>
             </div>
 
@@ -290,7 +290,7 @@ export default function DeepLinkRedirect() {
         {/* Error State */}
         {status === 'error' && (
           <div className="card !bg-gray-250 p-6 backdrop-blur-sm dark:bg-gray-850">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center">
               <ExclamationIcon className="h-8 w-8 text-error-500" />
             </div>
             <p className="mb-2 font-medium text-dark-200">{t('deepLink.errorTitle')}</p>

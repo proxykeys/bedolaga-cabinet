@@ -380,7 +380,7 @@ export default function NewsSection() {
           className="mb-8"
         >
           <div className="mb-2 flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent-400 to-accent-600">
+            <div className="flex h-8 w-8 items-center justify-center">
               <NewsIcon className="h-[18px] w-[18px] text-dark-950" />
             </div>
             <span className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-dark-300">

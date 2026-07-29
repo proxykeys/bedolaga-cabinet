@@ -735,17 +735,12 @@ export default function Subscription() {
                   className="max-w-[55%] shrink-0 rounded-full px-3 py-1 text-center font-mono text-xs font-semibold uppercase tracking-wider"
                   style={{
                     background: subscription.is_active
-                      ? `${zone.mainHex}15`
+                      ? zone.mainHex
                       : subscription.is_limited
                         ? 'rgb(var(--color-warning-500))'
                         : 'rgb(var(--color-error-500))',
-                    border: subscription.is_active
-                      ? `1px solid ${zone.mainHex}30`
-                      : subscription.is_limited
-                        ? '1px solid rgb(var(--color-warning-500))'
-                        : '1px solid rgb(var(--color-error-500))',
                     color: subscription.is_active
-                      ? zone.mainHex
+                      ? `rgb(var(--color-on-${zone.colorKey}))`
                       : subscription.is_limited
                         ? 'rgb(var(--color-on-warning))'
                         : 'rgb(var(--color-on-error))',

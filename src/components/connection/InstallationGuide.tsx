@@ -221,7 +221,7 @@ export default function InstallationGuide({
           <button
             onClick={onGoBack}
             aria-label={t('common.back', 'Back')}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-250 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
+            className="flex h-10 w-10 items-center justify-center transition-colors hover:text-dark-100"
           >
             <BackIcon className="h-6 w-6" />
           </button>
@@ -233,7 +233,7 @@ export default function InstallationGuide({
           <button
             onClick={() => onOpenQR()}
             aria-label={t('subscription.connection.openQr', 'Open QR code')}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-250 text-dark-200 transition-colors hover:border-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700"
+            className="flex h-10 w-10 items-center justify-center text-dark-200 transition-colors hover:text-dark-100"
           >
             <svg
               className="h-5 w-5"

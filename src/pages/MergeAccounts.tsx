@@ -260,7 +260,7 @@ function ExpiredState() {
       animate="animate"
     >
       <motion.div variants={staggerItem}>
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-warning-500">
+        <div className="flex h-16 w-16 items-center justify-center">
           <ClockIcon className="h-8 w-8 text-warning-500" />
         </div>
       </motion.div>
@@ -294,7 +294,7 @@ function ErrorState() {
       animate="animate"
     >
       <motion.div variants={staggerItem}>
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-error-500">
+        <div className="flex h-16 w-16 items-center justify-center">
           <WarningIcon className="h-8 w-8 text-error-500" />
         </div>
       </motion.div>
