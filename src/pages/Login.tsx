@@ -391,9 +391,7 @@ export default function Login() {
         {/* Check Email Screen */}
         {registeredEmail ? (
           <div className="card text-center dark:bg-gray-850">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center">
-              <EmailIcon className="h-14 w-14 text-success-400" />
-            </div>
+            <EmailIcon className="mx-auto mb-4 h-14 w-14 text-success-400" />
             <h2 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-050">
               {t('auth.checkEmail', 'Check your email')}
             </h2>

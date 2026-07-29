@@ -22,10 +22,7 @@ function EmptyState({ onBuy }: { onBuy: () => void }) {
       className="rounded-2xl border p-10 text-center"
       style={{ background: g.cardBg, borderColor: g.cardBorder }}
     >
-      <div
-        className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-        style={{ background: g.innerBg }}
-      >
+      <div className="mx-auto mb-4">
         <ClipboardIcon className="h-8 w-8 opacity-40" />
       </div>
       <h3 className="mb-2 text-xl font-semibold" style={{ color: g.text }}>

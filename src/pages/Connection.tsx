@@ -184,7 +184,7 @@ export default function Connection() {
   if (error || !appConfig || !hasApps) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
+        <div className="mb-4">
           <svg
             className="h-8 w-8 text-dark-300"
             fill="none"

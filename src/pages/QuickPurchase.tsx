@@ -380,9 +380,7 @@ function PaymentMethodCard({
       >
         {/* Icon */}
         {method.icon_url && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-250 dark:bg-gray-850">
-            <img src={method.icon_url} alt="" className="h-6 w-6 object-contain" />
-          </div>
+          <img src={method.icon_url} alt="" className="h-6 w-6 shrink-0 object-contain" />
         )}
 
         {/* Text */}

@@ -131,8 +131,8 @@ function DisabledState() {
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
-          <BanIcon className="h-8 w-8 text-dark-300" />
+        <div className="text-dark-300">
+          <BanIcon className="h-8 w-8" />
         </div>
         <h2 className="text-lg font-semibold text-dark-50">{t('gift.featureDisabled')}</h2>
         <p className="text-sm text-dark-300">{t('gift.redirecting')}</p>
@@ -347,9 +347,7 @@ function PaymentMethodCard({
         className="flex w-full items-center gap-4 p-4 text-start"
       >
         {method.icon_url && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-250 dark:bg-gray-850">
-            <img src={method.icon_url} alt="" className="h-6 w-6 object-contain" />
-          </div>
+          <img src={method.icon_url} alt="" className="h-6 w-6 shrink-0 object-contain" />
         )}
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-dark-100">{method.display_name}</p>
@@ -1211,8 +1209,8 @@ function MyGiftsTabContent() {
   if (isEmpty) {
     return (
       <div className="flex flex-col items-center gap-4 py-12 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
-          <InboxIcon className="h-8 w-8 text-dark-300" />
+        <div className="text-dark-300">
+          <InboxIcon className="h-8 w-8" />
         </div>
         <h2 className="text-lg font-semibold text-dark-200">{t('gift.myGiftsEmpty')}</h2>
         <p className="max-w-xs text-sm text-dark-300">{t('gift.myGiftsEmptyDesc')}</p>

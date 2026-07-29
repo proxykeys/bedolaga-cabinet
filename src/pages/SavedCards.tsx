@@ -259,7 +259,7 @@ export default function SavedCards() {
         <motion.div variants={staggerItem}>
           <Card>
             <div className="py-12 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-linear-lg bg-gray-250 dark:bg-gray-850">
+              <div className="mx-auto mb-4">
                 <span className="text-3xl">💳</span>
               </div>
               <div className="text-dark-300">{t('balance.savedCards.empty')}</div>
