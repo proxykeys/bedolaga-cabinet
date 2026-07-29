@@ -95,7 +95,7 @@ function UserSearchDropdown({
             if (searchQuery.length >= 2) setIsOpen(true);
           }}
           placeholder={t('admin.roleAssign.searchPlaceholder')}
-          className="w-full rounded-lg border border-dark-600 bg-dark-900 py-2 pl-10 pr-3 text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+          className="w-full rounded-lg border border-dark-600 bg-dark-900 py-2 pl-10 pr-3 text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
         />
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-500">
           <SearchIcon />
@@ -391,7 +391,7 @@ export default function AdminRoleAssign() {
                     onChange={(e) =>
                       setSelectedRoleId(e.target.value ? Number(e.target.value) : null)
                     }
-                    className="w-full appearance-none rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 pr-8 text-dark-100 outline-none transition-colors focus:border-accent-500"
+                    className="w-full appearance-none rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 pr-8 text-dark-100 outline-none transition-colors focus:border-dark-400"
                   >
                     <option value="">{t('admin.roleAssign.selectRole')}</option>
                     {assignableRoles.map((role) => (
@@ -417,7 +417,7 @@ export default function AdminRoleAssign() {
                   type="datetime-local"
                   value={expiresAt}
                   onChange={(e) => setExpiresAt(e.target.value)}
-                  className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors [color-scheme:dark] focus:border-accent-500"
+                  className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-dark-100 outline-none transition-colors [color-scheme:dark] focus:border-dark-400"
                 />
                 <p className="mt-1 text-xs text-dark-500">{t('admin.roleAssign.expiresHint')}</p>
               </div>

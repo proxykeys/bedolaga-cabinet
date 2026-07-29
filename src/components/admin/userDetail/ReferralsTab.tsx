@@ -258,7 +258,7 @@ export function ReferralsTab({ user, userId, onUserRefresh }: ReferralsTabProps)
                     value={referrerSearchQuery}
                     onChange={(e) => setReferrerSearchQuery(e.target.value)}
                     placeholder={t('admin.users.detail.referrals.searchPlaceholder')}
-                    className="flex-1 rounded-lg border border-dark-600 bg-dark-700 px-3 py-2.5 text-sm text-dark-100 placeholder-dark-500 focus:border-accent-500 focus:outline-none"
+                    className="flex-1 rounded-lg border border-dark-600 bg-dark-700 px-3 py-2.5 text-sm text-dark-100 placeholder-dark-500 focus:border-dark-400 focus:outline-none"
                     autoFocus
                   />
                   <button
@@ -385,7 +385,7 @@ export function ReferralsTab({ user, userId, onUserRefresh }: ReferralsTabProps)
                 value={addReferralSearchQuery}
                 onChange={(e) => setAddReferralSearchQuery(e.target.value)}
                 placeholder={t('admin.users.detail.referrals.searchPlaceholder')}
-                className="flex-1 rounded-lg border border-dark-600 bg-dark-700 px-3 py-2.5 text-sm text-dark-100 placeholder-dark-500 focus:border-accent-500 focus:outline-none"
+                className="flex-1 rounded-lg border border-dark-600 bg-dark-700 px-3 py-2.5 text-sm text-dark-100 placeholder-dark-500 focus:border-dark-400 focus:outline-none"
                 autoFocus
               />
               <button

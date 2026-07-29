@@ -214,7 +214,7 @@ function ButtonChip({
               value={button.icon_custom_emoji_id}
               onChange={(e) => onUpdate({ icon_custom_emoji_id: e.target.value })}
               placeholder={t('admin.buttons.emojiPlaceholder')}
-              className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-accent-500 focus:outline-none"
+              className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-dark-400 focus:outline-none"
             />
           </div>
 
@@ -228,7 +228,7 @@ function ButtonChip({
                   value={button.url || ''}
                   onChange={(e) => onUpdate({ url: e.target.value || null })}
                   placeholder="https://..."
-                  className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-accent-500 focus:outline-none"
+                  className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-dark-400 focus:outline-none"
                 />
               </div>
               <div>
@@ -275,7 +275,7 @@ function ButtonChip({
                     }
                     placeholder={t('admin.menuEditor.buttonTextPlaceholder')}
                     maxLength={100}
-                    className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-1.5 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-accent-500 focus:outline-none"
+                    className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-1.5 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-dark-400 focus:outline-none"
                   />
                 </div>
               ))}

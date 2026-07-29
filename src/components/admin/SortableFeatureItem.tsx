@@ -60,14 +60,14 @@ export function SortableFeatureItem({
             value={feature.icon}
             onChange={(e) => onUpdateIcon(index, e.target.value)}
             placeholder={t('admin.landings.featureIcon')}
-            className="w-16 rounded-lg border border-dark-700 bg-dark-800 px-2 py-1.5 text-center text-sm text-dark-100 outline-none focus:border-accent-500"
+            className="w-16 rounded-lg border border-dark-700 bg-dark-800 px-2 py-1.5 text-center text-sm text-dark-100 outline-none focus:border-dark-400"
           />
           <LocalizedInput
             value={feature.title}
             onChange={(v) => onUpdateLocalized(index, 'title', v)}
             locale={locale}
             placeholder={t('admin.landings.featureTitle')}
-            className="min-w-0 flex-1 rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+            className="min-w-0 flex-1 rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
           />
         </div>
         <LocalizedInput
@@ -75,7 +75,7 @@ export function SortableFeatureItem({
           onChange={(v) => onUpdateLocalized(index, 'description', v)}
           locale={locale}
           placeholder={t('admin.landings.featureDesc')}
-          className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+          className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
         />
       </div>
       <button

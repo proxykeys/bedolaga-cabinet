@@ -646,7 +646,7 @@ export default function AdminAuditLog() {
                     type="text"
                     value={filters.action}
                     onChange={(e) => setFilters((prev) => ({ ...prev, action: e.target.value }))}
-                    className="w-full rounded-lg border border-dark-600 bg-dark-900 py-2 pl-9 pr-3 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+                    className="w-full rounded-lg border border-dark-600 bg-dark-900 py-2 pl-9 pr-3 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
                     placeholder={t('admin.auditLog.filters.actionPlaceholder')}
                   />
                 </div>
@@ -664,7 +664,7 @@ export default function AdminAuditLog() {
                   id="filter-resource"
                   value={filters.resource}
                   onChange={(e) => setFilters((prev) => ({ ...prev, resource: e.target.value }))}
-                  className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500"
+                  className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400"
                 >
                   <option value="">{t('admin.auditLog.filters.allResources')}</option>
                   {RESOURCE_TYPES.map((type) => (
@@ -687,7 +687,7 @@ export default function AdminAuditLog() {
                   id="filter-status"
                   value={filters.status}
                   onChange={(e) => setFilters((prev) => ({ ...prev, status: e.target.value }))}
-                  className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500"
+                  className="w-full rounded-lg border border-dark-600 bg-dark-900 px-3 py-2 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400"
                 >
                   <option value="">{t('admin.auditLog.filters.allStatuses')}</option>
                   {STATUS_OPTIONS.map((status) => (
@@ -764,7 +764,7 @@ export default function AdminAuditLog() {
               id="page-size"
               value={pageSize}
               onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-              className="rounded-lg border border-dark-600 bg-dark-800 px-2 py-1 text-sm text-dark-200 outline-none focus:border-accent-500"
+              className="rounded-lg border border-dark-600 bg-dark-800 px-2 py-1 text-sm text-dark-200 outline-none focus:border-dark-400"
             >
               {PAGE_SIZE_OPTIONS.map((size) => (
                 <option key={size} value={size}>

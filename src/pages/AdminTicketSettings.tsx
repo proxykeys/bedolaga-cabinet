@@ -167,7 +167,7 @@ export default function AdminTicketSettings() {
                     cabinet_user_notifications_enabled: e.target.checked,
                   })
                 }
-                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-offset-0"
+                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-dark-400 focus:ring-offset-0"
               />
               <div>
                 <div className="font-medium text-dark-100">
@@ -192,7 +192,7 @@ export default function AdminTicketSettings() {
                     cabinet_admin_notifications_enabled: e.target.checked,
                   })
                 }
-                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-offset-0"
+                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-dark-400 focus:ring-offset-0"
               />
               <div>
                 <div className="font-medium text-dark-100">
@@ -219,7 +219,7 @@ export default function AdminTicketSettings() {
                 type="checkbox"
                 checked={formData.sla_enabled}
                 onChange={(e) => setFormData({ ...formData, sla_enabled: e.target.checked })}
-                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-offset-0"
+                className="h-5 w-5 rounded border-dark-700 bg-dark-800 text-accent-500 focus:ring-2 focus:ring-dark-400 focus:ring-offset-0"
               />
               <div>
                 <div className="font-medium text-dark-100">{t('admin.tickets.slaEnabled')}</div>

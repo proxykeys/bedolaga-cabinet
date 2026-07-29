@@ -274,7 +274,7 @@ export function ButtonsTab() {
                   value={cfg.icon_custom_emoji_id}
                   onChange={(e) => updateSection(section, 'icon_custom_emoji_id', e.target.value)}
                   placeholder={t('admin.buttons.emojiPlaceholder')}
-                  className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-accent-500 focus:outline-none"
+                  className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-dark-400 focus:outline-none"
                 />
               </div>
 
@@ -305,7 +305,7 @@ export function ButtonsTab() {
                           onChange={(e) => updateLabel(section, locale, e.target.value)}
                           placeholder={t('admin.buttons.labelPlaceholder')}
                           maxLength={100}
-                          className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-1.5 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-accent-500 focus:outline-none"
+                          className="w-full rounded-lg border border-dark-600 bg-dark-700/50 px-3 py-1.5 text-sm text-dark-100 placeholder-dark-500 transition-colors focus:border-dark-400 focus:outline-none"
                         />
                       </div>
                     ))}

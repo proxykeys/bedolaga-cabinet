@@ -325,7 +325,7 @@ function ChannelFormFields({
             value={channelId}
             onChange={(e) => setChannelId(e.target.value)}
             placeholder={t('admin.channelSubscriptions.form.channelIdHint')}
-            className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+            className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
             autoFocus
           />
         </div>
@@ -340,7 +340,7 @@ function ChannelFormFields({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder={t('admin.channelSubscriptions.form.title')}
-          className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+          className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
           autoFocus={!showChannelId}
         />
       </div>
@@ -354,7 +354,7 @@ function ChannelFormFields({
           value={channelLink}
           onChange={(e) => setChannelLink(e.target.value)}
           placeholder={t('admin.channelSubscriptions.form.channelLinkHint')}
-          className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+          className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
         />
       </div>
 
@@ -368,7 +368,7 @@ function ChannelFormFields({
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
             placeholder="0"
-            className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500"
+            className="w-full rounded-lg border border-dark-600 bg-dark-700 px-3 py-2 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400"
           />
         </div>
       )}

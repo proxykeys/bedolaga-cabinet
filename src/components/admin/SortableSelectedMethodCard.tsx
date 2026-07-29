@@ -86,7 +86,7 @@ export function SortableSelectedMethodCard({
               type="text"
               value={method.display_name}
               onChange={(e) => onUpdate(method.method_id, 'display_name', e.target.value)}
-              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
             />
           </div>
           <div>
@@ -98,7 +98,7 @@ export function SortableSelectedMethodCard({
               value={method.description ?? ''}
               onChange={(e) => onUpdate(method.method_id, 'description', e.target.value || null)}
               placeholder={t('admin.landings.methodDescPlaceholder', 'Optional description')}
-              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
             />
           </div>
           <div>
@@ -110,7 +110,7 @@ export function SortableSelectedMethodCard({
               value={method.icon_url ?? ''}
               onChange={(e) => onUpdate(method.method_id, 'icon_url', e.target.value || null)}
               placeholder="https://..."
-              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -131,7 +131,7 @@ export function SortableSelectedMethodCard({
                   )
                 }
                 placeholder="—"
-                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
               />
             </div>
             <div>
@@ -151,7 +151,7 @@ export function SortableSelectedMethodCard({
                   )
                 }
                 placeholder="—"
-                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+                className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
               />
             </div>
           </div>
@@ -164,7 +164,7 @@ export function SortableSelectedMethodCard({
               value={method.currency ?? ''}
               onChange={(e) => onUpdate(method.method_id, 'currency', e.target.value || null)}
               placeholder="RUB"
-              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
             />
           </div>
           <div>
@@ -179,7 +179,7 @@ export function SortableSelectedMethodCard({
                 'admin.landings.methodReturnUrlPlaceholder',
                 'Default: cabinet success page. Use {token} for purchase token',
               )}
-              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-accent-500"
+              className="w-full rounded-lg border border-dark-700 bg-dark-800 px-3 py-1.5 text-sm text-dark-100 outline-none focus:border-dark-400"
             />
           </div>
           {availableSubOptions && availableSubOptions.length > 0 && (

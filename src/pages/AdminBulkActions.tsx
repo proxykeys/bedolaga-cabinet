@@ -878,7 +878,7 @@ export default function AdminBulkActions() {
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
               placeholder={t('admin.bulkActions.filters.search')}
-              className="w-full rounded-xl border border-dark-700 bg-dark-800 py-2.5 pl-10 pr-4 text-sm text-dark-100 outline-none transition-colors placeholder:text-dark-500 focus:border-accent-500/40 focus:shadow-[0_0_0_3px_rgba(var(--color-accent-500),0.08)]"
+              className="w-full rounded-xl border border-dark-700 bg-dark-800 py-2.5 pl-10 pr-4 text-sm text-dark-100 outline-none transition-colors placeholder:text-dark-500 focus:border-dark-400/40"
             />
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-500">
               <SearchIcon />
@@ -1048,7 +1048,7 @@ export default function AdminBulkActions() {
                 setLimit(Number(e.target.value));
                 setOffset(0);
               }}
-              className="rounded-lg border border-dark-700 bg-dark-800 px-2 py-1.5 text-xs text-dark-200 outline-none transition-colors focus:border-accent-500/40"
+              className="rounded-lg border border-dark-700 bg-dark-800 px-2 py-1.5 text-xs text-dark-200 outline-none transition-colors focus:border-dark-400/40"
             >
               {[25, 50, 100, 200].map((n) => (
                 <option key={n} value={n}>

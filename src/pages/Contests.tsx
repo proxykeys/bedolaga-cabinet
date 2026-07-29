@@ -171,7 +171,7 @@ export default function Contests() {
                       name="answer"
                       type="text"
                       placeholder={t('contests.enterAnswer')}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-300 px-4 py-3 focus:border-accent-500 focus:outline-none dark:border-gray-700 dark:bg-gray-700"
+                      className="w-full rounded-lg border border-gray-300 bg-gray-300 px-4 py-3 focus:border-dark-400 focus:outline-none dark:border-gray-700 dark:bg-gray-700"
                     />
                     <button
                       type="submit"

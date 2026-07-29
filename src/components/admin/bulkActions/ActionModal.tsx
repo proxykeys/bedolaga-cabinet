@@ -322,7 +322,7 @@ export function ActionModal({
               max={365}
               value={days}
               onChange={(e) => setDays(Number(e.target.value))}
-              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500/40"
+              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400/40"
             />
           </div>
         );
@@ -351,7 +351,7 @@ export function ActionModal({
               max={10000}
               value={trafficGb}
               onChange={(e) => setTrafficGb(Number(e.target.value))}
-              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500/40"
+              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400/40"
             />
           </div>
         );
@@ -367,7 +367,7 @@ export function ActionModal({
               max={100000}
               value={balanceRub}
               onChange={(e) => setBalanceRub(Number(e.target.value))}
-              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500/40"
+              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400/40"
             />
           </div>
         );
@@ -399,7 +399,7 @@ export function ActionModal({
               max={50}
               value={deviceLimit}
               onChange={(e) => setDeviceLimit(Number(e.target.value))}
-              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500/40"
+              className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400/40"
             />
           </div>
         );
@@ -426,7 +426,7 @@ export function ActionModal({
                 max={365}
                 value={grantDays}
                 onChange={(e) => setGrantDays(Number(e.target.value))}
-                className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-accent-500/40"
+                className="w-full rounded-xl border border-dark-700 bg-dark-800 px-3 py-2.5 text-sm text-dark-100 outline-none transition-colors focus:border-dark-400/40"
               />
             </div>
             <div className="rounded-xl border border-warning-500/20 bg-warning-500/5 px-3 py-2.5">

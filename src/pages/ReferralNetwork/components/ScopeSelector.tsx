@@ -335,7 +335,7 @@ export function ScopeSelector({
                 maxLength={200}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder={placeholders[activeTab]}
-                className="w-full rounded-lg border border-dark-700/50 bg-dark-900/50 py-1.5 pl-8 pr-8 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/30"
+                className="w-full rounded-lg border border-dark-700/50 bg-dark-900/50 py-1.5 pl-8 pr-8 text-sm text-dark-100 placeholder-dark-500 outline-none transition-colors focus:border-dark-400/50 focus:ring-1 focus:ring-dark-400/30"
               />
               {isLoading && (
                 <div className="absolute right-2.5 top-1/2 -translate-y-1/2">

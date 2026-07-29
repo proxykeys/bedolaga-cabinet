@@ -894,7 +894,7 @@ function ActivateTabContent({ initialCode }: { initialCode?: string | null }) {
             setActivateError(null);
           }}
           placeholder={t('gift.activateCodePlaceholder')}
-          className="w-full rounded-2xl border border-gray-200/50 bg-gray-250 px-6 py-4 text-center font-mono text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/25 dark:border-gray-800/50 dark:bg-gray-850"
+          className="w-full rounded-2xl border border-gray-200/50 bg-gray-250 px-6 py-4 text-center font-mono text-sm text-dark-50 placeholder-dark-300 outline-none transition-colors focus:border-dark-400 focus:ring-1 focus:ring-dark-400/25 dark:border-gray-800/50 dark:bg-gray-850"
           aria-label={t('gift.activateTitle')}
         />
 

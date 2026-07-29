@@ -63,7 +63,7 @@ export function NetworkFilters({ data, className }: NetworkFiltersProps) {
                   type="checkbox"
                   checked={filters.campaigns.includes(campaign.id)}
                   onChange={() => toggleCampaign(campaign.id)}
-                  className="h-3.5 w-3.5 rounded border-dark-600 bg-dark-800 text-accent-500 focus:ring-accent-500/30"
+                  className="h-3.5 w-3.5 rounded border-dark-600 bg-dark-800 text-accent-500 focus:ring-dark-400/30"
                 />
                 <span className="truncate text-dark-200">{campaign.name}</span>
               </label>
@@ -78,7 +78,7 @@ export function NetworkFilters({ data, className }: NetworkFiltersProps) {
           type="checkbox"
           checked={filters.partnersOnly}
           onChange={(e) => updateFilters({ partnersOnly: e.target.checked })}
-          className="h-3.5 w-3.5 rounded border-dark-600 bg-dark-800 text-accent-500 focus:ring-accent-500/30"
+          className="h-3.5 w-3.5 rounded border-dark-600 bg-dark-800 text-accent-500 focus:ring-dark-400/30"
         />
         <span className="text-dark-200">{t('admin.referralNetwork.filters.partnersOnly')}</span>
       </label>
