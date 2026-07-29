@@ -529,7 +529,6 @@ export default function TopUpAmount() {
                   inputRef.current?.blur();
                 }}
                 hover
-                glow={isSelected}
                 className={`flex flex-col items-center justify-center px-2 py-3 ${
                   isSelected ? 'border-accent-500 bg-gray-250 dark:bg-gray-850' : ''
                 }`}
