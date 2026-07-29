@@ -275,7 +275,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
                   }`}
                 >
                   <div className="flex gap-3">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gray-250 dark:bg-gray-850">
+                    <div className="flex-shrink-0 text-dark-300">
                       {getNotificationIcon(notification.notification_type)}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -298,7 +298,7 @@ export default function TicketNotificationBell({ isAdmin = false }: TicketNotifi
               ))
             ) : (
               <div className="bg-gray-050 p-8 text-center dark:bg-gray-950">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-250 text-dark-300 dark:bg-gray-850">
+                <div className="mx-auto mb-3 text-dark-300">
                   <BellIcon />
                 </div>
                 <p className="text-sm text-dark-300">

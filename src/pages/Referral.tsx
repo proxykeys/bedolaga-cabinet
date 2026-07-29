@@ -817,7 +817,7 @@ export default function Referral() {
           </div>
         ) : (
           <div className="py-12 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-250 dark:bg-gray-850">
+            <div className="mx-auto mb-4">
               <UsersIcon className="h-8 w-8 text-dark-300" />
             </div>
             <div className="text-dark-300">{t('referral.noReferrals')}</div>

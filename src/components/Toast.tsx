@@ -5,7 +5,7 @@ import {
   useCallback,
   useRef,
   useEffect,
-  ReactNode,
+  type ReactNode,
 } from 'react';
 
 import { CheckIcon, XIcon, ExclamationIcon, InfoIcon } from '@/components/icons';
@@ -182,10 +182,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
       <div className="relative p-4">
         <div className="flex gap-3">
           {/* Icon — carries the semantic by itself; the border is a soft echo */}
-          <div
-            aria-hidden="true"
-            className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${style.iconBg} ${style.icon}`}
-          >
+          <div aria-hidden="true" className={`flex-shrink-0 ${style.icon}`}>
             {toast.icon || defaultIcons[toast.type || 'info']}
           </div>
 

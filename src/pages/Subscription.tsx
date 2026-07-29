@@ -1064,14 +1064,7 @@ export default function Subscription() {
                       >
                         <div className="mb-2 flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div
-                              className="flex h-7 w-7 items-center justify-center rounded-[8px]"
-                              style={{
-                                background: 'transparent',
-                                border: `1px solid ${g.cardBorder}`,
-                                color: zone.mainHex,
-                              }}
-                            >
+                            <div style={{ color: zone.mainHex }}>
                               <DownloadIcon className="h-3.5 w-3.5" />
                             </div>
                             <span className="text-sm font-semibold text-dark-50">
@@ -1413,10 +1406,7 @@ export default function Subscription() {
             boxShadow: g.shadow,
           }}
         >
-          <div
-            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-            style={{ background: g.hoverBg, color: g.textFaint }}
-          >
+          <div className="mx-auto mb-4" style={{ color: g.textFaint }}>
             <TrashIcon className="h-8 w-8" />
           </div>
           <div className="text-sm text-dark-300">{t('subscription.noSubscription')}</div>

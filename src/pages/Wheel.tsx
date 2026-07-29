@@ -487,9 +487,7 @@ export default function Wheel() {
   if (!config.is_enabled) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-250 dark:bg-gray-850">
-          <span className="text-5xl">🎡</span>
-        </div>
+        <span className="text-5xl">🎡</span>
         <div className="text-center">
           <h1 className="mb-2 text-2xl font-bold text-dark-100">{t('wheel.title')}</h1>
           <p className="text-dark-300">{t('wheel.disabled')}</p>
