@@ -110,6 +110,7 @@ export default function SubscriptionCardExpired({
         background: g.cardBg,
         border: `1px solid ${g.cardBorder}`,
         padding: '28px 28px 24px',
+        boxShadow: g.shadow,
       }}
     >
       {/* Decorative glow and grid pattern removed per claude.com flat aesthetic */}

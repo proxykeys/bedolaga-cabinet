@@ -55,7 +55,7 @@ export default function SubscriptionCardActive({
         background: g.cardBg,
         border: `1px solid ${g.cardBorder}`,
         padding: '28px 28px 24px',
-        boxShadow: 'none',
+        boxShadow: g.shadow,
       }}
     >
       {/* Decorative trial-shimmer border + ambient background glow removed.

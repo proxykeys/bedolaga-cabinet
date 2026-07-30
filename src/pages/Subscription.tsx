@@ -691,7 +691,7 @@ export default function Subscription() {
               style={{
                 background: g.cardBg,
                 border: `1px solid ${g.cardBorder}`,
-                boxShadow: 'none',
+                boxShadow: g.shadow,
                 padding: '28px 28px 24px',
               }}
             >
