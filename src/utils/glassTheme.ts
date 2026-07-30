@@ -21,9 +21,10 @@
  */
 export function getGlassColors(isDark: boolean) {
   return {
-    // Card container — flat solid surface.
-    cardBg: isDark ? 'rgb(26, 25, 24)' : 'rgb(245, 244, 239)', // gray-900 / gray-100
-    cardBorder: isDark ? 'rgb(38, 38, 36)' : 'rgb(231, 231, 223)', // gray-800 / gray-200
+    // Card container — semi-transparent surface matching the <Card> component's
+    // bg-gray-100/70 dark:bg-gray-900/70 + border /40 opacity treatment.
+    cardBg: isDark ? 'rgba(26, 25, 24, 0.7)' : 'rgba(245, 244, 239, 0.7)', // gray-900/70 / gray-100/70
+    cardBorder: isDark ? 'rgba(38, 38, 36, 0.4)' : 'rgba(231, 231, 223, 0.4)', // gray-800/40 / gray-200/40
 
     // Inner sections (raised — clickable elements inside a card)
     // Dark uses gray-850 (delta 10 from card) — was gray-750 (delta 45, too light)
@@ -53,7 +54,7 @@ export function getGlassColors(isDark: boolean) {
     // Glow effects — disabled
     glowAlpha: '00',
 
-    // Shadows — flat
-    shadow: 'none',
+    // Shadows — glass inset highlight (matches <Card> component)
+    shadow: 'inset 0 1px 0 0 rgba(255,255,255,0.05)',
   };
 }
