@@ -259,7 +259,7 @@ export default function InstallationGuide({
           <div className="relative flex items-center">
             {currentPlatformSvg && (
               <div
-                className="pointer-events-none absolute left-3 z-10 h-5 w-5 text-dark-300 [&>svg]:h-full [&>svg]:w-full"
+                className="conn-svg pointer-events-none absolute left-3 z-10 h-5 w-5 text-dark-300 [&>svg]:h-full [&>svg]:w-full"
                 dangerouslySetInnerHTML={{ __html: currentPlatformSvg }}
               />
             )}
@@ -318,7 +318,7 @@ export default function InstallationGuide({
                 <span className="relative z-10 truncate">{app.name}</span>
                 {appIconSvg && (
                   <div
-                    className="ml-auto h-7 w-7 shrink-0 opacity-50 [&>svg]:h-full [&>svg]:w-full"
+                    className="conn-svg ml-auto h-7 w-7 shrink-0 [&>svg]:h-full [&>svg]:w-full"
                     dangerouslySetInnerHTML={{ __html: appIconSvg }}
                   />
                 )}

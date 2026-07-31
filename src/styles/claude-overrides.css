@@ -51,15 +51,14 @@
    boxShadow tokens were removed from tailwind.config.js (component files still
    contain the class names). Neutralize any rendered box-shadow glow. */
 .shadow-glow,
-.shadow-glow-lg,
-.shadow-\[0_0_20px_rgba\(var\(--color-accent-500\)\,\s*0\.15\)\] {
+.shadow-glow-lg {
   box-shadow: none !important;
 }
 
 /* ── 4. Inset highlight shadows on surfaces — removed ──
    The "glass border" inset top-highlight (inset 0 1px 0 0 rgba(255,255,255,.05))
    was a bento/card signature. Kill any residual inline usage. */
-[class*='shadow-\[inset'] {
+[class*="shadow-\[inset"] {
   box-shadow: none !important;
 }
 
@@ -79,8 +78,8 @@
    (dark-50 → champagne-950, dark-950 → champagne-50). */
 
 /* ── 7. Decorative drop-shadow glows on SVG/icons — removed ── */
-[class*='drop-shadow-[0_0_'],
-[class*='drop-shadow-\[0_0'] {
+[class*="drop-shadow-[0_0_"],
+[class*="drop-shadow-\[0_0"] {
   filter: none !important;
 }
 
@@ -90,16 +89,16 @@
    bar gradients, icon backgrounds, etc. across all components in one rule.
    For translucent from- colors (e.g. from-accent-500/10) this yields a soft
    flat tint — never a gradient. */
-[class*='bg-gradient-'] {
+[class*="bg-gradient-"] {
   --tw-gradient-via: initial !important;
   --tw-gradient-stops: var(--tw-gradient-from) !important;
 }
 
 /* ── 9. Arbitrary inline gradients (bg-[radial/linear/conic-gradient(...)]) ──
    These bypass --tw-gradient-stops (literal background-image). Strip them. */
-[class*='bg-\[radial-gradient'],
-[class*='bg-\[linear-gradient'],
-[class*='bg-\[conic-gradient'] {
+[class*="bg-\[radial-gradient"],
+[class*="bg-\[linear-gradient"],
+[class*="bg-\[conic-gradient"] {
   background-image: none !important;
 }
 
@@ -108,9 +107,9 @@
    inline style={{ background: 'linear-gradient(...)' }} that no class-based
    selector can touch. !important beats inline (non-important) values.
    This is the catch-all for every component using inline gradient styles. */
-[style*='linear-gradient' i],
-[style*='radial-gradient' i],
-[style*='conic-gradient' i] {
+[style*="linear-gradient" i],
+[style*="radial-gradient" i],
+[style*="conic-gradient" i] {
   background-image: none !important;
 }
 
@@ -118,33 +117,33 @@
    Tailwind colored shadows (shadow-{color}-NNN/N) set --tw-shadow-colored
    which overrides the neutral shadow. By clearing it, elements fall back to
    the plain (or no) neutral shadow. Targets every palette color. */
-[class*='shadow-accent'],
-[class*='shadow-success'],
-[class*='shadow-warning'],
-[class*='shadow-error'],
-[class*='shadow-primary'],
-[class*='shadow-secondary'],
-[class*='shadow-purple'],
-[class*='shadow-cyan'],
-[class*='shadow-blue'],
-[class*='shadow-yellow'],
-[class*='shadow-orange'],
-[class*='shadow-red'],
-[class*='shadow-green'],
-[class*='shadow-pink'],
-[class*='shadow-indigo'],
-[class*='shadow-violet'],
-[class*='shadow-teal'],
-[class*='shadow-emerald'],
-[class*='shadow-rose'],
-[class*='shadow-amber'],
-[class*='shadow-lime'],
-[class*='shadow-sky'] {
+[class*="shadow-accent"],
+[class*="shadow-success"],
+[class*="shadow-warning"],
+[class*="shadow-error"],
+[class*="shadow-primary"],
+[class*="shadow-secondary"],
+[class*="shadow-purple"],
+[class*="shadow-cyan"],
+[class*="shadow-blue"],
+[class*="shadow-yellow"],
+[class*="shadow-orange"],
+[class*="shadow-red"],
+[class*="shadow-green"],
+[class*="shadow-pink"],
+[class*="shadow-indigo"],
+[class*="shadow-violet"],
+[class*="shadow-teal"],
+[class*="shadow-emerald"],
+[class*="shadow-rose"],
+[class*="shadow-amber"],
+[class*="shadow-lime"],
+[class*="shadow-sky"] {
   --tw-shadow-colored: 0 0 #0000 !important;
 }
 
 /* Arbitrary glow shadows: shadow-[0_0_Npx_rgba(...)] — always decorative */
-[class*='shadow-[0_0_'] {
+[class*="shadow-[0_0_"] {
   box-shadow: none !important;
 }
 
@@ -155,11 +154,24 @@
      - "0 4px 20px rgba(...)"    (colored drop shadow)
      - "rgba(...) 0px 4px 20px"  (color-first, rare)
    !important beats inline (non-important) values. */
-[style*='box-shadow' i] {
+[style*="box-shadow" i] {
   box-shadow: none !important;
 }
 
-/* ── 11. Decorative glow/pulse animations — killed globally ──
+/* ── 11. Connection page SVG icons — force currentColor in light theme ──
+   Remnawave svgLibrary icons often hardcode white fills (fill="#FAFAFA")
+   for the dark panel. On light-theme cards they become invisible.
+   .conn-svg forces these fills/strokes to inherit currentColor so the
+   icon picks up the surrounding text color (text-dark-200 → champagne-800
+   in light theme). Dark theme is unaffected. */
+.light .conn-svg svg [fill]:not([fill="none" i]) {
+  fill: currentColor !important;
+}
+.light .conn-svg svg [stroke]:not([stroke="none" i]) {
+  stroke: currentColor !important;
+}
+
+/* ── 12. Decorative glow/pulse animations — killed globally ──
    These Tailwind animation classes were decorative glows/pulses on icons,
    cards and buttons. The keyframes were already removed from tailwind.config.js
    (so the classes produce no animation), but we also kill any residual
