@@ -70,7 +70,7 @@ export function BlockButtons({
         const btnSvg = getSvgHtml(btn.svgIconKey);
         const btnIcon = btnSvg ? (
           <div
-            className="h-4 w-4 [&>svg]:h-full [&>svg]:w-full"
+            className="conn-svg h-4 w-4 [&>svg]:h-full [&>svg]:w-full"
             dangerouslySetInnerHTML={{ __html: btnSvg }}
           />
         ) : null;

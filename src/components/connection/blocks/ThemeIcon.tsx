@@ -23,7 +23,7 @@ export function ThemeIcon({ getSvgHtml, svgIconKey, gradientStyle, isMobile }: T
     >
       <div
         style={{ width: size, height: size }}
-        className="[&>svg]:h-full [&>svg]:w-full"
+        className="conn-svg [&>svg]:h-full [&>svg]:w-full"
         dangerouslySetInnerHTML={{ __html: svgHtml }}
       />
     </div>
