@@ -501,6 +501,12 @@ export const subscriptionApi = {
      * this is a fresh purchase from the catalog.
      */
     subscriptionId?: number,
+    /**
+     * ProxyKeys custom: явное количество устройств при покупке.
+     * Бэкенд начисляет device_price_kopeks × (deviceCount - tariff.device_limit) × months.
+     * undefined = backward compat (используется tariff.device_limit).
+     */
+    deviceCount?: number,
   ): Promise<{
     success: boolean;
     message: string;
@@ -516,6 +522,7 @@ export const subscriptionApi = {
       traffic_gb: trafficGb,
       subscription_id: subscriptionId,
       yandex_cid: getYandexCid() || undefined,
+      device_count: deviceCount,
     });
     return response.data;
   },

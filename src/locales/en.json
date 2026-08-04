@@ -433,7 +433,18 @@
     "perMonth": "/mo",
     "summary": {
       "period": "Period: {{label}}",
-      "traffic": "Traffic: {{gb}} GB"
+      "traffic": "Traffic: {{gb}} GB",
+      "devices": "Extra devices: {{count}} × {{months}} mo."
+    },
+    "tariffInfo": {
+      "period": "Period"
+    },
+    "pricePerDevice": "Price/device",
+    "deviceSelector": {
+      "title": "Number of devices",
+      "unit": "devices",
+      "unlimited": "No limit",
+      "maxDevices": "Maximum: {{count}}"
     },
     "total": "Total",
     "purchase": "Purchase",
@@ -4050,6 +4061,8 @@
             "gift_payment": "Gift payment",
             "activation": "Activation",
             "purchase": "Purchase",
+            "renew": "Renew",
+            "periodWithExpiry": "{{periodDays}} days (until {{toDate}})",
             "subscription_purchase": "Subscription purchase",
             "renewal": "Renewal",
             "balance_topup": "Balance top-up",
@@ -5917,7 +5930,7 @@
   "subscriptions": {
     "buy": "Buy subscription",
     "buyAnother": "Buy another",
-    "browsePlans": "View plans and subscribe",
+    "browsePlans": "Buy subscription",
     "empty": "You have no subscriptions yet",
     "emptyDesc": "Choose a tariff to get started",
     "title": "My subscriptions"

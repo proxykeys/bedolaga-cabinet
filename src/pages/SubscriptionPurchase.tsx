@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
@@ -69,6 +69,25 @@ export default function SubscriptionPurchase() {
   // Tariffs mode state
   const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(null);
   const [showTariffPurchase, setShowTariffPurchase] = useState(false);
+
+  // ProxyKeys custom: автовыбор единственного доступного тарифа.
+  // Если в tariffs mode доступен ровно один некупленный тариф — сразу
+  // открываем форму покупки, минуя экран выбора (аналог Блока 4 в
+  // BedolagaTariff.md для бота). Должен идти ПОСЛЕ объявления
+  // showTariffPurchase / selectedTariff, т.к. ссылается на них.
+  useEffect(() => {
+    if (
+      isTariffsMode &&
+      !showTariffPurchase &&
+      !selectedTariff &&
+      tariffs.length === 1 &&
+      !tariffs[0].is_purchased
+    ) {
+      setSelectedTariff(tariffs[0]);
+      setShowTariffPurchase(true);
+    }
+  }, [isTariffsMode, tariffs, showTariffPurchase, selectedTariff]);
+
   // (selectedTariffPeriod / customDays / customTrafficGb / useCustomDays /
   //  useCustomTraffic moved into <TariffPurchaseForm>; form remounts with
   //  fresh state via key=tariff.id when the parent picks a new tariff)

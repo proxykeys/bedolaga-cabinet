@@ -306,6 +306,8 @@ export interface Tariff {
   max_traffic_gb?: number;
   // Device price
   device_price_kopeks?: number;
+  // ProxyKeys custom: максимум устройств на тарифе (0/null = безлимит)
+  max_device_limit?: number | null;
   // Traffic topup options
   traffic_topup_enabled?: boolean;
   traffic_topup_packages?: number[];
