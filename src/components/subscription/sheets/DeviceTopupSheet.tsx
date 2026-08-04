@@ -117,12 +117,7 @@ export function DeviceTopupSheet({
             >
               -
             </button>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-dark-100">{devicesToAdd}</div>
-              <div className="text-sm text-dark-300">
-                {t('subscription.additionalOptions.devicesUnit')}
-              </div>
-            </div>
+            <div className="text-4xl font-bold text-dark-100">{devicesToAdd}</div>
             <button
               onClick={() => onDevicesToAddChange(devicesToAdd + 1)}
               disabled={

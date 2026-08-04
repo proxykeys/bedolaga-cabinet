@@ -445,10 +445,22 @@
     "perMonth": "/мес",
     "summary": {
       "period": "Период: {{label}}",
-      "traffic": "Трафик: {{gb}} ГБ"
+      "traffic": "Трафик: {{gb}} ГБ",
+      "devices": "Доп. устройства: {{count}} × {{months}} мес."
+    },
+    "tariffInfo": {
+      "period": "Период"
+    },
+    "pricePerDevice": "Цена/устройство",
+    "deviceSelector": {
+      "title": "Количество устройств",
+      "unit": "устройств",
+      "unlimited": "Без ограничения",
+      "maxDevices": "Максимум: {{count}}"
     },
     "total": "К оплате",
     "purchase": "Купить",
+    "periodWithExpiry": "{{periodDays}} дней (до {{toDate}})",
     "step": "Шаг {{current}} из {{total}}",
     "stepPeriod": "Период",
     "stepTraffic": "Трафик",
@@ -6471,7 +6483,7 @@
   "subscriptions": {
     "buy": "Купить подписку",
     "buyAnother": "Купить ещё",
-    "browsePlans": "Посмотреть тарифы и купить подписку",
+    "browsePlans": "Купить подписку",
     "empty": "У вас пока нет подписок",
     "emptyDesc": "Выберите тариф, чтобы начать пользоваться сервисом",
     "title": "Мои подписки"

@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { subscriptionApi } from '../../../api/subscription';
 import { getErrorMessage, getInsufficientBalanceError } from '../../../utils/subscriptionHelpers';
 import { useCurrency } from '../../../hooks/useCurrency';
 import { usePromoDiscount } from '../../../hooks/usePromoDiscount';
 import { usePlatform } from '../../../platform';
 import { openPaymentUrl } from '../../../utils/openPaymentUrl';
+import { formatShortDate } from '../../../utils/format';
 import InsufficientBalancePrompt from '../../InsufficientBalancePrompt';
 import type { Tariff, TariffPeriod } from '../../../types';
 
@@ -68,6 +69,41 @@ export function TariffPurchaseForm({
   const [useCustomDays, setUseCustomDays] = useState(false);
   const [useCustomTraffic, setUseCustomTraffic] = useState(false);
 
+  // ProxyKeys custom: выбор количества устройств.
+  // - isFreshPurchase: true когда тариф НЕ текущий (genuinely новая покупка).
+  //   В этом режиме показываем selector ± для выбора количества.
+  //   Когда tariff.is_current = true (пользователь продлевает существующую
+  //   подписку) — selector скрыт, продление работает с текущим количеством.
+  //   Используем tariff.is_current вместо subscriptionId из URL, т.к. URL
+  //   может не содержать ?subscriptionId=N даже при наличии подписки
+  //   (например, заход через меню «Купить подписку»). tariff.is_current
+  //   выставляется бэкендом надёжно для текущего тарифа пользователя.
+  //   Причина скрытия selector при продлении (Вариант 3): модель данных
+  //   bedolaga не поддерживает per-device expiry. Изменение device_limit при
+  //   продлении либо эксплуатирует лазейку (увеличение дарит новым устройствам
+  //   остаток срока старых), либо деструктивно (уменьшение мгновенно отключает
+  //   устройства в RemnaWave без компенсации).
+  // - baseDeviceLimit: базовое количество тарифа (1 для ProxyKeys).
+  // - initialDeviceCount: текущий device_limit пользователя (включая докупленные).
+  //   При fresh покупке = baseDeviceLimit. Используется как deviceCount по умолчанию.
+  // - maxDevices: null = безлимит, число = жёсткий потолок тарифа.
+  const isFreshPurchase = !tariff.is_current;
+  const baseDeviceLimit = tariff.base_device_limit ?? tariff.device_limit ?? 1;
+  const initialDeviceCount = tariff.device_limit ?? baseDeviceLimit;
+  const maxDevices =
+    tariff.max_device_limit && tariff.max_device_limit > 0 ? tariff.max_device_limit : null;
+  const [deviceCount, setDeviceCount] = useState<number>(initialDeviceCount);
+
+  // ProxyKeys custom: получение текущей подписки для отображения периода
+  // действия продления («с ... по ...»). Только при продлении (is_current).
+  // При fresh покупке подписки ещё нет — даты не показываем.
+  const { data: subscriptionData } = useQuery({
+    queryKey: ['subscription', subscriptionId],
+    queryFn: () => subscriptionApi.getSubscription(subscriptionId),
+    enabled: !isFreshPurchase && subscriptionId !== undefined,
+    staleTime: 30_000,
+  });
+
   const purchaseMutation = useMutation({
     mutationFn: () => {
       const isDailyTariff =
@@ -89,6 +125,9 @@ export function TariffPurchaseForm({
         days,
         trafficGb,
         subscriptionId ?? undefined,
+        // ProxyKeys custom: пробросить выбранное количество устройств.
+        // Бэкенд начисляет device_price_kopeks × (deviceCount - base) × months.
+        deviceCount,
       );
     },
     onSuccess: () => {
@@ -168,17 +207,61 @@ export function TariffPurchaseForm({
             <span className="text-dark-300">{t('subscription.traffic')}:</span>
             <span className="ml-2 text-dark-200">{tariff.traffic_limit_label}</span>
           </div>
-          <div>
-            <span className="text-dark-300">{t('subscription.devices')}:</span>
-            <span className="ml-2 text-dark-200">
-              {tariff.device_limit === 0 ? '∞' : tariff.device_limit}
-              {tariff.extra_devices_count > 0 && (
-                <span className="ml-1 text-xs text-accent-500">
-                  (+{tariff.extra_devices_count})
-                </span>
-              )}
-            </span>
-          </div>
+          {/* ProxyKeys custom: «Устройства» в upper-блоке.
+              - При активном selector (fresh purchase + device_price) — НЕ показываем:
+                значение статичное (tariff.device_limit), а selector ниже меняется.
+                Дублирование вводит в заблуждение. Selector = единственный источник
+                правды о количестве в этом режиме.
+              - При продлении (selector скрыт) — показываем текущее количество read-only.
+              - Для тарифов без device_price — оригинальная логика (фиксированное кол-во). */}
+          {isFreshPurchase &&
+          tariff.device_price_kopeks &&
+          tariff.device_price_kopeks > 0 ? null : (
+            <div>
+              <span className="text-dark-300">{t('subscription.devices')}:</span>
+              <span className="ml-2 text-dark-200">
+                {tariff.device_limit === 0 ? '∞' : tariff.device_limit}
+              </span>
+            </div>
+          )}
+          {/* ProxyKeys custom: цена за устройство при per-device pricing. */}
+          {tariff.device_price_kopeks && tariff.device_price_kopeks > 0 && (
+            <div>
+              <span className="text-dark-300">{t('subscription.pricePerDevice')}:</span>
+              <span className="ml-2 text-dark-200">{formatPrice(tariff.device_price_kopeks)}</span>
+            </div>
+          )}
+          {/* ProxyKeys custom: период.
+              - При продлении (!isFreshPurchase) с данными подписки: показываем
+                «N дней (до DD.MM.YYYY)» — сразу виден срок, избыточный label
+                «1 месяц» убран.
+              - При fresh покупке: показываем «N дней» (фактическое количество
+                дней периода, т.к. строго говоря 30 дней — это не календарный
+                месяц, бэкенд прибавляет period.days). */}
+          {tariff.periods.length === 1 && (
+            <div>
+              <span className="text-dark-300">
+                {t('subscription.tariffInfo.period', 'Период')}:
+              </span>
+              <span className="ml-2 text-dark-200">
+                {!isFreshPurchase && subscriptionData?.subscription?.end_date
+                  ? (() => {
+                      const currentEnd = new Date(subscriptionData.subscription.end_date);
+                      const periodDays = useCustomDays
+                        ? customDays
+                        : (selectedTariffPeriod?.days ?? 30);
+                      const newEnd = new Date(
+                        currentEnd.getTime() + periodDays * 24 * 60 * 60 * 1000,
+                      );
+                      return t('subscription.periodWithExpiry', {
+                        periodDays,
+                        toDate: formatShortDate(newEnd.toISOString()),
+                      });
+                    })()
+                  : t('subscription.days', { count: tariff.periods[0].days })}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -265,11 +348,17 @@ export function TariffPurchaseForm({
         </div>
       ) : (
         <>
-          {/* Period Selection for non-daily tariffs */}
+          {/* Period Selection for non-daily tariffs.
+              ProxyKeys custom: при единственном периоде grid выбора скрыт —
+              период уже показан в верхнем info-блоке (вместе с трафиком
+              и устройствами). Остаются только fallback-блоки (no periods,
+              custom days) и сам toggle произвольных дней, если включён. */}
           <div>
-            <div className="mb-3 text-sm text-dark-300">{t('subscription.selectPeriod')}</div>
+            {tariff.periods.length > 1 && (
+              <div className="mb-3 text-sm text-dark-300">{t('subscription.selectPeriod')}</div>
+            )}
 
-            {tariff.periods.length > 0 && !useCustomDays && (
+            {tariff.periods.length > 1 && !useCustomDays && (
               <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {tariff.periods.map((period) => {
                   const promoPeriod = applyPromoDiscount(
@@ -528,13 +617,65 @@ export function TariffPurchaseForm({
             </div>
           )}
 
+          {/* ProxyKeys custom: выбор количества устройств.
+              Selector активен ТОЛЬКО при fresh покупке (subscriptionId не передан).
+              При продлении selector скрыт — продление работает с текущим количеством
+              устройств. Докупка/уменьшение устройств выполняются отдельно через
+              DeviceTopupSheet / DeviceReductionSheet на странице подписки.
+              Условие: device_price_kopeks > 0 (тарiff поддерживает выбор). */}
+          {isFreshPurchase && !!tariff.device_price_kopeks && tariff.device_price_kopeks > 0 && (
+            <div className="rounded-xl border border-gray-200/50 bg-gray-250 p-4 dark:border-gray-800/50 dark:bg-gray-850">
+              <div className="mb-3 text-center font-medium text-dark-200">
+                {t('subscription.deviceSelector.title', 'Количество устройств')}
+              </div>
+              <div className="flex items-center justify-center gap-6">
+                <button
+                  onClick={() => setDeviceCount((n) => Math.max(baseDeviceLimit, n - 1))}
+                  disabled={deviceCount <= baseDeviceLimit}
+                  className="btn-secondary flex h-12 w-12 items-center justify-center !p-0 text-2xl"
+                  aria-label={t('subscription.additionalOptions.decrementDevices', 'Уменьшить')}
+                >
+                  −
+                </button>
+                <div className="text-4xl font-bold text-dark-100">{deviceCount}</div>
+                <button
+                  onClick={() =>
+                    setDeviceCount((n) =>
+                      maxDevices !== null ? Math.min(maxDevices, n + 1) : n + 1,
+                    )
+                  }
+                  disabled={maxDevices !== null && deviceCount >= maxDevices}
+                  className="btn-secondary flex h-12 w-12 items-center justify-center !p-0 text-2xl"
+                  aria-label={t('subscription.additionalOptions.incrementDevices', 'Увеличить')}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Summary & Purchase */}
           {(selectedTariffPeriod || useCustomDays) && (
             <div className="rounded-xl bg-gray-250 p-5 dark:bg-gray-850">
               {(() => {
+                // ProxyKeys custom: при активном device selector (device_price > 0)
+                // используем base_tariff_price_kopeks — цену БЕЗ доп. устройств.
+                // Доп. устройства считаем отдельно в extraDevicesCost ниже.
+                // Без selector — оригинальная логика (price_kopeks = base + extra).
+                // hasDeviceSelector: true только при fresh покупке с поддержкой
+                // выбора устройств. В этом режиме используем base_tariff_price_kopeks
+                // (цена без устройств) + отдельный расчёт extraDevicesCost ниже.
+                // При продлении (или без device_price) — оригинальная логика:
+                // price_kopeks уже включает extra devices (через upstream breakdown).
+                const hasDeviceSelector =
+                  isFreshPurchase && !!tariff.device_price_kopeks && tariff.device_price_kopeks > 0;
                 const basePeriodPrice = useCustomDays
                   ? customDays * (tariff.price_per_day_kopeks ?? 0)
-                  : selectedTariffPeriod?.price_kopeks || 0;
+                  : hasDeviceSelector
+                    ? (selectedTariffPeriod?.base_tariff_price_kopeks ??
+                      selectedTariffPeriod?.price_kopeks ??
+                      0)
+                    : (selectedTariffPeriod?.price_kopeks ?? 0);
                 const existingPeriodOriginal = useCustomDays
                   ? tariff.original_price_per_day_kopeks &&
                     tariff.original_price_per_day_kopeks > (tariff.price_per_day_kopeks ?? 0)
@@ -551,84 +692,113 @@ export function TariffPurchaseForm({
                     ? customTrafficGb * (tariff.traffic_price_per_gb_kopeks ?? 0)
                     : 0;
 
-                const totalPrice = promoPeriod.price + trafficPrice;
+                // ProxyKeys custom: стоимость доп. устройств сверх baseDeviceLimit.
+                // Считается ТОЛЬКО при активном selector (hasDeviceSelector), т.к.
+                // в этом режиме basePeriodPrice = base_tariff_price_kopeks (без extra).
+                // При продлении (selector скрыт) basePeriodPrice = price_kopeks, который
+                // уже включает extra devices — добавлять extraDevicesCost повторно
+                // было бы двойным счётом.
+                const periodDaysForMonths = useCustomDays
+                  ? customDays
+                  : (selectedTariffPeriod?.days ?? 30);
+                const months = Math.max(1, Math.round(periodDaysForMonths / 30));
+                const extraDevices = hasDeviceSelector
+                  ? Math.max(0, deviceCount - baseDeviceLimit)
+                  : 0;
+                const extraDevicesCost = hasDeviceSelector
+                  ? extraDevices * (tariff.device_price_kopeks ?? 0) * months
+                  : 0;
+
+                const totalPrice = promoPeriod.price + trafficPrice + extraDevicesCost;
                 const originalTotal = promoPeriod.original
-                  ? promoPeriod.original + trafficPrice
+                  ? promoPeriod.original + trafficPrice + extraDevicesCost
                   : null;
 
                 return (
                   <>
-                    <div className="mb-4 space-y-2">
-                      {useCustomDays ? (
-                        <div className="flex justify-between text-sm text-dark-300">
-                          <span>
-                            {t('subscription.stepPeriod')}:{' '}
-                            {t('subscription.days', { count: customDays })}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <span>{formatPrice(promoPeriod.price)}</span>
-                            {promoPeriod.original && promoPeriod.original > promoPeriod.price && (
-                              <span className="text-xs text-dark-300 line-through">
-                                {formatPrice(promoPeriod.original)}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ) : (
-                        selectedTariffPeriod && (
-                          <>
-                            {(selectedTariffPeriod.extra_devices_count ?? 0) > 0 &&
-                            selectedTariffPeriod.base_tariff_price_kopeks ? (
-                              <>
-                                <div className="flex justify-between text-sm text-dark-300">
-                                  <span>
-                                    {t('subscription.baseTariff')}: {selectedTariffPeriod.label}
-                                  </span>
-                                  <span>
-                                    {formatPrice(selectedTariffPeriod.base_tariff_price_kopeks)}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between text-sm text-dark-300">
-                                  <span>
-                                    {t('subscription.extraDevices')} (
-                                    {selectedTariffPeriod.extra_devices_count})
-                                  </span>
-                                  <span>
-                                    +
-                                    {formatPrice(
-                                      selectedTariffPeriod.extra_devices_cost_kopeks ?? 0,
-                                    )}
-                                  </span>
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex justify-between text-sm text-dark-300">
-                                <span>
-                                  {t('subscription.summary.period', {
-                                    label: selectedTariffPeriod.label,
-                                  })}
+                    {/* ProxyKeys custom: breakdown (строки периода / трафика).
+                        Рендерим ТОЛЬКО когда есть контент — т.е. НЕ per-device
+                        pricing (есть upstream breakdown) ИЛИ включён custom traffic.
+                        При per-device pricing без custom traffic breakdown пуст —
+                        не рендерим пустой div (иначе остаётся полоса-разделитель). */}
+                    {(!(tariff.device_price_kopeks && tariff.device_price_kopeks > 0) ||
+                      (useCustomTraffic && tariff.custom_traffic_enabled)) && (
+                      <div className="mb-4 space-y-2">
+                        {tariff.device_price_kopeks &&
+                        tariff.device_price_kopeks > 0 ? null : useCustomDays ? (
+                          <div className="flex justify-between text-sm text-dark-300">
+                            <span>
+                              {t('subscription.stepPeriod')}:{' '}
+                              {t('subscription.days', { count: customDays })}
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <span>{formatPrice(promoPeriod.price)}</span>
+                              {promoPeriod.original && promoPeriod.original > promoPeriod.price && (
+                                <span className="text-xs text-dark-300 line-through">
+                                  {formatPrice(promoPeriod.original)}
                                 </span>
-                                <div className="flex items-center gap-2">
-                                  <span>{formatPrice(promoPeriod.price)}</span>
-                                  {promoPeriod.original &&
-                                    promoPeriod.original > promoPeriod.price && (
-                                      <span className="text-xs text-dark-300 line-through">
-                                        {formatPrice(promoPeriod.original)}
-                                      </span>
-                                    )}
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          selectedTariffPeriod && (
+                            <>
+                              {(selectedTariffPeriod.extra_devices_count ?? 0) > 0 &&
+                              selectedTariffPeriod.base_tariff_price_kopeks &&
+                              !hasDeviceSelector ? (
+                                <>
+                                  <div className="flex justify-between text-sm text-dark-300">
+                                    <span>
+                                      {t('subscription.baseTariff')}: {selectedTariffPeriod.label}
+                                    </span>
+                                    <span>
+                                      {formatPrice(selectedTariffPeriod.base_tariff_price_kopeks)}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between text-sm text-dark-300">
+                                    <span>
+                                      {t('subscription.extraDevices')} (
+                                      {selectedTariffPeriod.extra_devices_count})
+                                    </span>
+                                    <span>
+                                      +
+                                      {formatPrice(
+                                        selectedTariffPeriod.extra_devices_cost_kopeks ?? 0,
+                                      )}
+                                    </span>
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="flex justify-between text-sm text-dark-300">
+                                  <span>
+                                    {t('subscription.summary.period', {
+                                      label: selectedTariffPeriod.label,
+                                    })}
+                                  </span>
+                                  <div className="flex items-center gap-2">
+                                    <span>{formatPrice(promoPeriod.price)}</span>
+                                    {promoPeriod.original &&
+                                      promoPeriod.original > promoPeriod.price && (
+                                        <span className="text-xs text-dark-300 line-through">
+                                          {formatPrice(promoPeriod.original)}
+                                        </span>
+                                      )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                          </>
-                        )
-                      )}
-                      {useCustomTraffic && tariff.custom_traffic_enabled && (
-                        <div className="flex justify-between text-sm text-dark-300">
-                          <span>{t('subscription.summary.traffic', { gb: customTrafficGb })}</span>
-                          <span>+{formatPrice(trafficPrice)}</span>
-                        </div>
-                      )}
-                    </div>
+                              )}
+                            </>
+                          )
+                        )}
+                        {useCustomTraffic && tariff.custom_traffic_enabled && (
+                          <div className="flex justify-between text-sm text-dark-300">
+                            <span>
+                              {t('subscription.summary.traffic', { gb: customTrafficGb })}
+                            </span>
+                            <span>+{formatPrice(trafficPrice)}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {promoPeriod.percent && (
                       <div className="mb-4 flex items-center justify-center gap-2 rounded-lg border border-gray-200/40 bg-gray-250 p-2 dark:border-gray-800/40 dark:bg-gray-850">
@@ -638,16 +808,61 @@ export function TariffPurchaseForm({
                       </div>
                     )}
 
-                    <div className="mb-4 flex items-center justify-between border-t border-gray-200/50 pt-2 dark:border-gray-800/50">
+                    {/* ProxyKeys custom: total row с linear формулой для per-device pricing.
+                        При device_price > 0 показываем «N × цена = итог» в одну строку:
+                        формула dim, итог bright accent. Без border-t (полоса убрана).
+                        Иначе — оригинальный total с border-t (разделяет от breakdown). */}
+                    <div
+                      className={`mb-4 flex items-center justify-between pt-2 ${
+                        tariff.device_price_kopeks && tariff.device_price_kopeks > 0
+                          ? ''
+                          : 'border-t border-gray-200/50 dark:border-gray-800/50'
+                      }`}
+                    >
                       <span className="font-medium text-dark-100">{t('subscription.total')}</span>
                       <div className="text-right">
-                        <span className="text-2xl font-bold text-accent-500">
-                          {formatPrice(totalPrice)}
-                        </span>
-                        {originalTotal && (
-                          <div className="text-sm text-dark-300 line-through">
-                            {formatPrice(originalTotal)}
-                          </div>
+                        {tariff.device_price_kopeks && tariff.device_price_kopeks > 0 ? (
+                          (() => {
+                            const countForDisplay = isFreshPurchase
+                              ? deviceCount
+                              : tariff.device_limit || baseDeviceLimit;
+                            const pricePerDevice =
+                              countForDisplay > 0 ? Math.round(totalPrice / countForDisplay) : 0;
+                            const dividesEvenly = pricePerDevice * countForDisplay === totalPrice;
+                            return (
+                              <>
+                                {promoPeriod.original &&
+                                  promoPeriod.original + extraDevicesCost > totalPrice && (
+                                    <div className="text-sm text-dark-300 line-through">
+                                      {formatPrice(promoPeriod.original + extraDevicesCost)}
+                                    </div>
+                                  )}
+                                <div className="text-2xl font-bold text-accent-500">
+                                  <span className="mr-2 text-base font-normal text-dark-300">
+                                    {countForDisplay} ×{' '}
+                                    {formatPrice(
+                                      dividesEvenly
+                                        ? pricePerDevice
+                                        : (tariff.device_price_kopeks ?? 0),
+                                    )}{' '}
+                                    =
+                                  </span>
+                                  {formatPrice(totalPrice)}
+                                </div>
+                              </>
+                            );
+                          })()
+                        ) : (
+                          <>
+                            <span className="text-2xl font-bold text-accent-500">
+                              {formatPrice(totalPrice)}
+                            </span>
+                            {originalTotal && (
+                              <div className="text-sm text-dark-300 line-through">
+                                {formatPrice(originalTotal)}
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>
@@ -662,8 +877,12 @@ export function TariffPurchaseForm({
                           <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                           {t('common.loading')}
                         </span>
-                      ) : (
+                      ) : // ProxyKeys custom: при продлении (tariff.is_current) — «Продлить»,
+                      // при fresh покупке — «Купить».
+                      isFreshPurchase ? (
                         t('subscription.purchase')
+                      ) : (
+                        t('subscription.renew')
                       )}
                     </button>
 
