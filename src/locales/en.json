@@ -416,7 +416,7 @@
     "autopayOffWarning": "Without auto-renewal, your subscription will expire on {{date}}. Manual renewal is unavailable.",
     "autopayOnHint": "Charged from balance 1 day before expiry",
     "autopayOffHint": "Without auto-renewal the subscription will expire. Manual renewal is unavailable.",
-    "autopayChargeInfo": "The charge is made automatically 1 day before your subscription expires.",
+    "autopayChargeInfo": "The charge is made automatically 1 day before your subscription's validity period ends.",
     "autopayCost": "Auto-renewal cost: {{amount}}",
     "autopayDeficit": "Please top up your balance by: {{amount}}",
     "autopayBalanceOk": "Your balance is sufficient for auto-renewal",
