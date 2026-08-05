@@ -73,6 +73,16 @@ export default function RenewSubscription() {
           setError(`insufficient:${typed.missing_amount}`);
           return;
         }
+        // ProxyKeys custom: backend blocked renewal of active subscription
+        if (typed.code === 'active_subscription_cannot_be_renewed') {
+          setError(
+            t(
+              'subscription.activeCannotRenew.description',
+              'Ручное продление недоступно. Включите автопродление.',
+            ),
+          );
+          return;
+        }
       }
       setError(typeof detail === 'string' ? detail : t('common.error'));
     },
@@ -96,6 +106,41 @@ export default function RenewSubscription() {
           <Skeleton variant="card" count={4} className="h-20" />
         </div>
       </PageSkeleton>
+    );
+  }
+
+  // ProxyKeys custom: active non-trial subscriptions cannot be renewed manually.
+  // Show a stub block instead of the renewal form (defense-in-depth for direct URL access).
+  if (subscription && subscription.is_active && !subscription.is_trial) {
+    return (
+      <div className="space-y-5">
+        <div className="flex items-center gap-3">
+          <WebBackButton to={`/subscriptions/${subId}`} />
+          <h1 className="text-2xl font-bold" style={{ color: g.text }}>
+            {t('subscription.extend', 'Продлить подписку')}
+          </h1>
+        </div>
+        <div
+          className="rounded-2xl p-6 text-center"
+          style={{ background: g.cardBg, border: `1px solid ${g.cardBorder}` }}
+        >
+          <p className="mb-2 text-base font-semibold" style={{ color: g.text }}>
+            {t('subscription.activeCannotRenew.title', 'Подписка ещё активна')}
+          </p>
+          <p className="mb-4 text-sm" style={{ color: g.textSecondary }}>
+            {t(
+              'subscription.activeCannotRenew.description',
+              'Ручное продление недоступно. Включите автопродление — и подписка продлится автоматически за 1 день до окончания.',
+            )}
+          </p>
+          <button
+            onClick={() => navigate(`/subscriptions/${subId}`, { replace: true })}
+            className="btn-cta-md"
+          >
+            {t('subscription.activeCannotRenew.backToSub', 'Вернуться к подписке')}
+          </button>
+        </div>
+      </div>
     );
   }
 

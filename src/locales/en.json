@@ -413,6 +413,14 @@
     "daysBeforeExpiry": "days before expiry",
     "daysBeforeExpiry_one": "{{count}} day before expiry",
     "daysBeforeExpiry_other": "{{count}} days before expiry",
+    "autopayOffWarning": "Without auto-renewal, your subscription will expire on {{date}}. Manual renewal is unavailable.",
+    "autopayOnHint": "Charged from balance 1 day before expiry",
+    "autopayOffHint": "Without auto-renewal the subscription will expire. Manual renewal is unavailable.",
+    "activeCannotRenew": {
+      "title": "Subscription is still active",
+      "description": "Manual renewal is unavailable. Enable auto-renewal and your subscription will be extended automatically 1 day before expiry.",
+      "backToSub": "Back to subscription"
+    },
     "selectPeriod": "Select Period",
     "noPeriodsAvailable": "No available periods for renewal",
     "noPeriodsAvailableHint": "The administrator has changed this plan's settings. Please choose a different plan to renew your subscription.",

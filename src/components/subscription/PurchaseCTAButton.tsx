@@ -24,6 +24,11 @@ export default function PurchaseCTAButton({
   // Daily tariffs renew automatically — no manual renewal button needed in multi-tariff
   if (isMultiTariff && isDaily && !isExpired) return null;
 
+  // ProxyKeys custom: hide "Продлить" for active non-trial subscriptions.
+  // Manual renewal is disabled — only auto-renewal or re-purchase after expiry.
+  // Trial is allowed (conversion to paid); expired shows "Оформить".
+  if (!isExpired && !isTrial) return null;
+
   const accentColor = isExpired ? 'rgb(var(--color-error-500))' : 'rgb(var(--color-accent-500))';
 
   const buttonText = isExpired
