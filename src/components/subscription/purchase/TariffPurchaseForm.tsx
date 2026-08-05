@@ -733,11 +733,11 @@ export function TariffPurchaseForm({
                       <div className="text-sm font-semibold text-dark-50">
                         {t('subscription.autoRenewal')}
                       </div>
-                      <div className="mt-0.5 text-sm text-dark-300">
-                        {autopayEnabled
-                          ? t('subscription.autopayChargeInfo')
-                          : t('subscription.autopayOffHint')}
-                      </div>
+                      {autopayEnabled && (
+                        <div className="mt-0.5 text-sm text-dark-300">
+                          {t('subscription.autopayChargeInfo')}
+                        </div>
+                      )}
                     </div>
                     <button
                       onClick={() => setAutopayEnabled((v) => !v)}
