@@ -1119,7 +1119,13 @@ export default function Subscription() {
 
               {/* ─── Autopay Toggle ─── */}
               {!subscription.is_trial && !subscription.is_daily && (
-                <div className="flex items-center justify-between rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                <div
+                  className={`flex items-center justify-between rounded-[14px] border p-3.5 ${
+                    !subscription.autopay_enabled && subscription.is_active
+                      ? 'border-warning-500/50 bg-warning-500/5'
+                      : 'border-gray-200 bg-transparent dark:border-gray-800'
+                  }`}
+                >
                   <div>
                     <div className="text-sm font-semibold text-dark-50">
                       {t('subscription.autoRenewal')}
@@ -1129,6 +1135,17 @@ export default function Subscription() {
                         count: subscription.autopay_days_before,
                       })}
                     </div>
+                    {/* ProxyKeys custom: warning when autopay off for active sub */}
+                    {!subscription.autopay_enabled && subscription.is_active && (
+                      <div
+                        className="mt-1.5 text-xs font-medium"
+                        style={{ color: 'rgb(var(--color-warning-500))' }}
+                      >
+                        {t('subscription.autopayOffWarning', {
+                          date: new Date(subscription.end_date).toLocaleDateString(uiLocale()),
+                        })}
+                      </div>
+                    )}
                   </div>
                   <button
                     onClick={() => autopayMutation.mutate(!subscription.autopay_enabled)}
