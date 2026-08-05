@@ -747,8 +747,8 @@ export function TariffPurchaseForm({
                       className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
                       style={{
                         background: autopayEnabled
-                          ? 'var(--color-accent-500)'
-                          : 'var(--color-gray-400)',
+                          ? 'rgb(var(--color-accent-500))'
+                          : 'rgb(var(--color-gray-400))',
                       }}
                     >
                       <span
