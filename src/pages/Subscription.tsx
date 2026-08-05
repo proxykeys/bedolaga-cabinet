@@ -1119,8 +1119,8 @@ export default function Subscription() {
 
               {/* ─── Autopay Toggle ─── */}
               {!subscription.is_trial && !subscription.is_daily && (
-                <div className="flex items-center justify-between rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
-                  <div>
+                <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                  <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-dark-50">
                       {t('subscription.autoRenewal')}
                     </div>
@@ -1170,7 +1170,7 @@ export default function Subscription() {
                     role="switch"
                     aria-checked={subscription.autopay_enabled}
                     aria-label={t('subscription.autopay', 'Auto-payment')}
-                    className="relative h-7 w-[52px] rounded-full transition-colors duration-300"
+                    className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
                     style={{
                       background: subscription.autopay_enabled ? zone.mainHex : g.textGhost,
                     }}
