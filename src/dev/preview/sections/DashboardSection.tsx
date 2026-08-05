@@ -43,123 +43,43 @@ export function DashboardSection() {
       id="dashboard"
       title="Dashboard"
       badge="phase 2"
-      description="Карточки подписок, трафик, триал, статы, подарки — во всех возможных состояниях"
+      description="Карточки подписок, триал, статы, подарки — во всех возможных состояниях"
     >
-      {/* ─── SubscriptionCardActive — 6 состояний ─── */}
+      {/* ─── SubscriptionCardActive — состояния ─── */}
       <SubGroup
         title="SubscriptionCardActive"
-        hint="Зависит от traffic_used_percent (зоны), is_trial, traffic_limit_gb=0 (∞), device limit"
+        hint="is_trial badge, device limit (∞ / dots / progress), days left"
       >
-        <Snapshot label="active · green zone" description="18% · норма">
-          <SubscriptionCardActive
-            subscription={activeGreen}
-            trafficData={{
-              traffic_used_gb: 18,
-              traffic_used_percent: 18,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={2}
-          />
+        <Snapshot label="active · green" description="норма, 2 устройства">
+          <SubscriptionCardActive subscription={activeGreen} connectedDevices={2} />
         </Snapshot>
 
-        <Snapshot label="active · warning zone" description="62% · амбер">
-          <SubscriptionCardActive
-            subscription={activeWarning}
-            trafficData={{
-              traffic_used_gb: 62,
-              traffic_used_percent: 62,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={3}
-          />
+        <Snapshot label="active · 3 days left" description="warning, 3 устройства">
+          <SubscriptionCardActive subscription={activeWarning} connectedDevices={3} />
         </Snapshot>
 
-        <Snapshot label="active · danger zone" description="82% · оранжевый">
-          <SubscriptionCardActive
-            subscription={activeDanger}
-            trafficData={{
-              traffic_used_gb: 82,
-              traffic_used_percent: 82,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={4}
-          />
+        <Snapshot label="active · 1 day left" description="critical, 4 устройства">
+          <SubscriptionCardActive subscription={activeDanger} connectedDevices={4} />
         </Snapshot>
 
-        <Snapshot label="active · critical zone" description="95% · красный, 3 дня">
-          <SubscriptionCardActive
-            subscription={activeCritical}
-            trafficData={{
-              traffic_used_gb: 95,
-              traffic_used_percent: 95,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={30}
-            connectedDevices={5}
-          />
+        <Snapshot label="active · expired soon" description="0 days, 5 устройств">
+          <SubscriptionCardActive subscription={activeCritical} connectedDevices={5} />
         </Snapshot>
 
-        <Snapshot label="active · unlimited" description="∞ трафик">
-          <SubscriptionCardActive
-            subscription={activeUnlimited}
-            trafficData={{
-              traffic_used_gb: 340,
-              traffic_used_percent: 0,
-              is_unlimited: true,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={2}
-          />
+        <Snapshot label="active · unlimited" description="безлимит, 2 устройства">
+          <SubscriptionCardActive subscription={activeUnlimited} connectedDevices={2} />
         </Snapshot>
 
         <Snapshot label="active · trial" description="trial badge, 1 устройство">
-          <SubscriptionCardActive
-            subscription={activeTrial}
-            trafficData={{
-              traffic_used_gb: 4.2,
-              traffic_used_percent: 42,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={1}
-          />
+          <SubscriptionCardActive subscription={activeTrial} connectedDevices={1} />
         </Snapshot>
 
         <Snapshot label="active · unlimited devices" description="device_limit=0 → ∞">
-          <SubscriptionCardActive
-            subscription={activeUnlimitedDevices}
-            trafficData={{
-              traffic_used_gb: 18,
-              traffic_used_percent: 18,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={3}
-          />
+          <SubscriptionCardActive subscription={activeUnlimitedDevices} connectedDevices={3} />
         </Snapshot>
 
         <Snapshot label="active · many devices" description="device_limit=15 → progress bar">
-          <SubscriptionCardActive
-            subscription={activeManyDevices}
-            trafficData={{
-              traffic_used_gb: 42,
-              traffic_used_percent: 42,
-              is_unlimited: false,
-            }}
-            refreshTrafficMutation={noopMutation}
-            trafficRefreshCooldown={0}
-            connectedDevices={7}
-          />
+          <SubscriptionCardActive subscription={activeManyDevices} connectedDevices={7} />
         </Snapshot>
       </SubGroup>
 

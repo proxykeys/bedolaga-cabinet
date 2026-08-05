@@ -189,10 +189,6 @@ function TariffCard({
             isSelected ? 'text-accent-500' : 'text-dark-300',
           )}
         >
-          {tariff.traffic_limit_gb > 0
-            ? `${tariff.traffic_limit_gb} ${t('gift.gbShort')}`
-            : t('gift.unlimitedTraffic')}
-          {' \u2022 '}
           {t('gift.deviceCount', { count: tariff.device_limit })}
         </p>
       </div>

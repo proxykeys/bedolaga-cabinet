@@ -650,46 +650,6 @@ export default function Profile() {
                 )}
               </div>
 
-              {/* Traffic Warning */}
-              <div className="space-y-3 border-t border-gray-200/50 pt-6 dark:border-gray-800/50">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-dark-100">
-                      {t('profile.notifications.trafficWarning')}
-                    </p>
-                    <p className="text-sm text-dark-300">
-                      {t('profile.notifications.trafficWarningDesc')}
-                    </p>
-                  </div>
-                  <Switch
-                    checked={notificationSettings.traffic_warning_enabled}
-                    onCheckedChange={(checked) =>
-                      handleNotificationToggle('traffic_warning_enabled', checked)
-                    }
-                  />
-                </div>
-                {notificationSettings.traffic_warning_enabled && (
-                  <div className="flex items-center gap-3 pl-4">
-                    <span className="text-sm text-dark-300">
-                      {t('profile.notifications.atPercent')}
-                    </span>
-                    <select
-                      value={notificationSettings.traffic_warning_percent}
-                      onChange={(e) =>
-                        handleNotificationValue('traffic_warning_percent', Number(e.target.value))
-                      }
-                      className="input w-20 py-1"
-                    >
-                      {[50, 70, 80, 90, 95].map((p) => (
-                        <option key={p} value={p}>
-                          {p}%
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-              </div>
-
               {/* Balance Low */}
               <div className="space-y-3 border-t border-gray-200/50 pt-6 dark:border-gray-800/50">
                 <div className="flex items-center justify-between">

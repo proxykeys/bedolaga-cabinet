@@ -25,7 +25,7 @@ import {
   BackgroundRenderer,
   StaticBackgroundRenderer,
 } from '../components/backgrounds/BackgroundRenderer';
-import { CheckCircleIcon, CheckIcon, DevicesIcon, DownloadIcon } from '@/components/icons';
+import { CheckCircleIcon, CheckIcon, DevicesIcon } from '@/components/icons';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import { cn } from '../lib/utils';
 import { getApiErrorMessage } from '../utils/api-error';
@@ -310,10 +310,6 @@ function TariffCard({
 
       {/* Info row */}
       <div className="flex items-center gap-3 text-xs text-dark-300">
-        <span className="flex items-center gap-1">
-          <DownloadIcon className="h-3.5 w-3.5" />
-          {tariff.traffic_limit_gb === 0 ? '∞' : tariff.traffic_limit_gb} {t('landing.gb', 'GB')}
-        </span>
         <span className="flex items-center gap-1">
           <DevicesIcon className="h-3.5 w-3.5" />
           {tariff.device_limit} {t('landing.devices', 'devices')}

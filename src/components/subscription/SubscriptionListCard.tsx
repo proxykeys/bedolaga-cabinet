@@ -96,24 +96,6 @@ export default function SubscriptionListCard({
   };
 
   const isTrial = subscription.is_trial;
-  const isActive =
-    subscription.status === 'active' ||
-    subscription.status === 'trial' ||
-    subscription.status === 'limited';
-  const trafficLimit = subscription.traffic_limit_gb;
-  const trafficUsed = subscription.traffic_used_gb;
-  const isUnlimited = trafficLimit === 0;
-  const trafficPercent = isUnlimited
-    ? 0
-    : trafficLimit > 0
-      ? Math.min(100, (trafficUsed / trafficLimit) * 100)
-      : 0;
-  const trafficColor =
-    trafficPercent >= 90
-      ? 'bg-error-500'
-      : trafficPercent >= 70
-        ? 'bg-warning-500'
-        : 'bg-success-500';
 
   const borderColor = g.cardBorder;
 
