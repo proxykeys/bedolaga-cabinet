@@ -728,26 +728,15 @@ export function TariffPurchaseForm({
                   tariff.is_daily ||
                   (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0)
                 ) && (
-                  <div
-                    className={`flex items-center justify-between rounded-[14px] border p-3.5 ${
-                      autopayEnabled
-                        ? 'border-gray-200 bg-transparent dark:border-gray-800'
-                        : 'border-warning-500/50 bg-warning-500/5'
-                    }`}
-                  >
-                    <div>
+                  <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                    <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-dark-50">
                         {t('subscription.autoRenewal')}
                       </div>
                       <div className="mt-0.5 text-sm text-dark-300">
                         {autopayEnabled
-                          ? t('subscription.autopayOnHint', {
-                              defaultValue: 'Списание с баланса за 1 день до окончания',
-                            })
-                          : t('subscription.autopayOffHint', {
-                              defaultValue:
-                                'Без автопродления подписка истечёт. Ручное продление недоступно.',
-                            })}
+                          ? t('subscription.autopayChargeInfo')
+                          : t('subscription.autopayOffHint')}
                       </div>
                     </div>
                     <button
@@ -755,7 +744,7 @@ export function TariffPurchaseForm({
                       role="switch"
                       aria-checked={autopayEnabled}
                       aria-label={t('subscription.autopay', 'Auto-payment')}
-                      className="relative h-7 w-[52px] shrink-0 rounded-full bg-accent-500 transition-colors duration-300"
+                      className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
                       style={{
                         background: autopayEnabled
                           ? 'var(--color-accent-500)'
