@@ -87,6 +87,9 @@ export interface Subscription {
   servers: ServerInfo[];
   autopay_enabled: boolean;
   autopay_days_before: number;
+  // ProxyKeys custom: preview цен автопродления для инфо-блока на странице подписки.
+  autopay_price_kopeks?: number | null;
+  autopay_period_days?: number | null;
   subscription_url: string | null;
   hide_subscription_link: boolean;
   is_active: boolean;

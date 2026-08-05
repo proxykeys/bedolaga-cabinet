@@ -1146,6 +1146,45 @@ export default function Subscription() {
                         })}
                       </div>
                     )}
+                    {/* ProxyKeys custom: информация о стоимости и достаточности средств для автопродления.
+                        Показывается только когда autopay включён и бэкенд вернул preview-цену.
+                        deficit > 0 → warning «необходимо пополнить»; deficit = 0 → success «достаточно средств». */}
+                    {subscription.autopay_enabled &&
+                      subscription.autopay_price_kopeks != null &&
+                      subscription.autopay_price_kopeks > 0 &&
+                      (() => {
+                        const balance = purchaseOptions?.balance_kopeks ?? 0;
+                        const deficit = Math.max(0, subscription.autopay_price_kopeks - balance);
+                        return (
+                          <div className="mt-1.5 space-y-0.5 text-xs">
+                            <div className="text-dark-300">
+                              {t('subscription.autopayChargeInfo')}
+                            </div>
+                            <div className="text-dark-300">
+                              {t('subscription.autopayCost', {
+                                amount: formatPrice(subscription.autopay_price_kopeks),
+                              })}
+                            </div>
+                            {deficit > 0 ? (
+                              <div
+                                className="font-medium"
+                                style={{ color: 'rgb(var(--color-warning-500))' }}
+                              >
+                                {t('subscription.autopayDeficit', {
+                                  amount: formatPrice(deficit),
+                                })}
+                              </div>
+                            ) : (
+                              <div
+                                className="font-medium"
+                                style={{ color: 'rgb(var(--color-success-500))' }}
+                              >
+                                {t('subscription.autopayBalanceOk')}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
                   </div>
                   <button
                     onClick={() => autopayMutation.mutate(!subscription.autopay_enabled)}
