@@ -394,7 +394,7 @@
     "minutes_other": "{{count}} m",
     "price": "Price",
     "noSubscription": "You don't have an active subscription",
-    "getSubscription": "Get Subscription",
+    "getSubscription": "Buy Subscription",
     "cta": {
       "expiredHint": "Choose a plan and pay",
       "trialHint": "More traffic and devices",

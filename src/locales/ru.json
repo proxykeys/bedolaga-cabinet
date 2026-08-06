@@ -403,7 +403,7 @@
     "minutes_many": "{{count}} м",
     "price": "Цена",
     "noSubscription": "У вас нет активной подписки",
-    "getSubscription": "Оформить подписку",
+    "getSubscription": "Купить подписку",
     "cta": {
       "expiredHint": "Выберите тариф и оплатите",
       "trialHint": "Больше трафика и устройств",

@@ -31,11 +31,10 @@ export default function PurchaseCTAButton({
 
   const accentColor = isExpired ? 'rgb(var(--color-error-500))' : 'rgb(var(--color-accent-500))';
 
-  const buttonText = isExpired
-    ? t('subscription.getSubscription')
-    : isTrial
-      ? t('subscription.trialUpgrade.title')
-      : t('subscription.extend');
+  // ProxyKeys custom: trial и expired показывают «Купить подписку» (fresh purchase).
+  // Активные подписки ручному продлению не подлежат (только автопродление).
+  const buttonText =
+    isExpired || isTrial ? t('subscription.getSubscription') : t('subscription.extend');
 
   const hintText = isExpired
     ? t('subscription.cta.expiredHint')

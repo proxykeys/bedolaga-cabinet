@@ -177,8 +177,10 @@ export default function SubscriptionPurchase() {
             padding: '24px 28px',
           }}
         >
-          {/* Trial upgrade prompt — hidden when expired banner is active */}
+          {/* Trial upgrade prompt — hidden when expired banner is active or when the
+              purchase form is already open (single-tariff auto-select). */}
           {subscription?.is_trial &&
+            !showTariffPurchase &&
             !(
               isTariffsMode &&
               purchaseOptions &&
