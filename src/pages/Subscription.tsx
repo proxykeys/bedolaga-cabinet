@@ -1,5 +1,5 @@
 import { uiLocale } from '@/utils/uiLocale';
-import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate, useParams } from 'react-router';
@@ -7,9 +7,7 @@ import { subscriptionApi } from '../api/subscription';
 import { DEVICE_ALIAS_MAX_LENGTH } from '../constants/devices';
 import { WebBackButton } from '../components/WebBackButton';
 import { useDestructiveConfirm } from '../platform/hooks/useNativeDialog';
-import TrafficProgressBar from '../components/dashboard/TrafficProgressBar';
 import { useTrafficZone } from '../hooks/useTrafficZone';
-import { formatTraffic } from '../utils/formatTraffic';
 import { getGlassColors } from '../utils/glassTheme';
 import { copyToClipboard } from '../utils/clipboard';
 import { useTheme } from '../hooks/useTheme';
@@ -22,18 +20,12 @@ import {
   CheckIcon,
   PauseIcon,
   CalendarIcon,
-  RefreshIcon,
   DevicesIcon,
-  DownloadIcon,
   TrashIcon,
 } from '../components/icons';
 import { useHaptic, usePlatform } from '../platform';
 import { resolveConnectionUrlForUi } from '../utils/connectionLink';
-import {
-  getErrorMessage,
-  getInsufficientBalanceError,
-  getFlagEmoji,
-} from '../utils/subscriptionHelpers';
+import { getErrorMessage, getInsufficientBalanceError } from '../utils/subscriptionHelpers';
 import { openPaymentUrl } from '../utils/openPaymentUrl';
 import { useToast } from '../components/Toast';
 import {
@@ -42,16 +34,8 @@ import {
   sbpUiState,
   type SbpUiState,
 } from '../utils/sbpRecurring';
-import {
-  isLavaFeatureDisabledError,
-  lavaPeriodLabelKey,
-  lavaUiState,
-  type LavaUiState,
-} from '../utils/lavaRecurring';
-import Twemoji from 'react-twemoji';
 import { DeviceTopupSheet } from '../components/subscription/sheets/DeviceTopupSheet';
 import { DeviceReductionSheet } from '../components/subscription/sheets/DeviceReductionSheet';
-import { TrafficTopupSheet } from '../components/subscription/sheets/TrafficTopupSheet';
 import { ServerManagementSheet } from '../components/subscription/sheets/ServerManagementSheet';
 import { DeleteSubscriptionSheet } from '../components/subscription/sheets/DeleteSubscriptionSheet';
 import { PageSkeleton, Skeleton, SkeletonGroup } from '@/components/ui/skeleton';
@@ -202,21 +186,11 @@ export default function Subscription() {
   const [devicesToAdd, setDevicesToAdd] = useState(1);
   const [showDeviceReduction, setShowDeviceReduction] = useState(false);
   const [targetDeviceLimit, setTargetDeviceLimit] = useState<number>(1);
-  const [showTrafficTopup, setShowTrafficTopup] = useState(false);
-  const [selectedTrafficPackage, setSelectedTrafficPackage] = useState<number | null>(null);
   const [showServerManagement, setShowServerManagement] = useState(false);
   const [selectedServersToUpdate, setSelectedServersToUpdate] = useState<string[]>([]);
 
-  // Traffic refresh state
-  const [trafficRefreshCooldown, setTrafficRefreshCooldown] = useState(0);
-
   // Revoke (reissue) cooldown state
   const [revokeCooldown, setRevokeCooldown] = useState(0);
-  const [trafficData, setTrafficData] = useState<{
-    traffic_used_gb: number;
-    traffic_used_percent: number;
-    is_unlimited: boolean;
-  } | null>(null);
 
   // Detect multi-tariff mode from cached subscriptions-list
   const { data: multiSubData } = useQuery({
@@ -269,8 +243,10 @@ export default function Subscription() {
   const shouldHideConnectionLink =
     subscription?.hide_subscription_link || connectionLink?.hide_link;
 
-  // Traffic zone (theme-aware) — called unconditionally at top level
-  const usedPercent = trafficData?.traffic_used_percent ?? subscription?.traffic_used_percent ?? 0;
+  // Traffic zone (theme-aware) — called unconditionally at top level.
+  // All tariffs are unlimited, so usedPercent is 0 (green zone) — kept only
+  // to drive accent colors on the status badge / device indicators.
+  const usedPercent = subscription?.traffic_used_percent ?? 0;
   const zone = useTrafficZone(usedPercent);
 
   // Purchase options (needed for balance_kopeks in device/traffic/server management)
@@ -358,78 +334,6 @@ export default function Subscription() {
     cancelSbpMutation.mutate();
   };
 
-  // Автопродление Lava — независимый от Platega движок с той же семантикой
-  // состояний. Поллинг раз в 8с, пока привязка PENDING (ждём оплату первого
-  // счёта), чтобы UI сам перешёл в active/past_due.
-  const lavaQuery = useQuery({
-    queryKey: ['lava-recurring', subscriptionId],
-    queryFn: () => subscriptionApi.getLavaRecurring(subscriptionId),
-    enabled: !!subscription && !subscription.is_trial,
-    retry: false,
-    refetchInterval: (query) => (query.state.data?.status === 'PENDING' ? 8000 : false),
-  });
-  const lavaInfo = lavaQuery.data;
-  const lavaFeatureDisabled = isLavaFeatureDisabledError(lavaQuery.error);
-  const lavaUiStateValue: LavaUiState =
-    lavaInfo !== undefined || lavaFeatureDisabled
-      ? lavaUiState(lavaInfo, lavaFeatureDisabled)
-      : 'hidden';
-
-  const enableLavaMutation = useMutation({
-    mutationFn: () => subscriptionApi.enableLavaRecurring(subscriptionId),
-    onSuccess: (data) => {
-      if (data.redirect_url) {
-        openPaymentUrl(data.redirect_url, platform, openLink);
-      }
-      queryClient.invalidateQueries({ queryKey: ['lava-recurring', subscriptionId] });
-      // Бэкенд снимает autopay_enabled при включении рекуррента провайдера.
-      queryClient.invalidateQueries({ queryKey: ['subscription', subscriptionId] });
-    },
-    onError: (error: unknown) => {
-      const detail = (error as { response?: { data?: { detail?: unknown } } })?.response?.data
-        ?.detail;
-      showToast({
-        type: 'error',
-        title: typeof detail === 'string' ? detail : t('subscription.lavaRecurring.enableError'),
-        message: '',
-        duration: 3000,
-      });
-    },
-  });
-
-  const cancelLavaMutation = useMutation({
-    mutationFn: () => subscriptionApi.cancelLavaRecurring(subscriptionId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['lava-recurring', subscriptionId] });
-      queryClient.invalidateQueries({ queryKey: ['subscription', subscriptionId] });
-      showToast({
-        type: 'success',
-        title: t('subscription.lavaRecurring.cancelled'),
-        message: '',
-        duration: 3000,
-      });
-    },
-    onError: (error: unknown) => {
-      const detail = (error as { response?: { data?: { detail?: unknown } } })?.response?.data
-        ?.detail;
-      showToast({
-        type: 'error',
-        title: typeof detail === 'string' ? detail : t('subscription.lavaRecurring.cancelError'),
-        message: '',
-        duration: 3000,
-      });
-    },
-  });
-
-  const handleCancelLava = async () => {
-    const confirmed = await destructiveConfirm(
-      t('subscription.lavaRecurring.confirmCancel'),
-      t('subscription.lavaRecurring.cancel'),
-    );
-    if (!confirmed) return;
-    cancelLavaMutation.mutate();
-  };
-
   const autopayMutation = useMutation({
     mutationFn: (enabled: boolean) =>
       subscriptionApi.updateAutopay(enabled, undefined, subscriptionId),
@@ -504,55 +408,14 @@ export default function Subscription() {
   const handleCloseAllModals = useCallback(() => {
     setShowDeviceTopup(false);
     setShowDeviceReduction(false);
-    setShowTrafficTopup(false);
     setShowServerManagement(false);
-  }, [setShowDeviceTopup, setShowDeviceReduction, setShowTrafficTopup, setShowServerManagement]);
+  }, [setShowDeviceTopup, setShowDeviceReduction, setShowServerManagement]);
   useCloseOnSuccessNotification(handleCloseAllModals);
 
   // (device price + purchase moved into <DeviceTopupSheet>)
   // (device reduction info + mutation moved into <DeviceReductionSheet>)
 
-  // (traffic packages + purchase moved into <TrafficTopupSheet>)
   // (countries query + update mutation moved into <ServerManagementSheet>)
-
-  // Traffic refresh mutation
-  const refreshTrafficMutation = useMutation({
-    mutationFn: () => subscriptionApi.refreshTraffic(subscriptionId),
-    onSuccess: (data) => {
-      setTrafficData({
-        traffic_used_gb: data.traffic_used_gb,
-        traffic_used_percent: data.traffic_used_percent,
-        is_unlimited: data.is_unlimited,
-      });
-      safeLocal.setItem(`traffic_refresh_ts_${subscriptionId ?? 'default'}`, Date.now().toString());
-      if (data.rate_limited && data.retry_after_seconds) {
-        setTrafficRefreshCooldown(data.retry_after_seconds);
-      } else {
-        setTrafficRefreshCooldown(30);
-      }
-      queryClient.invalidateQueries({ queryKey: ['subscription', subscriptionId] });
-    },
-    onError: (error: {
-      response?: { status?: number; headers?: { get?: (key: string) => string } };
-    }) => {
-      if (error.response?.status === 429) {
-        const retryAfter = error.response.headers?.get?.('Retry-After');
-        setTrafficRefreshCooldown(retryAfter ? parseInt(retryAfter, 10) : 30);
-      }
-    },
-  });
-
-  // Track if we've already triggered auto-refresh this session
-  const hasAutoRefreshed = useRef(false);
-
-  // Cooldown timer for traffic refresh
-  useEffect(() => {
-    if (trafficRefreshCooldown <= 0) return;
-    const timer = setInterval(() => {
-      setTrafficRefreshCooldown((prev) => Math.max(0, prev - 1));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [trafficRefreshCooldown]);
 
   // Initialize revoke cooldown from localStorage on mount
   useEffect(() => {
@@ -591,28 +454,6 @@ export default function Subscription() {
       haptic.notification('error');
     },
   });
-
-  // Auto-refresh traffic on mount (with 30s caching)
-  useEffect(() => {
-    if (!subscription) return;
-    if (hasAutoRefreshed.current) return;
-    hasAutoRefreshed.current = true;
-
-    const lastRefresh = safeLocal.getItem(`traffic_refresh_ts_${subscriptionId ?? 'default'}`);
-    const now = Date.now();
-    const cacheMs = 30 * 1000;
-
-    if (lastRefresh && now - parseInt(lastRefresh, 10) < cacheMs) {
-      const elapsed = now - parseInt(lastRefresh, 10);
-      const remaining = Math.ceil((cacheMs - elapsed) / 1000);
-      if (remaining > 0) {
-        setTrafficRefreshCooldown(remaining);
-      }
-      return;
-    }
-
-    refreshTrafficMutation.mutate();
-  }, [subscription, refreshTrafficMutation, subscriptionId]);
 
   const copyUrl = () => {
     if (displayedConnectionUrl) {
@@ -678,9 +519,6 @@ export default function Subscription() {
       {/* Current Subscription */}
       {subscription ? (
         (() => {
-          const usedGb = trafficData?.traffic_used_gb ?? subscription.traffic_used_gb;
-          const isUnlimited =
-            (trafficData?.is_unlimited ?? false) || subscription.traffic_limit_gb === 0;
           const connectedDevices = devicesData?.total ?? 0;
           const isAtDeviceLimit =
             subscription.device_limit > 0 && connectedDevices >= subscription.device_limit;
@@ -706,24 +544,6 @@ export default function Subscription() {
               {/* ─── Header ─── */}
               <div className="mb-6 flex items-start justify-between">
                 <div>
-                  {/* Zone indicator */}
-                  <div className="mb-1 flex items-center gap-2">
-                    <div
-                      className="h-2 w-2 rounded-full"
-                      style={{
-                        background: zone.mainHex,
-                        transition: 'all 0.6s ease',
-                      }}
-                      aria-hidden="true"
-                    />
-                    <span
-                      className="font-mono text-xs font-semibold uppercase tracking-widest"
-                      style={{ color: zone.mainHex, transition: 'color 0.6s ease' }}
-                    >
-                      {isUnlimited ? t('dashboard.unlimited') : t(zone.labelKey)}
-                    </span>
-                  </div>
-
                   {/* Plan name */}
                   <h2 className="text-lg font-bold tracking-tight text-dark-50">
                     {subscription.tariff_name || t('subscription.currentPlan')}
@@ -756,142 +576,6 @@ export default function Subscription() {
                         ? t('subscription.pause.suspended')
                         : t('subscription.expired')}
                 </span>
-              </div>
-
-              {/* ─── Traffic Limited Banner ─── */}
-              {subscription.is_limited && (
-                <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
-                  <div className="flex items-start gap-3">
-                    <svg
-                      className="h-9 w-9 flex-shrink-0"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="rgb(var(--color-warning-500))"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                      <line x1="12" y1="9" x2="12" y2="13" />
-                      <line x1="12" y1="17" x2="12.01" y2="17" />
-                    </svg>
-                    <div className="min-w-0 flex-1">
-                      <p
-                        className="text-sm font-semibold"
-                        style={{ color: 'rgb(var(--color-warning-500))' }}
-                      >
-                        {t('subscription.trafficLimitedTitle')}
-                      </p>
-                      <p className="mt-1 text-xs text-dark-300">
-                        {t('subscription.trafficLimitedDescription')}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ─── Trial Info Banner ─── */}
-              {subscription.is_trial && subscription.is_active && (
-                <div className="mb-6 rounded-[14px] border border-gray-200 bg-transparent p-4 dark:border-gray-800">
-                  <div className="flex items-start gap-3">
-                    <svg
-                      className="h-9 w-9 flex-shrink-0"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="rgb(var(--color-accent-500))"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div className="flex-1">
-                      <div
-                        className="text-sm font-semibold"
-                        style={{ color: 'rgb(var(--color-accent-500))' }}
-                      >
-                        {t('subscription.trialInfo.title')}
-                      </div>
-                      <div className="mt-3 flex flex-wrap gap-4">
-                        <div className="flex items-center gap-1.5">
-                          <span
-                            className="font-mono text-sm font-semibold"
-                            style={{ color: 'rgb(var(--color-accent-500))' }}
-                          >
-                            {subscription.days_left > 0
-                              ? t('subscription.days', { count: subscription.days_left })
-                              : `${subscription.hours_left}${t('subscription.hours')} ${subscription.minutes_left}${t('subscription.minutes')}`}
-                          </span>
-                          <span className="text-sm text-dark-300">
-                            {t('subscription.trialInfo.remaining')}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <span
-                            className="font-mono text-sm font-semibold"
-                            style={{ color: 'rgb(var(--color-accent-500))' }}
-                          >
-                            {subscription.traffic_limit_gb || '∞'} {t('common.units.gb')}
-                          </span>
-                          <span className="text-sm text-dark-300">{t('subscription.traffic')}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <span
-                            className="font-mono text-sm font-semibold"
-                            style={{ color: 'rgb(var(--color-accent-500))' }}
-                          >
-                            {subscription.device_limit === 0 ? '∞' : subscription.device_limit}
-                          </span>
-                          <span className="text-sm text-dark-300">{t('subscription.devices')}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ─── Traffic Progress ─── */}
-              <div className="mb-6">
-                <div className="mb-2.5 flex items-center justify-between">
-                  <span className="text-xs font-medium uppercase tracking-wider text-dark-300">
-                    {t('subscription.traffic')}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-sm text-dark-300">
-                      {isUnlimited
-                        ? formatTraffic(usedGb)
-                        : `${formatTraffic(usedGb)} / ${formatTraffic(subscription.traffic_limit_gb)}`}
-                    </span>
-                    <button
-                      onClick={() => refreshTrafficMutation.mutate()}
-                      disabled={refreshTrafficMutation.isPending || trafficRefreshCooldown > 0}
-                      className="flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium text-dark-300 transition-colors hover:bg-dark-50/[0.05] hover:text-dark-100 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <RefreshIcon
-                        className="h-3 w-3"
-                        spinning={refreshTrafficMutation.isPending}
-                      />
-                      {trafficRefreshCooldown > 0
-                        ? `${trafficRefreshCooldown}s`
-                        : t('common.refresh')}
-                    </button>
-                  </div>
-                </div>
-                {subscription.traffic_reset_mode &&
-                  subscription.traffic_reset_mode !== 'NO_RESET' && (
-                    <div className="mb-2 text-xs text-dark-300">
-                      {t(`subscription.trafficReset.${subscription.traffic_reset_mode}`)}
-                    </div>
-                  )}
-                <TrafficProgressBar
-                  usedGb={usedGb}
-                  limitGb={subscription.traffic_limit_gb}
-                  percent={usedPercent}
-                  isUnlimited={isUnlimited}
-                  compact
-                />
               </div>
 
               {/* ─── Connect Device Button ─── */}
@@ -1018,101 +702,6 @@ export default function Subscription() {
                   glassColors={g}
                 />
               </div>
-
-              {/* ─── Locations ─── */}
-              {subscription.servers && subscription.servers.length > 0 && (
-                <div className="mb-5">
-                  <div className="mb-2 text-xs font-medium uppercase tracking-wider text-dark-300">
-                    {t('subscription.locationsLabel')}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {subscription.servers.map((server) => (
-                      <span
-                        key={server.uuid}
-                        className="inline-flex items-center gap-1.5 rounded-[8px] px-2.5 py-1 text-xs font-medium text-dark-200"
-                        style={{
-                          background: g.innerBorder,
-                          border: `1px solid ${g.trackBg}`,
-                        }}
-                      >
-                        {server.country_code && (
-                          <span className="text-xs">{getFlagEmoji(server.country_code)}</span>
-                        )}
-                        <Twemoji options={{ className: 'twemoji', folder: 'svg', ext: '.svg' }}>
-                          {server.name}
-                        </Twemoji>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* ─── Purchased Traffic Packages ─── */}
-              {subscription.traffic_purchases && subscription.traffic_purchases.length > 0 && (
-                <div className="mb-5">
-                  <div className="mb-2 text-xs font-medium uppercase tracking-wider text-dark-300">
-                    {t('subscription.purchasedTraffic')}
-                  </div>
-                  <div className="space-y-2">
-                    {subscription.traffic_purchases.map((purchase) => (
-                      <div
-                        key={purchase.id}
-                        className="rounded-[12px] border border-gray-200 bg-transparent p-3 dark:border-gray-800"
-                      >
-                        <div className="mb-2 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div style={{ color: zone.mainHex }}>
-                              <DownloadIcon className="h-3.5 w-3.5" />
-                            </div>
-                            <span className="text-sm font-semibold text-dark-50">
-                              {purchase.traffic_gb} {t('common.units.gb')}
-                            </span>
-                          </div>
-                          <div className="text-right">
-                            <div
-                              className="text-sm font-medium"
-                              style={{
-                                color: purchase.days_remaining === 0 ? '#FF6B35' : g.textSecondary,
-                              }}
-                            >
-                              {purchase.days_remaining === 0
-                                ? t('subscription.expired')
-                                : t('subscription.days', { count: purchase.days_remaining })}
-                            </div>
-                            <div className="mt-0.5 font-mono text-xs text-dark-300">
-                              {t('subscription.trafficResetAt')}:{' '}
-                              {new Date(purchase.expires_at).toLocaleDateString(uiLocale(), {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric',
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className="relative h-1.5 overflow-hidden rounded-full"
-                          style={{ background: g.trackBg }}
-                        >
-                          <div
-                            className="absolute inset-0 origin-left rounded-full bg-accent-500 transition-transform duration-500"
-                            style={{
-                              transform: `scaleX(${purchase.progress_percent / 100})`,
-                            }}
-                          />
-                        </div>
-                        <div className="mt-1 flex justify-between font-mono text-xs text-gray-600 dark:text-gray-400">
-                          <span>
-                            {new Date(purchase.created_at).toLocaleDateString(uiLocale())}
-                          </span>
-                          <span>
-                            {new Date(purchase.expires_at).toLocaleDateString(uiLocale())}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* ─── Autopay Toggle ─── */}
               {!subscription.is_trial && !subscription.is_daily && (
@@ -1297,128 +886,6 @@ export default function Subscription() {
                           className="w-full whitespace-nowrap rounded-xl border border-error-500/30 bg-error-500/10 px-5 py-2.5 text-sm font-medium text-error-400 transition-colors hover:bg-error-500/20 disabled:opacity-50 sm:w-auto"
                         >
                           {t('subscription.sbpRecurring.cancel')}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ─── Автопродление Lava ───
-                   Независимый от Platega движок: сиблинг того же тоггла, те же
-                   состояния. Период задан продуктом в кабинете Lava и приезжает
-                   числом дней, поэтому подпись строится из charge_days. */}
-              {!subscription.is_trial && lavaUiStateValue !== 'hidden' && (
-                <div
-                  className="mt-3 rounded-[14px] p-3.5"
-                  style={{
-                    background: g.innerBg,
-                    border: `1px solid ${g.innerBorder}`,
-                  }}
-                >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="min-w-0">
-                      <div className="text-sm font-semibold text-dark-50">
-                        {t('subscription.lavaRecurring.title')}
-                      </div>
-
-                      {lavaUiStateValue === 'off' && (
-                        <div className="mt-0.5 text-[11px] text-dark-50/30">
-                          {t('subscription.lavaRecurring.autopayHint')}
-                        </div>
-                      )}
-                      {lavaUiStateValue === 'pending' && (
-                        <div className="mt-0.5 text-[11px] text-dark-50/30">
-                          {t('subscription.lavaRecurring.statusPending')}
-                        </div>
-                      )}
-                      {lavaUiStateValue === 'active' && lavaInfo && (
-                        <>
-                          <div className="mt-0.5 text-[11px] text-dark-50/30">
-                            {(() => {
-                              const periodKey = lavaPeriodLabelKey(lavaInfo.charge_days);
-                              const amount = formatAmount((lavaInfo.amount_kopeks ?? 0) / 100);
-                              return periodKey
-                                ? t('subscription.lavaRecurring.amountPerPeriod', {
-                                    amount,
-                                    period: t(periodKey),
-                                  })
-                                : t('subscription.lavaRecurring.amountPerDays', {
-                                    amount,
-                                    days: lavaInfo.charge_days ?? 0,
-                                  });
-                            })()}
-                          </div>
-                          {lavaInfo.next_charge_at && (
-                            <div className="mt-0.5 text-[11px] text-dark-50/30">
-                              {t('subscription.lavaRecurring.nextCharge', {
-                                date: new Date(lavaInfo.next_charge_at).toLocaleDateString(
-                                  uiLocale(),
-                                  {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                  },
-                                ),
-                              })}
-                            </div>
-                          )}
-                        </>
-                      )}
-                      {lavaUiStateValue === 'past_due' && (
-                        <div className="mt-0.5 text-[11px] font-medium text-warning-400">
-                          {t('subscription.lavaRecurring.statusPastDue')}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex shrink-0 flex-col gap-2 sm:items-end">
-                      {lavaUiStateValue === 'off' && (
-                        <button
-                          onClick={() => enableLavaMutation.mutate()}
-                          disabled={enableLavaMutation.isPending}
-                          className="w-full whitespace-nowrap rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity disabled:opacity-50 sm:w-auto"
-                        >
-                          {enableLavaMutation.isPending ? (
-                            <span className="mx-auto block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                          ) : (
-                            t('subscription.lavaRecurring.connect')
-                          )}
-                        </button>
-                      )}
-
-                      {lavaUiStateValue === 'pending' && (
-                        <>
-                          {lavaInfo?.redirect_url && (
-                            <button
-                              onClick={() => {
-                                if (lavaInfo.redirect_url) {
-                                  openPaymentUrl(lavaInfo.redirect_url, platform, openLink);
-                                }
-                              }}
-                              className="w-full whitespace-nowrap rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity sm:w-auto"
-                            >
-                              {t('subscription.lavaRecurring.payFirst')}
-                            </button>
-                          )}
-                          <button
-                            onClick={handleCancelLava}
-                            disabled={cancelLavaMutation.isPending}
-                            className="text-[11px] font-medium transition-colors disabled:opacity-50 sm:text-right"
-                            style={{ color: 'rgb(var(--color-critical-500))' }}
-                          >
-                            {t('subscription.lavaRecurring.cancel')}
-                          </button>
-                        </>
-                      )}
-
-                      {(lavaUiStateValue === 'active' || lavaUiStateValue === 'past_due') && (
-                        <button
-                          onClick={handleCancelLava}
-                          disabled={cancelLavaMutation.isPending}
-                          className="w-full whitespace-nowrap rounded-xl border border-error-500/30 bg-error-500/10 px-5 py-2.5 text-sm font-medium text-error-400 transition-colors hover:bg-error-500/20 disabled:opacity-50 sm:w-auto"
-                        >
-                          {t('subscription.lavaRecurring.cancel')}
                         </button>
                       )}
                     </div>
@@ -1669,22 +1136,6 @@ export default function Subscription() {
                 onTargetDeviceLimitChange={setTargetDeviceLimit}
               />
             </div>
-
-            {/* Buy Traffic */}
-            {subscription.traffic_limit_gb > 0 && (
-              <div className="mt-4">
-                <TrafficTopupSheet
-                  open={showTrafficTopup}
-                  onOpen={() => setShowTrafficTopup(true)}
-                  onClose={() => setShowTrafficTopup(false)}
-                  subscription={subscription}
-                  subscriptionId={subscriptionId}
-                  selectedTrafficPackage={selectedTrafficPackage}
-                  onSelectedTrafficPackageChange={setSelectedTrafficPackage}
-                  purchaseOptions={purchaseOptions}
-                />
-              </div>
-            )}
 
             {/* Server Management - only in classic mode */}
             {!isTariffsMode && (
