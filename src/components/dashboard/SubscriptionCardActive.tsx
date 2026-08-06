@@ -50,7 +50,7 @@ export default function SubscriptionCardActive({
           {/* Trial badge */}
           {subscription.is_trial && (
             <div className="mb-2 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-md bg-accent-500 px-2 py-0.5 font-mono text-xs font-bold uppercase tracking-widest text-black">
+              <span className="inline-flex items-center gap-1 rounded-md bg-warning-500 px-2 py-0.5 font-mono text-xs font-bold uppercase tracking-widest text-black">
                 <svg
                   width="10"
                   height="10"
