@@ -555,12 +555,16 @@ export default function Subscription() {
                   className="max-w-[55%] shrink-0 rounded-full px-3 py-1 text-center font-mono text-xs font-semibold uppercase tracking-wider"
                   style={{
                     background: subscription.is_active
-                      ? zone.mainHex
+                      ? subscription.is_trial
+                        ? 'rgb(var(--color-warning-500))'
+                        : zone.mainHex
                       : subscription.is_limited
                         ? 'rgb(var(--color-warning-500))'
                         : 'rgb(var(--color-error-500))',
                     color: subscription.is_active
-                      ? `rgb(var(--color-on-${zone.colorKey}))`
+                      ? subscription.is_trial
+                        ? 'rgb(var(--color-on-warning))'
+                        : `rgb(var(--color-on-${zone.colorKey}))`
                       : subscription.is_limited
                         ? 'rgb(var(--color-on-warning))'
                         : 'rgb(var(--color-on-error))',
