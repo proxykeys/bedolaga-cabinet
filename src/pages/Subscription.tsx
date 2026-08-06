@@ -814,9 +814,6 @@ export default function Subscription() {
                       >
                         {t('subscription.trialInfo.title')}
                       </div>
-                      <div className="mt-1 text-sm text-dark-300">
-                        {t('subscription.trialInfo.description')}
-                      </div>
                       <div className="mt-3 flex flex-wrap gap-4">
                         <div className="flex items-center gap-1.5">
                           <span
