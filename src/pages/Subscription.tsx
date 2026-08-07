@@ -2,10 +2,15 @@ import { uiLocale } from '@/utils/uiLocale';
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import { Link, Navigate, useNavigate, useParams } from 'react-router';
 import { subscriptionApi } from '../api/subscription';
+import { balanceApi } from '../api/balance';
+import { API } from '../config/constants';
 import { DEVICE_ALIAS_MAX_LENGTH } from '../constants/devices';
-import { WebBackButton } from '../components/WebBackButton';
+// ProxyKeys custom: страница подписки = главная, сверху показываем
+// блок баланса/рефералов, а в empty-state — запуск триала.
+import StatsGridContainer from '../components/subscription/StatsGridContainer';
+import TrialOfferCard from '../components/dashboard/TrialOfferCard';
 import { useDestructiveConfirm } from '../platform/hooks/useNativeDialog';
 import { useTrafficZone } from '../hooks/useTrafficZone';
 import { getGlassColors } from '../utils/glassTheme';
@@ -15,14 +20,7 @@ import InsufficientBalancePrompt from '../components/InsufficientBalancePrompt';
 import { useCurrency } from '../hooks/useCurrency';
 import { useCloseOnSuccessNotification } from '../store/successNotification';
 import PurchaseCTAButton from '../components/subscription/PurchaseCTAButton';
-import {
-  CopyIcon,
-  CheckIcon,
-  PauseIcon,
-  CalendarIcon,
-  DevicesIcon,
-  TrashIcon,
-} from '../components/icons';
+import { CopyIcon, CheckIcon, PauseIcon, CalendarIcon, DevicesIcon } from '../components/icons';
 import { useHaptic, usePlatform } from '../platform';
 import { resolveConnectionUrlForUi } from '../utils/connectionLink';
 import { getErrorMessage, getInsufficientBalanceError } from '../utils/subscriptionHelpers';
@@ -174,6 +172,8 @@ export default function Subscription() {
   const [copied, setCopied] = useState(false);
   const [showDeleteSheet, setShowDeleteSheet] = useState(false);
   const destructiveConfirm = useDestructiveConfirm();
+  // ProxyKeys custom: empty-state на главной = запуск триала.
+  const [trialError, setTrialError] = useState<string | null>(null);
 
   // Helper to format price from kopeks
   const formatPrice = (kopeks: number) =>
@@ -242,6 +242,37 @@ export default function Subscription() {
   );
   const shouldHideConnectionLink =
     subscription?.hide_subscription_link || connectionLink?.hide_link;
+
+  // ProxyKeys custom: баланс и триал нужны для empty-state на главной (/),
+  // когда у юзера ещё нет подписки. Включаем только когда нет подписки,
+  // чтобы не делать лишних запросов при наличии active subscription.
+  // subscriptionResponse?.has_subscription===false — единый сигнал «нет подписки».
+  const hasNoSubscription = !subscription && !isLoading;
+  const { data: balanceData } = useQuery({
+    queryKey: ['balance'],
+    queryFn: balanceApi.getBalance,
+    enabled: hasNoSubscription,
+    staleTime: API.BALANCE_STALE_TIME_MS,
+  });
+  const { data: trialInfo, isLoading: trialLoading } = useQuery({
+    queryKey: ['trial-info'],
+    queryFn: () => subscriptionApi.getTrialInfo(),
+    enabled: hasNoSubscription,
+  });
+  const activateTrialMutation = useMutation({
+    mutationFn: () => subscriptionApi.activateTrial(),
+    onSuccess: () => {
+      setTrialError(null);
+      queryClient.invalidateQueries({ queryKey: ['subscription'] });
+      queryClient.invalidateQueries({ queryKey: ['subscriptions-list'] });
+      queryClient.invalidateQueries({ queryKey: ['trial-info'] });
+      queryClient.invalidateQueries({ queryKey: ['balance'] });
+      queryClient.invalidateQueries({ queryKey: ['purchase-options'] });
+    },
+    onError: (error: { response?: { data?: { detail?: string } } }) => {
+      setTrialError(error.response?.data?.detail || t('common.error'));
+    },
+  });
 
   // Traffic zone (theme-aware) — called unconditionally at top level.
   // All tariffs are unlimited, so usedPercent is 0 (green zone) — kept only
@@ -473,9 +504,10 @@ export default function Subscription() {
     revokeMutation.mutate();
   };
 
-  // In multi-tariff mode without a specific subscription ID, redirect to list
+  // In multi-tariff mode without a specific subscription ID, redirect to root
+  // ProxyKeys custom: / — единая «главная = подписка», /subscriptions убран.
   if (isMultiTariff && !subscriptionId && !isLoading) {
-    return <Navigate to="/subscriptions" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (isLoading) {
@@ -497,7 +529,7 @@ export default function Subscription() {
         <p className="mb-4 text-sm text-dark-200">
           {t('subscription.notFoundDesc', 'Возможно, подписка была удалена или не существует')}
         </p>
-        <button onClick={() => navigate('/subscriptions')} className="btn-cta-md">
+        <button onClick={() => navigate('/')} className="btn-cta-md">
           {t('subscription.backToList', 'Мои подписки')}
         </button>
       </div>
@@ -506,15 +538,11 @@ export default function Subscription() {
 
   return (
     <div className="space-y-6">
-      {/* Page title */}
-      <div className="flex items-center gap-3">
-        <WebBackButton to={isMultiTariff ? '/subscriptions' : '/'} />
-        <h1 className="text-2xl font-bold text-dark-50 sm:text-3xl">
-          {isMultiTariff && subscription?.tariff_name
-            ? subscription.tariff_name
-            : t('subscription.title')}
-        </h1>
-      </div>
+      {/* ProxyKeys custom: эта страница = главная (/).
+          Баланс и рефералы всегда видны сверху (как на бывшей Dashboard).
+          Без заголовка/Back-кнопки: для single-tariff это top-level экран
+          (AppWithNavigator уже скрывает Telegram back на /). */}
+      <StatsGridContainer />
 
       {/* Current Subscription */}
       {subscription ? (
@@ -900,18 +928,31 @@ export default function Subscription() {
           );
         })()
       ) : (
-        <div
-          className="relative overflow-hidden rounded-3xl py-12 text-center"
-          style={{
-            background: g.cardBg,
-            border: `1px solid ${g.cardBorder}`,
-            boxShadow: g.shadow,
-          }}
-        >
-          <div className="mx-auto mb-4" style={{ color: g.textFaint }}>
-            <TrashIcon className="h-8 w-8" />
-          </div>
-          <div className="text-sm text-dark-300">{t('subscription.noSubscription')}</div>
+        // ProxyKeys custom: empty-state на главной (/) — запуск триала (если
+        // доступен) + явная кнопка покупки. У юзера всегда есть путь к витрине.
+        <div className="space-y-3">
+          {trialLoading ? (
+            <div className="bento-card">
+              <div className="skeleton mb-3 h-14 w-14 rounded-full" />
+              <div className="skeleton mb-2 h-6 w-40" />
+              <div className="skeleton h-4 w-full" />
+            </div>
+          ) : trialInfo?.is_available ? (
+            <TrialOfferCard
+              trialInfo={trialInfo}
+              balanceKopeks={balanceData?.balance_kopeks ?? 0}
+              balanceRubles={balanceData?.balance_rubles ?? 0}
+              activateTrialMutation={activateTrialMutation}
+              trialError={trialError}
+            />
+          ) : null}
+          <Link
+            to="/subscription/purchase"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-500 p-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
+          >
+            <span className="text-base">+</span>{' '}
+            {t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
+          </Link>
         </div>
       )}
 
