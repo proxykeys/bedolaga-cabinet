@@ -15,11 +15,12 @@ export default function PurchaseCTAButton({
 }: PurchaseCTAButtonProps) {
   const { t } = useTranslation();
 
-  const isExpired =
-    !subscription ||
-    (!subscription.is_active && !subscription.is_trial && !subscription.is_limited);
-  const isTrial = subscription?.is_trial;
-  const isDaily = subscription?.is_daily;
+  // ProxyKeys custom: empty-state (subscription=null) уже имеет свой CTA — не дублируем.
+  if (!subscription) return null;
+
+  const isExpired = !subscription.is_active && !subscription.is_trial && !subscription.is_limited;
+  const isTrial = subscription.is_trial;
+  const isDaily = subscription.is_daily;
 
   // Daily tariffs renew automatically — no manual renewal button needed in multi-tariff
   if (isMultiTariff && isDaily && !isExpired) return null;
