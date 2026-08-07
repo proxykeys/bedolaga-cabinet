@@ -131,6 +131,97 @@ git push origin custom-ui --force-with-lease
 git branch -D backup-before-rebase  # если всё ок
 ```
 
+## ProxyKeys Custom Features
+
+Все фичи задеплоены в продакшн. Каждая — отдельный коммит на `custom-ui`.
+
+| Фича | Коммит | Описание |
+|---|---|---|
+| Device count selector | `49c8daf7` | Выбор кол-ва устройств при покупке тарифа (device_price_kopeks × extra × months) |
+| No-manual-renewal | `b40095ec` | Активные подписки не продлеваются вручную — только автопродление с баланса |
+| Autopay info block | `7a68f6f3` | Стоимость автопродления на странице подписки |
+| Unlimited model | `cedd1d33` | Удаление traffic/servers/unlimited UI (все тарифы `traffic_limit_gb=0`) |
+| Trial device selector | `2905e92d` | Trial не помечает тариф как `is_current` → селектор устройств работает |
+| Merge home=subscription | `73826366` | Главная страница = страница подписки (`/` = `<Subscription/>`) |
+
+Подробная документация: см. ProxyBook (секция ниже).
+
+## Бизнес-модель ProxyKeys
+
+- **Single-tariff**: один активный тариф (id=3, «ProxyKeys Subscription»). `MULTI_TARIFF_ENABLED` не установлен.
+- **Unlimited traffic**: все тарифы `traffic_limit_gb=0`, включая trial (`TRIAL_TRAFFIC_LIMIT_GB=0`).
+- **Device pricing**: `device_price_kopeks=4000` (40₽ за доп. устройство × месяцы). Базовое `device_limit=1`, `max_device_limit=NULL` (без ceiling).
+- **No-manual-renewal**: активная (non-trial, non-expired) подписка не продлевается вручную. Продление — только автопродление с баланса (`autopay`). Истёкшая — повторная покупка через каталог.
+- **Trial → fresh purchase**: trial-подписка не помечает тариф `is_current=True` → покупка открывается как fresh purchase с селектором устройств.
+
+## Backend (Bot) Integration
+
+Бот (Bedolaga Telegram Bot) работает на сервере `193.23.197.134`. Все ProxyKeys-патчи бота собраны в `custom.patch` на сервере.
+
+### Патчи бота
+
+- **Расположение**: `/opt/remnawave/bedolaga/custom.patch` (22 файла, ~1560 строк)
+- **Backup'ы**: `/opt/remnawave/bedolaga/custom-before-*.patch` (снапшоты перед каждым этапом)
+- **Применение**: `cd /opt/remnawave/bedolaga/bot-src && git diff > ../custom.patch` (регенерация)
+
+### Ключевые патчи бота
+
+| Файл | Что изменено |
+|---|---|
+| `.env` | `TRIAL_TRAFFIC_LIMIT_GB=0`, `DEFAULT_AUTOPAY_DAYS_BEFORE=1`, `DEFAULT_AUTOPAY_ENABLED=false` |
+| `app/cabinet/routes/subscription_modules/purchase.py` | Trial → `is_current=False`; device_count в API |
+| `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов |
+| `app/handlers/subscription/my_subscriptions.py` | Traffic display + кнопка убраны |
+| `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено» |
+| `app/keyboards/inline.py` | Скрыт [Продлить], `pack_buttons_in_rows()` (фикс обрезки кнопок) |
+| `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers |
+
+### Деплой бота
+
+```bash
+# Пересборка при изменении кода
+cd /opt/remnawave/bedolaga/bot-src
+docker compose up -d --build bot
+
+# Только локали (без пересборки) — КРИТИЧЕСКИ ВАЖНО:
+rm -f locales/*.json && docker restart remnawave_bot
+```
+
+### КРИТИЧНО: stale `locales/` volume override
+
+`docker-compose.yml` монтирует `./locales:/app/locales:rw`. После `git pull` или правки локалей **обязательно**:
+```bash
+rm -f locales/*.json && docker restart remnawave_bot
+```
+Иначе бот использует устаревшие локали из volume.
+
+## Server & DB
+
+- **Сервер**: `193.23.197.134` (Debian 12)
+- **SSH**: `ssh root@193.23.197.134`
+- **Bot DB**: `docker exec remnawave_bot_db psql -U remnawave_user -d remnawave_bot`
+- **Bot container**: `remnawave_bot` (healthcheck: `docker ps --filter name=remnawave_bot`)
+- **Test user**: id=14 (telegram_id=185929880)
+- **Test trial user**: id=16 (trial, sub id=25, tariff_id=3)
+- **Active tariff**: id=3 «ProxyKeys Subscription» (device_limit=1, device_price_kopeks=4000, traffic_limit_gb=0, is_active=t)
+- **Inactive tariff**: id=1 «Стандартный» (is_active=f)
+- **Bot env**: `SALES_MODE=tariffs`, `MULTI_TARIFF_ENABLED` не установлен
+
+## ProxyBook (документация)
+
+Подробная документация всех кастомизаций — в `/Volumes/MACSSD/DATA/CODE/PROXYKEYS/ProxyBook/`:
+
+| Документ | Тема |
+|---|---|
+| `BedolagaNoManualRenewal.md` | No-manual-renewal + autopay + button-packing |
+| `BedolagaUnlimitedCleanup.md` | Удаление traffic/servers/unlimited UI |
+| `BedolagaTrialDeviceSelector.md` | Trial device selector fix (`is_current`) |
+| `BedolagaTariffWeb.md` | Single-tariff auto-select, device selector |
+| `BedolagaTariff.md` | Кастомизация тарифа (бот) |
+| `BedolagaMergeHomeSubscription.md` | Объединение главной = подписка |
+| `BedolagaDev.md` | Кастомизация кабинета (общее) |
+| `BedolagaSetup.md` | Установка Bedolaga |
+
 ## Стек
 
 - React 19 + TypeScript
