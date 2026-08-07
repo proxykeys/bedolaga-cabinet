@@ -50,12 +50,12 @@ import ResetPassword from './pages/ResetPassword';
 import PublicLegal from './pages/PublicLegal';
 import OAuthCallback from './pages/OAuthCallback';
 
-// Dashboard - load eagerly (default route, LCP-critical)
-import Dashboard from './pages/Dashboard';
+// ProxyKeys custom: единая «главная = подписка» (/) — загружаем eagerly,
+// это LCP-critical дефолтный маршрут. Dashboard/Subscriptions (список) убраны
+// из роутинга, но файлы оставлены физически (для selective rebase).
+import Subscription from './pages/Subscription';
 
 // User pages - lazy load
-const Subscriptions = lazyWithRetry(() => import('./pages/Subscriptions'));
-const Subscription = lazyWithRetry(() => import('./pages/Subscription'));
 const SubscriptionPurchase = lazyWithRetry(() => import('./pages/SubscriptionPurchase'));
 const Balance = lazyWithRetry(() => import('./pages/Balance'));
 const SavedCards = lazyWithRetry(() => import('./pages/SavedCards'));
@@ -360,7 +360,7 @@ function App() {
           element={
             <ProtectedRoute>
               <LazyPage>
-                <Dashboard />
+                <Subscription />
               </LazyPage>
             </ProtectedRoute>
           }
@@ -369,9 +369,8 @@ function App() {
           path="/subscriptions"
           element={
             <ProtectedRoute>
-              <LazyPage>
-                <Subscriptions />
-              </LazyPage>
+              {/* ProxyKeys custom: список подписок убран — главная (/) = подписка. */}
+              <Navigate to="/" replace />
             </ProtectedRoute>
           }
         />
@@ -401,7 +400,8 @@ function App() {
           path="/subscription"
           element={
             <ProtectedRoute>
-              <Navigate to="/subscriptions" replace />
+              {/* ProxyKeys custom: /subscriptions убран → редирект сразу на /. */}
+              <Navigate to="/" replace />
             </ProtectedRoute>
           }
         />

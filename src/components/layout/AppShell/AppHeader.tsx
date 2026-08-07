@@ -26,7 +26,6 @@ import TicketNotificationBell from '@/components/TicketNotificationBell';
 // Icons
 import {
   HomeIcon,
-  SubscriptionIcon,
   WalletIcon,
   UsersIcon,
   ChatIcon,
@@ -156,9 +155,9 @@ export function AppHeader({
   };
   const isAdminActive = () => location.pathname.startsWith('/admin');
 
+  // ProxyKeys custom: пункт «Подписки» убран — главная (/) = подписка.
   const navItems = [
     { path: '/', label: t('nav.dashboard'), icon: HomeIcon },
-    { path: '/subscriptions', label: t('nav.subscription'), icon: SubscriptionIcon },
     { path: '/balance', label: t('nav.balance'), icon: WalletIcon },
     ...(referralEnabled ? [{ path: '/referral', label: t('nav.referral'), icon: UsersIcon }] : []),
     { path: '/support', label: t('nav.support'), icon: ChatIcon },

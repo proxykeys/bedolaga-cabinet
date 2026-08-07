@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { usePlatform } from '@/platform';
 
 // Icons
-import { HomeIcon, SubscriptionIcon, WalletIcon, UsersIcon, ChatIcon, WheelIcon } from './icons';
+import { HomeIcon, WalletIcon, UsersIcon, ChatIcon, WheelIcon } from './icons';
 
 interface MobileBottomNavProps {
   isKeyboardOpen: boolean;
@@ -35,13 +35,14 @@ export function MobileBottomNav({
   // support-user persona and was flagged by the /impeccable critique.
   //
   // Slot priority when both Wheel and Referral are enabled and only
-  // four slots remain after Dashboard / Subscriptions / Balance / Support:
+  // four slots remain after Dashboard / Balance / Support:
   //   - Wheel wins (operator opted in as a deliberate brand moment)
   //   - Referral falls back to the hamburger drawer
   // When only one of them is enabled, that one fills the slot.
+  //
+  // ProxyKeys custom: пункт «Подписки» убран — главная (/) = подписка.
   const coreItems = [
     { path: '/', label: t('nav.dashboard'), icon: HomeIcon },
-    { path: '/subscriptions', label: t('nav.subscription'), icon: SubscriptionIcon },
     { path: '/balance', label: t('nav.balance'), icon: WalletIcon },
     ...(wheelEnabled
       ? [{ path: '/wheel', label: t('nav.wheel'), icon: WheelIcon }]
