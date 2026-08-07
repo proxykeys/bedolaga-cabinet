@@ -403,6 +403,7 @@
     },
     "connectionInfo": "Connection Info",
     "copyLink": "Copy Link",
+    "subscriptionUrlLabel": "Subscription URL",
     "copied": "Copied!",
     "showQR": "Show QR Code",
     "downloadConfig": "Download Config",

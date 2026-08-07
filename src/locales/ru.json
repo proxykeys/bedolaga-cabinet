@@ -412,6 +412,7 @@
     },
     "connectionInfo": "Данные для подключения",
     "copyLink": "Копировать ссылку",
+    "subscriptionUrlLabel": "URL подписки",
     "copied": "Скопировано!",
     "showQR": "Показать QR-код",
     "downloadConfig": "Скачать конфиг",

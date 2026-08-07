@@ -102,7 +102,7 @@ const CountdownTimer = memo(function CountdownTimer({
           {t('subscription.expired')}
         </div>
       ) : (
-        <div className="flex items-baseline justify-between">
+        <div className="flex flex-col gap-1">
           <div className="flex items-baseline gap-1 font-mono tabular-nums">
             {countdown.days > 0 && (
               <>
@@ -550,6 +550,7 @@ export default function Subscription() {
           const connectedDevices = devicesData?.total ?? 0;
           const isAtDeviceLimit =
             subscription.device_limit > 0 && connectedDevices >= subscription.device_limit;
+          const showAutopay = !subscription.is_trial && !subscription.is_daily;
 
           return (
             <div
@@ -610,204 +611,210 @@ export default function Subscription() {
                 </span>
               </div>
 
-              {/* ─── Connect Device Button ─── */}
-              {subscription.subscription_url && (
-                <button
-                  type="button"
-                  disabled={isAtDeviceLimit}
-                  onClick={() => {
-                    if (isAtDeviceLimit) {
-                      haptic.notification('error');
-                      return;
-                    }
-                    navigate(subscriptionId ? `/connection?sub=${subscriptionId}` : '/connection');
-                  }}
-                  className={`mb-5 flex w-full items-center gap-3.5 rounded-[14px] border border-gray-200 bg-gray-250 p-3.5 text-left transition-colors duration-300 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800${isAtDeviceLimit ? 'cursor-not-allowed opacity-50' : ''}`}
-                >
-                  <span
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center"
-                    style={{ color: zone.mainHex }}
+              {/* ─── Connect Device + Subscription URL (2 cols on lg) ─── */}
+              <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                {subscription.subscription_url && (
+                  <button
+                    type="button"
+                    disabled={isAtDeviceLimit}
+                    onClick={() => {
+                      if (isAtDeviceLimit) {
+                        haptic.notification('error');
+                        return;
+                      }
+                      navigate(
+                        subscriptionId ? `/connection?sub=${subscriptionId}` : '/connection',
+                      );
+                    }}
+                    className={`flex w-full items-center gap-3.5 rounded-[14px] border border-gray-200 bg-gray-250 p-3.5 text-left transition-colors duration-300 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800${isAtDeviceLimit ? 'cursor-not-allowed opacity-50' : ''}`}
                   >
-                    <DevicesIcon className="h-9 w-9" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-semibold tracking-tight text-dark-50">
-                      {t('dashboard.connectDevice')}
-                    </div>
-                    <div className="mt-0.5 text-sm text-dark-300">
-                      {subscription.device_limit === 0
-                        ? t('dashboard.devicesConnectedUnlimited', { used: connectedDevices })
-                        : t('dashboard.devicesOfMax', {
-                            used: connectedDevices,
-                            max: subscription.device_limit,
-                          })}
-                    </div>
-                    {isAtDeviceLimit && (
-                      <div
-                        className="mt-1 text-xs font-medium"
-                        style={{ color: 'rgb(var(--color-warning-500))' }}
-                      >
-                        {t('dashboard.deviceLimitReached')}
-                      </div>
-                    )}
-                  </div>
-                  {subscription.device_limit === 0 ? (
-                    <div
-                      className="flex flex-shrink-0 items-center text-lg text-dark-300"
-                      aria-hidden="true"
+                    <span
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center"
+                      style={{ color: zone.mainHex }}
                     >
-                      ∞
-                    </div>
-                  ) : subscription.device_limit <= 10 ? (
-                    <div className="flex flex-shrink-0 gap-1.5" aria-hidden="true">
-                      {Array.from({ length: subscription.device_limit }, (_, i) => (
+                      <DevicesIcon className="h-9 w-9" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold tracking-tight text-dark-50">
+                        {t('dashboard.connectDevice')}
+                      </div>
+                      <div className="mt-0.5 text-sm text-dark-300">
+                        {subscription.device_limit === 0
+                          ? t('dashboard.devicesConnectedUnlimited', { used: connectedDevices })
+                          : t('dashboard.devicesOfMax', {
+                              used: connectedDevices,
+                              max: subscription.device_limit,
+                            })}
+                      </div>
+                      {isAtDeviceLimit && (
                         <div
-                          key={i}
-                          className="h-[7px] w-[7px] rounded-full transition-[background-color,box-shadow] duration-300"
-                          style={{
-                            background: i < connectedDevices ? zone.mainHex : g.textGhost,
-                          }}
-                        />
-                      ))}
+                          className="mt-1 text-xs font-medium"
+                          style={{ color: 'rgb(var(--color-warning-500))' }}
+                        >
+                          {t('dashboard.deviceLimitReached')}
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    <div className="flex w-16 flex-shrink-0 items-center" aria-hidden="true">
+                    {subscription.device_limit === 0 ? (
                       <div
-                        className="h-[6px] w-full overflow-hidden rounded-full"
-                        style={{ background: g.textGhost }}
+                        className="flex flex-shrink-0 items-center text-lg text-dark-300"
+                        aria-hidden="true"
                       >
-                        {/* scaleX (compositor) instead of width (layout-thrash).
+                        ∞
+                      </div>
+                    ) : subscription.device_limit <= 10 ? (
+                      <div className="flex flex-shrink-0 gap-1.5" aria-hidden="true">
+                        {Array.from({ length: subscription.device_limit }, (_, i) => (
+                          <div
+                            key={i}
+                            className="h-[7px] w-[7px] rounded-full transition-[background-color,box-shadow] duration-300"
+                            style={{
+                              background: i < connectedDevices ? zone.mainHex : g.textGhost,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex w-16 flex-shrink-0 items-center" aria-hidden="true">
+                        <div
+                          className="h-[6px] w-full overflow-hidden rounded-full"
+                          style={{ background: g.textGhost }}
+                        >
+                          {/* scaleX (compositor) instead of width (layout-thrash).
                             Track is 64px (w-16), so 0.0625 floor = 4px minimum,
                             preserving the prior minWidth behaviour. */}
-                        <div
-                          className="h-full w-full origin-left rounded-full transition-transform duration-500"
-                          style={{
-                            transform: `scaleX(${(() => {
-                              const pct = connectedDevices / subscription.device_limit;
-                              return connectedDevices > 0 ? Math.max(pct, 0.0625) : 0;
-                            })()})`,
-                            background: zone.mainHex,
-                          }}
-                        />
+                          <div
+                            className="h-full w-full origin-left rounded-full transition-transform duration-500"
+                            style={{
+                              transform: `scaleX(${(() => {
+                                const pct = connectedDevices / subscription.device_limit;
+                                return connectedDevices > 0 ? Math.max(pct, 0.0625) : 0;
+                              })()})`,
+                              background: zone.mainHex,
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </button>
-              )}
-
-              {/* ─── Subscription URL ─── */}
-              {displayedConnectionUrl && !shouldHideConnectionLink && (
-                <div className="mb-5 flex gap-2">
-                  <code
-                    className="block min-w-0 flex-1 truncate whitespace-nowrap rounded-[10px] px-3 py-2 font-mono text-sm text-dark-300"
-                    style={{
-                      background: g.codeBg,
-                      border: `1px solid ${g.codeBorder}`,
-                    }}
-                    title={displayedConnectionUrl}
-                  >
-                    {displayedConnectionUrl}
-                  </code>
-                  <button
-                    onClick={copyUrl}
-                    className="flex h-auto items-center rounded-[10px] px-3 transition-colors duration-300"
-                    style={{
-                      background: copied ? 'rgb(var(--color-accent-500))' : g.innerBorder,
-                      border: copied
-                        ? '1px solid rgb(var(--color-accent-500))'
-                        : `1px solid ${g.trackBg}`,
-                      color: copied ? 'rgb(var(--color-on-accent))' : g.textMuted,
-                    }}
-                    aria-label={t('subscription.copyLink')}
-                    title={t('subscription.copyLink')}
-                  >
-                    {copied ? <CheckIcon /> : <CopyIcon />}
+                    )}
                   </button>
-                </div>
-              )}
+                )}
 
-              {/* ─── Countdown ─── */}
-              <div className="mb-5">
+                {/* ─── Subscription URL ─── */}
+                {displayedConnectionUrl && !shouldHideConnectionLink && (
+                  <div className="flex flex-col gap-1.5">
+                    <div className="text-xs font-medium uppercase tracking-wider text-dark-300">
+                      {t('subscription.subscriptionUrlLabel')}
+                    </div>
+                    <div className="flex gap-2">
+                      <code
+                        className="block min-w-0 flex-1 truncate whitespace-nowrap rounded-[10px] px-3 py-2 font-mono text-sm text-dark-300"
+                        style={{
+                          background: g.codeBg,
+                          border: `1px solid ${g.codeBorder}`,
+                        }}
+                        title={displayedConnectionUrl}
+                      >
+                        {displayedConnectionUrl}
+                      </code>
+                      <button
+                        onClick={copyUrl}
+                        className="flex h-auto items-center rounded-[10px] px-3 transition-colors duration-300"
+                        style={{
+                          background: copied ? 'rgb(var(--color-accent-500))' : g.innerBorder,
+                          border: copied
+                            ? '1px solid rgb(var(--color-accent-500))'
+                            : `1px solid ${g.trackBg}`,
+                          color: copied ? 'rgb(var(--color-on-accent))' : g.textMuted,
+                        }}
+                        aria-label={t('subscription.copyLink')}
+                        title={t('subscription.copyLink')}
+                      >
+                        {copied ? <CheckIcon /> : <CopyIcon />}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* ─── Countdown + Autopay (2 cols on lg) ─── */}
+              <div className={`mb-5 grid grid-cols-1 gap-4 ${showAutopay ? 'lg:grid-cols-2' : ''}`}>
                 <CountdownTimer
                   endDate={subscription.end_date}
                   isActive={subscription.is_active || subscription.is_limited}
                   glassColors={g}
                 />
-              </div>
 
-              {/* ─── Autopay Toggle ─── */}
-              {!subscription.is_trial && !subscription.is_daily && (
-                <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-semibold text-dark-50">
-                      {t('subscription.autoRenewal')}
-                    </div>
-                    {/* ProxyKeys custom: информация о стоимости и достаточности средств для автопродления.
+                {/* ─── Autopay Toggle ─── */}
+                {!subscription.is_trial && !subscription.is_daily && (
+                  <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-dark-50">
+                        {t('subscription.autoRenewal')}
+                      </div>
+                      {/* ProxyKeys custom: информация о стоимости и достаточности средств для автопродления.
                         Показывается только когда autopay включён и бэкенд вернул preview-цену.
                         deficit > 0 → warning «необходимо пополнить»; deficit = 0 → success «достаточно средств». */}
-                    {subscription.autopay_enabled &&
-                      subscription.autopay_price_kopeks != null &&
-                      subscription.autopay_price_kopeks > 0 &&
-                      (() => {
-                        const balance = purchaseOptions?.balance_kopeks ?? 0;
-                        const deficit = Math.max(0, subscription.autopay_price_kopeks - balance);
-                        return (
-                          <div className="mt-1.5 space-y-0.5 text-xs">
-                            <div className="text-dark-300">
-                              {t('subscription.autopayChargeInfo')}
-                            </div>
-                            <div className="text-dark-300">
-                              {t('subscription.autopayCost', {
-                                amount: formatPrice(subscription.autopay_price_kopeks),
-                              })}
-                            </div>
-                            {deficit > 0 ? (
-                              <div
-                                className="font-medium"
-                                style={{ color: 'rgb(var(--color-warning-500))' }}
-                              >
-                                {t('subscription.autopayDeficit', {
-                                  amount: formatPrice(deficit),
+                      {subscription.autopay_enabled &&
+                        subscription.autopay_price_kopeks != null &&
+                        subscription.autopay_price_kopeks > 0 &&
+                        (() => {
+                          const balance = purchaseOptions?.balance_kopeks ?? 0;
+                          const deficit = Math.max(0, subscription.autopay_price_kopeks - balance);
+                          return (
+                            <div className="mt-1.5 space-y-0.5 text-xs">
+                              <div className="text-dark-300">
+                                {t('subscription.autopayCost', {
+                                  amount: formatPrice(subscription.autopay_price_kopeks),
                                 })}
                               </div>
-                            ) : (
-                              <div
-                                className="font-medium"
-                                style={{ color: 'rgb(var(--color-success-500))' }}
-                              >
-                                {t('subscription.autopayBalanceOk')}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })()}
-                  </div>
-                  <button
-                    onClick={() => autopayMutation.mutate(!subscription.autopay_enabled)}
-                    disabled={autopayMutation.isPending}
-                    role="switch"
-                    aria-checked={subscription.autopay_enabled}
-                    aria-label={t('subscription.autopay', 'Auto-payment')}
-                    className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
-                    style={{
-                      background: subscription.autopay_enabled ? zone.mainHex : g.textGhost,
-                    }}
-                  >
-                    {/* translateX (compositor) instead of left (layout-thrash).
+                              {deficit > 0 ? (
+                                <div
+                                  className="font-medium"
+                                  style={{ color: 'rgb(var(--color-warning-500))' }}
+                                >
+                                  {t('subscription.autopayDeficit', {
+                                    amount: formatPrice(deficit),
+                                  })}
+                                </div>
+                              ) : (
+                                <div
+                                  className="font-medium"
+                                  style={{ color: 'rgb(var(--color-success-500))' }}
+                                >
+                                  {t('subscription.autopayBalanceOk')}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })()}
+                    </div>
+                    <button
+                      onClick={() => autopayMutation.mutate(!subscription.autopay_enabled)}
+                      disabled={autopayMutation.isPending}
+                      role="switch"
+                      aria-checked={subscription.autopay_enabled}
+                      aria-label={t('subscription.autopay', 'Auto-payment')}
+                      className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
+                      style={{
+                        background: subscription.autopay_enabled ? zone.mainHex : g.textGhost,
+                      }}
+                    >
+                      {/* translateX (compositor) instead of left (layout-thrash).
                         Resting position pinned at left:3px; on toggles a 23px
                         slide on the GPU. */}
-                    <span
-                      className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
-                      style={{
-                        transform: subscription.autopay_enabled
-                          ? 'translateX(23px)'
-                          : 'translateX(0)',
-                        boxShadow: 'none',
-                      }}
-                    />
-                  </button>
-                </div>
-              )}
+                      <span
+                        className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
+                        style={{
+                          transform: subscription.autopay_enabled
+                            ? 'translateX(23px)'
+                            : 'translateX(0)',
+                          boxShadow: 'none',
+                        }}
+                      />
+                    </button>
+                  </div>
+                )}
+              </div>
 
               {/* ─── SBP Recurring Auto-payment ───
                    Sibling of the autopay toggle above, guarded ONLY by
@@ -815,7 +822,7 @@ export default function Subscription() {
                    this block too (backend supports a day-interval charge). */}
               {!subscription.is_trial && sbpUiStateValue !== 'hidden' && (
                 <div
-                  className="mt-3 rounded-[14px] p-3.5"
+                  className="rounded-[14px] p-3.5"
                   style={{
                     background: g.innerBg,
                     border: `1px solid ${g.innerBorder}`,
@@ -1157,20 +1164,21 @@ export default function Subscription() {
               {t('subscription.additionalOptions.title')}
             </h2>
 
-            {/* Buy Devices */}
-            <DeviceTopupSheet
-              open={showDeviceTopup}
-              onOpen={() => setShowDeviceTopup(true)}
-              onClose={() => setShowDeviceTopup(false)}
-              subscription={subscription}
-              subscriptionId={subscriptionId}
-              devicesToAdd={devicesToAdd}
-              onDevicesToAddChange={setDevicesToAdd}
-              purchaseOptions={purchaseOptions}
-            />
+            {/* Buy + Reduce Devices (2 cols on lg when both closed) */}
+            <div
+              className={`grid grid-cols-1 gap-4 ${!showDeviceTopup && !showDeviceReduction ? 'lg:grid-cols-2' : ''}`}
+            >
+              <DeviceTopupSheet
+                open={showDeviceTopup}
+                onOpen={() => setShowDeviceTopup(true)}
+                onClose={() => setShowDeviceTopup(false)}
+                subscription={subscription}
+                subscriptionId={subscriptionId}
+                devicesToAdd={devicesToAdd}
+                onDevicesToAddChange={setDevicesToAdd}
+                purchaseOptions={purchaseOptions}
+              />
 
-            {/* Reduce Devices */}
-            <div className="mt-4">
               <DeviceReductionSheet
                 open={showDeviceReduction}
                 onOpen={() => setShowDeviceReduction(true)}
