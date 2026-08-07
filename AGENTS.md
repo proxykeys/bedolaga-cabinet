@@ -131,6 +131,34 @@ git push origin custom-ui --force-with-lease
 git branch -D backup-before-rebase  # если всё ок
 ```
 
+### Синхронизация документации и патчей
+
+При каждом изменении, затрагивающем кастомизации ProxyKeys (новая фича,
+правка бизнес-логики, изменение UI/бота), **обязательно** поддерживай в
+актуальном состоянии три артефакта:
+
+1. **`custom.patch` на сервере** (`/opt/remnawave/bedolaga/`):
+   ```bash
+   cd /opt/remnawave/bedolaga/bot-src && git diff > ../custom.patch
+   cp ../custom.patch ../custom-before-<feature>.patch  # обязательный backup
+   ```
+   Нужно, если изменён Python-код бота / локали / `.env`. Не нужно при
+   правках только фронтенда кабинета.
+
+2. **Документ ProxyBook** (`/Volumes/MACSSD/DATA/CODE/PROXYKEYS/ProxyBook/`):
+   - Создай/обнови `Bedolaga<FeatureName>.md` с описанием: что изменено,
+     какие файлы, почему, как деплоить, как проверить.
+   - Добавь ссылку в `ProxyBook/README.md` → индекс «Подробный Setup Runbook».
+
+3. **`AGENTS.md`** (этот файл):
+   - Обнови таблицу «ProxyKeys Custom Features» (коммит + краткое описание).
+   - При изменении сервера/DB/тарифа — обнови «Server & DB» и «Backend (Bot) Integration».
+   - При изменении бизнес-модели — обнови «Бизнес-модель ProxyKeys».
+
+**Цель:** чистая установка или обновление Bedolaga (upstream) не должна
+привести к потере знаний. Любой новый диалог (сессия) должен иметь полную
+картину из `AGENTS.md` + ProxyBook, без необходимости читать git log.
+
 ## ProxyKeys Custom Features
 
 Все фичи задеплоены в продакшн. Каждая — отдельный коммит на `custom-ui`.
