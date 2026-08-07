@@ -201,8 +201,11 @@ export function SubscriptionSection() {
         title="PurchaseCTAButton"
         hint="expired (красный) / trial upgrade / active renew / multi-tariff renew"
       >
-        <Snapshot label="cta · no subscription" description="«Получить подписку», красный accent">
-          <PurchaseCTAButton subscription={null} />
+        <Snapshot label="cta · no subscription" description="hidden — empty-state имеет свой CTA">
+          <div className="rounded-xl border border-dashed border-dark-50/10 p-4 text-center text-xs text-dark-50/30">
+            <PurchaseCTAButton subscription={null} />
+            <span className="mt-1 block">(кнопка скрыта — CTA в empty-state)</span>
+          </div>
         </Snapshot>
 
         <Snapshot label="cta · expired" description="истёкшая, красный">
