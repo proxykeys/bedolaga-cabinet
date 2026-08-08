@@ -609,6 +609,9 @@
     "additionalOptions": {
       "title": "Additional options",
       "buyDevices": "Buy more devices",
+      "deviceManagerTitle": "Device limit",
+      "deviceManagerDescription_one": "Current limit: {{count}} device. You can increase or decrease the number of available devices.",
+      "deviceManagerDescription_other": "Current limit: {{count}} devices. You can increase or decrease the number of available devices.",
       "currentDeviceLimit_one": "Current limit: {{count}} device",
       "currentDeviceLimit_other": "Current limit: {{count}} devices",
       "maxDevices": "max {{count}}",

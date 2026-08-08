@@ -32,8 +32,7 @@ import {
   sbpUiState,
   type SbpUiState,
 } from '../utils/sbpRecurring';
-import { DeviceTopupSheet } from '../components/subscription/sheets/DeviceTopupSheet';
-import { DeviceReductionSheet } from '../components/subscription/sheets/DeviceReductionSheet';
+import { DeviceManagerSheet } from '../components/subscription/sheets/DeviceManagerSheet';
 import { ServerManagementSheet } from '../components/subscription/sheets/ServerManagementSheet';
 import { DeleteSubscriptionSheet } from '../components/subscription/sheets/DeleteSubscriptionSheet';
 import { PageSkeleton, Skeleton, SkeletonGroup } from '@/components/ui/skeleton';
@@ -182,10 +181,7 @@ export default function Subscription() {
       : `${formatAmount(kopeks / 100)} ${currencySymbol}`;
 
   // Device/traffic topup state
-  const [showDeviceTopup, setShowDeviceTopup] = useState(false);
-  const [devicesToAdd, setDevicesToAdd] = useState(1);
-  const [showDeviceReduction, setShowDeviceReduction] = useState(false);
-  const [targetDeviceLimit, setTargetDeviceLimit] = useState<number>(1);
+  const [showDeviceManager, setShowDeviceManager] = useState(false);
   const [showServerManagement, setShowServerManagement] = useState(false);
   const [selectedServersToUpdate, setSelectedServersToUpdate] = useState<string[]>([]);
 
@@ -437,14 +433,12 @@ export default function Subscription() {
   // Auto-close all modals/forms when success notification appears
   // (setters are stable React guarantees — listed explicitly for react-compiler)
   const handleCloseAllModals = useCallback(() => {
-    setShowDeviceTopup(false);
-    setShowDeviceReduction(false);
+    setShowDeviceManager(false);
     setShowServerManagement(false);
-  }, [setShowDeviceTopup, setShowDeviceReduction, setShowServerManagement]);
+  }, [setShowDeviceManager, setShowServerManagement]);
   useCloseOnSuccessNotification(handleCloseAllModals);
 
-  // (device price + purchase moved into <DeviceTopupSheet>)
-  // (device reduction info + mutation moved into <DeviceReductionSheet>)
+  // (unified device manager: DeviceManagerSheet self-owns queries + mutations)
 
   // (countries query + update mutation moved into <ServerManagementSheet>)
 
@@ -1164,29 +1158,15 @@ export default function Subscription() {
               {t('subscription.additionalOptions.title')}
             </h2>
 
-            {/* Buy + Reduce Devices (2 cols on lg) */}
-            <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
-              <DeviceTopupSheet
-                open={showDeviceTopup}
-                onOpen={() => setShowDeviceTopup(true)}
-                onClose={() => setShowDeviceTopup(false)}
-                subscription={subscription}
-                subscriptionId={subscriptionId}
-                devicesToAdd={devicesToAdd}
-                onDevicesToAddChange={setDevicesToAdd}
-                purchaseOptions={purchaseOptions}
-              />
-
-              <DeviceReductionSheet
-                open={showDeviceReduction}
-                onOpen={() => setShowDeviceReduction(true)}
-                onClose={() => setShowDeviceReduction(false)}
-                subscriptionPresent={!!subscription}
-                subscriptionId={subscriptionId}
-                targetDeviceLimit={targetDeviceLimit}
-                onTargetDeviceLimitChange={setTargetDeviceLimit}
-              />
-            </div>
+            {/* Unified Device Manager (buy + reduce) */}
+            <DeviceManagerSheet
+              open={showDeviceManager}
+              onOpen={() => setShowDeviceManager(true)}
+              onClose={() => setShowDeviceManager(false)}
+              subscription={subscription}
+              subscriptionId={subscriptionId}
+              purchaseOptions={purchaseOptions}
+            />
 
             {/* Server Management - only in classic mode */}
             {!isTariffsMode && (
