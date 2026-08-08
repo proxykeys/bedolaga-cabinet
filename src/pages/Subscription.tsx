@@ -832,25 +832,25 @@ export default function Subscription() {
                       </div>
 
                       {sbpUiStateValue === 'off' && (
-                        <div className="mt-0.5 text-[11px] text-dark-50/30">
+                        <div className="mt-0.5 text-xs text-dark-50/30">
                           {t('subscription.sbpRecurring.autopayHint')}
                         </div>
                       )}
                       {sbpUiStateValue === 'pending' && (
-                        <div className="mt-0.5 text-[11px] text-dark-50/30">
+                        <div className="mt-0.5 text-xs text-dark-50/30">
                           {t('subscription.sbpRecurring.statusPending')}
                         </div>
                       )}
                       {sbpUiStateValue === 'active' && sbpInfo && (
                         <>
-                          <div className="mt-0.5 text-[11px] text-dark-50/30">
+                          <div className="mt-0.5 text-xs text-dark-50/30">
                             {t('subscription.sbpRecurring.amountPerInterval', {
                               amount: formatAmount((sbpInfo.amount_kopeks ?? 0) / 100),
                               interval: t(sbpIntervalLabelKey(sbpInfo.interval)),
                             })}
                           </div>
                           {sbpInfo.next_charge_at && (
-                            <div className="mt-0.5 text-[11px] text-dark-50/30">
+                            <div className="mt-0.5 text-xs text-dark-50/30">
                               {t('subscription.sbpRecurring.nextCharge', {
                                 date: new Date(sbpInfo.next_charge_at).toLocaleDateString(
                                   uiLocale(),
@@ -866,7 +866,7 @@ export default function Subscription() {
                         </>
                       )}
                       {sbpUiStateValue === 'past_due' && (
-                        <div className="mt-0.5 text-[11px] font-medium text-warning-400">
+                        <div className="mt-0.5 text-xs font-medium text-warning-400">
                           {t('subscription.sbpRecurring.statusPastDue')}
                         </div>
                       )}
@@ -904,7 +904,7 @@ export default function Subscription() {
                           <button
                             onClick={handleCancelSbp}
                             disabled={cancelSbpMutation.isPending}
-                            className="text-[11px] font-medium transition-colors disabled:opacity-50 sm:text-right"
+                            className="text-xs font-medium transition-colors disabled:opacity-50 sm:text-right"
                             style={{ color: 'rgb(var(--color-critical-500))' }}
                           >
                             {t('subscription.sbpRecurring.cancel')}
@@ -1166,7 +1166,7 @@ export default function Subscription() {
               >
                 <div className="flex items-center justify-between">
                   <div className="min-w-0">
-                    <div className="font-medium text-dark-100">
+                    <div className="text-sm font-medium text-dark-100">
                       {t('subscription.revoke.button')}
                     </div>
                     <div className="mt-1 text-sm text-dark-300">
