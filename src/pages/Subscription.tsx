@@ -1159,61 +1159,49 @@ export default function Subscription() {
               )}
 
               {/* Reissue Subscription */}
-              <div
-                className="relative overflow-hidden rounded-3xl"
-                style={{
-                  background: g.cardBg,
-                  border: `1px solid ${g.cardBorder}`,
-                  boxShadow: g.shadow,
-                  padding: '16px 20px',
-                }}
+              <button
+                onClick={handleRevoke}
+                disabled={revokeMutation.isPending || revokeCooldown > 0}
+                className="w-full rounded-xl border border-gray-200/50 bg-gray-250 p-4 text-left transition-colors hover:border-gray-300 disabled:opacity-50 dark:border-gray-800/50 dark:bg-gray-850 dark:hover:border-gray-700"
               >
-                <button
-                  onClick={handleRevoke}
-                  disabled={revokeMutation.isPending || revokeCooldown > 0}
-                  className="w-full rounded-xl border border-gray-200/40 bg-gray-250 p-4 text-left transition-colors hover:bg-gray-300 disabled:opacity-50 dark:border-gray-800/40 dark:bg-gray-850 dark:hover:bg-gray-800"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium text-warning-500">
-                        {t('subscription.revoke.button')}
-                      </div>
-                      <div className="mt-1 text-sm text-dark-300">
-                        {revokeCooldown > 0
-                          ? t('subscription.revoke.cooldown', {
-                              minutes: Math.floor(revokeCooldown / 60),
-                              seconds: revokeCooldown % 60,
-                            })
-                          : t('subscription.revoke.description')}
-                      </div>
+                <div className="flex items-center justify-between">
+                  <div className="min-w-0">
+                    <div className="font-medium text-dark-100">
+                      {t('subscription.revoke.button')}
                     </div>
-                    <div className="text-warning-500">
-                      {revokeMutation.isPending ? (
-                        <div className="h-5 w-5 animate-spin rounded-full border-2 border-warning-500 border-t-transparent" />
-                      ) : (
-                        <svg
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={1.5}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182"
-                          />
-                        </svg>
-                      )}
+                    <div className="mt-1 text-sm text-dark-300">
+                      {revokeCooldown > 0
+                        ? t('subscription.revoke.cooldown', {
+                            minutes: Math.floor(revokeCooldown / 60),
+                            seconds: revokeCooldown % 60,
+                          })
+                        : t('subscription.revoke.description')}
                     </div>
                   </div>
-                </button>
-                {revokeMutation.error && (
-                  <p className="mt-2 text-sm text-error-500">
-                    {getErrorMessage(revokeMutation.error)}
-                  </p>
-                )}
-              </div>
+                  <div className="flex-shrink-0 text-warning-500">
+                    {revokeMutation.isPending ? (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-warning-500 border-t-transparent" />
+                    ) : (
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </button>
+              {revokeMutation.error && (
+                <p className="text-sm text-error-500">{getErrorMessage(revokeMutation.error)}</p>
+              )}
             </div>
 
             {/* Server Management - only in classic mode */}
