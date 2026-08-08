@@ -629,7 +629,7 @@ export default function Subscription() {
                       <DevicesIcon className="h-9 w-9" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold tracking-tight text-dark-50">
+                      <div className="text-base font-semibold tracking-tight text-dark-50">
                         {t('dashboard.connectDevice')}
                       </div>
                       <div className="mt-0.5 text-sm text-dark-300">
@@ -742,7 +742,7 @@ export default function Subscription() {
                 {!subscription.is_trial && !subscription.is_daily && (
                   <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold text-dark-50">
+                      <div className="text-base font-semibold text-dark-50">
                         {t('subscription.autoRenewal')}
                       </div>
                       {/* ProxyKeys custom: информация о стоимости и достаточности средств для автопродления.
@@ -827,7 +827,7 @@ export default function Subscription() {
                       кнопка падает вниз на всю ширину (w-full sm:w-auto). */}
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="min-w-0">
-                      <div className="text-sm font-semibold text-dark-50">
+                      <div className="text-base font-semibold text-dark-50">
                         {t('subscription.sbpRecurring.title')}
                       </div>
 
@@ -1166,7 +1166,7 @@ export default function Subscription() {
               >
                 <div className="flex items-center justify-between">
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-dark-100">
+                    <div className="text-base font-medium text-dark-100">
                       {t('subscription.revoke.button')}
                     </div>
                     <div className="mt-1 text-sm text-dark-300">
