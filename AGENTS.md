@@ -15,6 +15,20 @@ https://docs.bedolagam.ru/
 
 Backend — Bedolaga Telegram Bot (Python/FastAPI), работает на сервере панели `193.23.197.134`, API доступен локально через SSH-туннель.
 
+## Текущие версии (обновление 2026-08-08)
+
+| Компонент | Версия | Образ / ветка |
+|---|---|---|
+| **Remnawave Panel** | 3.2.1 | `remnawave/backend:3` |
+| **Bedolaga Bot** | 4.0.0 | `main` branch (git) |
+| **Cabinet Frontend** | 1.65.0 | `custom-ui` branch |
+| **Remnawave Node** | 2.8.0 (pinned) | `remnawave/node:2.8.0` |
+| **Subscription Page** | latest | `remnawave/subscription-page:latest` |
+| **Panel DB** | PostgreSQL 17.6 | `postgres:17.6` |
+| **Panel Cache** | Valkey 9 | `valkey/valkey:9-alpine` (Unix socket) |
+
+**⚠️ Нода pinned на 2.8.0** — Node v3.0.0 содержит Xray v26.7.28 с багом REALITY (зависание TCP-сокетов под нагрузкой) и ломает совместимость с mihomo/sing-box. Обновлять ноду до v3 только после фикса Xray upstream.
+
 ## Git-структура
 
 - **origin** → `github.com/proxykeys/bedolaga-cabinet` (наш форк)
@@ -184,24 +198,28 @@ git branch -D backup-before-rebase  # если всё ок
 
 ## Backend (Bot) Integration
 
-Бот (Bedolaga Telegram Bot) работает на сервере `193.23.197.134`. Все ProxyKeys-патчи бота собраны в `custom.patch` на сервере.
+Бот (Bedolaga Telegram Bot v4.0.0) работает на сервере `193.23.197.134`. Все ProxyKeys-патчи бота собраны в `custom.patch` на сервере.
+
+**⚠️ Bot v4.0.0 breaking change**: переходит на Remnawave Panel v3 API (numeric user IDs вместо UUID). При запуске выполняет автоматический бэкфил UUID→numeric. Старые JWT-токены (UUID-based) невалидны — нужны новые, подписанные `APP_SECRET` панели v3.
 
 ### Патчи бота
 
-- **Расположение**: `/opt/remnawave/bedolaga/custom.patch` (22 файла, ~1560 строк)
+- **Расположение**: `/opt/remnawave/bedolaga/custom.patch` (~1400 строк, 22 файлов исходного кода; `locales/` volume-mount файлы исключены)
 - **Backup'ы**: `/opt/remnawave/bedolaga/custom-before-*.patch` (снапшоты перед каждым этапом)
-- **Применение**: `cd /opt/remnawave/bedolaga/bot-src && git diff > ../custom.patch` (регенерация)
+- **Применение**: `cd /opt/remnawave/bedolaga/bot-src && git diff HEAD > ../custom.patch` (регенерация)
 
 ### Ключевые патчи бота
 
 | Файл | Что изменено |
 |---|---|
-| `.env` | `TRIAL_TRAFFIC_LIMIT_GB=0`, `DEFAULT_AUTOPAY_DAYS_BEFORE=1`, `DEFAULT_AUTOPAY_ENABLED=false` |
-| `app/cabinet/routes/subscription_modules/purchase.py` | Trial → `is_current=False`; device_count в API |
+| `.env` | `TRIAL_TRAFFIC_LIMIT_GB=0`, `DEFAULT_AUTOPAY_DAYS_BEFORE=1`, `DEFAULT_AUTOPAY_ENABLED=false`, `REMNAWAVE_API_KEY` (v3 JWT), `TRAFFIC_EXCLUDED_USER_IDS` (вместо `_UUIDS`) |
+| `app/cabinet/routes/subscription_modules/purchase.py` | Trial → `is_current=False`; no-manual-renewal guard (409); device_count validation + pricing |
+| `app/cabinet/routes/subscription_modules/renewal.py` | No-manual-renewal guard (409 для активных) |
 | `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов |
-| `app/handlers/subscription/my_subscriptions.py` | Traffic display + кнопка убраны |
-| `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено» |
-| `app/keyboards/inline.py` | Скрыт [Продлить], `pack_buttons_in_rows()` (фикс обрезки кнопок) |
+| `app/handlers/subscription/tariff_purchase.py` | Device selector (`get_tariff_device_keyboard`, `format_device_purchase_preview`, `tariff_dev:` handler); single-tariff auto-select; «❌ Отмена» back buttons |
+| `app/handlers/subscription/my_subscriptions.py` | Traffic display + кнопка [📊 Трафик] убраны; «Автоплатеж»→«Автопродление» |
+| `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено»; фикс-текст (дни/период не настраиваются) |
+| `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок) |
 | `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers |
 
 ### Деплой бота
@@ -215,6 +233,74 @@ docker compose up -d --build bot
 rm -f locales/*.json && docker restart remnawave_bot
 ```
 
+### Процедура обновления upstream (обязательная)
+
+При обновлении **любого** из двух слоёв (бот ИЛИ кабинет) кастомизации могут потеряться: bot — через `git stash pop` (теряются целые файлы), кабинет — через `git rebase` (теряются отдельные коммиты). Для защиты используются скрипты верификации.
+
+Подробный runbook: [ProxyBook/BedolagaPatchVerification.md](../ProxyBook/BedolagaPatchVerification.md)
+
+#### Бот (backend)
+
+Скрипт: `/opt/remnawave/bedolaga/verify-patches.sh` (на сервере)
+
+```bash
+cd /opt/remnawave/bedolaga/bot-src
+
+# 1. snapshot ДО pull — MANDATORY
+../verify-patches.sh snapshot
+
+# 2. update
+git stash
+git pull origin main
+git stash pop
+
+# 3. check ПОСЛЕ stash pop — MANDATORY (exit 1 = стоп, восстанавливать из snapshot)
+../verify-patches.sh check
+
+# 4. пересборка
+docker compose up -d --build bot
+
+# 5. регенерация custom.patch
+git diff HEAD > ../custom.patch
+
+# 6. offsite backup
+scp root@193.23.197.134:/opt/remnawave/bedolaga/custom.patch \
+    /Volumes/MACSSD/DATA/CODE/PROXYKEYS/ProxyBook/patches/custom.patch
+
+# 7. cleanup (retain last 5 pre-update snapshots)
+../verify-patches.sh cleanup
+```
+
+#### Кабинет (frontend)
+
+Скрипт: `ProxyBook/scripts/verify-rebase.sh` (локально, macOS)
+
+```bash
+cd /Volumes/MACSSD/DATA/CODE/PROXYKEYS/bedolaga-cabinet
+
+# 1. snapshot ДО rebase — MANDATORY (создаёт backup ветку + manifest)
+/Volumes/MACSSD/DATA/CODE/PROXYKEYS/ProxyBook/scripts/verify-rebase.sh snapshot
+
+# 2. rebase
+git fetch upstream
+git rebase -i upstream/main
+
+# 3. check ПОСЛЕ rebase — MANDATORY (exit 1 = стоп, восстанавливать из backup ветки)
+/Volumes/MACSSD/DATA/CODE/PROXYKEYS/ProxyBook/scripts/verify-rebase.sh check
+
+# 4. применить локальные патчи (TelegramLoginButton.tsx) — MANDATORY
+bash apply-local-patches.sh
+
+# 5. проверить
+npm run type-check && npm run lint && npm run dev
+# → открыть /dev/ui-preview и проверить
+
+# 6. cleanup (после успешной проверки)
+/Volumes/MACSSD/DATA/CODE/PROXYKEYS/ProxyBook/scripts/verify-rebase.sh cleanup
+```
+
+**Золотое правило:** ни одно обновление upstream не выполняется без шагов `snapshot` + `check`. Если `check` сообщает потери — обновление не считается завершённым, потерянные патчи восстанавливаются из snapshot/backup.
+
 ### КРИТИЧНО: stale `locales/` volume override
 
 `docker-compose.yml` монтирует `./locales:/app/locales:rw`. После `git pull` или правки локалей **обязательно**:
@@ -223,17 +309,46 @@ rm -f locales/*.json && docker restart remnawave_bot
 ```
 Иначе бот использует устаревшие локали из volume.
 
+### Регенерация API-токенов (Panel v3)
+
+Токены — JWT, подписанные `APP_SECRET` панели (не старым `JWT_API_TOKENS_SECRET`). Генерация:
+
+```bash
+docker exec remnawave node -e "
+const jwt = require('jsonwebtoken');
+const secret = process.env.APP_SECRET;
+const token = jwt.sign(
+  { uuid: '<token-uuid>', username: null, role: 'API' },
+  secret,
+  { expiresIn: '36500d', issuer: 'remnawave' }
+);
+console.log(token);
+"
+```
+
+UUID токена берётся из таблицы `api_tokens` (поле `uuid`). Получить список:
+```bash
+docker exec remnawave-db psql -U postgres -d postgres -c "SELECT uuid, name FROM api_tokens;"
+```
+
+Новый токен нужно прописать в `.env` бота (`REMNAWAVE_API_KEY`) и в `.env` панели (`REMNAWAVE_API_TOKEN` для subscription page), затем пересоздать контейнеры.
+
 ## Server & DB
 
 - **Сервер**: `193.23.197.134` (Debian 12)
 - **SSH**: `ssh root@193.23.197.134`
-- **Bot DB**: `docker exec remnawave_bot_db psql -U remnawave_user -d remnawave_bot`
+- **Panel**: `remnawave` (`remnawave/backend:3`, healthcheck: `docker ps --filter name=remnawave`)
+- **Panel DB**: PostgreSQL 17.6 — `docker exec remnawave-db psql -U postgres -d postgres`
+- **Panel Redis**: Valkey 9 (Unix socket) — `docker exec remnawave-redis valkey-cli -s /var/run/valkey/valkey.sock ping`
+- **Bot DB**: PostgreSQL 15 — `docker exec remnawave_bot_db psql -U remnawave_user -d remnawave_bot`
 - **Bot container**: `remnawave_bot` (healthcheck: `docker ps --filter name=remnawave_bot`)
-- **Test user**: id=14 (telegram_id=185929880)
-- **Test trial user**: id=16 (trial, sub id=25, tariff_id=3)
+- **Node**: `3-DE-001` — `remnawave/node:2.8.0` (pinned, `ssh 3-DE-001`)
+- **Test user**: panel id=36 (telegram_id=185929880, bot user id=14)
+- **Test trial user**: panel id=37 (bot user id=16, trial, tariff_id=3)
 - **Active tariff**: id=3 «ProxyKeys Subscription» (device_limit=1, device_price_kopeks=4000, traffic_limit_gb=0, is_active=t)
 - **Inactive tariff**: id=1 «Стандартный» (is_active=f)
 - **Bot env**: `SALES_MODE=tariffs`, `MULTI_TARIFF_ENABLED` не установлен
+- **Backups**: `/opt/backups/` (panel-db-pre-v3.sql, bot-db-pre-v4.sql, configs)
 
 ## ProxyBook (документация)
 
@@ -247,6 +362,7 @@ rm -f locales/*.json && docker restart remnawave_bot
 | `BedolagaTariffWeb.md` | Single-tariff auto-select, device selector |
 | `BedolagaTariff.md` | Кастомизация тарифа (бот) |
 | `BedolagaMergeHomeSubscription.md` | Объединение главной = подписка |
+| `BedolagaV3Upgrade.md` | Обновление Remnawave 2→3 + Bot 3.62→4.0 + Cabinet 1.63→1.65 |
 | `BedolagaDev.md` | Кастомизация кабинета (общее) |
 | `BedolagaSetup.md` | Установка Bedolaga |
 
