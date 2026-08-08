@@ -1164,10 +1164,8 @@ export default function Subscription() {
               {t('subscription.additionalOptions.title')}
             </h2>
 
-            {/* Buy + Reduce Devices (2 cols on lg when both closed) */}
-            <div
-              className={`grid grid-cols-1 gap-4 ${!showDeviceTopup && !showDeviceReduction ? 'lg:grid-cols-2' : ''}`}
-            >
+            {/* Buy + Reduce Devices (2 cols on lg) */}
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               <DeviceTopupSheet
                 open={showDeviceTopup}
                 onOpen={() => setShowDeviceTopup(true)}
