@@ -6,7 +6,6 @@ import { useTheme } from '../../hooks/useTheme';
 import { useTrafficZone } from '../../hooks/useTrafficZone';
 import { getGlassColors } from '../../utils/glassTheme';
 import { CalendarIcon } from '@/components/icons';
-import { useHaptic } from '../../platform';
 import type { Subscription } from '../../types';
 
 interface SubscriptionCardActiveProps {

@@ -610,17 +610,12 @@ export default function Subscription() {
                 {subscription.subscription_url && (
                   <button
                     type="button"
-                    disabled={isAtDeviceLimit}
                     onClick={() => {
-                      if (isAtDeviceLimit) {
-                        haptic.notification('error');
-                        return;
-                      }
                       navigate(
                         subscriptionId ? `/connection?sub=${subscriptionId}` : '/connection',
                       );
                     }}
-                    className={`flex w-full items-center gap-3.5 rounded-[14px] border border-gray-200 bg-gray-250 p-3.5 text-left transition-colors duration-300 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800${isAtDeviceLimit ? 'cursor-not-allowed opacity-50' : ''}`}
+                    className="flex w-full items-center gap-3.5 rounded-[14px] border border-gray-200 bg-gray-250 p-3.5 text-left transition-colors duration-300 hover:border-gray-300 hover:bg-gray-300 dark:border-gray-800 dark:bg-gray-850 dark:hover:border-gray-700 dark:hover:bg-gray-800"
                   >
                     <span
                       className="flex h-9 w-9 flex-shrink-0 items-center justify-center"
