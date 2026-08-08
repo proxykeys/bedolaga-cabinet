@@ -158,10 +158,6 @@ export function DeviceManagerSheet({
         <div className="flex items-center justify-center py-4">
           <span className="h-5 w-5 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
         </div>
-      ) : reductionInfo?.available === false ? (
-        <div className="py-4 text-center text-sm text-dark-300">
-          {reductionInfo.reason || t('subscription.additionalOptions.devicesUnavailable')}
-        </div>
       ) : (
         <div className="space-y-4">
           {/* Device counter */}
