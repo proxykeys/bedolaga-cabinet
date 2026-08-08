@@ -123,7 +123,7 @@ export function DeviceManagerSheet({
       >
         <div className="flex items-center justify-between">
           <div className="min-w-0">
-            <div className="font-medium text-dark-100">
+            <div className="text-sm font-medium text-dark-100">
               {t('subscription.additionalOptions.deviceManagerTitle')}
             </div>
             <div className="mt-1 text-sm text-dark-300">
@@ -143,7 +143,7 @@ export function DeviceManagerSheet({
   return (
     <div className="rounded-xl border border-gray-200/50 bg-gray-250 p-5 dark:border-gray-800/50 dark:bg-gray-850">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-medium text-dark-100">
+        <h3 className="text-sm font-medium text-dark-100">
           {t('subscription.additionalOptions.deviceManagerTitle')}
         </h3>
         <button
