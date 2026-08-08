@@ -127,9 +127,10 @@ export function DeviceManagerSheet({
               {t('subscription.additionalOptions.deviceManagerTitle')}
             </div>
             <div className="mt-1 text-sm text-dark-300">
-              {t('subscription.additionalOptions.deviceManagerDescription', {
-                count: currentLimit,
-              })}
+              {t('subscription.additionalOptions.currentDeviceLimit', { count: currentLimit })}
+            </div>
+            <div className="mt-0.5 text-xs text-dark-300/70">
+              {t('subscription.additionalOptions.deviceManagerHint')}
             </div>
           </div>
           <ChevronRightIcon className="flex-shrink-0 text-dark-300" />
@@ -185,11 +186,6 @@ export function DeviceManagerSheet({
           <div className="space-y-1 text-center text-sm text-dark-300">
             <div>
               {t('subscription.additionalOptions.currentDeviceLimit', { count: currentLimit })}
-            </div>
-            <div>
-              {t('subscription.additionalOptions.minDeviceLimit', {
-                count: reductionInfo?.min_device_limit ?? 1,
-              })}
             </div>
             {reductionInfo && reductionInfo.connected_devices_count > 0 && (
               <div>
