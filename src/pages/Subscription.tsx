@@ -606,7 +606,7 @@ export default function Subscription() {
               </div>
 
               {/* ─── Connect Device + Subscription URL (2 cols on lg) ─── */}
-              <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-stretch">
                 {subscription.subscription_url && (
                   <button
                     type="button"
@@ -695,7 +695,7 @@ export default function Subscription() {
 
                 {/* ─── Subscription URL ─── */}
                 {displayedConnectionUrl && !shouldHideConnectionLink && (
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex h-full flex-col justify-end gap-1.5">
                     <div className="text-xs font-medium uppercase tracking-wider text-dark-300">
                       {t('subscription.subscriptionUrlLabel')}
                     </div>
