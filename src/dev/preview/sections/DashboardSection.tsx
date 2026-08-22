@@ -274,7 +274,7 @@ export function DashboardSection() {
         </Snapshot>
 
         <Snapshot
-          label="stats · no-referrals · buy (ProxyKeys empty-state)"
+          label="stats · no-referrals · buy (ProxyKeys empty-state / триал)"
           description="ячейка рефералов → кнопка «Купить подписку», высота = баланс"
         >
           <StatsGrid
@@ -289,7 +289,7 @@ export function DashboardSection() {
 
         <Snapshot
           label="stats · no-referrals · subscribed (ProxyKeys)"
-          description="есть подписка (активная/триал/истёкшая) — ячейка пустая, CTA рендерит PurchaseCTAButton"
+          description="активная платная — ячейка пустая (продление только автоплатёж); истёкшая — нижний PurchaseCTAButton"
         >
           <StatsGrid
             balanceRubles={1500}
