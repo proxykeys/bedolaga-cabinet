@@ -10,6 +10,7 @@ import {
 } from '../fixtures/purchaseOptions';
 import SubscriptionListCard from '@/components/subscription/SubscriptionListCard';
 import PurchaseCTAButton from '@/components/subscription/PurchaseCTAButton';
+import BuySubscriptionCard from '@/components/subscription/BuySubscriptionCard';
 import { ClassicPurchaseWizard } from '@/components/subscription/purchase/ClassicPurchaseWizard';
 import { DeviceTopupSheet } from '@/components/subscription/sheets/DeviceTopupSheet';
 import { DeviceReductionSheet } from '@/components/subscription/sheets/DeviceReductionSheet';
@@ -233,6 +234,17 @@ export function SubscriptionSection() {
             <PurchaseCTAButton subscription={{ ...activeGreen, is_daily: true }} isMultiTariff />
             <span className="mt-1 block">(кнопка скрыта — daily продляется автоматически)</span>
           </div>
+        </Snapshot>
+      </SubGroup>
+
+      {/* ─── BuySubscriptionCard — единый карточный CTA покупки ─── */}
+      <SubGroup title="BuySubscriptionCard" hint="единый стиль кнопки «Купить подписку» (w-1/2)">
+        <Snapshot label="card · default" description="empty-state на главной и /subscriptions">
+          <BuySubscriptionCard label="Купить подписку" />
+        </Snapshot>
+
+        <Snapshot label="card · browsePlans" description="рядом с TrialOfferCard">
+          <BuySubscriptionCard label="Посмотреть тарифы и купить подписку" />
         </Snapshot>
       </SubGroup>
 
