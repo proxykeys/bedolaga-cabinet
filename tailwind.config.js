@@ -15,6 +15,15 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      screens: {
+        // Desktop header: включается с hdr (928px). Ниже — физически не влезает:
+        // 32 (px-4) + 71 (логотип-иконка) + 32 (gap-4) + 621 (компактная капсула,
+        // 6 пунктов RU/Manrope, px-2/gap-1) + 160 (правая зона) = 916 + запас.
+        // Паддинги пунктов единые на всей полосе ≥928 — без скачка на 1120.
+        // nav (1120) — единственный переход: возвращает подпись appName (max-nav:hidden).
+        hdr: '928px',
+        nav: '1120px',
+      },
       colors: {
         // Modern neutral palette
         dark: {

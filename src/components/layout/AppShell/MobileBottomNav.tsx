@@ -59,7 +59,7 @@ export function MobileBottomNav({
   return (
     <nav
       className={cn(
-        'fixed z-50 transition-all duration-200 xl:hidden',
+        'fixed z-50 transition-all duration-200 hdr:hidden',
         'bg-gray-100/95 backdrop-blur-linear dark:bg-gray-900/95',
         'border border-gray-200/30 dark:border-gray-800/30',
         isKeyboardOpen ? 'pointer-events-none opacity-0' : 'opacity-100',

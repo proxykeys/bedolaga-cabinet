@@ -113,7 +113,9 @@ export function AppShell({ children }: AppShellProps) {
         onClick={handleNavClick}
         aria-label={label}
         className={cn(
-          'relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium transition-colors duration-200',
+          // Единая компактная капсула на всей десктопной полосе (≥928) — без
+          // скачка паддингов на 1120. Влезание при 928: 32+71+32+621+160=916px.
+          'relative flex shrink-0 items-center gap-1 rounded-xl px-2 py-1.5 text-sm font-medium transition-colors duration-200',
           active
             ? admin
               ? 'text-warning-500'
@@ -157,7 +159,7 @@ export function AppShell({ children }: AppShellProps) {
           скроллбара, и капсула по центру прыгала бы на полширины скроллбара при
           переходах между страницами со скроллом и без. 100vw даёт ту же ось
           центрирования, что и у body (тоже 100vw). */}
-      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200 bg-gray-050 dark:border-gray-800 dark:bg-gray-950 xl:block">
+      <header className="fixed left-0 top-0 z-50 hidden w-screen border-b border-gray-200 bg-gray-050 dark:border-gray-800 dark:bg-gray-950 hdr:block">
         {/* 3-зонный grid: лого | капсула | действия. Колонки 1fr_auto_1fr держат
             капсулу строго по центру вьюпорта НЕЗАВИСИМО от ширины лого/действий,
             а действия — у правого края. Поэтому ничего не «скачет» при переходах
@@ -172,7 +174,8 @@ export function AppShell({ children }: AppShellProps) {
             <div className="flex h-10 items-center overflow-hidden">
               <img src={logoUrl} alt={appName || 'Logo'} className="h-8 w-auto object-contain" />
             </div>
-            <span className="text-base font-semibold text-dark-100">{appName}</span>
+            {/* max-nav: подпись скрыта в компактной полосе 928–1119 — только иконка */}
+            <span className="text-base font-semibold text-dark-100 max-nav:hidden">{appName}</span>
           </Link>
 
           {/* Navigation — единая «капсула» (segmented control): все пункты видны
@@ -268,13 +271,14 @@ export function AppShell({ children }: AppShellProps) {
       />
 
       {/* Desktop spacer */}
-      <div className="hidden h-16 xl:block" />
+      <div className="hidden h-16 hdr:block" />
 
       {/* Mobile spacer */}
-      <div className="xl:hidden" style={{ height: headerHeight }} />
+      <div className="hdr:hidden" style={{ height: headerHeight }} />
 
       {/* Main content */}
-      <main className="mx-auto max-w-6xl px-4 py-6 pb-8 xl:px-6 xl:pb-8">{children}</main>
+      {/* px-4 на всех ширинах — десктопные боковые отступы = мобильным */}
+      <main className="mx-auto max-w-6xl px-4 py-6 pb-8">{children}</main>
     </div>
   );
 }
