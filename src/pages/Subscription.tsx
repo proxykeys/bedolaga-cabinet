@@ -544,7 +544,6 @@ export default function Subscription() {
           const connectedDevices = devicesData?.total ?? 0;
           const isAtDeviceLimit =
             subscription.device_limit > 0 && connectedDevices >= subscription.device_limit;
-          const showAutopay = !subscription.is_trial && !subscription.is_daily;
 
           return (
             <div
@@ -726,7 +725,9 @@ export default function Subscription() {
               </div>
 
               {/* ─── Countdown + Autopay (2 cols on lg) ─── */}
-              <div className={`mb-5 grid grid-cols-1 gap-4 ${showAutopay ? 'lg:grid-cols-2' : ''}`}>
+              {/* ProxyKeys custom: lg:grid-cols-2 безусловно — у триала автоплей
+                  скрыт, и при grid-cols-1 блок «Осталось» растягивался на всю ширину. */}
+              <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <CountdownTimer
                   endDate={subscription.end_date}
                   isActive={subscription.is_active || subscription.is_limited}
@@ -944,7 +945,7 @@ export default function Subscription() {
           ) : null}
           <Link
             to="/subscription/purchase"
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-500 p-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
+            className="mx-auto flex w-1/2 items-center justify-center gap-2 rounded-2xl bg-accent-500 p-3.5 text-center text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
           >
             <span className="text-base">+</span>{' '}
             {t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
