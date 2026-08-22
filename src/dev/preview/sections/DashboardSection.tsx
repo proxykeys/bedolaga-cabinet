@@ -274,8 +274,22 @@ export function DashboardSection() {
         </Snapshot>
 
         <Snapshot
-          label="stats · no-referrals (ProxyKeys)"
-          description="карточка рефералов → кнопка «Купить подписку», высота = баланс"
+          label="stats · no-referrals · buy (ProxyKeys empty-state)"
+          description="ячейка рефералов → кнопка «Купить подписку», высота = баланс"
+        >
+          <StatsGrid
+            balanceRubles={1500}
+            referralCount={0}
+            earningsRubles={0}
+            refLoading={false}
+            showReferrals={false}
+            showBuyCta
+          />
+        </Snapshot>
+
+        <Snapshot
+          label="stats · no-referrals · subscribed (ProxyKeys)"
+          description="есть подписка (активная/триал/истёкшая) — ячейка пустая, CTA рендерит PurchaseCTAButton"
         >
           <StatsGrid
             balanceRubles={1500}
