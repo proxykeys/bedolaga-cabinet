@@ -20,7 +20,6 @@ import InsufficientBalancePrompt from '../components/InsufficientBalancePrompt';
 import { useCurrency } from '../hooks/useCurrency';
 import { useCloseOnSuccessNotification } from '../store/successNotification';
 import PurchaseCTAButton from '../components/subscription/PurchaseCTAButton';
-import BuySubscriptionCard from '../components/subscription/BuySubscriptionCard';
 import { CopyIcon, CheckIcon, PauseIcon, CalendarIcon, DevicesIcon } from '../components/icons';
 import { useHaptic, usePlatform } from '../platform';
 import { resolveConnectionUrlForUi } from '../utils/connectionLink';
@@ -927,7 +926,8 @@ export default function Subscription() {
         })()
       ) : (
         // ProxyKeys custom: empty-state на главной (/) — запуск триала (если
-        // доступен) + явная кнопка покупки. У юзера всегда есть путь к витрине.
+        // доступен). Путь к покупке всегда есть: кнопка «Купить подписку»
+        // постоянно живёт в StatsGrid на месте карточки рефералов.
         <div className="space-y-3">
           {trialLoading ? (
             <div className="bento-card">
@@ -944,9 +944,6 @@ export default function Subscription() {
               trialError={trialError}
             />
           ) : null}
-          <BuySubscriptionCard
-            label={t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
-          />
         </div>
       )}
 
