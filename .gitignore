@@ -59,6 +59,8 @@ DESIGN.json
 # Dev screenshots & Playwright artifacts
 .playwright-mcp/
 *.png
+# Brand logos are real source assets, not screenshots
+!src/assets/brand/*.png
 
 # Saved HTML snapshots
 UI State Preview*.html
