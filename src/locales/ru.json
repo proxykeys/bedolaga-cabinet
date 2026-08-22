@@ -553,7 +553,7 @@
       "qrButton": "QR-код",
       "openQr": "Открыть QR-код"
     },
-    "myDevices": "Мои устройства",
+    "myDevices": "Подключенные устройства",
     "noDevices": "Нет подключенных устройств",
     "deleteDevice": "Удалить устройство",
     "deleteAllDevices": "Удалить все",

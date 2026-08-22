@@ -538,7 +538,7 @@
       "qrButton": "QR Code",
       "openQr": "Open QR code"
     },
-    "myDevices": "My Devices",
+    "myDevices": "Connected Devices",
     "noDevices": "No connected devices",
     "deleteDevice": "Delete device",
     "deleteAllDevices": "Delete all",
