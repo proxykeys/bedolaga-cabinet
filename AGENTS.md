@@ -186,6 +186,8 @@ git branch -D backup-before-rebase  # если всё ок
 | Trial device selector | `2905e92d` | Trial не помечает тариф как `is_current` → селектор устройств работает |
 | Merge home=subscription | `73826366` | Главная страница = страница подписки (`/` = `<Subscription/>`) |
 | Bot device stepper | bot custom.patch | Меню «Изменить устройства» в боте = степпер `[−] +N [+]` как в вебе (`chgdev:*`), отдельный экран уменьшения лимита |
+| Recurrent payments doc | — (DB content) | Текст юр-страницы `/recurrent-payments` задеплоен в `recurrent_payments` (БД бота); исходник `ProxyBook/legal/recurrent-payments-ru.txt`; код не менялся |
+| Public offer doc | — (DB content) | Текст юр-страницы `/offer` задеплоен в `public_offers` (БД бота); исходник `ProxyBook/legal/public-offer-ru.txt`; код не менялся |
 
 Подробная документация: см. ProxyBook (секция ниже).
 
