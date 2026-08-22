@@ -2,7 +2,7 @@ import { uiLocale } from '@/utils/uiLocale';
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Link, Navigate, useNavigate, useParams } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import { subscriptionApi } from '../api/subscription';
 import { balanceApi } from '../api/balance';
 import { API } from '../config/constants';
@@ -20,6 +20,7 @@ import InsufficientBalancePrompt from '../components/InsufficientBalancePrompt';
 import { useCurrency } from '../hooks/useCurrency';
 import { useCloseOnSuccessNotification } from '../store/successNotification';
 import PurchaseCTAButton from '../components/subscription/PurchaseCTAButton';
+import BuySubscriptionCard from '../components/subscription/BuySubscriptionCard';
 import { CopyIcon, CheckIcon, PauseIcon, CalendarIcon, DevicesIcon } from '../components/icons';
 import { useHaptic, usePlatform } from '../platform';
 import { resolveConnectionUrlForUi } from '../utils/connectionLink';
@@ -943,13 +944,9 @@ export default function Subscription() {
               trialError={trialError}
             />
           ) : null}
-          <Link
-            to="/subscription/purchase"
-            className="mx-auto flex w-1/2 items-center justify-center gap-2 rounded-2xl bg-accent-500 p-3.5 text-center text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
-          >
-            <span className="text-base">+</span>{' '}
-            {t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
-          </Link>
+          <BuySubscriptionCard
+            label={t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
+          />
         </div>
       )}
 
