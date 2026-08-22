@@ -264,12 +264,10 @@ export function TariffPurchaseForm({
 
   return (
     <div ref={ref} className="space-y-6">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="min-w-0 truncate text-lg font-medium text-dark-100">{tariff.name}</h3>
-        <button onClick={onBack} className="shrink-0 text-dark-400 hover:text-dark-200">
-          ← {t('common.back')}
-        </button>
-      </div>
+      {/* ProxyKeys custom: «← Назад» удалён из шапки — в single-tariff режиме
+          авто-выбор мгновенно переоткрывал форму, кнопка выглядела мёртвой.
+          onBack остаётся для fallback-состояний ниже. */}
+      <h3 className="min-w-0 truncate text-lg font-medium text-dark-100">{tariff.name}</h3>
 
       {/* ProxyKeys custom: блок для renewal активной подписки (defense-in-depth).
       Ручное продление активных подписок запрещено (backend 409) — это UI-подстраховка. */}
