@@ -179,12 +179,13 @@ git branch -D backup-before-rebase  # если всё ок
 
 | Фича | Коммит | Описание |
 |---|---|---|
-| Device count selector | `49c8daf7` | Выбор кол-ва устройств при покупке тарифа (device_price_kopeks × extra × months) |
+| Device count selector | `49c8daf7` + `44e46528` | Выбор кол-ва устройств при покупке тарифа (device_price_kopeks × extra × months); восстановлен после rebase-регрессии e47838b6 |
 | No-manual-renewal | `b40095ec` | Активные подписки не продлеваются вручную — только автопродление с баланса |
 | Autopay info block | `7a68f6f3` | Стоимость автопродления на странице подписки |
 | Unlimited model | `cedd1d33` | Удаление traffic/servers/unlimited UI (все тарифы `traffic_limit_gb=0`) |
 | Trial device selector | `2905e92d` | Trial не помечает тариф как `is_current` → селектор устройств работает |
 | Merge home=subscription | `73826366` | Главная страница = страница подписки (`/` = `<Subscription/>`) |
+| Bot device stepper | bot custom.patch | Меню «Изменить устройства» в боте = степпер `[−] +N [+]` как в вебе (`chgdev:*`), отдельный экран уменьшения лимита |
 
 Подробная документация: см. ProxyBook (секция ниже).
 
@@ -192,7 +193,7 @@ git branch -D backup-before-rebase  # если всё ок
 
 - **Single-tariff**: один активный тариф (id=3, «ProxyKeys Subscription»). `MULTI_TARIFF_ENABLED` не установлен.
 - **Unlimited traffic**: все тарифы `traffic_limit_gb=0`, включая trial (`TRIAL_TRAFFIC_LIMIT_GB=0`).
-- **Device pricing**: `device_price_kopeks=4000` (40₽ за доп. устройство × месяцы). Базовое `device_limit=1`, `max_device_limit=NULL` (без ceiling).
+- **Device pricing**: `device_price_kopeks=4800` (48₽ за доп. устройство, обновлено 2026-08-22). Базовое `device_limit=1`, `max_device_limit=15` (единый потолок для веба и бота).
 - **No-manual-renewal**: активная (non-trial, non-expired) подписка не продлевается вручную. Продление — только автопродление с баланса (`autopay`). Истёкшая — повторная покупка через каталог.
 - **Trial → fresh purchase**: trial-подписка не помечает тариф `is_current=True` → покупка открывается как fresh purchase с селектором устройств.
 
@@ -218,9 +219,12 @@ git branch -D backup-before-rebase  # если всё ок
 | `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов |
 | `app/handlers/subscription/tariff_purchase.py` | Device selector (`get_tariff_device_keyboard`, `format_device_purchase_preview`, `tariff_dev:` handler); single-tariff auto-select; «❌ Отмена» back buttons |
 | `app/handlers/subscription/my_subscriptions.py` | Traffic display + кнопка [📊 Трафик] убраны; «Автоплатеж»→«Автопродление» |
+| `app/handlers/subscription/devices.py` | Device stepper в боте как в вебе (`chgdev:`/`chgdevred`/`chgdevr:`): докупка [−] +N [+] с живой ценой + отдельный экран уменьшения; исполнение через существующие `confirm/execute_change_devices` |
+| `app/utils/device_price.py` | Новый файл: `calculate_device_topup_price()` — цена докупки, зеркалит `/devices/price` кабинета (пророт по days_left, бесплатные в пределах тарифа, скидка PricingEngine) |
+| `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов; регистрация степпер-хендлеров `chgdev*` |
 | `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено»; фикс-текст (дни/период не настраиваются) |
 | `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок) |
-| `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers |
+| `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers; ключи `CHGDEV_*` (степпер устройств, ru/en) |
 
 ### Деплой бота
 
@@ -345,7 +349,7 @@ docker exec remnawave-db psql -U postgres -d postgres -c "SELECT uuid, name FROM
 - **Node**: `3-DE-001` — `remnawave/node:2.8.0` (pinned, `ssh 3-DE-001`)
 - **Test user**: panel id=36 (telegram_id=185929880, bot user id=14)
 - **Test trial user**: panel id=37 (bot user id=16, trial, tariff_id=3)
-- **Active tariff**: id=3 «ProxyKeys Subscription» (device_limit=1, device_price_kopeks=4000, traffic_limit_gb=0, is_active=t)
+- **Active tariff**: id=3 «ProxyKeys Subscription» (device_limit=1, device_price_kopeks=4800, max_device_limit=15, traffic_limit_gb=0, is_active=t, period_prices={"30":4800})
 - **Inactive tariff**: id=1 «Стандартный» (is_active=f)
 - **Bot env**: `SALES_MODE=tariffs`, `MULTI_TARIFF_ENABLED` не установлен
 - **Backups**: `/opt/backups/` (panel-db-pre-v3.sql, bot-db-pre-v4.sql, configs)
@@ -363,6 +367,9 @@ docker exec remnawave-db psql -U postgres -d postgres -c "SELECT uuid, name FROM
 | `BedolagaTariff.md` | Кастомизация тарифа (бот) |
 | `BedolagaMergeHomeSubscription.md` | Объединение главной = подписка |
 | `BedolagaV3Upgrade.md` | Обновление Remnawave 2→3 + Bot 3.62→4.0 + Cabinet 1.63→1.65 |
+| `BedolagaCabinetDeploy.md` | Деплой кабинета custom-ui на прод + инцидент 2026-08-22 (пропавший device selector) |
+| `BedolagaDeviceStepperBot.md` | Степпер устройств в боте как в вебе (`chgdev:*`) |
+| `BedolagaBotUpdate410.md` | Runbook обновления Bot 4.0.0 → 4.1.0 (ПЛАН, выполнение после ~2026-09-03) |
 | `BedolagaDev.md` | Кастомизация кабинета (общее) |
 | `BedolagaSetup.md` | Установка Bedolaga |
 
@@ -392,7 +399,23 @@ npm run preview   # предпросмотр production-сборки
 
 ## Production Deployment
 
-Frontend собирается в Docker, статики копируются в `/srv/cabinet` на сервере панели. Раздаётся через Caddy:
+**Прод = custom-ui** (с 2026-08-22; до этого — vanilla 1.65.0 с V3-апгрейда 2026-08-08, что и вызвало потерю device selector — см. ProxyBook/BedolagaCabinetDeploy.md).
+
+Сервер: `/opt/remnawave/bedolaga/cabinet-src` — ветка `custom-ui` из remote `fork` (github.com/proxykeys/bedolaga-cabinet); `origin` = upstream BEDOLAGA-DEV. Infra-моды (`VITE_FORCE_TELEGRAM_DEEPLINK_AUTH` в Dockerfile/docker-compose.yml) живут как незакоммиченные правки поверх ветки; патч TelegramLoginButton в ветке закоммичен.
+
+```bash
+# На сервере (полный runbook + rollback: ProxyBook/BedolagaCabinetDeploy.md)
+cd /opt/remnawave/bedolaga/cabinet-src
+git stash push -m "infra mods" && git pull fork custom-ui && git stash pop
+docker compose build && docker compose up -d
+tar czf /opt/backups/cabinet-statics-$(date +%Y%m%d-%H%M).tar.gz -C /srv/cabinet .
+rm -rf /srv/cabinet/* && docker cp cabinet_frontend:/usr/share/nginx/html/. /srv/cabinet/ && chmod -R a+rX /srv/cabinet
+# Верификация: grep -l pricePerDevice /srv/cabinet/assets/*.js; hash index-чанка == локальной сборке
+```
+
+НИКОГДА не деплоить локальную macOS npm-сборку tar'ом (устаревшая процедура из BedolagaV3Upgrade.md Phase 6 — источник рассинхрона).
+
+Раздаётся через Caddy:
 
 ```caddyfile
 https://my.proxykeys.net {
