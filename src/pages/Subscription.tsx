@@ -534,9 +534,10 @@ export default function Subscription() {
     <div className="space-y-6">
       {/* ProxyKeys custom: эта страница = главная (/).
           Баланс и рефералы всегда видны сверху (как на бывшей Dashboard).
-          Кнопка «Купить подписку» в сетке — только в empty-state; при
-          активной/триал/истёкшей подписке CTA рендерит PurchaseCTAButton. */}
-      <StatsGridContainer showBuyCta={!subscription} />
+          Кнопка «Купить подписку» в сетке — в empty-state и активном триале;
+          при активной платной CTA нет (продление только автоплатёж),
+          при истёкшей — нижний PurchaseCTAButton (expired-вариант). */}
+      <StatsGridContainer showBuyCta={!subscription || !!subscription.is_trial} />
 
       {/* Current Subscription */}
       {subscription ? (
@@ -1106,8 +1107,10 @@ export default function Subscription() {
         </div>
       )}
 
-      {/* Purchase / Renewal CTA */}
-      <PurchaseCTAButton subscription={subscription} isMultiTariff={isMultiTariff} />
+      {/* Purchase / Renewal CTA (ProxyKeys: триал — CTA в сетке StatsGrid, дубль не нужен) */}
+      {!subscription?.is_trial && (
+        <PurchaseCTAButton subscription={subscription} isMultiTariff={isMultiTariff} />
+      )}
 
       {/* Delete expired subscription */}
       {isMultiTariff &&
