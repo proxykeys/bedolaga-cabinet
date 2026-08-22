@@ -21,6 +21,7 @@ export default function StatsGridContainer() {
   const { data: referralInfo, isLoading: refLoading } = useQuery({
     queryKey: ['referral-info'],
     queryFn: referralApi.getReferralInfo,
+    enabled: false,
   });
 
   return (
@@ -29,6 +30,7 @@ export default function StatsGridContainer() {
       referralCount={referralInfo?.total_referrals || 0}
       earningsRubles={referralInfo?.available_balance_rubles || 0}
       refLoading={refLoading}
+      showReferrals={false}
     />
   );
 }
