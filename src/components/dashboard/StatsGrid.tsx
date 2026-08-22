@@ -11,6 +11,10 @@ interface StatsGridProps {
   refLoading: boolean;
   /** ProxyKeys custom: скрыть карточку рефералов (balance сохраняет позицию в grid-cols-2) */
   showReferrals?: boolean;
+  /** ProxyKeys custom: кнопка «Купить подписку» в ячейке рефералов.
+   *  Только когда подписки нет (empty-state); при активной/триал/истёкшей
+   *  CTA уже рендерит PurchaseCTAButton — дубль не нужен. */
+  showBuyCta?: boolean;
 }
 
 export default function StatsGrid({
@@ -19,6 +23,7 @@ export default function StatsGrid({
   earningsRubles,
   refLoading,
   showReferrals = true,
+  showBuyCta = false,
 }: StatsGridProps) {
   const { t } = useTranslation();
   const { formatAmount, currencySymbol } = useCurrency();
@@ -48,10 +53,10 @@ export default function StatsGrid({
             trailing={chevron}
           />
         </Link>
-      ) : (
+      ) : showBuyCta ? (
         /* ProxyKeys custom: кнопка покупки на месте скрытой карточки рефералов.
            Та же ячейка сетки и стили StatCard — высота равна карточке баланса
-           (grid stretch + h-full). */
+           (grid stretch + h-full). Только в empty-state (showBuyCta). */
         <Link
           to="/subscription/purchase"
           className="group flex h-full items-center gap-2.5 rounded-xl bg-gray-250 p-3 transition-colors hover:bg-gray-300 dark:bg-gray-850 dark:hover:bg-gray-800"
@@ -64,7 +69,7 @@ export default function StatsGrid({
           </span>
           <ChevronRightIcon className="h-4 w-4 shrink-0 text-dark-300 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
-      )}
+      ) : null}
     </div>
   );
 }

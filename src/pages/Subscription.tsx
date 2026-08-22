@@ -534,9 +534,9 @@ export default function Subscription() {
     <div className="space-y-6">
       {/* ProxyKeys custom: эта страница = главная (/).
           Баланс и рефералы всегда видны сверху (как на бывшей Dashboard).
-          Без заголовка/Back-кнопки: для single-tariff это top-level экран
-          (AppWithNavigator уже скрывает Telegram back на /). */}
-      <StatsGridContainer />
+          Кнопка «Купить подписку» в сетке — только в empty-state; при
+          активной/триал/истёкшей подписке CTA рендерит PurchaseCTAButton. */}
+      <StatsGridContainer showBuyCta={!subscription} />
 
       {/* Current Subscription */}
       {subscription ? (
