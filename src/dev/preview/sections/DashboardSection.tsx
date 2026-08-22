@@ -272,6 +272,19 @@ export function DashboardSection() {
         <Snapshot label="stats · zero" description="нулевой баланс, 0 рефералов">
           <StatsGrid balanceRubles={0} referralCount={0} earningsRubles={0} refLoading={false} />
         </Snapshot>
+
+        <Snapshot
+          label="stats · no-referrals (ProxyKeys)"
+          description="карточка рефералов → кнопка «Купить подписку», высота = баланс"
+        >
+          <StatsGrid
+            balanceRubles={1500}
+            referralCount={0}
+            earningsRubles={0}
+            refLoading={false}
+            showReferrals={false}
+          />
+        </Snapshot>
       </SubGroup>
 
       {/* ─── PendingGiftCard ─── */}
