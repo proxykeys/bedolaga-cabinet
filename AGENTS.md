@@ -213,7 +213,7 @@ git branch -D backup-before-rebase  # если всё ок
 
 | Файл | Что изменено |
 |---|---|
-| `.env` | `TRIAL_TRAFFIC_LIMIT_GB=0`, `DEFAULT_AUTOPAY_DAYS_BEFORE=1`, `DEFAULT_AUTOPAY_ENABLED=false`, `REMNAWAVE_API_KEY` (v3 JWT), `TRAFFIC_EXCLUDED_USER_IDS` (вместо `_UUIDS`) |
+| `.env` | `TRIAL_TRAFFIC_LIMIT_GB=0`, `DEFAULT_AUTOPAY_DAYS_BEFORE=1`, `DEFAULT_AUTOPAY_ENABLED=false`, `REMNAWAVE_API_KEY` (v3 JWT), `TRAFFIC_EXCLUDED_USER_IDS` (вместо `_UUIDS`), `AVAILABLE_LANGUAGES=ru` (один язык кабинета/бота — переключатель в хедере кабинета скрывается сам при ≤1 языке; backup `.env.backup-before-single-lang-*`) |
 | `app/cabinet/routes/subscription_modules/purchase.py` | Trial → `is_current=False`; no-manual-renewal guard (409); device_count validation + pricing |
 | `app/cabinet/routes/subscription_modules/renewal.py` | No-manual-renewal guard (409 для активных) |
 | `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов |
