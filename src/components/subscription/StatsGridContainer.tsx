@@ -10,7 +10,7 @@ import StatsGrid from '../dashboard/StatsGrid';
  * Обёртка вокруг существующего <StatsGrid/>, чтобы не утяжелять Subscription.tsx
  * лишними queries и не плодить конфликты при rebase upstream.
  */
-export default function StatsGridContainer() {
+export default function StatsGridContainer({ showBuyCta = false }: { showBuyCta?: boolean }) {
   const { data: balanceData } = useQuery({
     queryKey: ['balance'],
     queryFn: balanceApi.getBalance,
@@ -31,6 +31,7 @@ export default function StatsGridContainer() {
       earningsRubles={referralInfo?.available_balance_rubles || 0}
       refLoading={refLoading}
       showReferrals={false}
+      showBuyCta={showBuyCta}
     />
   );
 }
