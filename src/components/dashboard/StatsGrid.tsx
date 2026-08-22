@@ -9,6 +9,8 @@ interface StatsGridProps {
   referralCount: number;
   earningsRubles: number;
   refLoading: boolean;
+  /** ProxyKeys custom: скрыть карточку рефералов (balance сохраняет позицию в grid-cols-2) */
+  showReferrals?: boolean;
 }
 
 export default function StatsGrid({
@@ -16,6 +18,7 @@ export default function StatsGrid({
   referralCount,
   earningsRubles,
   refLoading,
+  showReferrals = true,
 }: StatsGridProps) {
   const { t } = useTranslation();
   const { formatAmount, currencySymbol } = useCurrency();
@@ -33,17 +36,19 @@ export default function StatsGrid({
           trailing={chevron}
         />
       </Link>
-      <Link to="/referral" className="block h-full">
-        <StatCard
-          label={t('dashboard.stats.referrals')}
-          value={`${referralCount}`}
-          subValue={`+${formatAmount(earningsRubles)} ${currencySymbol}`}
-          icon={<UsersIcon className="h-5 w-5" />}
-          tone="neutral"
-          loading={refLoading}
-          trailing={chevron}
-        />
-      </Link>
+      {showReferrals && (
+        <Link to="/referral" className="block h-full">
+          <StatCard
+            label={t('dashboard.stats.referrals')}
+            value={`${referralCount}`}
+            subValue={`+${formatAmount(earningsRubles)} ${currencySymbol}`}
+            icon={<UsersIcon className="h-5 w-5" />}
+            tone="neutral"
+            loading={refLoading}
+            trailing={chevron}
+          />
+        </Link>
+      )}
     </div>
   );
 }
