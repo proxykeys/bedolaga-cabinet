@@ -55,7 +55,7 @@ export default function PurchaseCTAButton({
       : '/subscription/purchase';
 
   return (
-    <Link to={linkTo} className="block">
+    <Link to={linkTo} className="mx-auto block w-1/2">
       <div className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800">
         <div className="relative flex items-center justify-between rounded-[14px] px-5 py-4 transition-colors duration-300">
           {/* Left: icon + text */}
@@ -69,7 +69,9 @@ export default function PurchaseCTAButton({
             </span>
             <div>
               <div className="text-[15px] font-semibold text-dark-50">{buttonText}</div>
-              <div className="text-sm text-dark-300">{hintText}</div>
+              {/* ProxyKeys custom: trial-подсказка «Больше трафика и устройств»
+                  удалена — противоречит unlimited-модели (трафик безлимитный). */}
+              {!isTrial && <div className="text-sm text-dark-300">{hintText}</div>}
             </div>
           </div>
 

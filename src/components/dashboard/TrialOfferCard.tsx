@@ -131,20 +131,21 @@ export default function TrialOfferCard({
       )}
 
       {/* CTA Button — monochrome per claude.com aesthetic
-          (was: bg-warning/accent-500 + on-*; now: .btn-primary-lg pattern). */}
+          (was: bg-warning/accent-500 + on-*; now: .btn-primary-lg pattern).
+          ProxyKeys custom: w-1/2 по центру — как кнопка «Купить подписку». */}
       {!isFree && trialInfo.price_kopeks > 0 ? (
         canAfford ? (
           <button
             onClick={() => !activateTrialMutation.isPending && activateTrialMutation.mutate()}
             disabled={activateTrialMutation.isPending}
-            className="btn-primary-lg w-full py-4 text-base disabled:opacity-50"
+            className="btn-primary-lg mx-auto block w-1/2 py-4 text-base disabled:opacity-50"
           >
             {activateTrialMutation.isPending
               ? t('common.loading')
               : t('subscription.trial.payAndActivate')}
           </button>
         ) : (
-          <Link to="/balance" className="btn-primary-lg block w-full py-4 text-base">
+          <Link to="/balance" className="btn-primary-lg mx-auto block w-1/2 py-4 text-base">
             {t('subscription.trial.topUpToActivate')}
           </Link>
         )
@@ -152,7 +153,7 @@ export default function TrialOfferCard({
         <button
           onClick={() => !activateTrialMutation.isPending && activateTrialMutation.mutate()}
           disabled={activateTrialMutation.isPending}
-          className="btn-primary-lg w-full py-4 text-base disabled:opacity-50"
+          className="btn-primary-lg mx-auto block w-1/2 py-4 text-base disabled:opacity-50"
         >
           {activateTrialMutation.isPending ? t('common.loading') : t('subscription.trial.activate')}
         </button>
