@@ -11,8 +11,9 @@ import { useAuthStore } from '../store/auth';
 import SubscriptionListCard from '../components/subscription/SubscriptionListCard';
 import TrialOfferCard from '../components/dashboard/TrialOfferCard';
 import { Skeleton, SkeletonGroup } from '@/components/ui/skeleton';
+import BuySubscriptionCard from '../components/subscription/BuySubscriptionCard';
 
-function EmptyState({ onBuy }: { onBuy: () => void }) {
+function EmptyState() {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const g = getGlassColors(isDark);
@@ -31,9 +32,7 @@ function EmptyState({ onBuy }: { onBuy: () => void }) {
       <p className="mb-6 text-sm" style={{ color: g.textSecondary }}>
         {t('subscriptions.emptyDesc', 'У вас пока нет активных подписок')}
       </p>
-      <button onClick={onBuy} className="btn-cta-md px-8">
-        {t('subscriptions.buy', 'Купить подписку')}
-      </button>
+      <BuySubscriptionCard label={t('subscriptions.buy', 'Купить подписку')} />
     </div>
   );
 }
@@ -128,13 +127,9 @@ export default function Subscriptions() {
       {/* Есть подписки, но платной активной нет (только триал/истёкшие) —
           даём ЯВНУЮ primary-кнопку покупки: мы продаём подписки. */}
       {!isLoading && subscriptions.length > 0 && !hasActivePaid && (
-        <button
-          onClick={() => navigate('/subscription/purchase')}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-500 p-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
-        >
-          <PlusIcon className="h-5 w-5" />
-          {t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
-        </button>
+        <BuySubscriptionCard
+          label={t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
+        />
       )}
 
       {/* Loading */}
@@ -166,18 +161,12 @@ export default function Subscriptions() {
               в витрину — даём явный путь к покупке подписки. Раньше при
               доступном триале это был единственный экран без кнопки «Купить»
               (Telegram-баг #605056/#605063). */}
-          <button
-            onClick={() => navigate('/subscription/purchase')}
-            className="btn-cta-md flex w-full items-center justify-center gap-2 font-semibold"
-          >
-            <PlusIcon className="h-5 w-5" />
-            {t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
-          </button>
+          <BuySubscriptionCard
+            label={t('subscriptions.browsePlans', 'Посмотреть тарифы и купить подписку')}
+          />
         </div>
       )}
-      {hasNoSubscriptions && !trialLoading && !trialInfo?.is_available && (
-        <EmptyState onBuy={() => navigate('/subscription/purchase')} />
-      )}
+      {hasNoSubscriptions && !trialLoading && !trialInfo?.is_available && <EmptyState />}
 
       {/* Subscription grid */}
       {subscriptions.length > 0 && (
