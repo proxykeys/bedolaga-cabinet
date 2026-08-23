@@ -102,22 +102,24 @@ export function TariffPurchaseForm({
   // вызываем updateAutopay с выбранным значением.
   const [autopayEnabled, setAutopayEnabled] = useState(true);
 
-  // ProxyKeys custom: согласие с условиями рекуррентных платежей при покупке
-  // с автопродлением (ON). Присоединяется к подписке сразу после оплаты,
-  // поэтому точка акцепта — здесь, до нажатия «Купить».
-  const [recurrentAccepted, setRecurrentAccepted] = useState(false);
-
   // ProxyKeys custom: явный акцепт публичной оферты в точке оплаты.
-  // Гейтит все платёжные кнопки формы (баланс, СБП, Lava).
+  // Гейтит все платёжные кнопки формы (баланс, СБП, Lava). При autopay ON
+  // (fresh purchase, не-daily) чек-бокс расширяется: «…публичной оферты И
+  // рекуррентных платежей» — одна точка согласия на оба документа.
   const [offerAccepted, setOfferAccepted] = useState(false);
 
-  // ProxyKeys custom: recurrent-consent гейт — свежая покупка не-daily тарифа
-  // с автопродлением ON требует согласия с рекуррентными платежами.
+  // Формулировка согласия зависит от autopay-состояния: при переключении
+  // toggle сбрасываем отметку — согласие должно быть с актуальным текстом.
+  useEffect(() => {
+    setOfferAccepted(false);
+  }, [autopayEnabled]);
+
+  // ProxyKeys custom: recurrent-часть чек-бокса показывается только при
+  // свежей покупке не-daily тарифа с автопродлением ON.
   const isDailyTariffForm = Boolean(
     tariff.is_daily || (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0),
   );
-  const recurrentGateActive =
-    isFreshPurchase && !isDailyTariffForm && autopayEnabled && !recurrentAccepted;
+  const showRecurrentConsent = isFreshPurchase && !isDailyTariffForm && autopayEnabled;
 
   // ProxyKeys custom: получение текущей подписки для отображения периода
   // действия продления («с ... по ...»). Только при продлении (is_current).
@@ -827,29 +829,6 @@ export function TariffPurchaseForm({
                   </div>
                 )}
 
-              {/* ProxyKeys custom: согласие с рекуррентными платежами при покупке
-                  с автопродлением (toggle ON). Кнопка «Купить» гейтится этим
-                  чек-боксом ниже — включение автопродления требует явного акцепта
-                  (та же точка, что и панель на странице подписки). */}
-              {isFreshPurchase &&
-                !(
-                  tariff.is_daily ||
-                  (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0)
-                ) &&
-                autopayEnabled && (
-                  <ConsentCheckbox
-                    id="tariff-purchase-recurrent-consent"
-                    checked={recurrentAccepted}
-                    onChange={setRecurrentAccepted}
-                    prefixKey="legal.consent.autopayPrefix"
-                    prefixFallback="Ознакомлен(а) с условиями"
-                    href="/recurrent-payments"
-                    linkKey="legal.consent.recurrentLabel"
-                    linkFallback="рекуррентных платежей"
-                    className="-mt-3 px-3.5"
-                  />
-                )}
-
               {/* Summary & Purchase */}
               {(selectedTariffPeriod || useCustomDays) && (
                 <div className="rounded-xl bg-dark-800/50 p-5">
@@ -1067,6 +1046,9 @@ export function TariffPurchaseForm({
                           </div>
                         </div>
 
+                        {/* ProxyKeys custom: единая точка согласия. При autopay ON
+                            текст расширяется вторым документом — «…публичной оферты
+                            И рекуррентных платежей» (secondHref-проп ConsentCheckbox). */}
                         <ConsentCheckbox
                           id="tariff-purchase-offer-consent"
                           checked={offerAccepted}
@@ -1076,14 +1058,19 @@ export function TariffPurchaseForm({
                           href="/offer"
                           linkKey="legal.consent.offerLabel"
                           linkFallback="публичной оферты"
+                          {...(showRecurrentConsent
+                            ? {
+                                secondHref: '/recurrent-payments',
+                                secondLinkKey: 'legal.consent.recurrentLabel',
+                                secondLinkFallback: 'рекуррентных платежей',
+                              }
+                            : {})}
                           className="mb-3"
                         />
 
                         <button
                           onClick={() => purchaseMutation.mutate()}
-                          disabled={
-                            purchaseMutation.isPending || !offerAccepted || recurrentGateActive
-                          }
+                          disabled={purchaseMutation.isPending || !offerAccepted}
                           className="btn-primary w-full py-3"
                         >
                           {purchaseMutation.isPending ? (

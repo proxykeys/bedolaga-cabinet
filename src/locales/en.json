@@ -5964,7 +5964,8 @@
       "offerPrefix": "By paying, I accept the",
       "offerLabel": "Public Offer",
       "autopayPrefix": "I have read the",
-      "recurrentLabel": "Recurring Payments terms"
+      "recurrentLabel": "Recurring Payments terms",
+      "and": "and"
     }
   }
 }
