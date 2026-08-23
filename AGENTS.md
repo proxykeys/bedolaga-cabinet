@@ -186,6 +186,7 @@ git branch -D backup-before-rebase  # если всё ок
 | Trial device selector | `2905e92d` | Trial не помечает тариф как `is_current` → селектор устройств работает |
 | Merge home=subscription | `73826366` | Главная страница = страница подписки (`/` = `<Subscription/>`) |
 | Bot device stepper | bot custom.patch | Меню «Изменить устройства» в боте = степпер `[−] +N [+]` как в вебе (`chgdev:*`), отдельный экран уменьшения лимита |
+| Bot promocode to balance | bot custom.patch | Кнопка «🎫 Промокод» перенесена из главного меню бота на экран «Баланс» (как в веб-кабинете); хендлер `menu_promocode` не менялся |
 | Recurrent payments doc | — (DB content) | Текст юр-страницы `/recurrent-payments` задеплоен в `recurrent_payments` (БД бота); исходник `ProxyBook/legal/recurrent-payments-ru.txt`; код не менялся |
 | Info recurrent tab | `a7a79bd0` + `9c23b8d5` | Таб «Рекуррентные платежи» на `/info` между «Оферта» и «Статусы» (builtin-таб, видимость через `visibility.recurrent` / `RECURRENT_PAYMENTS_DISPLAY_MODE`); контент — тот же документ из БД; фикс: builtin-табы не обрезаются (truncate только для кастомных страниц) |
 | Public offer doc | — (DB content) | Текст юр-страницы `/offer` задеплоен в `public_offers` (БД бота); исходник `ProxyBook/legal/public-offer-ru.txt`; код не менялся |
@@ -227,7 +228,7 @@ git branch -D backup-before-rebase  # если всё ок
 | `app/utils/device_price.py` | Новый файл: `calculate_device_topup_price()` — цена докупки, зеркалит `/devices/price` кабинета (пророт по days_left, бесплатные в пределах тарифа, скидка PricingEngine) |
 | `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов; регистрация степпер-хендлеров `chgdev*` |
 | `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено»; фикс-текст (дни/период не настраиваются) |
-| `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок) |
+| `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок); [🎫 Промокод] перенесён из главного меню в `get_balance_keyboard` (экран «Баланс», как в вебе) |
 | `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers; ключи `CHGDEV_*` (степпер устройств, ru/en) |
 
 ### Деплой бота
