@@ -788,7 +788,10 @@
     "statusActive": "Active",
     "statusExpired": "Expired",
     "statusLimited": "Limited",
-    "statusTrial": "Trial"
+    "statusTrial": "Trial",
+    "autopayConsentTitle": "Enable auto-renewal",
+    "autopayConsentText": "The subscription will renew automatically 1 day before the period ends, charged from your internal Balance. You can disable it at any time.",
+    "autopayConsentEnable": "Enable"
   },
   "balance": {
     "title": "Balance",
@@ -5959,7 +5962,9 @@
   "legal": {
     "consent": {
       "offerPrefix": "By paying, I accept the",
-      "autopayPrefix": "I have read the"
+      "offerLabel": "Public Offer",
+      "autopayPrefix": "I have read the",
+      "recurrentLabel": "Recurring Payments terms"
     }
   }
 }

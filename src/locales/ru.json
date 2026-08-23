@@ -808,7 +808,10 @@
     "statusActive": "Активна",
     "statusExpired": "Истекла",
     "statusLimited": "Ограничена",
-    "statusTrial": "Триал"
+    "statusTrial": "Триал",
+    "autopayConsentTitle": "Включить автопродление",
+    "autopayConsentText": "Подписка будет продлеваться автоматически за 1 день до окончания периода, списание — с внутреннего Баланса. Отключить можно в любой момент.",
+    "autopayConsentEnable": "Включить"
   },
   "balance": {
     "title": "Баланс",
@@ -6512,7 +6515,9 @@
   "legal": {
     "consent": {
       "offerPrefix": "Оплатой принимаю условия",
-      "autopayPrefix": "Ознакомлен(а) с условиями"
+      "offerLabel": "публичной оферты",
+      "autopayPrefix": "Ознакомлен(а) с условиями",
+      "recurrentLabel": "рекуррентных платежей"
     }
   }
 }
