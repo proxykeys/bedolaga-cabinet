@@ -801,7 +801,9 @@ export default function Info() {
             }`}
           >
             {tab.emoji ? <span className="text-base">{tab.emoji}</span> : <tab.icon />}
-            <span className="max-w-[140px] truncate">{tab.label}</span>
+            <span className={BUILTIN_TABS.has(tab.id) ? '' : 'max-w-[140px] truncate'}>
+              {tab.label}
+            </span>
           </button>
         ))}
       </div>
