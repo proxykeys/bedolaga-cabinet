@@ -740,8 +740,8 @@ export default function Subscription() {
 
                 {/* ─── Autopay Toggle ─── */}
                 {!subscription.is_trial && !subscription.is_daily && (
-                  <>
-                    <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                  <div className="rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                    <div className="flex items-center justify-between gap-3">
                       <div className="min-w-0 flex-1">
                         <div className="text-base font-semibold text-dark-50">
                           {t('subscription.autoRenewal')}
@@ -789,11 +789,13 @@ export default function Subscription() {
                       <button
                         onClick={() => {
                           // ProxyKeys custom: включение — только через явный
-                          // акцепт (AutopayConsentPanel ниже); отключение —
-                          // один клик без подтверждений (принцип защиты
-                          // потребителя: отключить проще, чем включить).
+                          // акцепт (раскрывающийся контент ниже в этой же
+                          // карточке); отключение — один клик без подтверждений
+                          // (принцип защиты потребителя: отключить проще, чем
+                          // включить). Повторный клик при открытой панели —
+                          // закрытие (toggle-паттерн).
                           if (!subscription.autopay_enabled) {
-                            setShowAutopayConsent(true);
+                            setShowAutopayConsent((v) => !v);
                           } else {
                             autopayMutation.mutate(false);
                           }
@@ -808,8 +810,8 @@ export default function Subscription() {
                         }}
                       >
                         {/* translateX (compositor) instead of left (layout-thrash).
-                        Resting position pinned at left:3px; on toggles a 23px
-                        slide on the GPU. */}
+                          Resting position pinned at left:3px; on toggles a 23px
+                          slide on the GPU. */}
                         <span
                           className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
                           style={{
@@ -822,27 +824,31 @@ export default function Subscription() {
                       </button>
                     </div>
                     {/* ProxyKeys custom: панель согласия при включении автопродления
-                      (юрочистая точка акцепта со ссылкой на /recurrent-payments). */}
+                        (юрочистая точка акцепта со ссылкой на /recurrent-payments).
+                        Раскрывается внутри той же карточки под разделителем —
+                        один визуальный блок вместо двух соседних карточек. */}
                     {showAutopayConsent && !subscription.autopay_enabled && (
-                      <AutopayConsentPanel
-                        priceLabel={
-                          subscription.autopay_price_kopeks != null &&
-                          subscription.autopay_price_kopeks > 0
-                            ? t('subscription.autopayCost', {
-                                amount: formatPrice(subscription.autopay_price_kopeks),
-                              })
-                            : undefined
-                        }
-                        onConfirm={() => {
-                          setShowAutopayConsent(false);
-                          autopayMutation.mutate(true);
-                        }}
-                        onCancel={() => setShowAutopayConsent(false)}
-                        pending={autopayMutation.isPending}
-                        textSecondary={g.textSecondary}
-                      />
+                      <div className="mt-3 border-t border-gray-200 pt-3 dark:border-gray-800">
+                        <AutopayConsentPanel
+                          priceLabel={
+                            subscription.autopay_price_kopeks != null &&
+                            subscription.autopay_price_kopeks > 0
+                              ? t('subscription.autopayCost', {
+                                  amount: formatPrice(subscription.autopay_price_kopeks),
+                                })
+                              : undefined
+                          }
+                          onConfirm={() => {
+                            setShowAutopayConsent(false);
+                            autopayMutation.mutate(true);
+                          }}
+                          onCancel={() => setShowAutopayConsent(false)}
+                          pending={autopayMutation.isPending}
+                          textSecondary={g.textSecondary}
+                        />
+                      </div>
                     )}
-                  </>
+                  </div>
                 )}
               </div>
 

@@ -102,9 +102,22 @@ export function TariffPurchaseForm({
   // вызываем updateAutopay с выбранным значением.
   const [autopayEnabled, setAutopayEnabled] = useState(true);
 
+  // ProxyKeys custom: согласие с условиями рекуррентных платежей при покупке
+  // с автопродлением (ON). Присоединяется к подписке сразу после оплаты,
+  // поэтому точка акцепта — здесь, до нажатия «Купить».
+  const [recurrentAccepted, setRecurrentAccepted] = useState(false);
+
   // ProxyKeys custom: явный акцепт публичной оферты в точке оплаты.
   // Гейтит все платёжные кнопки формы (баланс, СБП, Lava).
   const [offerAccepted, setOfferAccepted] = useState(false);
+
+  // ProxyKeys custom: recurrent-consent гейт — свежая покупка не-daily тарифа
+  // с автопродлением ON требует согласия с рекуррентными платежами.
+  const isDailyTariffForm = Boolean(
+    tariff.is_daily || (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0),
+  );
+  const recurrentGateActive =
+    isFreshPurchase && !isDailyTariffForm && autopayEnabled && !recurrentAccepted;
 
   // ProxyKeys custom: получение текущей подписки для отображения периода
   // действия продления («с ... по ...»). Только при продлении (is_current).
@@ -786,6 +799,7 @@ export function TariffPurchaseForm({
                   (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0)
                 ) && (
                   <div className="flex items-center justify-between gap-3 rounded-[14px] border border-dark-700/50 p-3.5">
+                    {' '}
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-dark-50">
                         {t('subscription.autoRenewal')}
@@ -811,6 +825,29 @@ export function TariffPurchaseForm({
                       />
                     </button>
                   </div>
+                )}
+
+              {/* ProxyKeys custom: согласие с рекуррентными платежами при покупке
+                  с автопродлением (toggle ON). Кнопка «Купить» гейтится этим
+                  чек-боксом ниже — включение автопродления требует явного акцепта
+                  (та же точка, что и панель на странице подписки). */}
+              {isFreshPurchase &&
+                !(
+                  tariff.is_daily ||
+                  (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0)
+                ) &&
+                autopayEnabled && (
+                  <ConsentCheckbox
+                    id="tariff-purchase-recurrent-consent"
+                    checked={recurrentAccepted}
+                    onChange={setRecurrentAccepted}
+                    prefixKey="legal.consent.autopayPrefix"
+                    prefixFallback="Ознакомлен(а) с условиями"
+                    href="/recurrent-payments"
+                    linkKey="legal.consent.recurrentLabel"
+                    linkFallback="рекуррентных платежей"
+                    className="-mt-3 px-3.5"
+                  />
                 )}
 
               {/* Summary & Purchase */}
@@ -1044,7 +1081,9 @@ export function TariffPurchaseForm({
 
                         <button
                           onClick={() => purchaseMutation.mutate()}
-                          disabled={purchaseMutation.isPending || !offerAccepted}
+                          disabled={
+                            purchaseMutation.isPending || !offerAccepted || recurrentGateActive
+                          }
                           className="btn-primary w-full py-3"
                         >
                           {purchaseMutation.isPending ? (
