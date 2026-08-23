@@ -189,6 +189,8 @@ git branch -D backup-before-rebase  # если всё ок
 | Bot promocode to balance | bot custom.patch | Кнопка «🎫 Промокод» перенесена из главного меню бота на экран «Баланс» (как в веб-кабинете); хендлер `menu_promocode` не менялся |
 | Recurrent payments doc | — (DB content) | Текст юр-страницы `/recurrent-payments` задеплоен в `recurrent_payments` (БД бота); исходник `ProxyBook/legal/recurrent-payments-ru.txt`; код не менялся |
 | Info recurrent tab | `a7a79bd0` + `9c23b8d5` | Таб «Рекуррентные платежи» на `/info` между «Оферта» и «Статусы» (builtin-таб, видимость через `visibility.recurrent` / `RECURRENT_PAYMENTS_DISPLAY_MODE`); контент — тот же документ из БД; фикс: builtin-табы не обрезаются (truncate только для кастомных страниц) |
+| Offer consent at payment | `f9395e9d` | Чек-бокс «Оплатой принимаю условия публичной оферты» (+ ссылка `/offer`) в точках оплаты: TopUpAmount (кнопка+Enter гейтятся) и TariffPurchaseForm (баланс+SBP+Lava). Компонент `ConsentCheckbox` |
+| Autopay consent panel | `5b1c882c` | Панель согласия при включении автопродления (Subscription): чек-бокс + ссылка `/recurrent-payments`, «Включить» disabled до отметки; отключение — один клик без подтверждений |
 | Public offer doc | — (DB content) | Текст юр-страницы `/offer` задеплоен в `public_offers` (БД бота); исходник `ProxyBook/legal/public-offer-ru.txt`; код не менялся |
 | Privacy policy doc | — (DB content) | Текст юр-страницы `/privacy` задеплоен в `privacy_policies` (БД бота); исходник `ProxyBook/legal/privacy-policy-ru.txt`; код не менялся |
 
@@ -221,16 +223,16 @@ git branch -D backup-before-rebase  # если всё ок
 | `.env` | `TRIAL_TRAFFIC_LIMIT_GB=0`, `DEFAULT_AUTOPAY_DAYS_BEFORE=1`, `DEFAULT_AUTOPAY_ENABLED=false`, `REMNAWAVE_API_KEY` (v3 JWT), `TRAFFIC_EXCLUDED_USER_IDS` (вместо `_UUIDS`), `AVAILABLE_LANGUAGES=ru` (один язык кабинета/бота — переключатель в хедере кабинета скрывается сам при ≤1 языке; backup `.env.backup-before-single-lang-*`) |
 | `app/cabinet/routes/subscription_modules/purchase.py` | Trial → `is_current=False`; no-manual-renewal guard (409); device_count validation + pricing |
 | `app/cabinet/routes/subscription_modules/renewal.py` | No-manual-renewal guard (409 для активных) |
-| `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов |
 | `app/handlers/subscription/tariff_purchase.py` | Device selector (`get_tariff_device_keyboard`, `format_device_purchase_preview`, `tariff_dev:` handler); single-tariff auto-select; «❌ Отмена» back buttons |
 | `app/handlers/subscription/my_subscriptions.py` | Traffic display + кнопка [📊 Трафик] убраны; «Автоплатеж»→«Автопродление» |
 | `app/handlers/subscription/devices.py` | Device stepper в боте как в вебе (`chgdev:`/`chgdevred`/`chgdevr:`): докупка [−] +N [+] с живой ценой + отдельный экран уменьшения; исполнение через существующие `confirm/execute_change_devices` |
 | `app/utils/device_price.py` | Новый файл: `calculate_device_topup_price()` — цена докупки, зеркалит `/devices/price` кабинета (пророт по days_left, бесплатные в пределах тарифа, скидка PricingEngine) |
-| `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов; регистрация степпер-хендлеров `chgdev*` |
-| `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено»; фикс-текст (дни/период не настраиваются) |
-| `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок); [🎫 Промокод] перенесён из главного меню в `get_balance_keyboard` (экран «Баланс», как в вебе) |
+| `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено»; фикс-текст (дни/период не настраиваются); consent-экран при включении (`_show_autopay_consent` → callback `autopay_enable_confirm`: URL-кнопка «Рекуррентные платежи» + «Ознакомлен(а), включить»); отключение — один клик; guards вынесены в `_autopay_enable_guards_failed` |
+| `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок); [🎫 Промокод] перенесён из главного меню в `get_balance_keyboard` (экран «Баланс», как в вебе); URL-кнопка «📄 Публичная оферта» на экране оплаты (`PUBLIC_OFFER_URL`, default my.proxykeys.net/offer) |
+| `app/handlers/balance/main.py` | `show_payment_methods`: строка «Оплата означает согласие с публичной офертой» под текстом методов |
 | `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers; ключи `CHGDEV_*` (степпер устройств, ru/en) |
 | `app/handlers/promocode.py` | «← Назад» из промокод-флоу → экран «Баланс» (callback `promo_back_balance`: `_restore_previous_state` + `show_balance_menu`; без очистки FSM текст после возврата перехватывался бы как код) |
+| `app/handlers/subscription/purchase.py` | No-manual-renewal guard; traffic/servers убраны из шаблонов; регистрация степпер-хендлеров `chgdev*`; регистрация `confirm_autopay_enable` (`autopay_enable_confirm`) |
 
 ### Деплой бота
 
