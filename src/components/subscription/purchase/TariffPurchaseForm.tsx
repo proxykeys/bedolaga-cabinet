@@ -11,6 +11,7 @@ import { openPaymentUrl } from '../../../utils/openPaymentUrl';
 import { formatShortDate } from '../../../utils/format';
 import { getMonthlyPriceKopeks } from '../../../utils/pricing';
 import InsufficientBalancePrompt from '../../InsufficientBalancePrompt';
+import ConsentCheckbox from '../../ConsentCheckbox';
 import type { Tariff, TariffPeriod } from '../../../types';
 
 // ──────────────────────────────────────────────────────────────────
@@ -101,6 +102,10 @@ export function TariffPurchaseForm({
   // вызываем updateAutopay с выбранным значением.
   const [autopayEnabled, setAutopayEnabled] = useState(true);
 
+  // ProxyKeys custom: явный акцепт публичной оферты в точке оплаты.
+  // Гейтит все платёжные кнопки формы (баланс, СБП, Lava).
+  const [offerAccepted, setOfferAccepted] = useState(false);
+
   // ProxyKeys custom: получение текущей подписки для отображения периода
   // действия продления («с ... по ...»). Только при продлении (is_current).
   // При fresh покупке подписки ещё нет — даты не показываем.
@@ -188,7 +193,7 @@ export function TariffPurchaseForm({
     <>
       <button
         onClick={() => sbpPurchaseMutation.mutate()}
-        disabled={sbpPurchaseMutation.isPending || purchaseMutation.isPending}
+        disabled={sbpPurchaseMutation.isPending || purchaseMutation.isPending || !offerAccepted}
         className="mt-2 w-full rounded-xl border border-accent-500/40 bg-accent-500/10 py-3 text-sm font-medium text-accent-400 transition-colors hover:bg-accent-500/20 disabled:opacity-50"
       >
         {sbpPurchaseMutation.isPending ? (
@@ -229,7 +234,7 @@ export function TariffPurchaseForm({
     <>
       <button
         onClick={() => lavaPurchaseMutation.mutate()}
-        disabled={lavaPurchaseMutation.isPending || purchaseMutation.isPending}
+        disabled={lavaPurchaseMutation.isPending || purchaseMutation.isPending || !offerAccepted}
         className="mt-2 w-full rounded-xl border border-accent-500/40 bg-accent-500/10 py-3 text-sm font-medium text-accent-400 transition-colors hover:bg-accent-500/20 disabled:opacity-50"
       >
         {lavaPurchaseMutation.isPending ? (
@@ -398,9 +403,21 @@ export function TariffPurchaseForm({
                       />
                     )}
 
+                    <ConsentCheckbox
+                      id="tariff-purchase-offer-consent-daily"
+                      checked={offerAccepted}
+                      onChange={setOfferAccepted}
+                      prefixKey="legal.consent.offerPrefix"
+                      prefixFallback="Оплатой принимаю условия"
+                      href="/offer"
+                      linkKey="footer.offer"
+                      linkFallback="публичной оферты"
+                      className="mb-3"
+                    />
+
                     <button
                       onClick={() => purchaseMutation.mutate()}
-                      disabled={purchaseMutation.isPending}
+                      disabled={purchaseMutation.isPending || !offerAccepted}
                       className="btn-primary w-full py-3"
                     >
                       {purchaseMutation.isPending ? (
@@ -1013,9 +1030,21 @@ export function TariffPurchaseForm({
                           </div>
                         </div>
 
+                        <ConsentCheckbox
+                          id="tariff-purchase-offer-consent"
+                          checked={offerAccepted}
+                          onChange={setOfferAccepted}
+                          prefixKey="legal.consent.offerPrefix"
+                          prefixFallback="Оплатой принимаю условия"
+                          href="/offer"
+                          linkKey="footer.offer"
+                          linkFallback="публичной оферты"
+                          className="mb-3"
+                        />
+
                         <button
                           onClick={() => purchaseMutation.mutate()}
-                          disabled={purchaseMutation.isPending}
+                          disabled={purchaseMutation.isPending || !offerAccepted}
                           className="btn-primary w-full py-3"
                         >
                           {purchaseMutation.isPending ? (

@@ -12,6 +12,7 @@ import { useHaptic, usePlatform } from '@/platform';
 import { staggerContainer, staggerItem } from '@/components/motion/transitions';
 import type { PaymentMethod, PaymentMethodOption } from '../types';
 import BentoCard from '../components/ui/BentoCard';
+import ConsentCheckbox from '../components/ConsentCheckbox';
 import { saveTopUpPendingInfo } from '../utils/topUpStorage';
 import { getSafeRedirectPath } from '../utils/safeRedirect';
 import { openPaymentUrl } from '../utils/openPaymentUrl';
@@ -144,6 +145,8 @@ export default function TopUpAmount() {
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  // ProxyKeys custom: явный акцепт публичной оферты в точке оплаты.
+  const [offerAccepted, setOfferAccepted] = useState(false);
   // Canonical RUB amount when the user picked a quick-amount chip. The input shows a
   // rounded display-currency value; validating/charging the canonical RUB avoids the FX
   // round-trip that could push a min-amount chip just below the allowed minimum. Cleared
@@ -482,7 +485,7 @@ export default function TopUpAmount() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  handleSubmit();
+                  if (offerAccepted) handleSubmit();
                 }
               }}
               placeholder="0"
@@ -496,9 +499,9 @@ export default function TopUpAmount() {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={isPending || !amount || parseFloat(amount) <= 0}
+            disabled={isPending || !offerAccepted || !amount || parseFloat(amount) <= 0}
             className={`flex h-14 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 text-base font-bold transition-colors duration-200 ${
-              isPending || !amount || parseFloat(amount) <= 0
+              isPending || !offerAccepted || !amount || parseFloat(amount) <= 0
                 ? 'cursor-not-allowed bg-gray-300 text-dark-300 dark:bg-gray-700'
                 : 'bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300'
             }`}
@@ -510,6 +513,17 @@ export default function TopUpAmount() {
             )}
           </button>
         </div>
+        {/* ProxyKeys custom: явная точка акцепта оферты перед оплатой */}
+        <ConsentCheckbox
+          id="topup-offer-consent"
+          checked={offerAccepted}
+          onChange={setOfferAccepted}
+          prefixKey="legal.consent.offerPrefix"
+          prefixFallback="Оплатой принимаю условия"
+          href="/offer"
+          linkKey="footer.offer"
+          linkFallback="публичной оферты"
+        />
       </motion.div>
 
       {/* Quick amount buttons */}

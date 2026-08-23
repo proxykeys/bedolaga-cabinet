@@ -5955,5 +5955,11 @@
     "offer": "Public Offer",
     "privacy": "Privacy Policy",
     "recurrent": "Recurring Payments"
+  },
+  "legal": {
+    "consent": {
+      "offerPrefix": "By paying, I accept the",
+      "autopayPrefix": "I have read the"
+    }
   }
 }
