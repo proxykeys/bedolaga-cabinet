@@ -18,6 +18,10 @@ interface ConsentCheckboxProps {
   linkKey: string;
   /** Дефолт подписи ссылки */
   linkFallback: string;
+  /** Опциональный второй документ (напр. рекуррентные платежи при autopay ON) */
+  secondHref?: string;
+  secondLinkKey?: string;
+  secondLinkFallback?: string;
   disabled?: boolean;
   className?: string;
 }
@@ -31,6 +35,9 @@ export default function ConsentCheckbox({
   href,
   linkKey,
   linkFallback,
+  secondHref,
+  secondLinkKey,
+  secondLinkFallback,
   disabled = false,
   className = '',
 }: ConsentCheckboxProps) {
@@ -60,6 +67,21 @@ export default function ConsentCheckbox({
         >
           {t(linkKey, linkFallback)}
         </a>
+        {secondHref && secondLinkKey && (
+          <>
+            {' '}
+            {t('legal.consent.and', 'и')}{' '}
+            <a
+              href={secondHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent-400 underline underline-offset-2 transition-colors hover:text-accent-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {t(secondLinkKey, secondLinkFallback ?? '')}
+            </a>
+          </>
+        )}
       </span>
     </label>
   );
