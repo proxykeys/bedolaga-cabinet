@@ -521,7 +521,7 @@ export default function TopUpAmount() {
           prefixKey="legal.consent.offerPrefix"
           prefixFallback="Оплатой принимаю условия"
           href="/offer"
-          linkKey="footer.offer"
+          linkKey="legal.consent.offerLabel"
           linkFallback="публичной оферты"
         />
       </motion.div>

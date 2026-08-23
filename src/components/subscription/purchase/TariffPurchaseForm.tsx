@@ -410,7 +410,7 @@ export function TariffPurchaseForm({
                       prefixKey="legal.consent.offerPrefix"
                       prefixFallback="Оплатой принимаю условия"
                       href="/offer"
-                      linkKey="footer.offer"
+                      linkKey="legal.consent.offerLabel"
                       linkFallback="публичной оферты"
                       className="mb-3"
                     />
@@ -1037,7 +1037,7 @@ export function TariffPurchaseForm({
                           prefixKey="legal.consent.offerPrefix"
                           prefixFallback="Оплатой принимаю условия"
                           href="/offer"
-                          linkKey="footer.offer"
+                          linkKey="legal.consent.offerLabel"
                           linkFallback="публичной оферты"
                           className="mb-3"
                         />

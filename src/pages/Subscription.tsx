@@ -33,6 +33,7 @@ import {
   type SbpUiState,
 } from '../utils/sbpRecurring';
 import { DeviceManagerSheet } from '../components/subscription/sheets/DeviceManagerSheet';
+import { AutopayConsentPanel } from '../components/subscription/sheets/AutopayConsentPanel';
 import { ServerManagementSheet } from '../components/subscription/sheets/ServerManagementSheet';
 import { DeleteSubscriptionSheet } from '../components/subscription/sheets/DeleteSubscriptionSheet';
 import { PageSkeleton, Skeleton, SkeletonGroup } from '@/components/ui/skeleton';
@@ -170,6 +171,8 @@ export default function Subscription() {
   const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
   const [showDeleteSheet, setShowDeleteSheet] = useState(false);
+  // ProxyKeys custom: панель согласия на автопродление (открывается тогглом).
+  const [showAutopayConsent, setShowAutopayConsent] = useState(false);
   const destructiveConfirm = useDestructiveConfirm();
   // ProxyKeys custom: empty-state на главной = запуск триала.
   const [trialError, setTrialError] = useState<string | null>(null);
@@ -737,73 +740,109 @@ export default function Subscription() {
 
                 {/* ─── Autopay Toggle ─── */}
                 {!subscription.is_trial && !subscription.is_daily && (
-                  <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
-                    <div className="min-w-0 flex-1">
-                      <div className="text-base font-semibold text-dark-50">
-                        {t('subscription.autoRenewal')}
-                      </div>
-                      {/* ProxyKeys custom: информация о стоимости и достаточности средств для автопродления.
+                  <>
+                    <div className="flex items-center justify-between gap-3 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+                      <div className="min-w-0 flex-1">
+                        <div className="text-base font-semibold text-dark-50">
+                          {t('subscription.autoRenewal')}
+                        </div>
+                        {/* ProxyKeys custom: информация о стоимости и достаточности средств для автопродления.
                         Показывается только когда autopay включён и бэкенд вернул preview-цену.
                         deficit > 0 → warning «необходимо пополнить»; deficit = 0 → success «достаточно средств». */}
-                      {subscription.autopay_enabled &&
-                        subscription.autopay_price_kopeks != null &&
-                        subscription.autopay_price_kopeks > 0 &&
-                        (() => {
-                          const balance = purchaseOptions?.balance_kopeks ?? 0;
-                          const deficit = Math.max(0, subscription.autopay_price_kopeks - balance);
-                          return (
-                            <div className="mt-1.5 space-y-0.5 text-xs">
-                              <div className="text-dark-300">
-                                {t('subscription.autopayCost', {
-                                  amount: formatPrice(subscription.autopay_price_kopeks),
-                                })}
-                              </div>
-                              {deficit > 0 ? (
-                                <div
-                                  className="font-medium"
-                                  style={{ color: 'rgb(var(--color-warning-500))' }}
-                                >
-                                  {t('subscription.autopayDeficit', {
-                                    amount: formatPrice(deficit),
+                        {subscription.autopay_enabled &&
+                          subscription.autopay_price_kopeks != null &&
+                          subscription.autopay_price_kopeks > 0 &&
+                          (() => {
+                            const balance = purchaseOptions?.balance_kopeks ?? 0;
+                            const deficit = Math.max(
+                              0,
+                              subscription.autopay_price_kopeks - balance,
+                            );
+                            return (
+                              <div className="mt-1.5 space-y-0.5 text-xs">
+                                <div className="text-dark-300">
+                                  {t('subscription.autopayCost', {
+                                    amount: formatPrice(subscription.autopay_price_kopeks),
                                   })}
                                 </div>
-                              ) : (
-                                <div
-                                  className="font-medium"
-                                  style={{ color: 'rgb(var(--color-success-500))' }}
-                                >
-                                  {t('subscription.autopayBalanceOk')}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })()}
-                    </div>
-                    <button
-                      onClick={() => autopayMutation.mutate(!subscription.autopay_enabled)}
-                      disabled={autopayMutation.isPending}
-                      role="switch"
-                      aria-checked={subscription.autopay_enabled}
-                      aria-label={t('subscription.autopay', 'Auto-payment')}
-                      className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
-                      style={{
-                        background: subscription.autopay_enabled ? zone.mainHex : g.textGhost,
-                      }}
-                    >
-                      {/* translateX (compositor) instead of left (layout-thrash).
+                                {deficit > 0 ? (
+                                  <div
+                                    className="font-medium"
+                                    style={{ color: 'rgb(var(--color-warning-500))' }}
+                                  >
+                                    {t('subscription.autopayDeficit', {
+                                      amount: formatPrice(deficit),
+                                    })}
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="font-medium"
+                                    style={{ color: 'rgb(var(--color-success-500))' }}
+                                  >
+                                    {t('subscription.autopayBalanceOk')}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })()}
+                      </div>
+                      <button
+                        onClick={() => {
+                          // ProxyKeys custom: включение — только через явный
+                          // акцепт (AutopayConsentPanel ниже); отключение —
+                          // один клик без подтверждений (принцип защиты
+                          // потребителя: отключить проще, чем включить).
+                          if (!subscription.autopay_enabled) {
+                            setShowAutopayConsent(true);
+                          } else {
+                            autopayMutation.mutate(false);
+                          }
+                        }}
+                        disabled={autopayMutation.isPending}
+                        role="switch"
+                        aria-checked={subscription.autopay_enabled}
+                        aria-label={t('subscription.autopay', 'Auto-payment')}
+                        className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
+                        style={{
+                          background: subscription.autopay_enabled ? zone.mainHex : g.textGhost,
+                        }}
+                      >
+                        {/* translateX (compositor) instead of left (layout-thrash).
                         Resting position pinned at left:3px; on toggles a 23px
                         slide on the GPU. */}
-                      <span
-                        className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
-                        style={{
-                          transform: subscription.autopay_enabled
-                            ? 'translateX(23px)'
-                            : 'translateX(0)',
-                          boxShadow: 'none',
+                        <span
+                          className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
+                          style={{
+                            transform: subscription.autopay_enabled
+                              ? 'translateX(23px)'
+                              : 'translateX(0)',
+                            boxShadow: 'none',
+                          }}
+                        />
+                      </button>
+                    </div>
+                    {/* ProxyKeys custom: панель согласия при включении автопродления
+                      (юрочистая точка акцепта со ссылкой на /recurrent-payments). */}
+                    {showAutopayConsent && !subscription.autopay_enabled && (
+                      <AutopayConsentPanel
+                        priceLabel={
+                          subscription.autopay_price_kopeks != null &&
+                          subscription.autopay_price_kopeks > 0
+                            ? t('subscription.autopayCost', {
+                                amount: formatPrice(subscription.autopay_price_kopeks),
+                              })
+                            : undefined
+                        }
+                        onConfirm={() => {
+                          setShowAutopayConsent(false);
+                          autopayMutation.mutate(true);
                         }}
+                        onCancel={() => setShowAutopayConsent(false)}
+                        pending={autopayMutation.isPending}
+                        textSecondary={g.textSecondary}
                       />
-                    </button>
-                  </div>
+                    )}
+                  </>
                 )}
               </div>
 
