@@ -182,6 +182,23 @@ export function DeviceManagerSheet({
             </button>
           </div>
 
+          {/* Delta indicator */}
+          {(isIncrease || isDecrease) && (
+            <div className="text-center text-sm font-medium">
+              {isIncrease ? (
+                <span className="text-success-500">
+                  {t('subscription.additionalOptions.deviceDeltaIncrease', { count: delta })}
+                </span>
+              ) : (
+                <span className="text-warning-500">
+                  {t('subscription.additionalOptions.deviceDeltaDecrease', {
+                    count: currentLimit - targetLimit,
+                  })}
+                </span>
+              )}
+            </div>
+          )}
+
           {/* Info line */}
           <div className="space-y-1 text-center text-sm text-dark-300">
             <div>
@@ -212,6 +229,7 @@ export function DeviceManagerSheet({
           {isIncrease && priceData?.available && priceData.price_per_device_label && (
             <div className="text-center">
               <div className="mb-2 text-sm text-dark-300">
+                <span className="mr-1">+{delta} × </span>
                 {priceData.discount_percent != null &&
                 priceData.discount_percent > 0 &&
                 priceData.original_price_per_device_kopeks != null ? (
@@ -265,6 +283,13 @@ export function DeviceManagerSheet({
                 }}
               />
             )}
+
+          {/* No-refund notice (only when decreasing) */}
+          {isDecrease && (
+            <div className="rounded-lg border border-gray-200/40 bg-gray-250 p-3 text-center text-sm text-warning-500 dark:border-gray-800/40 dark:bg-gray-850">
+              {t('subscription.additionalOptions.reduceNoRefund')}
+            </div>
+          )}
 
           {/* Action button — changes by direction */}
           {isIncrease ? (
