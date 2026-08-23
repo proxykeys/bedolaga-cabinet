@@ -8,7 +8,10 @@ import ConsentCheckbox from '../../ConsentCheckbox';
 // регуляторике достаточно одного явного подтверждения в момент включения +
 // уведомлений перед списанием (см. /recurrent-payments, раздел 7).
 // Отключение — наоборот, в один клик без подтверждений (принцип защиты
-// потребителя). Inline-панель по образцу DeleteSubscriptionSheet.
+// потребителя).
+// Рендерится как раскрывающийся контент ВНУТРИ карточки «Автопродление»
+// (inline-expand по образцу DeleteSubscriptionSheet): без собственной
+// обёртки/рамки — разделитель и отступ добавляет родительская карточка.
 
 export interface AutopayConsentPanelProps {
   /** Готовая строка цены автопродления (родитель форматирует по валюте), опционально */
@@ -38,10 +41,7 @@ export function AutopayConsentPanel({
   }, []);
 
   return (
-    <div className="mt-2 rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
-      <div className="mb-1.5 text-sm font-semibold text-dark-50">
-        {t('subscription.autopayConsentTitle', 'Включить автопродление')}
-      </div>
+    <>
       <div className="mb-3 text-xs leading-relaxed" style={{ color: textSecondary }}>
         {t(
           'subscription.autopayConsentText',
@@ -80,6 +80,6 @@ export function AutopayConsentPanel({
           {t('common.cancel', 'Отмена')}
         </button>
       </div>
-    </div>
+    </>
   );
 }
