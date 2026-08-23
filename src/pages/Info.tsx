@@ -16,7 +16,7 @@ const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
   <PiCaretDown className={`h-5 w-5 transition-transform ${expanded ? 'rotate-180' : ''}`} />
 );
 
-const BUILTIN_TABS = new Set<string>(['faq', 'rules', 'privacy', 'offer', 'loyalty']);
+const BUILTIN_TABS = new Set<string>(['faq', 'rules', 'privacy', 'offer', 'recurrent', 'loyalty']);
 
 // Rich sanitizer for custom InfoPage content (TipTap editor output with media)
 const ALLOWED_IFRAME_HOSTS = new Set([
@@ -344,6 +344,14 @@ export default function Info() {
     refetchOnMount: 'always',
   });
 
+  const { data: recurrent, isLoading: recurrentLoading } = useQuery({
+    queryKey: ['recurrent-payments'],
+    queryFn: infoApi.getRecurrentPayments,
+    enabled: activeTab === 'recurrent' && !currentTabSlug && replacementsLoaded,
+    staleTime: 0,
+    refetchOnMount: 'always',
+  });
+
   const { data: loyaltyData, isLoading: loyaltyLoading } = useQuery({
     queryKey: ['loyalty-tiers'],
     queryFn: promoApi.getLoyaltyTiers,
@@ -358,6 +366,7 @@ export default function Info() {
       { id: 'rules', label: t('info.rules'), icon: DocumentIcon },
       { id: 'privacy', label: t('info.privacy'), icon: ShieldIcon },
       { id: 'offer', label: t('info.offer'), icon: DocumentIcon },
+      { id: 'recurrent', label: t('info.recurrent'), icon: DocumentIcon },
       { id: 'loyalty', label: t('info.loyalty'), icon: StarIcon },
     ];
 
@@ -551,6 +560,34 @@ export default function Info() {
           {offer.updated_at && (
             <p className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
               {t('info.updatedAt')}: {new Date(offer.updated_at).toLocaleDateString(uiLocale())}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    if (activeTab === 'recurrent') {
+      if (recurrentLoading) {
+        return (
+          <div className="flex justify-center py-8">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
+          </div>
+        );
+      }
+
+      if (!recurrent?.content) {
+        return <div className="py-8 text-center text-dark-300">{t('info.noContent')}</div>;
+      }
+
+      return (
+        <div className="bento-card prose prose-invert max-w-none">
+          <div
+            className="overflow-x-auto"
+            dangerouslySetInnerHTML={{ __html: formatContent(recurrent.content) }}
+          />
+          {recurrent.updated_at && (
+            <p className="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
+              {t('info.updatedAt')}: {new Date(recurrent.updated_at).toLocaleDateString(uiLocale())}
             </p>
           )}
         </div>
