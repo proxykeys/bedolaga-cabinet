@@ -230,6 +230,7 @@ git branch -D backup-before-rebase  # если всё ок
 | `app/handlers/subscription/autopay.py` | «Автоплатеж» → «Автопродление», согласование «включено/выключено»; фикс-текст (дни/период не настраиваются) |
 | `app/keyboards/inline.py` | Скрыт [Продлить] для активных; скрыт [Тариф]; скрыты [Настроить дни] + [Период продления]; `pack_buttons_in_rows()` (фикс обрезки кнопок); [🎫 Промокод] перенесён из главного меню в `get_balance_keyboard` (экран «Баланс», как в вебе) |
 | `app/localization/locales/{ru,en,fa,zh,ua}.json` | SUBSCRIPTION_*_TEMPLATE без traffic/servers; ключи `CHGDEV_*` (степпер устройств, ru/en) |
+| `app/handlers/promocode.py` | «← Назад» из промокод-флоу → экран «Баланс» (callback `promo_back_balance`: `_restore_previous_state` + `show_balance_menu`; без очистки FSM текст после возврата перехватывался бы как код) |
 
 ### Деплой бота
 
