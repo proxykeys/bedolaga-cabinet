@@ -672,6 +672,7 @@
       "title": "Reissue Subscription",
       "button": "Reissue Subscription",
       "description": "New link, device reset",
+      "hint": "The old link will stop working",
       "warning": "This will generate a new connection link, reset all connected devices, and invalidate the old link. Continue?",
       "confirmBtn": "Reissue",
       "cooldown": "Available in {{minutes}} min {{seconds}} sec"

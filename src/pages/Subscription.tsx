@@ -1215,6 +1215,9 @@ export default function Subscription() {
                           })
                         : t('subscription.revoke.description')}
                     </div>
+                    <div className="mt-0.5 text-xs text-dark-300/70">
+                      {t('subscription.revoke.hint')}
+                    </div>
                   </div>
                   <div className="flex-shrink-0 text-warning-500">
                     {revokeMutation.isPending ? (
