@@ -78,7 +78,7 @@ const CountdownTimer = memo(function CountdownTimer({
   });
 
   return (
-    <div className="min-w-0 overflow-hidden rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
+    <div className="min-w-0 self-start overflow-hidden rounded-[14px] border border-gray-200 bg-transparent p-3.5 dark:border-gray-800">
       <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-dark-300">
         <span
           className="flex h-6 w-6 items-center justify-center"
