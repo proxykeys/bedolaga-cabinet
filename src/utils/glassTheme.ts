@@ -47,8 +47,10 @@ export function getGlassColors(isDark: boolean) {
     trackBg: isDark ? 'rgb(31, 30, 29)' : 'rgb(221, 221, 212)', // gray-850 / gray-250
     trackBorder: isDark ? 'rgb(38, 38, 36)' : 'rgb(231, 231, 223)', // gray-800 / gray-200
 
-    // Code blocks
-    codeBg: isDark ? 'rgb(31, 30, 29)' : 'rgb(221, 221, 212)', // gray-850 / gray-250
+    // Code blocks — darker than the card surface (inset "well" effect).
+    // Dark: gray-950 sits below the card's effective composite
+    // (gray-900/70 over gray-950 body ≈ rgb(24,23,22)); light stays gray-250.
+    codeBg: isDark ? 'rgb(20, 20, 19)' : 'rgb(221, 221, 212)', // gray-950 / gray-250
     codeBorder: isDark ? 'rgb(38, 38, 36)' : 'rgb(231, 231, 223)', // gray-800 / gray-200
 
     // Glow effects — disabled
