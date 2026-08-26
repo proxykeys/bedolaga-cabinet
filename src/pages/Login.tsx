@@ -168,7 +168,7 @@ export default function Login() {
     }
   };
 
-  const appName = branding ? branding.name : import.meta.env.VITE_APP_NAME || 'VPN';
+  const appName = branding?.name || import.meta.env.VITE_APP_NAME || 'ProxyKeys';
   const { isDark } = useTheme();
   // Static theme-aware logo (v1 pattern) — no branding API dependency, renders
   // on first paint. Operator's custom logo from branding API is intentionally
@@ -177,7 +177,7 @@ export default function Login() {
 
   // Set document title
   useEffect(() => {
-    document.title = appName || 'VPN';
+    document.title = appName || 'ProxyKeys';
   }, [appName]);
 
   useEffect(() => {
