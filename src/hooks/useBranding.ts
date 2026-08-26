@@ -33,14 +33,14 @@ export function useBranding() {
     enabled: isAuthenticated,
   });
 
-  const appName = branding ? branding.name : FALLBACK_NAME;
+  const appName = branding?.name || FALLBACK_NAME;
   const logoLetter = branding?.logo_letter || FALLBACK_LOGO;
   const hasCustomLogo = branding?.has_custom_logo || false;
   const logoUrl = branding ? brandingApi.getLogoUrl(branding) : null;
 
   // Set document title
   useEffect(() => {
-    document.title = appName || 'VPN';
+    document.title = appName || FALLBACK_NAME;
   }, [appName]);
 
   // Update favicon — custom logo (rounded like the header tile) when available,

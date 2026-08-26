@@ -45,7 +45,7 @@ export default function TelegramRedirect() {
     staleTime: 60000,
   });
 
-  const appName = branding ? branding.name : import.meta.env.VITE_APP_NAME || 'VPN';
+  const appName = branding?.name || import.meta.env.VITE_APP_NAME || 'ProxyKeys';
   const { isDark } = useTheme();
   const logoUrl = getUiLogoSrc(isDark);
 

@@ -69,7 +69,7 @@ export default function DeepLinkRedirect() {
     staleTime: 60000,
   });
 
-  const projectName = branding ? branding.name : import.meta.env.VITE_APP_NAME || 'VPN';
+  const projectName = branding?.name || import.meta.env.VITE_APP_NAME || 'ProxyKeys';
   const { isDark } = useTheme();
   const logoUrl = getUiLogoSrc(isDark);
 
@@ -97,7 +97,7 @@ export default function DeepLinkRedirect() {
   const appInfo = deepLink
     ? appSchemes.find((a) => deepLink.toLowerCase().startsWith(a.scheme))
     : null;
-  const appName = appInfo?.name || appParam || 'VPN';
+  const appName = appInfo?.name || appParam || 'ProxyKeys';
   const appIcon = appInfo?.icon || appName[0]?.toUpperCase() || 'V';
 
   // Open deep link via a contained iframe attempt so a custom scheme the in-app
@@ -178,7 +178,7 @@ export default function DeepLinkRedirect() {
           />
         </div>
 
-        <h1 className="mb-1 text-2xl font-bold text-dark-50">{projectName || 'VPN'}</h1>
+        <h1 className="mb-1 text-2xl font-bold text-dark-50">{projectName || 'ProxyKeys'}</h1>
 
         {status !== 'error' && (
           <p className="mb-6 text-dark-300">
