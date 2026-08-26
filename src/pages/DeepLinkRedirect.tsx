@@ -69,7 +69,7 @@ export default function DeepLinkRedirect() {
     staleTime: 60000,
   });
 
-  const projectName = branding?.name || import.meta.env.VITE_APP_NAME || 'ProxyKeys';
+  const projectName = branding ? branding.name : import.meta.env.VITE_APP_NAME || 'ProxyKeys';
   const { isDark } = useTheme();
   const logoUrl = getUiLogoSrc(isDark);
 
@@ -178,7 +178,7 @@ export default function DeepLinkRedirect() {
           />
         </div>
 
-        <h1 className="mb-1 text-2xl font-bold text-dark-50">{projectName || 'ProxyKeys'}</h1>
+        <h1 className="mb-1 text-2xl font-bold text-dark-50">{projectName}</h1>
 
         {status !== 'error' && (
           <p className="mb-6 text-dark-300">
