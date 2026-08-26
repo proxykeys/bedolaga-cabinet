@@ -197,6 +197,7 @@ git branch -D backup-before-rebase  # если всё ок
 | Autopay consent panel | `5b1c882c` + `fc48f050` + `ed4094a8` | Панель согласия при включении автопродления (Subscription): чек-бокс + ссылка `/recurrent-payments`, «Включить» disabled до отметки; отключение — один клик без подтверждений. `fc48f050`: панель раскрывается ВНУТРИ карточки «Автопродление» (единая карточка, разделитель border-t); `ed4094a8`: на форме покупки ОДИН комбинированный чек-бокс «…публичной оферты И рекуррентных платежей» при autopay ON (ConsentCheckbox secondHref; сброс отметки при переключении toggle) |
 | Public offer doc | — (DB content) | Текст юр-страницы `/offer` задеплоен в `public_offers` (БД бота); исходник `ProxyBook/legal/public-offer-ru.txt`; код не менялся; 2026-08-26 убраны VPN-формулировки («услуги защищённого сетевого доступа» вместо «доступа к VPN») |
 | Privacy policy doc | — (DB content) | Текст юр-страницы `/privacy` задеплоен в `privacy_policies` (БД бота); исходник `ProxyBook/legal/privacy-policy-ru.txt`; код не менялся; 2026-08-26 убраны VPN-формулировки |
+| Page title ProxyKeys | `a2424857` | Title всех страниц «ProxyKeys» вместо «VPN»: `index.html` `<title>%VITE_APP_NAME%</title>` (env-substitution при сборке) + фолбэки `branding?.name \|\| VITE_APP_NAME \|\| 'ProxyKeys'` в useBranding/Login/TelegramRedirect/DeepLinkRedirect; корень был `CABINET_BRANDING_NAME=''` в БД бота (пустая строка = валидное имя, фолбэк не срабатывал) — исправлено UPDATE в `system_settings` (2026-08-26) |
 
 Подробная документация: см. ProxyBook (секция ниже).
 
