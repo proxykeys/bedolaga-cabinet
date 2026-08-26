@@ -191,12 +191,12 @@ git branch -D backup-before-rebase  # если всё ок
 | Reissue card hint | `96a2cbdd` | Третья строка-hint «Старая ссылка перестанет работать» в карточке «Перевыпустить подписку» — высота выровнена с «Лимит количества устройств» в свёрнутом состоянии |
 | Countdown self-start | `6f7b9857` | Карточка «Осталось» (`self-start`) не растягивается при раскрытии consent-панели в соседней карточке «Автопродление» |
 | Code bg darker | `5a02bbb8` | Фон строки ссылки подписки (`codeBg` gray-950) темнее фона родительской карточки — inset-эффект; токен используется только в Subscription.tsx |
-| Recurrent payments doc | — (DB content) | Текст юр-страницы `/recurrent-payments` задеплоен в `recurrent_payments` (БД бота); исходник `ProxyBook/legal/recurrent-payments-ru.txt`; код не менялся |
+| Recurrent payments doc | — (DB content) | Текст юр-страницы `/recurrent-payments` задеплоен в `recurrent_payments` (БД бота); исходник `ProxyBook/legal/recurrent-payments-ru.txt`; код не менялся; 2026-08-26 убраны VPN-формулировки (юридические тексты не должны содержать «VPN»/«ВПН»/«виртуальную частную сеть» — триггер модерации) |
 | Info recurrent tab | `a7a79bd0` + `9c23b8d5` | Таб «Рекуррентные платежи» на `/info` между «Оферта» и «Статусы» (builtin-таб, видимость через `visibility.recurrent` / `RECURRENT_PAYMENTS_DISPLAY_MODE`); контент — тот же документ из БД; фикс: builtin-табы не обрезаются (truncate только для кастомных страниц) |
 | Offer consent at payment | `f9395e9d` | Чек-бокс «Оплатой принимаю условия публичной оферты» (+ ссылка `/offer`) в точках оплаты: TopUpAmount (кнопка+Enter гейтятся) и TariffPurchaseForm (баланс+SBP+Lava). Компонент `ConsentCheckbox` |
 | Autopay consent panel | `5b1c882c` + `fc48f050` + `ed4094a8` | Панель согласия при включении автопродления (Subscription): чек-бокс + ссылка `/recurrent-payments`, «Включить» disabled до отметки; отключение — один клик без подтверждений. `fc48f050`: панель раскрывается ВНУТРИ карточки «Автопродление» (единая карточка, разделитель border-t); `ed4094a8`: на форме покупки ОДИН комбинированный чек-бокс «…публичной оферты И рекуррентных платежей» при autopay ON (ConsentCheckbox secondHref; сброс отметки при переключении toggle) |
-| Public offer doc | — (DB content) | Текст юр-страницы `/offer` задеплоен в `public_offers` (БД бота); исходник `ProxyBook/legal/public-offer-ru.txt`; код не менялся |
-| Privacy policy doc | — (DB content) | Текст юр-страницы `/privacy` задеплоен в `privacy_policies` (БД бота); исходник `ProxyBook/legal/privacy-policy-ru.txt`; код не менялся |
+| Public offer doc | — (DB content) | Текст юр-страницы `/offer` задеплоен в `public_offers` (БД бота); исходник `ProxyBook/legal/public-offer-ru.txt`; код не менялся; 2026-08-26 убраны VPN-формулировки («услуги защищённого сетевого доступа» вместо «доступа к VPN») |
+| Privacy policy doc | — (DB content) | Текст юр-страницы `/privacy` задеплоен в `privacy_policies` (БД бота); исходник `ProxyBook/legal/privacy-policy-ru.txt`; код не менялся; 2026-08-26 убраны VPN-формулировки |
 
 Подробная документация: см. ProxyBook (секция ниже).
 
