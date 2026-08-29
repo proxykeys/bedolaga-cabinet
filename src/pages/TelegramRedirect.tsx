@@ -10,6 +10,7 @@ import { tokenStorage } from '../utils/token';
 import { getSafeRedirectPath } from '../utils/safeRedirect';
 import { getUiLogoSrc } from '../utils/brandLogo';
 import { useTheme } from '../hooks/useTheme';
+import LegalConsent from '../components/LegalConsent';
 import { CheckIcon, XIcon, ExclamationIcon } from '@/components/icons';
 import { safeLocal, safeSession } from '../utils/safeStorage';
 
@@ -31,8 +32,14 @@ export default function TelegramRedirect() {
       isLoading: state.isLoading,
     })),
   );
-  const [status, setStatus] = useState<'loading' | 'success' | 'error' | 'not-telegram'>('loading');
+  const [status, setStatus] = useState<
+    'loading' | 'success' | 'error' | 'consent' | 'not-telegram'
+  >('loading');
   const [errorMessage, setErrorMessage] = useState('');
+  // 428-consent: новый пользователь отмечает документы до создания аккаунта
+  const [consentDocuments, setConsentDocuments] = useState<string[]>([]);
+  const [acceptedDocuments, setAcceptedDocuments] = useState<Record<string, boolean>>({});
+  const [consentSubmitting, setConsentSubmitting] = useState(false);
   const [retryCount, setRetryCount] = useState(() => {
     const stored = safeSession.getItem(RETRY_COUNT_KEY);
     return stored ? parseInt(stored, 10) : 0;
@@ -89,8 +96,33 @@ export default function TelegramRedirect() {
         schedule(() => navigate(redirectTo), 800);
       } catch (err: unknown) {
         console.error('Telegram auth failed:', err);
-        const error = err as { response?: { data?: { detail?: string } } };
-        setErrorMessage(error.response?.data?.detail || t('auth.telegramRequired'));
+        const error = err as {
+          response?: { status?: number; data?: { detail?: unknown } };
+        };
+        // 428 = новый пользователь: бэк требует согласие с офертой/политикой.
+        // detail — объект {code, message, documents, missing, prechecked}; рисуем
+        // чекбоксы и повторяем вход после галочек с тем же initData.
+        if (error.response?.status === 428) {
+          const consentDetail = error.response?.data?.detail as
+            | { documents?: string[]; prechecked?: boolean }
+            | undefined;
+          const documents = Array.isArray(consentDetail?.documents) ? consentDetail.documents : [];
+          if (documents.length > 0) {
+            setAcceptedDocuments((prev) => {
+              const next = { ...prev };
+              for (const document of documents) {
+                if (next[document] === undefined)
+                  next[document] = Boolean(consentDetail?.prechecked);
+              }
+              return next;
+            });
+            setConsentDocuments(documents);
+            setStatus('consent');
+            return;
+          }
+        }
+        const detail = error.response?.data?.detail;
+        setErrorMessage(typeof detail === 'string' ? detail : t('auth.telegramRequired'));
         setStatus('error');
       }
     };
@@ -136,6 +168,37 @@ export default function TelegramRedirect() {
       safeSession.removeItem(RETRY_COUNT_KEY);
     }
   }, [status]);
+
+  const toggleConsentDocument = (document: string, value: boolean) => {
+    setAcceptedDocuments((prev) => ({ ...prev, [document]: value }));
+  };
+
+  const allConsentDocumentsAccepted =
+    consentDocuments.length === 0 ||
+    consentDocuments.every((document) => acceptedDocuments[document]);
+
+  const handleConsentContinue = async () => {
+    const initData = getTelegramInitData();
+    if (!initData) {
+      setStatus('not-telegram');
+      return;
+    }
+    const acceptedKeys = consentDocuments.filter((document) => acceptedDocuments[document]);
+    setConsentSubmitting(true);
+    try {
+      await loginWithTelegram(initData, acceptedKeys);
+      setStatus('success');
+      setTimeout(() => navigate(redirectTo), 800);
+    } catch (err: unknown) {
+      console.error('Telegram consent retry failed:', err);
+      const error = err as { response?: { data?: { detail?: unknown } } };
+      const detail = error.response?.data?.detail;
+      setErrorMessage(typeof detail === 'string' ? detail : t('auth.telegramRequired'));
+      setStatus('error');
+    } finally {
+      setConsentSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-viewport flex items-center justify-center p-4">
@@ -186,6 +249,37 @@ export default function TelegramRedirect() {
                 {t('telegramRedirect.loginAlternative')}
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Consent State: backend answered 428 on the automatic Telegram login */}
+        {status === 'consent' && (
+          <div className="mt-8 text-left">
+            <h2 className="mb-2 text-lg font-bold text-dark-50">
+              {t('auth.legalConsentTitle', 'Ещё один шаг')}
+            </h2>
+            <p className="mb-4 text-sm text-dark-400">
+              {t(
+                'auth.legalConsentSubtitle',
+                'Чтобы создать аккаунт, подтвердите, что ознакомились с документами.',
+              )}
+            </p>
+            <LegalConsent
+              documents={consentDocuments}
+              accepted={acceptedDocuments}
+              onChange={toggleConsentDocument}
+              disabled={consentSubmitting}
+            />
+            <button
+              type="button"
+              onClick={handleConsentContinue}
+              disabled={!allConsentDocumentsAccepted || consentSubmitting}
+              className="btn-primary mt-5 w-full"
+            >
+              {consentSubmitting
+                ? t('common.loading', 'Загрузка...')
+                : t('auth.legalConsentContinue', 'Продолжить')}
+            </button>
           </div>
         )}
 
