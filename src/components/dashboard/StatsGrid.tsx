@@ -65,7 +65,7 @@ export default function StatsGrid({
             <SubscriptionIcon />
           </span>
           <span className="min-w-0 flex-1 truncate text-sm font-semibold text-dark-50 sm:text-base">
-            {t('subscriptions.buy', 'Купить подписку')}
+            {t('subscriptions.buy', 'Оформить подписку')}
           </span>
           <ChevronRightIcon className="h-4 w-4 shrink-0 text-dark-300 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>

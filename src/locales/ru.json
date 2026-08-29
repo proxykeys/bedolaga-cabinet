@@ -387,7 +387,7 @@
     "free": "Бесплатно",
     "extend": "Продлить подписку",
     "buyTraffic": "Докупить трафик",
-    "buyDevices": "Докупить устройства",
+    "buyDevices": "Добавить устройства",
     "renewalOptions": "Варианты продления",
     "days": "дней",
     "daysShort": "дн.",
@@ -404,7 +404,7 @@
     "minutes_many": "{{count}} м",
     "price": "Цена",
     "noSubscription": "У вас нет активной подписки",
-    "getSubscription": "Купить подписку",
+    "getSubscription": "Оформить подписку",
     "cta": {
       "expiredHint": "Выберите тариф и оплатите",
       "trialHint": "Больше трафика и устройств",
@@ -473,7 +473,7 @@
       "maxDevices": "Максимум: {{count}}"
     },
     "total": "К оплате",
-    "purchase": "Купить",
+    "purchase": "Оформить",
     "periodWithExpiry": "{{periodDays}} дней (до {{toDate}})",
     "step": "Шаг {{current}} из {{total}}",
     "stepPeriod": "Период",
@@ -624,7 +624,7 @@
     "trafficResetAt": "Сброс",
     "additionalOptions": {
       "title": "Дополнительные опции",
-      "buyDevices": "Докупить устройства",
+      "buyDevices": "Добавить устройства",
       "deviceManagerTitle": "Лимит количества устройств",
       "deviceManagerHint": "Вы можете увеличить или уменьшить количество доступных устройств",
       "deviceDeltaIncrease_one": "+{{count}} устройство",
@@ -638,9 +638,9 @@
       "currentDeviceLimit_few": "Текущий лимит: {{count}} устройства",
       "currentDeviceLimit_many": "Текущий лимит: {{count}} устройств",
       "maxDevices": "максимум {{count}}",
-      "devicesUnavailable": "Докупка устройств недоступна",
+      "devicesUnavailable": "Добавление устройств недоступно",
       "devicesUnit": "устройств",
-      "buy": "Купить",
+      "buy": "Оформить",
       "reduceDevices": "Уменьшить устройства",
       "reduceDevicesTitle": "Уменьшить лимит устройств",
       "reduceDevicesDescription": "Вы можете уменьшить количество устройств до минимального на тарифе",
@@ -6509,9 +6509,9 @@
     }
   },
   "subscriptions": {
-    "buy": "Купить подписку",
-    "buyAnother": "Купить ещё",
-    "browsePlans": "Купить подписку",
+    "buy": "Оформить подписку",
+    "buyAnother": "Оформить ещё одну",
+    "browsePlans": "Оформить подписку",
     "empty": "У вас пока нет подписок",
     "emptyDesc": "Выберите тариф, чтобы начать пользоваться сервисом",
     "title": "Мои подписки"
