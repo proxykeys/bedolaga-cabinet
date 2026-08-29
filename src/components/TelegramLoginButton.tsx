@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router';
 import { getPendingCampaignSlug } from '../utils/campaign';
 import { copyToClipboard } from '../utils/clipboard';
 import { isEndpointMissingError } from '../utils/api-error';
+import LegalConsent from './LegalConsent';
 
 interface TelegramLoginButtonProps {
   referralCode?: string;
@@ -24,6 +25,10 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
   const containerRef = useRef<HTMLDivElement>(null);
   const [oidcLoading, setOidcLoading] = useState(false);
   const [oidcError, setOidcError] = useState('');
+  // 428-consent: новый пользователь должен отметить документы до создания аккаунта
+  const [consentDocuments, setConsentDocuments] = useState<string[] | null>(null);
+  const [pendingOidcIdToken, setPendingOidcIdToken] = useState<string | null>(null);
+  const [acceptedDocuments, setAcceptedDocuments] = useState<Record<string, boolean>>({});
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [scriptFailed, setScriptFailed] = useState(false);
   // Lets the user opt into deep-link auth manually, without waiting for the
@@ -98,15 +103,66 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
       if (mountedRef.current) navigate('/');
     } catch (err: unknown) {
       if (!mountedRef.current) return;
+      // 428 = новый пользователь: бэк требует согласие с офертой/политикой.
+      // detail — объект {code, message, documents, missing, prechecked}; рисуем
+      // чекбоксы и повторяем вход с уже полученным id_token после галочек.
+      if (isAxiosError(err) && err.response?.status === 428) {
+        const detail = err.response?.data?.detail as
+          | { documents?: string[]; prechecked?: boolean }
+          | undefined;
+        const documents = Array.isArray(detail?.documents) ? detail.documents : [];
+        if (documents.length > 0) {
+          setPendingOidcIdToken(data.id_token || null);
+          setAcceptedDocuments((prev) => {
+            const next = { ...prev };
+            for (const document of documents) {
+              if (next[document] === undefined) next[document] = Boolean(detail?.prechecked);
+            }
+            return next;
+          });
+          setConsentDocuments(documents);
+          return;
+        }
+      }
       let message = t('common.error');
-      if (isAxiosError(err) && err.response?.data?.detail) {
-        message = err.response.data.detail;
+      if (isAxiosError(err)) {
+        const detail = err.response?.data?.detail;
+        if (typeof detail === 'string') message = detail;
       }
       setOidcError(message);
     } finally {
       if (mountedRef.current) setOidcLoading(false);
     }
   };
+
+  const toggleConsentDocument = useCallback((document: string, value: boolean) => {
+    setAcceptedDocuments((prev) => ({ ...prev, [document]: value }));
+  }, []);
+
+  const allConsentDocumentsAccepted = (consentDocuments ?? []).every(
+    (document) => acceptedDocuments[document],
+  );
+
+  const handleOidcConsentContinue = useCallback(async () => {
+    if (!pendingOidcIdToken || !consentDocuments) return;
+    const acceptedKeys = consentDocuments.filter((document) => acceptedDocuments[document]);
+    setOidcLoading(true);
+    setOidcError('');
+    try {
+      await loginWithTelegramOIDC(pendingOidcIdToken, acceptedKeys);
+      if (mountedRef.current) navigate('/');
+    } catch (err: unknown) {
+      if (!mountedRef.current) return;
+      let message = t('common.error');
+      if (isAxiosError(err)) {
+        const detail = err.response?.data?.detail;
+        if (typeof detail === 'string') message = detail;
+      }
+      setOidcError(message);
+    } finally {
+      if (mountedRef.current) setOidcLoading(false);
+    }
+  }, [pendingOidcIdToken, consentDocuments, acceptedDocuments, loginWithTelegramOIDC, navigate, t]);
 
   // Handle script load failure (timeout or error)
   const handleScriptFailed = useCallback(() => {
@@ -571,28 +627,60 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
   return (
     <div className="flex flex-col items-center space-y-4">
       {isOIDC ? (
-        <div className="flex flex-col items-center space-y-2">
-          <button
-            type="button"
-            onClick={() => {
-              setOidcError('');
-              setOidcLoading(true);
-              if (window.Telegram?.Login) {
-                window.Telegram.Login.open();
-              } else {
-                setOidcLoading(false);
-              }
-            }}
-            disabled={oidcLoading || !scriptLoaded}
-            className="telegram-login-button inline-flex items-center gap-2 rounded-lg bg-[#229ED9] px-6 py-3 text-sm font-medium text-white transition-colors disabled:opacity-50"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
-            </svg>
-            {oidcLoading ? t('common.loading') : t('auth.loginWithTelegram')}
-          </button>
-          {oidcError && <p className="text-xs text-error-400">{oidcError}</p>}
-        </div>
+        consentDocuments ? (
+          <div className="flex w-full flex-col items-center space-y-2">
+            <h2 className="text-base font-bold text-dark-50">
+              {t('auth.legalConsentTitle', 'Ещё один шаг')}
+            </h2>
+            <p className="text-center text-xs text-dark-400">
+              {t(
+                'auth.legalConsentSubtitle',
+                'Чтобы создать аккаунт, подтвердите, что ознакомились с документами.',
+              )}
+            </p>
+            <LegalConsent
+              documents={consentDocuments}
+              accepted={acceptedDocuments}
+              onChange={toggleConsentDocument}
+              disabled={oidcLoading}
+              className="w-full"
+            />
+            {oidcError && <p className="text-xs text-error-400">{oidcError}</p>}
+            <button
+              type="button"
+              onClick={handleOidcConsentContinue}
+              disabled={!allConsentDocumentsAccepted || oidcLoading}
+              className="btn-primary w-full py-2.5"
+            >
+              {oidcLoading
+                ? t('common.loading', 'Загрузка...')
+                : t('auth.legalConsentContinue', 'Продолжить')}
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center space-y-2">
+            <button
+              type="button"
+              onClick={() => {
+                setOidcError('');
+                setOidcLoading(true);
+                if (window.Telegram?.Login) {
+                  window.Telegram.Login.open();
+                } else {
+                  setOidcLoading(false);
+                }
+              }}
+              disabled={oidcLoading || !scriptLoaded}
+              className="telegram-login-button inline-flex items-center gap-2 rounded-lg bg-[#229ED9] px-6 py-3 text-sm font-medium text-white transition-colors disabled:opacity-50"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+              </svg>
+              {oidcLoading ? t('common.loading') : t('auth.loginWithTelegram')}
+            </button>
+            {oidcError && <p className="text-xs text-error-400">{oidcError}</p>}
+          </div>
+        )
       ) : (
         <div ref={containerRef} className="flex justify-center" />
       )}
