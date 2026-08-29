@@ -232,6 +232,7 @@
     "legalConsentTitle": "One more step",
     "legalConsentSubtitle": "To create an account, confirm that you have read the documents.",
     "legalConsentContinue": "Continue",
+    "legalConsentOidcReconfirm": "After you continue, Telegram will ask you to confirm the sign-in — this keeps your account secure.",
     "checkEmail": "Check your email",
     "verificationSent": "We sent a verification link to:",
     "clickLinkToVerify": "Click the link in the email to verify your account and log in.",

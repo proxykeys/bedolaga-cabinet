@@ -27,7 +27,6 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
   const [oidcError, setOidcError] = useState('');
   // 428-consent: новый пользователь должен отметить документы до создания аккаунта
   const [consentDocuments, setConsentDocuments] = useState<string[] | null>(null);
-  const [pendingOidcIdToken, setPendingOidcIdToken] = useState<string | null>(null);
   const [acceptedDocuments, setAcceptedDocuments] = useState<Record<string, boolean>>({});
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [scriptFailed, setScriptFailed] = useState(false);
@@ -99,20 +98,27 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     try {
       setOidcLoading(true);
       setOidcError('');
-      await loginWithTelegramOIDC(data.id_token);
+      // Consent-экран уже активен (был 428): новый id_token идёт сразу с
+      // отмеченными документами — токен из прошлого popup «сгорел» в
+      // replay-кэше бэка при первой попытке, повторно он не принимается.
+      const acceptedKeys =
+        consentDocuments && consentDocuments.length > 0
+          ? consentDocuments.filter((document) => acceptedDocuments[document])
+          : undefined;
+      await loginWithTelegramOIDC(data.id_token, acceptedKeys);
       if (mountedRef.current) navigate('/');
     } catch (err: unknown) {
       if (!mountedRef.current) return;
       // 428 = новый пользователь: бэк требует согласие с офертой/политикой.
       // detail — объект {code, message, documents, missing, prechecked}; рисуем
-      // чекбоксы и повторяем вход с уже полученным id_token после галочек.
+      // чекбоксы. Retry невозможен тем же токеном (replay-защита бэка):
+      // «Продолжить» переоткрывает Telegram Login и присылает свежий id_token.
       if (isAxiosError(err) && err.response?.status === 428) {
         const detail = err.response?.data?.detail as
           | { documents?: string[]; prechecked?: boolean }
           | undefined;
         const documents = Array.isArray(detail?.documents) ? detail.documents : [];
         if (documents.length > 0) {
-          setPendingOidcIdToken(data.id_token || null);
           setAcceptedDocuments((prev) => {
             const next = { ...prev };
             for (const document of documents) {
@@ -143,26 +149,21 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     (document) => acceptedDocuments[document],
   );
 
-  const handleOidcConsentContinue = useCallback(async () => {
-    if (!pendingOidcIdToken || !consentDocuments) return;
-    const acceptedKeys = consentDocuments.filter((document) => acceptedDocuments[document]);
-    setOidcLoading(true);
+  // id_token из прошлого popup «сгорел» в replay-кэше бэка (первая попытка
+  // вернула 428 уже после записи hash токена), а его exp живёт ~60 секунд.
+  // Поэтому «Продолжить» не ретраит старый токен, а синхронно в клике
+  // переоткрывает Telegram Login — popup не блокируется браузером, а новый
+  // id_token придёт в handleOIDCCallbackRef уже с отмеченными документами.
+  const handleOidcConsentContinue = useCallback(() => {
+    if (!consentDocuments || !allConsentDocumentsAccepted) return;
     setOidcError('');
-    try {
-      await loginWithTelegramOIDC(pendingOidcIdToken, acceptedKeys);
-      if (mountedRef.current) navigate('/');
-    } catch (err: unknown) {
-      if (!mountedRef.current) return;
-      let message = t('common.error');
-      if (isAxiosError(err)) {
-        const detail = err.response?.data?.detail;
-        if (typeof detail === 'string') message = detail;
-      }
-      setOidcError(message);
-    } finally {
-      if (mountedRef.current) setOidcLoading(false);
+    if (window.Telegram?.Login) {
+      setOidcLoading(true);
+      window.Telegram.Login.open();
+    } else {
+      setOidcError(t('common.error'));
     }
-  }, [pendingOidcIdToken, consentDocuments, acceptedDocuments, loginWithTelegramOIDC, navigate, t]);
+  }, [consentDocuments, allConsentDocumentsAccepted, t]);
 
   // Handle script load failure (timeout or error)
   const handleScriptFailed = useCallback(() => {
@@ -656,6 +657,12 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
                 ? t('common.loading', 'Загрузка...')
                 : t('auth.legalConsentContinue', 'Продолжить')}
             </button>
+            <p className="text-center text-[11px] leading-relaxed text-gray-500 dark:text-gray-500">
+              {t(
+                'auth.legalConsentOidcReconfirm',
+                'После нажатия Telegram запросит подтверждение входа — это защитит вашу учётную запись.',
+              )}
+            </p>
           </div>
         ) : (
           <div className="flex flex-col items-center space-y-2">
