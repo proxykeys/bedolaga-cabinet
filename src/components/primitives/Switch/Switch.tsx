@@ -30,7 +30,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           'peer relative h-7 w-[52px] shrink-0 cursor-pointer rounded-full transition-colors duration-300',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950',
           'disabled:cursor-not-allowed disabled:opacity-50',
-          'data-[state=checked]:bg-accent-500 data-[state=unchecked]:bg-gray-400',
+          'data-[state=checked]:bg-accent-500 data-[state=unchecked]:bg-gray-500',
           className,
         )}
         onCheckedChange={handleCheckedChange}
