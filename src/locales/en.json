@@ -381,7 +381,7 @@
     "free": "Free",
     "extend": "Extend Subscription",
     "buyTraffic": "Buy Traffic",
-    "buyDevices": "Buy Devices",
+    "buyDevices": "Add Devices",
     "renewalOptions": "Renewal Options",
     "days": "days",
     "daysShort": "d.",
@@ -395,7 +395,7 @@
     "minutes_other": "{{count}} m",
     "price": "Price",
     "noSubscription": "You don't have an active subscription",
-    "getSubscription": "Buy Subscription",
+    "getSubscription": "Subscribe",
     "cta": {
       "expiredHint": "Choose a plan and pay",
       "trialHint": "More traffic and devices",
@@ -609,7 +609,7 @@
     "trafficResetAt": "Reset",
     "additionalOptions": {
       "title": "Additional options",
-      "buyDevices": "Buy more devices",
+      "buyDevices": "Add more devices",
       "deviceManagerTitle": "Device limit",
       "deviceManagerHint": "You can increase or decrease the number of available devices",
       "deviceDeltaIncrease_one": "+{{count}} device",
@@ -620,9 +620,9 @@
       "currentDeviceLimit_one": "Current limit: {{count}} device",
       "currentDeviceLimit_other": "Current limit: {{count}} devices",
       "maxDevices": "max {{count}}",
-      "devicesUnavailable": "Device purchase is not available",
+      "devicesUnavailable": "Adding devices is not available",
       "devicesUnit": "devices",
-      "buy": "Buy",
+      "buy": "Add",
       "reduceDevices": "Reduce devices",
       "reduceDevicesTitle": "Reduce device limit",
       "reduceDevicesDescription": "You can reduce the number of devices to the tariff minimum",
@@ -5954,9 +5954,9 @@
     }
   },
   "subscriptions": {
-    "buy": "Buy subscription",
-    "buyAnother": "Buy another",
-    "browsePlans": "Buy subscription",
+    "buy": "Subscribe",
+    "buyAnother": "Get another",
+    "browsePlans": "Subscribe",
     "empty": "You have no subscriptions yet",
     "emptyDesc": "Choose a tariff to get started",
     "title": "My subscriptions"
