@@ -82,10 +82,18 @@ export function BlockButtons({
           // stored in the DB; since Remnawave 2.8.0 removed the encrypt endpoint,
           // new users can get the raw template here. Resolve it client-side (the
           // panel's own subpage does the same) instead of dropping the button.
-          const resolved =
+          let resolved =
             raw && subscriptionUrl && hasTemplates(raw)
               ? resolveTemplate(raw, { subscriptionUrl, username })
               : raw;
+          if (hasTemplates(resolved) && resolved.includes('#')) {
+            // {{USERNAME}} stays unresolvable for accounts without a username
+            // (email-only auth). Drop the trailing #fragment (e.g.
+            // shadowrocket://add/<url>#{{USERNAME}}) instead of hiding the
+            // button — the fragment is only a display remark.
+            const [base] = resolved.split('#');
+            if (!hasTemplates(base)) resolved = base;
+          }
           const url = resolved ? collapseDoubledCryptPrefix(resolved) : resolved;
           if (!url || hasTemplates(url) || !isValidDeepLink(url)) return null;
           return (
