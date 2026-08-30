@@ -129,30 +129,6 @@ export default function SubscriptionListCard({
           <ChevronRightIcon className="h-4 w-4 shrink-0 opacity-30" />
         </div>
 
-        {/* Traffic mini progress bar */}
-        {isActive && (
-          <div className="mt-3">
-            <div className="mb-1 flex items-baseline justify-between">
-              <span className="text-[11px] font-medium" style={{ color: g.textSecondary }}>
-                {t('subscription.traffic', 'Трафик')}
-              </span>
-              <span className="text-[11px] tabular-nums" style={{ color: g.textSecondary }}>
-                {isUnlimited
-                  ? '∞'
-                  : `${trafficUsed.toFixed(1)} / ${trafficLimit} ${t('common.units.gb', 'ГБ')}`}
-              </span>
-            </div>
-            {!isUnlimited && (
-              <div className="h-1.5 overflow-hidden rounded-full" style={{ background: g.innerBg }}>
-                <div
-                  className={`h-full rounded-full transition-all ${trafficColor}`}
-                  style={{ width: `${Math.max(1, trafficPercent)}%` }}
-                />
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Stats row */}
         <div
           className="mt-2.5 flex items-center gap-4 text-[12px]"

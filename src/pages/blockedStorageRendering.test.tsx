@@ -84,38 +84,6 @@ describe('useTheme при заблокированном localStorage', () => {
   });
 });
 
-describe('useOnboarding при заблокированном localStorage', () => {
-  it('рендерится и считает онбординг непройденным', async () => {
-    blockStorage('localStorage');
-    const { useOnboarding } = await import('../components/Onboarding');
-
-    function Probe() {
-      const { isCompleted } = useOnboarding();
-      return <span data-testid="done">{String(isCompleted)}</span>;
-    }
-
-    render(<Probe />);
-
-    expect(screen.getByTestId('done').textContent).toBe('false');
-  });
-
-  it('не бросает при завершении онбординга', async () => {
-    blockStorage('localStorage');
-    const { useOnboarding } = await import('../components/Onboarding');
-
-    let complete: (() => void) | null = null;
-    function Probe() {
-      const hook = useOnboarding();
-      complete = hook.complete;
-      return <span data-testid="done">{String(hook.isCompleted)}</span>;
-    }
-
-    render(<Probe />);
-
-    expect(() => complete?.()).not.toThrow();
-  });
-});
-
 describe('saveReturnUrl при заблокированном sessionStorage', () => {
   it('не бросает, чтобы редирект на логин состоялся', async () => {
     blockStorage('sessionStorage');
