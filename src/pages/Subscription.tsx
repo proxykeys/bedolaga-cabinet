@@ -976,10 +976,10 @@ export default function Subscription() {
         // постоянно живёт в StatsGrid на месте карточки рефералов.
         <div className="space-y-3">
           {trialLoading ? (
-            <div className="bento-card">
-              <div className="skeleton mb-3 h-14 w-14 rounded-full" />
-              <div className="skeleton mb-2 h-6 w-40" />
-              <div className="skeleton h-4 w-full" />
+            <div className="bento-card space-y-3">
+              <Skeleton circle className="h-14 w-14" />
+              <Skeleton className="h-6 w-40" />
+              <Skeleton className="h-4 w-full" />
             </div>
           ) : trialInfo?.is_available ? (
             <TrialOfferCard
