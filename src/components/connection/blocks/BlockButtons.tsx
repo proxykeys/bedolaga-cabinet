@@ -85,7 +85,7 @@ export function BlockButtons({
           let resolved =
             raw && subscriptionUrl && hasTemplates(raw)
               ? resolveTemplate(raw, { subscriptionUrl, username })
-              : raw;
+              : (raw ?? '');
           if (hasTemplates(resolved) && resolved.includes('#')) {
             // {{USERNAME}} stays unresolvable for accounts without a username
             // (email-only auth). Drop the trailing #fragment (e.g.
