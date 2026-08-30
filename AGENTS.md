@@ -15,17 +15,19 @@ https://docs.bedolagam.ru/
 
 Backend — Bedolaga Telegram Bot (Python/FastAPI), работает на сервере панели `193.23.197.134`, API доступен локально через SSH-туннель.
 
-## Текущие версии (обновление 2026-08-08)
+## Текущие версии (обновление 2026-08-30)
 
 | Компонент | Версия | Образ / ветка |
 |---|---|---|
-| **Remnawave Panel** | 3.2.1 | `remnawave/backend:3` |
-| **Bedolaga Bot** | 4.0.0 | `main` branch (git) |
-| **Cabinet Frontend** | 1.65.0 | `custom-ui` branch |
+| **Remnawave Panel** | 3.4.1 | `remnawave/backend:3` |
+| **Bedolaga Bot** | 4.2.0 | `main` branch (git) |
+| **Cabinet Frontend** | 1.67.0 | `custom-ui` branch |
 | **Remnawave Node** | 2.8.0 (pinned) | `remnawave/node:2.8.0` |
-| **Subscription Page** | latest | `remnawave/subscription-page:latest` |
+| **Subscription Page** | v8.0.0 | `remnawave/subscription-page:latest` |
 | **Panel DB** | PostgreSQL 17.6 | `postgres:17.6` |
 | **Panel Cache** | Valkey 9 | `valkey/valkey:9-alpine` (Unix socket) |
+
+Апгрейд 2026-08-30 (panel 3.2.1→3.4.1, bot 4.0.0→4.2.0, cabinet 1.65→1.67, sub page v8): runbook — ProxyBook/BedolagaV3Upgrade.md. Нюансы panel 3.4: list-endpoint `/api/subscription-page-configs` отдаёт `config: null` (конфиг только в by-uuid endpoint, в БД на месте); sub page v8 рендерит webpage только при `Accept: text/html` (SRR-правило Browser Subscription) — curl без Accept получает 502 by design. GeoCheck в админке кабинета не работает (нужна node 3.3.0+, нода pinned 2.8.0) — не блокер.
 
 **⚠️ Нода pinned на 2.8.0** — Node v3.0.0 содержит Xray v26.7.28 с багом REALITY (зависание TCP-сокетов под нагрузкой) и ломает совместимость с mihomo/sing-box. Обновлять ноду до v3 только после фикса Xray upstream.
 
@@ -221,13 +223,13 @@ git branch -D backup-before-rebase  # если всё ок
 
 ## Backend (Bot) Integration
 
-Бот (Bedolaga Telegram Bot v4.0.0) работает на сервере `193.23.197.134`. Все ProxyKeys-патчи бота собраны в `custom.patch` на сервере.
+Бот (Bedolaga Telegram Bot v4.2.0) работает на сервере `193.23.197.134`. Все ProxyKeys-патчи бота собраны в `custom.patch` на сервере.
 
-**⚠️ Bot v4.0.0 breaking change**: переходит на Remnawave Panel v3 API (numeric user IDs вместо UUID). При запуске выполняет автоматический бэкфил UUID→numeric. Старые JWT-токены (UUID-based) невалидны — нужны новые, подписанные `APP_SECRET` панели v3.
+**Обновление 4.0.0 → 4.2.0 (2026-08-30)**: конфликты только в `tariff_purchase.py` (нативный single-tariff skip заменил наш кастом-хунк; наш device selector и no-manual-renewal guard сохранены) и `my_subscriptions.py` (наш текст «Оформить подписку» + upstream gift-кнопка). Порядок клавиатур покупки: BACK-кнопки upstream (`back_callback`: menu_buy / back_to_menu при скипе), «❌ Отмена» удалена.
 
 ### Патчи бота
 
-- **Расположение**: `/opt/remnawave/bedolaga/custom.patch` (~1400 строк, 22 файлов исходного кода; `locales/` volume-mount файлы исключены)
+- **Расположение**: `/opt/remnawave/bedolaga/custom.patch` (2552 строки, 26 файлов исходного кода; `locales/` volume-mount файлы исключены)
 - **Backup'ы**: `/opt/remnawave/bedolaga/custom-before-*.patch` (снапшоты перед каждым этапом)
 - **Применение**: `cd /opt/remnawave/bedolaga/bot-src && git diff HEAD > ../custom.patch` (регенерация)
 
@@ -371,7 +373,7 @@ docker exec remnawave-db psql -U postgres -d postgres -c "SELECT uuid, name FROM
 - **Bot DB**: PostgreSQL 15 — `docker exec remnawave_bot_db psql -U remnawave_user -d remnawave_bot`
 - **Bot container**: `remnawave_bot` (healthcheck: `docker ps --filter name=remnawave_bot`)
 - **Node**: `3-DE-001` — `remnawave/node:2.8.0` (pinned, `ssh 3-DE-001`)
-- **Test user**: panel id=36 (telegram_id=185929880, bot user id=14)
+- **Test user**: panel id=41 (telegram_id=185929880, bot user id=18 turtlemutant)
 - **Test trial user**: panel id=37 (bot user id=16, trial, tariff_id=3)
 - **Active tariff**: id=3 «ProxyKeys Subscription» (device_limit=1, device_price_kopeks=4800, max_device_limit=15, traffic_limit_gb=0, is_active=t, period_prices={"30":4800})
 - **Inactive tariff**: id=1 «Стандартный» (is_active=f)
@@ -393,7 +395,7 @@ docker exec remnawave-db psql -U postgres -d postgres -c "SELECT uuid, name FROM
 | `BedolagaV3Upgrade.md` | Обновление Remnawave 2→3 + Bot 3.62→4.0 + Cabinet 1.63→1.65 |
 | `BedolagaCabinetDeploy.md` | Деплой кабинета custom-ui на прод + инцидент 2026-08-22 (пропавший device selector) |
 | `BedolagaDeviceStepperBot.md` | Степпер устройств в боте как в вебе (`chgdev:*`) |
-| `BedolagaBotUpdate410.md` | Runbook обновления Bot 4.0.0 → 4.1.0 (ПЛАН, выполнение после ~2026-09-03) |
+| `BedolagaBotUpdate410.md` | Runbook обновления Bot 4.0.0 → 4.1.0 (поглощён апгрейдом 4.2.0 от 2026-08-30 — см. BedolagaV3Upgrade.md) |
 | `BedolagaDev.md` | Кастомизация кабинета (общее) |
 | `BedolagaSetup.md` | Установка Bedolaga |
 
