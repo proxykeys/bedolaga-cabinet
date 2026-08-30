@@ -278,7 +278,7 @@ export function PrimitivesSection() {
 
       {/* ─── Skeleton ─── */}
       <SubGroup title="Skeleton" hint="variants: line, card, circle, SkeletonGroup">
-        <Snapshot label="skeleton · gallery" description="варианты скелетонов (1.67 API)">
+        <Snapshot label="Skeleton · gallery" description="варианты скелетонов (1.67 API)">
           <div className="space-y-5 rounded-xl bg-gray-050 p-6 dark:bg-gray-950">
             {/* Line */}
             <div className="space-y-2">
