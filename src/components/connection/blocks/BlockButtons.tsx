@@ -69,6 +69,7 @@ export function BlockButtons({
         const btnText = getLocalizedText(btn.text);
         const btnSvg = getSvgHtml(btn.svgIconKey);
         const btnIcon = btnSvg ? (
+          // biome-ignore lint/correctness/useJsxKeyInIterable: icon variable is only rendered inside keyed parents
           <div
             className="conn-svg h-4 w-4 [&>svg]:h-full [&>svg]:w-full"
             dangerouslySetInnerHTML={{ __html: btnSvg }}
@@ -122,20 +123,43 @@ export function BlockButtons({
         }
 
         // external
-        const href = btn.link || btn.url || '';
-        if (!isValidExternalUrl(href)) return null;
-        return (
-          <a
-            key={idx}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center gap-2 ${baseClass}`}
-          >
-            {btnIcon}
-            {btnText}
-          </a>
-        );
+        const rawHref = btn.link || btn.url || '';
+        if (!rawHref) return null;
+        const href =
+          rawHref && subscriptionUrl && hasTemplates(rawHref)
+            ? resolveTemplate(rawHref, { subscriptionUrl, username })
+            : rawHref;
+        if (isValidExternalUrl(href)) {
+          return (
+            <a
+              key={idx}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center gap-2 ${baseClass}`}
+            >
+              {btnIcon}
+              {btnText}
+            </a>
+          );
+        }
+        // External buttons may carry deep links (e.g.
+        // shadowrocket://config/add/https://...): <a href> cannot open custom
+        // schemes reliably, so route them through the same opener as
+        // subscriptionLink buttons.
+        if (isValidDeepLink(href) && !hasTemplates(href)) {
+          return (
+            <button
+              key={idx}
+              onClick={() => onOpenDeepLink(href)}
+              className={`flex items-center gap-2 ${baseClass}`}
+            >
+              {btnIcon}
+              {btnText}
+            </button>
+          );
+        }
+        return null;
       })}
     </div>
   );
