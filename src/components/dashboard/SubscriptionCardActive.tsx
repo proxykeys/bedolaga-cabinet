@@ -1,9 +1,8 @@
 import { uiLocale } from '@/utils/uiLocale';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import ConnectDeviceTile from './ConnectDeviceTile'; 5295fd67 (feat(custom): remove traffic/servers/unlimited UI — безлимитная модель)
+import ConnectDeviceTile from './ConnectDeviceTile';
 import { useTheme } from '../../hooks/useTheme';
-import { useTrafficZone } from '../../hooks/useTrafficZone';
 import { getGlassColors } from '../../utils/glassTheme';
 import { CalendarIcon } from '@/components/icons';
 import type { Subscription } from '../../types';
@@ -22,13 +21,7 @@ export default function SubscriptionCardActive({
   const g = getGlassColors(isDark);
 
   // All tariffs are unlimited → usedPercent is always 0 (green zone).
-  // zone is kept only to drive accent colors on device indicators.
   const usedPercent = 0;
-  const zone = useTrafficZone(usedPercent);
-  const haptic = useHaptic();
-
-  const isAtDeviceLimit =
-    subscription.device_limit > 0 && connectedDevices >= subscription.device_limit;
 
   const formattedDate = new Date(subscription.end_date).toLocaleDateString(uiLocale());
   const daysLeft = subscription.days_left;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useQueries, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,6 @@ import { DeviceLimitSheet } from '../components/subscription/DeviceLimitSheet';
 import { API } from '../config/constants';
 import { ChevronRightIcon, StarIcon } from '@/components/icons';
 import { Skeleton, SkeletonGroup } from '@/components/ui/skeleton';
-import { safeLocal } from '../utils/safeStorage';
 
 export default function Dashboard() {
   const { t } = useTranslation();

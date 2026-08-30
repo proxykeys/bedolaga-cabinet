@@ -30,7 +30,7 @@ import {
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/primitives/Select';
 import { Switch } from '@/components/primitives/Switch';
 import { SimpleTooltip } from '@/components/primitives/Tooltip';
-import { Skeleton } from '@/components/ui/Skeleton';
+import { Skeleton, SkeletonGroup } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/Spinner';
 import { CardIcon, ChevronRightIcon, CheckIcon, UsersIcon, CloseIcon } from '@/components/icons';
 
@@ -277,29 +277,28 @@ export function PrimitivesSection() {
       </SubGroup>
 
       {/* ─── Skeleton ─── */}
-      <SubGroup title="Skeleton" hint="variants: text, avatar, card, list">
-        <Snapshot label="skeleton · gallery" description="все варианты скелетонов">
+      <SubGroup title="Skeleton" hint="variants: line, card, circle, SkeletonGroup">
+        <Snapshot label="skeleton · gallery" description="варианты скелетонов (1.67 API)">
           <div className="space-y-5 rounded-xl bg-gray-050 p-6 dark:bg-gray-950">
-            {/* Text lines */}
+            {/* Line */}
             <div className="space-y-2">
-              <Skeleton variant="text" width="60%" />
-              <Skeleton variant="text" width="40%" />
+              <Skeleton className="h-4 w-3/5" />
+              <Skeleton className="h-4 w-2/5" />
             </div>
-            {/* Avatar + text */}
+            {/* Circle + lines */}
             <div className="flex items-center gap-3">
-              <Skeleton variant="avatar" width={40} height={40} />
+              <Skeleton circle className="h-10 w-10" />
               <div className="flex-1 space-y-2">
-                <Skeleton variant="text" width="80%" />
-                <Skeleton variant="text" width="50%" />
+                <Skeleton className="h-4 w-4/5" />
+                <Skeleton className="h-4 w-1/2" />
               </div>
             </div>
-            {/* Card variant (auto-height) */}
-            <Skeleton variant="card" />
-            {/* List variant */}
-            <div className="space-y-2">
-              <Skeleton variant="list" />
-              <Skeleton variant="list" />
-            </div>
+            {/* Card variant */}
+            <Skeleton variant="card" className="h-24" />
+            {/* SkeletonGroup (space-y) */}
+            <SkeletonGroup className="space-y-2">
+              <Skeleton variant="card" count={2} className="h-14" />
+            </SkeletonGroup>
           </div>
         </Snapshot>
       </SubGroup>

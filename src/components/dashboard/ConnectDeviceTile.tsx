@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { useHaptic } from '../../platform';
 import { useTheme } from '../../hooks/useTheme';
 import { useTrafficZone } from '../../hooks/useTrafficZone';
 import { getGlassColors } from '../../utils/glassTheme';
@@ -31,7 +30,6 @@ export default function ConnectDeviceTile({
 }: ConnectDeviceTileProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const haptic = useHaptic();
   const { isDark } = useTheme();
   const g = getGlassColors(isDark);
   const zone = useTrafficZone(usedPercent);
