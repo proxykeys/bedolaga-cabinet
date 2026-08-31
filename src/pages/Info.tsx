@@ -371,7 +371,7 @@ export default function Info() {
     ];
 
     const visibleBuiltinTabs = builtinTabs.filter((tab) => {
-      if (tab.id === 'loyalty') return true;
+      if (tab.id === 'loyalty') return false;
       if (tabReplacements?.[tab.id as ReplacesTab]) return true;
       if (!visibility) return true;
       return visibility[tab.id as keyof InfoVisibility];
