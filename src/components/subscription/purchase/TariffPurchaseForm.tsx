@@ -97,10 +97,11 @@ export function TariffPurchaseForm({
   const [deviceCount, setDeviceCount] = useState<number>(initialDeviceCount);
 
   // ProxyKeys custom: autopay toggle state для fresh purchase.
-  // По умолчанию ON — т.к. без ручного продления это безопаснее (предотвращает
-  // случайное истечение). Юзер может выключить. После успешной покупки
-  // вызываем updateAutopay с выбранным значением.
-  const [autopayEnabled, setAutopayEnabled] = useState(true);
+  // По умолчанию OFF — автопродлечение должно быть осознанным opt-in
+  // (юр-корректно: согласие на рекуррентные платежи только при явном
+  // включении; симметрично боту). После успешной покупки вызываем
+  // updateAutopay с выбранным значением.
+  const [autopayEnabled, setAutopayEnabled] = useState(false);
 
   // ProxyKeys custom: явный акцепт публичной оферты в точке оплаты.
   // Гейтит все платёжные кнопки формы (баланс, СБП, Lava). При autopay ON
