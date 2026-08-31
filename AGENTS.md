@@ -23,11 +23,11 @@ Backend — Bedolaga Telegram Bot (Python/FastAPI), работает на сер
 | **Bedolaga Bot** | 4.2.0 | `main` branch (git) |
 | **Cabinet Frontend** | 1.67.0 | `custom-ui` branch |
 | **Remnawave Node** | 2.8.0 (pinned) | `remnawave/node:2.8.0` |
-| **Subscription Page** | v8.0.0 | `remnawave/subscription-page:latest` |
+| **Subscription Page** | v8.0.0-custom | `pk-subscription-page:custom` (форк custom-ui-v1, с 2026-08-31) |
 | **Panel DB** | PostgreSQL 17.6 | `postgres:17.6` |
 | **Panel Cache** | Valkey 9 | `valkey/valkey:9-alpine` (Unix socket) |
 
-Апгрейд 2026-08-30 (panel 3.2.1→3.4.1, bot 4.0.0→4.2.0, cabinet 1.65→1.67, sub page v8): runbook — ProxyBook/BedolagaV3Upgrade.md. Нюансы panel 3.4: list-endpoint `/api/subscription-page-configs` отдаёт `config: null` (конфиг только в by-uuid endpoint, в БД на месте); sub page v8 рендерит webpage только при `Accept: text/html` (SRR-правило Browser Subscription) — curl без Accept получает 502 by design. GeoCheck в админке кабинета не работает (нужна node 3.3.0+, нода pinned 2.8.0) — не блокер.
+Апгрейд 2026-08-30 (panel 3.2.1→3.4.1, bot 4.0.0→4.2.0, cabinet 1.65→1.67, sub page v8): runbook — ProxyBook/BedolagaV3Upgrade.md. Нюансы panel 3.4: list-endpoint `/api/subscription-page-configs` отдаёт `config: null` (конфиг только в by-uuid endpoint, в БД на месте); sub page v8 рендерит webpage только при `Accept: text/html` + браузерном UA (SRR-правило Browser Subscription) — curl без них получает API-ветку (vless-конфиг) by design. GeoCheck в админке кабинета не работает (нужна node 3.3.0+, нода pinned 2.8.0) — не блокер. С 2026-08-31 прод sub page = кастомный образ `pk-subscription-page:custom` (форк custom-ui-v1; исходники `/opt/remnawave/bedolaga/subpage-src`; runbook — ProxyBook/SubscriptionPage.md секция 11).
 
 **⚠️ Нода pinned на 2.8.0** — Node v3.0.0 содержит Xray v26.7.28 с багом REALITY (зависание TCP-сокетов под нагрузкой) и ломает совместимость с mihomo/sing-box. Обновлять ноду до v3 только после фикса Xray upstream.
 
