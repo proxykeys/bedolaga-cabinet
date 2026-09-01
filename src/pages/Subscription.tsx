@@ -533,14 +533,22 @@ export default function Subscription() {
     );
   }
 
+  // ProxyKeys custom: CTA «Оформить подписку» в сетке StatsGrid (справа от «Баланс»)
+  // показываем не только в empty-state и активном триале, но и при disabled/expired
+  // (инцидент 2026-09-01: зомби-подписка убирала кнопку из сетки, оставляя нижний
+  // дубль над «Подключённые устройства»). В этих состояниях нижний PurchaseCTAButton
+  // скрываем — CTA один, в сетке.
+  const showGridBuyCta =
+    !subscription ||
+    !!subscription.is_trial ||
+    subscription.status === 'disabled' ||
+    !!subscription.is_expired;
+
   return (
     <div className="space-y-6">
       {/* ProxyKeys custom: эта страница = главная (/).
-          Баланс и рефералы всегда видны сверху (как на бывшей Dashboard).
-          Кнопка «Купить подписку» в сетке — в empty-state и активном триале;
-          при активной платной CTA нет (продление только автоплатёж),
-          при истёкшей — нижний PurchaseCTAButton (expired-вариант). */}
-      <StatsGridContainer showBuyCta={!subscription || !!subscription.is_trial} />
+          Баланс и рефералы всегда видны сверху (как на бывшей Dashboard). */}
+      <StatsGridContainer showBuyCta={showGridBuyCta} />
 
       {/* Current Subscription */}
       {subscription ? (
@@ -1152,8 +1160,9 @@ export default function Subscription() {
         </div>
       )}
 
-      {/* Purchase / Renewal CTA (ProxyKeys: триал — CTA в сетке StatsGrid, дубль не нужен) */}
-      {!subscription?.is_trial && (
+      {/* Purchase / Renewal CTA (ProxyKeys: триал — CTA в сетке StatsGrid, дубль не нужен;
+          disabled/expired — тоже CTA в сетке, нижний скрыт во избежание дубля) */}
+      {!subscription?.is_trial && !showGridBuyCta && (
         <PurchaseCTAButton subscription={subscription} isMultiTariff={isMultiTariff} />
       )}
 
