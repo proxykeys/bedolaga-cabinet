@@ -216,6 +216,7 @@ git branch -D backup-before-rebase  # если всё ок
 | Hide loyalty tab | `d1728bed` | 2026-08-31: таб «Статусы» (программа лояльности, promo groups по накопленным тратам) скрыт на `/info` — в БД бота одна дефолтная группа «Базовый юзер» без порогов/скидок, фича не используется. Патч `Info.tsx`: `visibleBuiltinTabs`-фильтр `loyalty → return false` (upstream хардкодил `return true`, игнорируя visibility). Рендер-код и API остались (мёртвая ветка), при желании вернуть — откат одной строки |
 | Reset zombie fix | `8a013684` + bot custom.patch | 2026-09-01: инцидент «у нескольких юзеров статус „Приостановлена (недостаточно средств)"/„Истекла" при живом балансе» — админский `reset-subscription` удалял подписки из БД, но лишь disable'ил панель-юзера с живым expireAt → ночная синхронизация 06:00 воскрешала их как зомби (`status=disabled, tariff_id=NULL`). Фикс бота: reset-subscription теперь **удаляет** панель-юзера (mark_intentional_panel_deletion + delete_remnawave_user, fail-closed, очистка `user.remnawave_id`) + defense-in-depth guard в `_create_subscription_from_panel_data` и multi-tariff-ветке синка (не создавать подписку из не-ACTIVE панель-юзера). Фикс кабинета `8a013684`: CTA «Оформить подписку» в сетке StatsGrid (справа от «Баланс») и при `disabled`/`expired` (раньше — только empty-state/trial), нижний PurchaseCTAButton в этих состояниях скрыт. Восстановление: юзер 1 — sub 45 active+tariff 3+remnawave_id 43, панель 43 enable; юзер 18 — e2e-тест нового reset (панель 41 удалена, чист); юзер 19 — зомби-панель 44 удалена. Backup `custom-before-reset-zombie-fix.patch`. См. ProxyBook/BedolagaAdminResetZombie.md |
 | Trial reset flag | `be16ac9b` + bot custom.patch | 2026-09-01: «сбрасываю триал — он не появляется» — upstream-гейт `User.is_trial_already_used()`: флаг `has_had_paid_subscription` («платил хоть раз → триалов нет») не сбрасывается никакой админ-акцией → для плативших reset-trial бесполезен, при этом API врал `success=True` (в т.ч. при skip активной платной), а фронт тостил захардкоженное «Триал успешно сброшен». Фикс бота: `reset_user_trial` сбрасывает флаг, когда после сброса подписок не осталось (multi-tariff-safe, PENDING-черновики не в счёте; reset-subscription флаг НЕ трогает — осознанно), честный message при skip + новое поле `skipped_active_paid` в ResetTrialResponse. Фикс кабинета: warning-тост «Сброс пропущен: активная платная подписка» при skip (ключ `userActions.skippedActivePaid` + `common.warning`, ru/en). Data fix: флаг снят юзеру 1. E2e в контейнере: пустой юзер → флаг f; активная платная → skip, флаг нетронут. Юзер 18 оставлен «как новенький» (flag=f, subs=0). Грабли теста: фейк-подписку создавать в отдельной сессии ДО загрузки юзера (eager-коллекция кэшируется). Backup `custom-before-trial-flag-fix.patch`. См. ProxyBook/BedolagaTrialResetFlag.md |
+| Trial card cleanup | `9eb2d016` + bot locale | 2026-09-01: косметика триала. Веб: карточка триала без строки «Попробуйте наш VPN бесплатно: без обязательств» (TrialOfferCard: desc-параграф только при `!isFree`, заголовок `mb-5` при isFree; freeDesc-ключи локалей оставлены мёртвыми). Бот: экран «Тестовая подписка» без строки «🌍 Сервер: …» (`TRIAL_AVAILABLE` ru/en минус `\n🌍 <b>Сервер:</b> {server_name}`; kwarg `server_name=` в purchase.py:659 остался — лишний kwarg в str.format безвреден; шаблон используется только на экране активации). Локали правились через rebuild — см. обновлённую секцию «правка локалей бота» |
 
 Подробная документация: см. ProxyBook (секция ниже).
 
@@ -340,13 +341,20 @@ npm run type-check && npm run lint && npm run dev
 
 **Золотое правило:** ни одно обновление upstream не выполняется без шагов `snapshot` + `check`. Если `check` сообщает потери — обновление не считается завершённым, потерянные патчи восстанавливаются из snapshot/backup.
 
-### КРИТИЧНО: stale `locales/` volume override
+### КРИТИЧНО: правка локалей бота — только через rebuild (обновлено 2026-09-01)
 
-`docker-compose.yml` монтирует `./locales:/app/locales:rw`. После `git pull` или правки локалей **обязательно**:
+`docker-compose.yml` монтирует `./locales:/app/locales:rw`, но host-каталог `bot-src/locales/` **должен оставаться ПУСТЫМ**: upstream-коммит `63d75003 «Remove user locale overrides from repo»` удалил эти файлы из репо — положенные туда копии попадают в `git diff HEAD` как +2300 строк мусора на файл (ломает custom.patch).
+
+Механизм (`app/localization/loader.py::ensure_locale_templates`): шаблоны копируются из образа в volume ТОЛЬКО если volume пуст И writable — volume root-owned 755, контейнерный юзер не root → копирование никогда не происходит, рантайм всегда читает packaged-локали из образа (`app/localization/locales/`, git-tracked, патчатся в custom.patch).
+
+**Правка локалей бота:**
 ```bash
-rm -f locales/*.json && docker restart remnawave_bot
+# 1. редактировать git-tracked файлы
+vi app/localization/locales/{ru,en}.json
+# 2. пересобрать (rm+restart НЕ применит правку — volume пуст, читается образ)
+docker compose up -d --build bot
 ```
-Иначе бот использует устаревшие локали из volume.
+Старая процедура `rm -f locales/*.json && docker restart` устарела (актуальна была, когда в volume лежали файлы-оверрайды).
 
 ### Регенерация API-токенов (Panel v3)
 
