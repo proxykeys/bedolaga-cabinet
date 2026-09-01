@@ -620,7 +620,11 @@ export default function AdminUserDetail() {
     try {
       const result = await adminUsersApi.resetTrial(userId);
       if (result.success) {
-        notify.success(t('admin.users.userActions.success.resetTrial'), t('common.success'));
+        if (result.skipped_active_paid) {
+          notify.warning(t('admin.users.userActions.skippedActivePaid'), t('common.warning'));
+        } else {
+          notify.success(t('admin.users.userActions.success.resetTrial'), t('common.success'));
+        }
         await loadUser();
       } else {
         notify.error(result.message || t('admin.users.userActions.error'), t('common.error'));

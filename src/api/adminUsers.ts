@@ -716,7 +716,14 @@ export const adminUsersApi = {
   },
 
   // Reset trial
-  resetTrial: async (userId: number): Promise<{ success: boolean; message: string }> => {
+  resetTrial: async (
+    userId: number,
+  ): Promise<{
+    success: boolean;
+    message: string;
+    subscription_deleted?: boolean;
+    skipped_active_paid?: boolean;
+  }> => {
     const response = await apiClient.post(`/cabinet/admin/users/${userId}/reset-trial`);
     return response.data;
   },
