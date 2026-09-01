@@ -112,6 +112,10 @@ function ProfileVisual({
         <h2 className="mb-6 text-lg font-semibold text-dark-100">Информация об аккаунте</h2>
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-dark-800/50 py-3">
+            <span className="text-dark-400">ID</span>
+            <span className="font-medium text-dark-100">42</span>
+          </div>
+          <div className="flex items-center justify-between border-b border-dark-800/50 py-3">
             <span className="text-dark-400">Telegram ID</span>
             <span className="font-medium text-dark-100">987654321</span>
           </div>

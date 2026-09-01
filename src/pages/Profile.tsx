@@ -289,9 +289,15 @@ export default function Profile() {
           <h2 className="mb-6 text-lg font-semibold text-dark-100">{t('profile.accountInfo')}</h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
-              <span className="text-dark-300">{t('profile.telegramId')}</span>
-              <span className="font-medium text-dark-100">{user?.telegram_id}</span>
+              <span className="text-dark-300">ID</span>
+              <span className="font-medium text-dark-100">{user?.id}</span>
             </div>
+            {user?.telegram_id != null && (
+              <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
+                <span className="text-dark-300">{t('profile.telegramId')}</span>
+                <span className="font-medium text-dark-100">{user.telegram_id}</span>
+              </div>
+            )}
             {user?.username && (
               <div className="flex items-center justify-between border-b border-gray-200/50 py-3 dark:border-gray-800/50">
                 <span className="text-dark-300">{t('profile.username')}</span>
