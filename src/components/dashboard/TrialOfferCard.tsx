@@ -63,12 +63,14 @@ export default function TrialOfferCard({
       </div>
 
       {/* Title */}
-      <h2 className="mb-1.5 text-[22px] font-bold tracking-tight text-dark-50">
+      <h2
+        className={`text-[22px] font-bold tracking-tight text-dark-50 ${isFree ? 'mb-5' : 'mb-1.5'}`}
+      >
         {isFree ? t('dashboard.trialOffer.freeTitle') : t('dashboard.trialOffer.paidTitle')}
       </h2>
-      <p className="mb-5 text-sm text-dark-200">
-        {isFree ? t('dashboard.trialOffer.freeDesc') : t('dashboard.trialOffer.paidDesc')}
-      </p>
+      {!isFree && (
+        <p className="mb-5 text-sm text-dark-200">{t('dashboard.trialOffer.paidDesc')}</p>
+      )}
 
       {/* Price tag for paid trial */}
       {!isFree && trialInfo.price_rubles > 0 && (
