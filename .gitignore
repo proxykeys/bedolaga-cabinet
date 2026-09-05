@@ -61,6 +61,7 @@ DESIGN.json
 *.png
 # Brand logos are real source assets, not screenshots
 !src/assets/brand/*.png
+!public/logo.png
 
 # Saved HTML snapshots
 UI State Preview*.html
