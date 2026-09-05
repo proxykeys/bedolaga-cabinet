@@ -64,7 +64,7 @@ export default function StatsGrid({
           <span className="flex h-9 w-9 shrink-0 items-center justify-center text-accent-500 [&>svg]:h-8 [&>svg]:w-8">
             <SubscriptionIcon />
           </span>
-          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-dark-50 sm:text-base">
+          <span className="min-w-0 flex-1 text-sm font-semibold leading-snug text-dark-50 hyphens-auto sm:text-base">
             {t('subscriptions.buy', 'Оформить подписку')}
           </span>
           <ChevronRightIcon className="h-4 w-4 shrink-0 text-dark-300 transition-transform duration-300 group-hover:translate-x-1" />
