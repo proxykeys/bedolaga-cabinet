@@ -805,16 +805,24 @@ export default function QuickPurchase() {
 
   useEffect(() => {
     if (!branding) return;
-    const logoUrl = branding.has_custom_logo ? getLogoBlobUrl() : null;
-    if (!logoUrl) {
-      setFavicon(letterFaviconDataUri(branding.logo_letter));
-      return;
-    }
     let cancelled = false;
-    // Round the custom logo like the header tile instead of a hard square.
-    roundedFaviconDataUri(logoUrl).then((rounded) => {
-      if (!cancelled) setFavicon(rounded || logoUrl);
-    });
+    // The logo blob is module state — when it is not preloaded yet, await the
+    // preload instead of falling back to the letter monogram (structural
+    // sharing may prevent the re-render that would fix the favicon later).
+    (async () => {
+      let url = branding.has_custom_logo ? getLogoBlobUrl() : null;
+      if (!url && branding.has_custom_logo && branding.logo_url) {
+        await preloadLogo(branding);
+        url = getLogoBlobUrl();
+      }
+      if (!url) {
+        if (!cancelled) setFavicon(letterFaviconDataUri(branding.logo_letter));
+        return;
+      }
+      // Round the custom logo like the header tile instead of a hard square.
+      const rounded = await roundedFaviconDataUri(url);
+      if (!cancelled) setFavicon(rounded || url);
+    })();
     return () => {
       cancelled = true;
     };
