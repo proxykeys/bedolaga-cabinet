@@ -45,19 +45,28 @@ export function useBranding() {
 
   // Update favicon — custom logo (rounded like the header tile) when available,
   // else a brand-letter monogram so the tab always carries an icon.
+  // The logo blob is module state, not React state: when it is not preloaded
+  // yet we must await the preload here, otherwise a letter monogram would win
+  // (React Query structural sharing may never re-render after the blob lands).
   useEffect(() => {
-    if (!logoUrl) {
-      setFavicon(letterFaviconDataUri(logoLetter));
-      return;
-    }
     let cancelled = false;
-    roundedFaviconDataUri(logoUrl).then((rounded) => {
-      if (!cancelled) setFavicon(rounded || logoUrl);
-    });
+    (async () => {
+      let url = logoUrl;
+      if (!url && hasCustomLogo && branding?.logo_url) {
+        await preloadLogo(branding);
+        url = brandingApi.getLogoUrl(branding);
+      }
+      if (!url) {
+        if (!cancelled) setFavicon(letterFaviconDataUri(logoLetter));
+        return;
+      }
+      const rounded = await roundedFaviconDataUri(url);
+      if (!cancelled) setFavicon(rounded || url);
+    })();
     return () => {
       cancelled = true;
     };
-  }, [logoUrl, logoLetter]);
+  }, [logoUrl, logoLetter, hasCustomLogo, branding]);
 
   // Fullscreen setting from server
   const { data: fullscreenSetting } = useQuery({

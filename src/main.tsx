@@ -25,6 +25,7 @@ import { useAuthStore } from './store/auth';
 import { AppWithNavigator } from './AppWithNavigator';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initLogoPreload } from './api/branding';
+import { applyEarlyFavicon } from './utils/earlyFavicon';
 import { checkBackendOnStartup } from './api/health';
 import { getCachedFullscreenEnabled, isTelegramMobile } from './hooks/useTelegramSDK';
 import { applyTelegramLanguage } from './i18n';
@@ -51,8 +52,7 @@ installEncodingSurrogateGuard();
 // See: https://github.com/Telegram-Mini-Apps/tma.js/issues/683
 if (typeof (Object as { hasOwn?: unknown }).hasOwn !== 'function') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (Object as any).hasOwn = (obj: object, prop: PropertyKey): boolean =>
-    Object.prototype.hasOwnProperty.call(obj, prop);
+  (Object as any).hasOwn = (obj: object, prop: PropertyKey): boolean => Object.hasOwn(obj, prop);
 }
 
 // Only initialize Telegram SDK when running inside Telegram
@@ -175,9 +175,15 @@ void useAuthStore.getState().initialize();
 void checkBackendOnStartup();
 
 if ('requestIdleCallback' in window) {
-  requestIdleCallback(() => initLogoPreload());
+  requestIdleCallback(() => {
+    initLogoPreload();
+    void applyEarlyFavicon();
+  });
 } else {
-  setTimeout(initLogoPreload, 100);
+  setTimeout(() => {
+    initLogoPreload();
+    void applyEarlyFavicon();
+  }, 100);
 }
 
 const queryClient = new QueryClient({
