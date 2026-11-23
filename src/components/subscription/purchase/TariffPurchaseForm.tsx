@@ -96,12 +96,12 @@ export function TariffPurchaseForm({
     tariff.max_device_limit && tariff.max_device_limit > 0 ? tariff.max_device_limit : null;
   const [deviceCount, setDeviceCount] = useState<number>(initialDeviceCount);
 
-  // ProxyKeys custom: autopay toggle state для fresh purchase.
-  // По умолчанию OFF — автопродлечение должно быть осознанным opt-in
-  // (юр-корректно: согласие на рекуррентные платежи только при явном
-  // включении; симметрично боту). После успешной покупки вызываем
-  // updateAutopay с выбранным значением.
-  const [autopayEnabled, setAutopayEnabled] = useState(false);
+  const isDailyTariffForm = Boolean(
+    tariff.is_daily || (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0),
+  );
+  const canSelectAutopay = isFreshPurchase && !isDailyTariffForm;
+  // ProxyKeys custom: the option is preselected; consent is not.
+  const [autopayEnabled, setAutopayEnabled] = useState(canSelectAutopay);
 
   // ProxyKeys custom: явный акцепт публичной оферты в точке оплаты.
   // Гейтит все платёжные кнопки формы (баланс, СБП, Lava). При autopay ON
@@ -109,18 +109,12 @@ export function TariffPurchaseForm({
   // рекуррентных платежей» — одна точка согласия на оба документа.
   const [offerAccepted, setOfferAccepted] = useState(false);
 
-  // Формулировка согласия зависит от autopay-состояния: при переключении
-  // toggle сбрасываем отметку — согласие должно быть с актуальным текстом.
-  useEffect(() => {
+  const toggleAutopay = () => {
+    setAutopayEnabled((value) => !value);
     setOfferAccepted(false);
-  }, [autopayEnabled]);
+  };
 
-  // ProxyKeys custom: recurrent-часть чек-бокса показывается только при
-  // свежей покупке не-daily тарифа с автопродлением ON.
-  const isDailyTariffForm = Boolean(
-    tariff.is_daily || (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0),
-  );
-  const showRecurrentConsent = isFreshPurchase && !isDailyTariffForm && autopayEnabled;
+  const showRecurrentConsent = canSelectAutopay && autopayEnabled;
 
   // ProxyKeys custom: получение текущей подписки для отображения периода
   // действия продления («с ... по ...»). Только при продлении (is_current).
@@ -143,9 +137,7 @@ export function TariffPurchaseForm({
 
   const purchaseMutation = useMutation({
     mutationFn: () => {
-      const isDailyTariff =
-        tariff.is_daily || (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0);
-      const days = isDailyTariff
+      const days = isDailyTariffForm
         ? 1
         : useCustomDays
           ? customDays
@@ -167,15 +159,13 @@ export function TariffPurchaseForm({
         deviceCount,
       );
     },
-    onSuccess: async (data) => {
-      // ProxyKeys custom: применяем выбранный toggle автопродления к НОВОЙ подписке.
-      // data.subscription.id — ID только что созданной подписки (fresh purchase).
-      // Для renewal (existing subscription) autopay уже настроен на странице подписки.
-      if (isFreshPurchase && data.subscription?.id) {
+    onSuccess: async (data, enableAutopay: boolean) => {
+      // Apply the confirmed choice to the subscription returned by this purchase.
+      if (isFreshPurchase && data.success && data.subscription?.id) {
         try {
           await subscriptionApi.updateAutopay(
-            autopayEnabled,
-            autopayEnabled ? 1 : undefined,
+            enableAutopay,
+            enableAutopay ? 1 : undefined,
             data.subscription.id,
           );
         } catch {
@@ -380,7 +370,7 @@ export function TariffPurchaseForm({
           </div>
 
           {/* Daily Tariff Purchase */}
-          {tariff.is_daily || (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0) ? (
+          {isDailyTariffForm ? (
             <div className="rounded-xl border border-accent-500/30 bg-accent-500/10 p-5">
               <div className="mb-4 text-center">
                 <div className="mb-2 text-sm text-dark-400">
@@ -432,7 +422,7 @@ export function TariffPurchaseForm({
                     />
 
                     <button
-                      onClick={() => purchaseMutation.mutate()}
+                      onClick={() => purchaseMutation.mutate(false)}
                       disabled={purchaseMutation.isPending || !offerAccepted}
                       className="btn-primary w-full py-3"
                     >
@@ -791,44 +781,38 @@ export function TariffPurchaseForm({
                   </div>
                 )}
 
-              {/* ProxyKeys custom: autopay toggle для fresh purchase.
-          Ручное продление запрещено → autopay = единственный способ продления.
-          Toggle ON по умолчанию (безопаснее: предотвращает случайное истечение).
-          После успешной покупки updateAutopay вызывается в onSuccess.
-          Скрыт для daily-тарифов (у них свой механизм продления). */}
-              {isFreshPurchase &&
-                !(
-                  tariff.is_daily ||
-                  (tariff.daily_price_kopeks && tariff.daily_price_kopeks > 0)
-                ) && (
-                  <div className="flex items-center justify-between gap-3 rounded-[14px] border border-dark-700/50 p-3.5">
-                    {' '}
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold text-dark-50">
-                        {t('subscription.autoRenewal')}
-                      </div>
+              {/* ProxyKeys custom: show the option only for a new non-daily purchase. */}
+              {canSelectAutopay && (
+                <div className="flex items-center justify-between gap-3 rounded-[14px] border border-dark-700/50 p-3.5">
+                  {' '}
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold text-dark-50">
+                      {t('subscription.autoRenewal')}
                     </div>
-                    <button
-                      onClick={() => setAutopayEnabled((v) => !v)}
-                      role="switch"
-                      aria-checked={autopayEnabled}
-                      aria-label={t('subscription.autopay', 'Auto-payment')}
-                      className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
-                      style={{
-                        background: autopayEnabled
-                          ? 'rgb(var(--color-accent-500))'
-                          : 'rgb(var(--color-gray-400))',
-                      }}
-                    >
-                      <span
-                        className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
-                        style={{
-                          transform: autopayEnabled ? 'translateX(23px)' : 'translateX(0)',
-                        }}
-                      />
-                    </button>
                   </div>
-                )}
+                  <button
+                    type="button"
+                    onClick={toggleAutopay}
+                    disabled={purchaseMutation.isPending}
+                    role="switch"
+                    aria-checked={autopayEnabled}
+                    aria-label={t('subscription.autopay', 'Auto-payment')}
+                    className="relative h-7 w-[52px] shrink-0 rounded-full transition-colors duration-300"
+                    style={{
+                      background: autopayEnabled
+                        ? 'rgb(var(--color-accent-500))'
+                        : 'rgb(var(--color-gray-400))',
+                    }}
+                  >
+                    <span
+                      className="absolute left-[3px] top-[3px] h-[22px] w-[22px] rounded-full bg-white transition-transform duration-300"
+                      style={{
+                        transform: autopayEnabled ? 'translateX(23px)' : 'translateX(0)',
+                      }}
+                    />
+                  </button>
+                </div>
+              )}
 
               {/* Summary & Purchase */}
               {(selectedTariffPeriod || useCustomDays) && (
@@ -1070,7 +1054,7 @@ export function TariffPurchaseForm({
                         />
 
                         <button
-                          onClick={() => purchaseMutation.mutate()}
+                          onClick={() => purchaseMutation.mutate(showRecurrentConsent)}
                           disabled={purchaseMutation.isPending || !offerAccepted}
                           className="btn-primary w-full py-3"
                         >
@@ -1079,9 +1063,7 @@ export function TariffPurchaseForm({
                               <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                               {t('common.loading')}
                             </span>
-                          ) : // ProxyKeys custom: при продлении (tariff.is_current) — «Продлить»,
-                          // при fresh покупке — «Купить».
-                          isFreshPurchase ? (
+                          ) : isFreshPurchase ? (
                             t('subscription.purchase')
                           ) : (
                             t('subscription.renew')
