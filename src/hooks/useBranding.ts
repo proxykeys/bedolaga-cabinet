@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 import { useAuthStore } from '@/store/auth';
 import { useTelegramSDK, setCachedFullscreenEnabled } from '@/hooks/useTelegramSDK';
 import {
@@ -14,7 +16,22 @@ import { setFavicon, letterFaviconDataUri, roundedFaviconDataUri } from '@/utils
 const FALLBACK_NAME = import.meta.env.VITE_APP_NAME || 'Cabinet';
 const FALLBACK_LOGO = import.meta.env.VITE_APP_LOGO || 'V';
 
+const PAGE_TITLE_KEYS: Record<string, string> = {
+  '/': 'nav.dashboard',
+  '/balance': 'nav.balance',
+  '/referral': 'nav.referral',
+  '/support': 'nav.support',
+  '/info': 'nav.info',
+  '/profile': 'nav.profile',
+  '/contests': 'nav.contests',
+  '/polls': 'nav.polls',
+  '/wheel': 'nav.wheel',
+  '/gift': 'nav.gift',
+};
+
 export function useBranding() {
+  const { pathname } = useLocation();
+  const { t } = useTranslation();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { isTelegramWebApp, requestFullscreen, isMobile } = useTelegramSDK();
 
@@ -37,11 +54,14 @@ export function useBranding() {
   const logoLetter = branding?.logo_letter || FALLBACK_LOGO;
   const hasCustomLogo = branding?.has_custom_logo || false;
   const logoUrl = branding ? brandingApi.getLogoUrl(branding) : null;
+  const titleKey = PAGE_TITLE_KEYS[pathname];
+  const pageTitle = titleKey ? t(titleKey) : null;
 
   // Set document title
   useEffect(() => {
-    document.title = appName || FALLBACK_NAME;
-  }, [appName]);
+    const name = appName || FALLBACK_NAME;
+    document.title = pageTitle ? `${name} - ${pageTitle}` : name;
+  }, [appName, pageTitle]);
 
   // Update favicon — custom logo (rounded like the header tile) when available,
   // else a brand-letter monogram so the tab always carries an icon.
